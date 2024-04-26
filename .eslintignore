@@ -1,0 +1,10 @@
+# >>> domelint-start
+# this block was auto-generated with do-me-lint
+dist/
+.env
+# <<< domelint-end
+vite.config.ts
+uno.config.ts
+env.d.ts
+auto-imports.d.ts
+components.d.ts

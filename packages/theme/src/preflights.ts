@@ -1,0 +1,25 @@
+import { TVunorTheme } from './theme'
+import { Preflight } from 'unocss'
+import type { Theme } from '@unocss/preset-mini'
+
+export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
+  getCSS: ({ theme }) =>
+    renderFontCss('body', theme.fontSize.body) +
+    renderFontCss('label', theme.fontSize.label) +
+    renderFontCss('caption', theme.fontSize.caption) +
+    renderFontCss('h1', theme.fontSize['display-1']) +
+    renderFontCss('h2', theme.fontSize['display-2']) +
+    renderFontCss('h3', theme.fontSize['title-a']) +
+    renderFontCss('h4', theme.fontSize['title-b']) +
+    renderFontCss('h5', theme.fontSize['title-c']) +
+    renderFontCss('h6', theme.fontSize['heading']),
+}
+
+function renderFontCss(
+  selector: string,
+  font: TVunorTheme['fontSize'][keyof TVunorTheme['fontSize']]
+): string {
+  return `${selector} { font-size: ${font[0]}; ${Object.entries(font[1])
+    .map(e => `${e[0]}: ${e[1]};`)
+    .join(' ')} }\n`
+}

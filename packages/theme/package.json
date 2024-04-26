@@ -1,0 +1,17 @@
+{
+  "name": "@vunor/theme",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@unocss/preset-mini": "^0.59.4",
+    "defu": "^6.1.4",
+    "unocss": "^0.59.4"
+  }
+}
