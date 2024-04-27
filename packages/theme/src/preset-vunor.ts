@@ -10,12 +10,16 @@ import { defaultTypography } from './typography'
 
 const defaultOptions: Required<TVunorUnoPresetOpts> = {
   spacingFactor: 1.618,
-  actualFontHeightFactor: 0.84,
-  actualFontHeightTopBottomRatio: 0.44,
+  actualFontHeightFactor: 1,
+  actualFontHeightTopBottomRatio: 0.52,
+  cardSpacingFactor: {
+    regular: 1,
+    dense: 0.6,
+  },
   typography: defaultTypography,
 }
 
-export const presetVunor: PresetFactory<Theme & TVunorTheme, TVunorUnoPresetOpts> = (
+export const presetVunor: PresetFactory<TVunorTheme, TVunorUnoPresetOpts> = (
   _opts?: TVunorUnoPresetOpts
 ): Preset<Theme & TVunorTheme> => {
   const opts: Required<TVunorUnoPresetOpts> = defu(_opts, defaultOptions)
@@ -31,15 +35,20 @@ export const presetVunor: PresetFactory<Theme & TVunorTheme, TVunorUnoPresetOpts
   return {
     ...wind,
     name: 'vunor',
-    theme: defu(themeFactory(opts), wind.theme) as Theme & TVunorTheme,
+    theme: defu(themeFactory(opts), wind.theme) as TVunorTheme,
   }
 }
 
 function getFixedWind() {
-  const wind = presetWind() as unknown as Preset<Theme & TVunorTheme>
+  const wind = presetWind() as unknown as Preset<TVunorTheme>
   wind.rules?.forEach(r => {
     if (r[0] instanceof RegExp) {
-      if (r[0].source.startsWith('^m-')) {
+      if (
+        r[0].source.startsWith('^m-') ||
+        r[0].source.startsWith('^ma?') ||
+        r[0].source.startsWith('^p-?') ||
+        r[0].source.startsWith('^pa?')
+      ) {
         r[2] = r[2] || {}
         r[2].layer = 'utilities'
       }

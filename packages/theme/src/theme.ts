@@ -1,4 +1,6 @@
+import { Theme } from '@unocss/preset-mini'
 import { TVunorUnoPresetOpts } from './types'
+import { buildFontTheme } from './typography'
 import { round } from './utils'
 
 // for border-color
@@ -7,42 +9,78 @@ import { round } from './utils'
 // }
 
 export const themeFactory = (opts: Required<TVunorUnoPresetOpts>) => {
+  /**
+   * Spacing
+   */
   const spacing = {
-    $xxs: `${round(1 / opts.spacingFactor ** 3, 3)}em`,
-    $xs: `${round(1 / opts.spacingFactor ** 2, 3)}em`,
-    $s: `${round(1 / opts.spacingFactor, 3)}em`,
-    $m: '1em',
-    $l: `${round(opts.spacingFactor, 3)}em`,
-    $xl: `${round(opts.spacingFactor ** 2, 3)}em`,
-    $xxl: `${round(opts.spacingFactor ** 3, 3)}em`,
+    // canonical
+    '$xxs': `${round(1 / opts.spacingFactor ** 3, 3)}em`,
+    '$xs': `${round(1 / opts.spacingFactor ** 2, 3)}em`,
+    '$s': `${round(1 / opts.spacingFactor, 3)}em`,
+    '$m': '1em',
+    '$l': `${round(opts.spacingFactor, 3)}em`,
+    '$xl': `${round(opts.spacingFactor ** 2, 3)}em`,
+    '$xxl': `${round(opts.spacingFactor ** 3, 3)}em`,
+    // font-based
+    '$font-tc': 'var(--font-bc)',
+    '$font-bc': 'var(--font-tc)',
+    '$font-size': 'var(--font-size)',
+    '$font-corrected': 'var(--font-corrected)',
+    // cards
+    '$card-spacing': 'var(--card-spacing)',
+    '$card-spacing-dense': 'var(--card-spacing-dense)',
+    '$card-heading-size': 'var(--card-heading-size)',
+    '$card-heading-corrected': 'var(--card-heading-corrected)',
   } as Record<string, string>
-  const fontSize: Record<string, [string, Record<string, string>, number]> = {}
+
+  /**
+   * Typography
+   */
+  const fontWeight = {
+    $bold: 'var(--font-bold)',
+  } as Record<string, string>
+
+  const fontSize: Record<string, [string, Record<string, string>]> = {
+    'card-header': [
+      'var(--card-heading-size)',
+      {
+        '--font-bold': 'var(--card-heading-bold)',
+        '--font-size': 'var(--card-heading-size)',
+        '--font-corrected': 'var(--card-heading-corrected)',
+        '--font-bc': 'var(--card-heading-bc)',
+        '--font-tc': 'var(--card-heading-tc)',
+        'font-weight': 'var(--card-heading-weight)',
+        'line-height': 'var(--card-heading-lh)',
+        'letter-spacing': 'var(--card-heading-ls)',
+      },
+    ],
+  }
   for (const [name, val] of Object.entries(opts.typography)) {
     if (val && val.size) {
-      fontSize[name] = setFont(
+      const ft = buildFontTheme(
         val.size,
         val.weight || 400,
+        val.boldWeight || 700,
         val.height || 1,
         val.spacing || 0,
         val.actualHeightFactor || opts.actualFontHeightFactor,
         val.actualHeightTopBottomRatio || opts.actualFontHeightTopBottomRatio
       )
-      fontSize[name + '-bold'] = setFont(
-        val.size,
-        val.boldWeight || 800,
-        val.height || 1,
-        val.spacing || 0,
-        val.actualHeightFactor || opts.actualFontHeightFactor,
-        val.actualHeightTopBottomRatio || opts.actualFontHeightTopBottomRatio
-      )
-      spacing[name] = val.size * (val.actualHeightFactor || opts.actualFontHeightFactor) + 'em'
+      fontSize[name] = ft.theme
+      spacing[name] = ft.size + 'em'
     }
   }
+
+  /**
+   * Putting all together
+   */
   return {
     colors: { borderColor: 'blue' },
     borderColor: 'red',
     spacing,
+    fontWeight,
     actualFontHeightFactor: opts.actualFontHeightFactor,
+    cardSpacingFactor: opts.cardSpacingFactor,
     fontSize,
     width: spacing,
     height: spacing,
@@ -50,36 +88,8 @@ export const themeFactory = (opts: Required<TVunorUnoPresetOpts>) => {
     maxHeight: spacing,
     minWidth: spacing,
     minHeight: spacing,
+    borderRadius: spacing,
   }
 }
 
-export type TVunorTheme = ReturnType<typeof themeFactory>
-
-// eslint-disable-next-line max-params
-function setFont(
-  size: number,
-  w: number,
-  lh: number,
-  ls: number,
-  actualFontHeightFactor = 1,
-  actualFontHeightTopBottomRatio = 0.5
-) {
-  const cSize = size * actualFontHeightFactor
-  // const m = round((size * lh - cSize) / 2 / size, 4)
-  const h = lh * size
-  const m = (h - cSize) / size
-  const mt = round(m * actualFontHeightTopBottomRatio, 4)
-  const mb = round(m * (1 - actualFontHeightTopBottomRatio), 4)
-  return [
-    `${size}em`,
-    {
-      '--font-m-compensation': `${m}em`,
-      'font-weight': w,
-      'line-height': `${lh}em`,
-      'letter-spacing': `${ls}em`,
-      'margin-top': `${-mt}em`,
-      'margin-bottom': `${-mb}em`,
-    },
-    actualFontHeightFactor,
-  ] as unknown as [string, Record<string, string>, number]
-}
+export type TVunorTheme = ReturnType<typeof themeFactory> & Theme

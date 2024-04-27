@@ -5,35 +5,6 @@ import { round } from '../utils'
 
 export const spacingRules: Rule<Theme & TVunorTheme>[] = [
   [
-    /^p(y)?-card-(rounded-)?(.*)$/,
-    (match, { theme }) => {
-      const c = match[3] as keyof TVunorTheme['fontSize']
-      const rounded = !!match[2]
-      const y = !!match[1]
-      if (theme.fontSize[c] && typeof theme.fontSize[c][0] === 'string') {
-        const { padding, compensated } = calcFontCompensatedPaddingY(
-          theme.fontSize[c],
-          theme.actualFontHeightFactor
-        )
-        return {
-          'padding': `${padding} ${padding} ${y ? '' : padding}`,
-          'border-radius': rounded ? padding : '',
-        }
-      }
-      return undefined
-    },
-  ],
-  [
-    /^rounded-(.*)$/,
-    (match, { theme }) => {
-      const c = match[1] as keyof TVunorTheme['fontSize']
-      if (theme.fontSize[c] && typeof theme.fontSize[c][0] === 'string') {
-        return { 'border-radius': theme.fontSize[c][0] as string }
-      }
-      return undefined
-    },
-  ],
-  [
     // special text margin (vertical) that compensates
     // the line height
     /^text-m(y|t|b)?-(.*)$/,
@@ -48,7 +19,7 @@ export const spacingRules: Rule<Theme & TVunorTheme>[] = [
         for (const prop of d) {
           result[`margin-${prop}`] = ['left', 'right'].includes(prop)
             ? theme.spacing[size]
-            : `calc(${theme.spacing[size]} - var(--font-m-compensation))`
+            : `calc(${theme.spacing[size]} + var(--font-${prop === 'top' ? 'tc' : 'bc'}))`
         }
         return result
       } else if (/^\d+(em|rem|px)?$/.test(size)) {
@@ -59,7 +30,7 @@ export const spacingRules: Rule<Theme & TVunorTheme>[] = [
         for (const prop of d) {
           result[`margin-${prop}`] = ['left', 'right'].includes(prop)
             ? s
-            : `calc(${s} - var(--font-m-compensation))`
+            : `calc(${s} + var(--font-${prop === 'top' ? 'tc' : 'bc'}))`
         }
         return result
       }
@@ -67,35 +38,45 @@ export const spacingRules: Rule<Theme & TVunorTheme>[] = [
     },
     { layer: 'utilities' },
   ],
+  [
+    /^card-dense$/,
+    (match, { theme }) => {
+      return {
+        '--card-spacing': 'var(--card-spacing-dense)',
+      }
+    },
+    { layer: 'utilities' },
+  ],
+  [
+    /^card-(.*)$/,
+    (match, { theme }) => {
+      const name = match[1]
+      if (theme.fontSize[name]) {
+        const props = theme.fontSize[name][1]
+        return {
+          '--card-spacing': `${unitBy(props['--font-corrected'], theme.cardSpacingFactor.regular)}`,
+          '--card-spacing-dense': `${unitBy(
+            props['--font-corrected'],
+            theme.cardSpacingFactor.dense
+          )}`,
+          '--card-heading-size': props['--font-size'],
+          '--card-heading-bold': props['--font-bold'],
+          '--card-heading-corrected': props['--font-corrected'],
+          '--card-heading-weight': props['font-weight'],
+          '--card-heading-lh': props['line-height'],
+          '--card-heading-ls': props['letter-spacing'],
+          '--card-heading-bc': props['--font-bc'],
+          '--card-heading-tc': props['--font-tc'],
+          'padding': 'var(--card-spacing)',
+        }
+      }
+      return undefined
+    },
+  ],
 ]
 
-function calcFontCompensatedPaddingY(
-  font: TVunorTheme['fontSize'][keyof TVunorTheme['fontSize']],
-  actualFontHeightFactor: number
-): { padding: string; compensated: string } {
-  // calculating card paddings
-  // with correction by factor of header line-height and fontHeightCorrection
-  const lhString = (font[1] as { 'line-height': string } | undefined)?.['line-height'] || '1em'
-  const fontSizeString = font[0] as string
-  const lhUnit = /(px|em|rem|%)$/.exec(lhString)?.[1] || ''
-  const fontSizeUnit = /(px|em|rem)$/.exec(fontSizeString)?.[1] || ''
-
-  const lh = Number.parseFloat(lhString)
-  const fontSize = Number.parseFloat(fontSizeString)
-  const k = Number(font[2] || actualFontHeightFactor || 1)
-  const padding = fontSize * k + fontSizeUnit
-
-  if (!Number.isNaN(lh) && !Number.isNaN(fontSize) && fontSizeUnit && lhUnit) {
-    let compensated = fontSize * 0.9 + fontSizeUnit
-    if (['px', 'rem'].includes(lhUnit)) {
-      if (lhUnit === fontSizeUnit) {
-        compensated = `${round(1.5 * fontSize - 0.5 * lh - (1 - k) * fontSize, 3)}${fontSizeUnit}`
-      }
-    } else {
-      const lh2 = lhUnit === 'em' ? fontSize * lh : (fontSize * lh) / 100
-      compensated = `${round(1.5 * fontSize - 0.5 * lh2 - (1 - k) * fontSize, 3)}${fontSizeUnit}`
-    }
-    return { padding, compensated }
-  }
-  return { padding, compensated: padding }
+function unitBy(input: string, factor: number): string {
+  const v = Number.parseFloat(input)
+  const units = /(px|em|rem|%)$/.exec(input)?.[1] || ''
+  return `${v * factor}${units}`
 }

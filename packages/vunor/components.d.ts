@@ -8,8 +8,10 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('./src/components/Button/Button.vue')['default']
-    Card: typeof import('./src/components/Button/Card.vue')['default']
-    CardTester: typeof import('./src/components/card-tester.vue')['default']
+    Card: typeof import('./src/components/Card/Card.vue')['default']
+    CardHeader: typeof import('./src/components/Card/CardHeader.vue')['default']
+    CardTester: typeof import('./src/components/test/card-tester.vue')['default']
     Primitive: typeof import('radix-vue')['Primitive']
+    TypographyTester: typeof import('./src/components/test/typography-tester.vue')['default']
   }
 }

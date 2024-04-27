@@ -2,7 +2,13 @@ export interface TVunorUnoPresetOpts {
   spacingFactor?: number
   actualFontHeightFactor?: number
   actualFontHeightTopBottomRatio?: number
-  typography?: Record<TTypographyNames, TTypography | undefined>
+  cardSpacingFactor?: {
+    regular: number
+    dense: number
+  }
+  typography?: {
+    [name in TTypographyNames]?: TTypography
+  }
 }
 
 export interface TTypography {
@@ -18,14 +24,16 @@ export interface TTypography {
 }
 
 export type TTypographyNames =
-  | 'display-1'
-  | 'display-2'
-  | 'title-a'
-  | 'title-b'
-  | 'title-c'
-  | 'heading'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
   | 'subheading'
+  | 'body-l'
   | 'body'
+  | 'body-s'
   | 'callout'
   | 'label'
   | 'caption'
