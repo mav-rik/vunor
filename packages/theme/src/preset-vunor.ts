@@ -22,6 +22,10 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
     dense: 0.6,
   },
   typography: defaultTypography,
+  layers: {
+    reverseDark: false,
+    reverseLight: false,
+  },
 }
 
 export const presetVunor: PresetFactory<

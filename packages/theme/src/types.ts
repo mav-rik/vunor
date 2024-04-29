@@ -9,6 +9,10 @@ export interface TVunorUnoPresetOpts {
   typography?: {
     [name in TTypographyNames]: TTypography | undefined
   }
+  layers?: {
+    reverseDark?: boolean
+    reverseLight?: boolean
+  }
 }
 
 export interface TTypography {

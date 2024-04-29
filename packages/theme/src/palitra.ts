@@ -19,16 +19,10 @@ export function generatePalette(_opts?: TPaletteOptions) {
     vivid: { dark: 0, light: 0 },
     suffixes: ['dark-0', 'dark-1', 'dark-2', 'dark-3', 'dark-4'],
   }
-  if (opts.layers.reverseDark) {
-    bgOptions.suffixes?.reverse()
-  }
   const darks = palitra(desaturate(opts.colors), bgOptions).toStrings()
 
   // light bg
-  bgOptions.suffixes = ['light-0', 'light-1', 'light-2', 'light-3', 'light-4']
-  if (opts.layers.reverseLight) {
-    bgOptions.suffixes.reverse()
-  }
+  bgOptions.suffixes = ['light-0', 'light-1', 'light-2', 'light-3', 'light-4'].reverse()
   bgOptions.luminance = { dark: 0.9, light: 1, useMiddle: false }
   const lights = palitra(desaturate(opts.colors), bgOptions).toStrings()
 
@@ -105,10 +99,6 @@ const defaultOpts: Required<
   },
   darkest: 0.24,
   lightest: 0.97,
-  layers: {
-    reverseDark: false,
-    reverseLight: true,
-  },
 }
 
 export interface TPaletteOptions {
@@ -123,18 +113,23 @@ export interface TPaletteOptions {
   }
   lightest?: number
   darkest?: number
-  layers?: {
-    reverseDark?: boolean
-    reverseLight?: boolean
-  }
 }
 
 export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
   return [
     [
       /^layer-([0-4])$/,
-      ([, l]) =>
-        `bg-scope-light-${l} dark:bg-scope-dark-${l} [&.dark]:bg-scope-dark-${l} text-scope-dark-2 dark:text-scope-light-2 [&.dark]:text-scope-light-2 dark:shadow-black/30 border-scope-color-100 dark:border-scope-color-900`,
+      ([, a], { theme }) => {
+        let d = Number(a)
+        let l = Number(a)
+        if (theme.reverseDarkLayers) {
+          d = 4 - Number(a)
+        }
+        if (theme.reverseLightLayers) {
+          l = 4 - Number(a)
+        }
+        return `bg-scope-light-${l} dark:bg-scope-dark-${d} [&.dark]:bg-scope-dark-${d} text-scope-dark-2 dark:text-scope-light-2 [&.dark]:text-scope-light-2 dark:shadow-black/30 border-scope-color-100 dark:border-scope-color-900`
+      },
     ],
     [
       /^surface-(\d+)$/,

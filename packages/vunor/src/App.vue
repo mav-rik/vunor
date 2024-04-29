@@ -16,7 +16,7 @@ const dark = useDark()
 <template>
   <div class="layer-0 scope-background min-h-100vh w-full flex">
     <aside
-      class="surface-1 card-h6 w-xs border border-color-black/10 dark:border-color-white/10 flex flex-col h-100vh"
+      class="layer-1 card-h6 w-xs border border-color-black/10 dark:border-color-white/10 flex flex-col h-100vh"
     >
       <div class="flex-1 flex flex-col gap-1">
         <card
@@ -24,7 +24,7 @@ const dark = useDark()
           level="body"
           v-for="item of menu"
           :data-selected="item[0] === current[0]"
-          class="layer-1 text-left fw-bold w-full hover:surface-2 data-[selected=true]:surface-3 hover:data-[selected=true]:surface-3 rounded-2 p-$m!"
+          class="layer-1 text-left fw-bold w-full hover:layer-2 data-[selected=true]:layer-3 hover:data-[selected=true]:layer-3 rounded-2 p-$m!"
         >
           <button @click="current = item">
             <p class="text-my-0">{{ item[0] }}</p>
@@ -35,7 +35,7 @@ const dark = useDark()
         <card
           asChild
           level="body"
-          class="layer-1 text-left fw-bold w-full hover:surface-2 rounded-2 p-$m!"
+          class="layer-1 text-left fw-bold w-full hover:layer-2 rounded-2 p-$m!"
         >
           <button @click="dark = !dark">
             <p class="text-my-0">{{ dark ? 'Light' : 'Dark' }} Mode</p>

@@ -8,11 +8,9 @@ export default defineConfig({
     presetVunor({
       actualFontHeightFactor: 0.8,
       actualFontHeightTopBottomRatio: 0.495,
-      palette: {
-        layers: {
-          // reverseLight: false,
-          reverseDark: true,
-        },
+      layers: {
+        reverseLight: false,
+        reverseDark: true,
       },
     }),
   ],

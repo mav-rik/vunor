@@ -8,11 +8,6 @@ import type { TTypographyNames, TVunorUnoPresetOpts } from './types'
 import { buildFontTheme } from './typography'
 import { round } from './utils'
 
-// for border-color
-// :root {
-//   --un-default-border-color: #e5e7eb;
-// }
-
 export const themeFactory = (
   opts: Required<TVunorUnoPresetOpts> & { palette?: TPaletteOptions }
 ) => {
@@ -86,6 +81,8 @@ export const themeFactory = (
     colors: palette.colors,
     surfaces: palette.surfaces,
     borderColor: 'red',
+    reverseLightLayers: opts.layers.reverseLight,
+    reverseDarkLayers: opts.layers.reverseDark,
     spacing,
     fontWeight,
     actualFontHeightFactor: opts.actualFontHeightFactor,
