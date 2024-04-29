@@ -12,6 +12,7 @@ declare module 'vue' {
     CardHeader: typeof import('./src/components/Card/CardHeader.vue')['default']
     CardInner: typeof import('./src/components/Card/CardInner.vue')['default']
     CardTester: typeof import('./src/components/test/card-tester.vue')['default']
+    PreviewAlerts: typeof import('@/previews/alerts.vue')['default']
     Primitive: typeof import('radix-vue')['Primitive']
     TypographyTester: typeof import('./src/components/test/typography-tester.vue')['default']
   }

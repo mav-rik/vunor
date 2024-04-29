@@ -13,7 +13,7 @@ const headers = [
 ]
 
 export const cardShortcuts = {
-  card: `data-[rounded=true]:rounded-$card-spacing data-[dense=true]:card-dense ${headers
+  card: `data-[rounded=true]:rounded-$card-spacing data-[dense=true]:card-dense! border-scope-color-100 dark:border-scope-color-800 ${headers
     .map(h => `data-[level=${h}]:card-${h}`)
     .join(' ')}`,
 }

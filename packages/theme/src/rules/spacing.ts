@@ -52,7 +52,8 @@ export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
     /^card-(.*)$/,
     (match, { theme }) => {
       const name = match[1]
-      if (theme.fontSize?.[name]) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (theme.fontSize[name]) {
         const props = theme.fontSize[name][1]
         return {
           '--card-spacing': `${unitBy(props['--font-corrected'], theme.cardSpacingFactor.regular)}`,

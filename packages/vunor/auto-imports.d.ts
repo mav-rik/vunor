@@ -6,6 +6,11 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const PreviewAlerts: typeof import('@/previews/alerts.vue')['default']
+  const PreviewCards: typeof import('@/previews/cards.vue')['default']
+  const PreviewSurfaces: typeof import('@/previews/surfaces.vue')['default']
+  const PreviewTypofraphy: typeof import('@/previews/typofraphy.vue')['default']
+  const PreviewTypography: typeof import('@/previews/typography.vue')['default']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const customRef: typeof import('vue')['customRef']

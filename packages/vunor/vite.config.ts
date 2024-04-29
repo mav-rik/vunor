@@ -17,11 +17,36 @@ export default defineConfig({
     vue(),
     Components({
       dts: true,
-      resolvers: [RadixVueResolver()],
+
+      resolvers: [
+        RadixVueResolver(),
+        componentName => {
+          console.log(componentName)
+          if (componentName.startsWith('Preview'))
+            return {
+              name: 'default',
+              as: componentName,
+              from: `@/previews/${componentName.slice(7).toLowerCase()}.vue`,
+            }
+        },
+      ],
     }),
     AutoImport({
       dts: true,
       imports: ['vue'],
+      resolvers: [
+        {
+          type: 'component',
+          resolve: componentName => {
+            if (componentName.startsWith('Preview'))
+              return {
+                name: 'default',
+                as: componentName,
+                from: `@/previews/${componentName.slice(7).toLowerCase()}.vue`,
+              }
+          },
+        },
+      ],
     }),
   ],
   resolve: {

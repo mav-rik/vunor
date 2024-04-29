@@ -2,6 +2,7 @@
 /* eslint-disable complexity */
 import type { Theme } from '@unocss/preset-mini'
 
+import type { TPaletteOptions } from './palitra'
 import { generatePalette } from './palitra'
 import type { TTypographyNames, TVunorUnoPresetOpts } from './types'
 import { buildFontTheme } from './typography'
@@ -12,7 +13,9 @@ import { round } from './utils'
 //   --un-default-border-color: #e5e7eb;
 // }
 
-export const themeFactory = (opts: Required<TVunorUnoPresetOpts>) => {
+export const themeFactory = (
+  opts: Required<TVunorUnoPresetOpts> & { palette?: TPaletteOptions }
+) => {
   /**
    * Spacing
    */
@@ -75,12 +78,13 @@ export const themeFactory = (opts: Required<TVunorUnoPresetOpts>) => {
     }
   }
 
-  const colors = generatePalette()
+  const palette = generatePalette(opts.palette)
   /**
    * Putting all together
    */
   return {
-    colors,
+    colors: palette.colors,
+    surfaces: palette.surfaces,
     borderColor: 'red',
     spacing,
     fontWeight,
@@ -94,9 +98,6 @@ export const themeFactory = (opts: Required<TVunorUnoPresetOpts>) => {
     minWidth: spacing,
     minHeight: spacing,
     borderRadius: spacing,
-    shortcuts: [
-      [/^layer-([0-4])$/, ([, l]) => `bg-background-light-${l} dark:bg-background-dark-${l}`],
-    ],
   }
 }
 

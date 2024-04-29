@@ -1,8 +1,11 @@
 import type { Theme } from '@unocss/preset-mini'
+import { theme } from '@unocss/preset-mini'
 import { defu } from 'defu'
 import type { Preset, PresetFactory } from 'unocss'
 import { presetWind } from 'unocss'
 
+import type { TPaletteOptions } from './palitra'
+import { getPaletteShortcuts } from './palitra'
 import { fontsPreflights } from './preflights'
 import { rules } from './rules'
 import type { TVunorTheme } from './theme'
@@ -21,9 +24,10 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
   typography: defaultTypography,
 }
 
-export const presetVunor: PresetFactory<TVunorTheme, TVunorUnoPresetOpts> = (
-  _opts?: TVunorUnoPresetOpts
-): Preset<Theme & TVunorTheme> => {
+export const presetVunor: PresetFactory<
+  TVunorTheme,
+  TVunorUnoPresetOpts & { palette?: TPaletteOptions }
+> = (_opts?: TVunorUnoPresetOpts): Preset<Theme & TVunorTheme> => {
   const opts: Required<TVunorUnoPresetOpts> = defu(_opts, defaultOptions)
   const wind = getFixedWind()
   if (!wind.preflights) {
@@ -38,6 +42,13 @@ export const presetVunor: PresetFactory<TVunorTheme, TVunorUnoPresetOpts> = (
     ...wind,
     name: 'vunor',
     theme: defu(themeFactory(opts), wind.theme) as TVunorTheme,
+    shortcuts: getPaletteShortcuts(),
+    layers: {
+      preflights: 0,
+      shortcuts: 1,
+      default: 2,
+      utilities: 3,
+    },
   }
 }
 
