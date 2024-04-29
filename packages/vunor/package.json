@@ -16,6 +16,7 @@
     "vue": "^3.4.21"
   },
   "devDependencies": {
+    "@prostojs/palitra": "^0.0.3",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.12.5",
     "@unocss/preset-mini": "^0.59.4",

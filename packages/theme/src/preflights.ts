@@ -1,18 +1,19 @@
-import { TVunorTheme } from './theme'
-import { Preflight } from 'unocss'
 import type { Theme } from '@unocss/preset-mini'
+import type { Preflight } from 'unocss'
+
+import type { TVunorTheme } from './theme'
 
 export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
   getCSS: ({ theme }) =>
     renderFontCss('body', theme.fontSize.body) +
     renderFontCss('label', theme.fontSize.label) +
     renderFontCss('figcaption', theme.fontSize.caption) +
-    renderFontCss('h1', theme.fontSize['h1']) +
-    renderFontCss('h2', theme.fontSize['h2']) +
-    renderFontCss('h3', theme.fontSize['h3']) +
-    renderFontCss('h4', theme.fontSize['h4']) +
-    renderFontCss('h5', theme.fontSize['h5']) +
-    renderFontCss('h6', theme.fontSize['h6']),
+    renderFontCss('h1', theme.fontSize.h1) +
+    renderFontCss('h2', theme.fontSize.h2) +
+    renderFontCss('h3', theme.fontSize.h3) +
+    renderFontCss('h4', theme.fontSize.h4) +
+    renderFontCss('h5', theme.fontSize.h5) +
+    renderFontCss('h6', theme.fontSize.h6),
 }
 
 function renderFontCss(

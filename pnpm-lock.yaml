@@ -47,6 +47,9 @@ importers:
 
   packages/theme:
     dependencies:
+      '@prostojs/palitra':
+        specifier: ^0.0.3
+        version: 0.0.3
       '@unocss/preset-mini':
         specifier: ^0.59.4
         version: 0.59.4
@@ -69,6 +72,9 @@ importers:
         specifier: ^3.4.21
         version: 3.4.25(typescript@5.4.5)
     devDependencies:
+      '@prostojs/palitra':
+        specifier: ^0.0.3
+        version: 0.0.3
       '@tsconfig/node20':
         specifier: ^20.1.4
         version: 20.1.4
@@ -752,6 +758,11 @@ packages:
 
   /@polka/url@1.0.0-next.25:
     resolution: {integrity: sha512-j7P6Rgr3mmtdkeDGTe0E/aYyWEWVtc5yFXtHCRHs28/jptDEWfaVOc5T7cblqy1XKPPfCxJc/8DwQ5YgLOZOVQ==}
+
+  /@prostojs/palitra@0.0.3:
+    resolution: {integrity: sha512-oF2If4/Oh7UEcuLLQgSbfGmJM0/VGamreGoa6RGWWpgy28kOa+2ZTWLvQqB4WxPK1m5pCtrFVEi0uIqmkI3/qg==}
+    dependencies:
+      defu: 6.1.4
 
   /@rollup/pluginutils@5.1.0:
     resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCardPI } from './card-utils'
+import { useCardPI } from './pi'
 
 const props = defineProps<{
   as?: string
@@ -23,3 +23,4 @@ useCardPI().inject()
     <slot></slot>
   </Primitive>
 </template>
+./pi

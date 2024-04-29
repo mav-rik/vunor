@@ -1,4 +1,5 @@
-import { TTypography, TTypographyNames } from './types'
+/* eslint-disable max-params */
+import type { TTypography, TTypographyNames } from './types'
 import { round } from './utils'
 
 function font(
@@ -31,7 +32,7 @@ export const defaultTypography: Record<TTypographyNames, TTypography> = {
   'subheading': /*  */ font(400, 600, k(-0.2), /*  */ k(0.5), -0.007),
   'body-l': /*      */ font(400, 600, k(0.5), /*  */ k(0.75), -0.014),
   'body': /*        */ font(400, 600, k(0), /*    */ k(0.75), -0.011),
-  'body-s': /*      */ font(400, 600, k(-0.5), /*    */ k(1), 0.0),
+  'body-s': /*      */ font(400, 600, k(-0.5), /*    */ k(1), 0),
   'callout': /*     */ font(400, 600, k(-0.25), /* */ k(0.5), -0.009),
   'label': /*       */ font(500, 700, k(-0.25), /* */ k(0.5), -0.004),
   'caption': /*     */ font(400, 600, k(-0.5), /*  */ k(0.5), -0.007),

@@ -1,5 +1,9 @@
-import { Theme } from '@unocss/preset-mini'
-import { TVunorUnoPresetOpts } from './types'
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable complexity */
+import type { Theme } from '@unocss/preset-mini'
+
+import { generatePalette } from './palitra'
+import type { TTypographyNames, TVunorUnoPresetOpts } from './types'
 import { buildFontTheme } from './typography'
 import { round } from './utils'
 
@@ -56,9 +60,9 @@ export const themeFactory = (opts: Required<TVunorUnoPresetOpts>) => {
     ],
   }
   for (const [name, val] of Object.entries(opts.typography)) {
-    if (val && val.size) {
+    if (val?.size) {
       const ft = buildFontTheme(
-        val.size,
+        val.size || 1,
         val.weight || 400,
         val.boldWeight || 700,
         val.height || 1,
@@ -67,21 +71,22 @@ export const themeFactory = (opts: Required<TVunorUnoPresetOpts>) => {
         val.actualHeightTopBottomRatio || opts.actualFontHeightTopBottomRatio
       )
       fontSize[name] = ft.theme
-      spacing[name] = ft.size + 'em'
+      spacing[name] = `${ft.size}em`
     }
   }
 
+  const colors = generatePalette()
   /**
    * Putting all together
    */
   return {
-    colors: { borderColor: 'blue' },
+    colors,
     borderColor: 'red',
     spacing,
     fontWeight,
     actualFontHeightFactor: opts.actualFontHeightFactor,
     cardSpacingFactor: opts.cardSpacingFactor,
-    fontSize,
+    fontSize: fontSize as Record<string, [TTypographyNames, Record<string, string>]>,
     width: spacing,
     height: spacing,
     maxWidth: spacing,
@@ -89,6 +94,9 @@ export const themeFactory = (opts: Required<TVunorUnoPresetOpts>) => {
     minWidth: spacing,
     minHeight: spacing,
     borderRadius: spacing,
+    shortcuts: [
+      [/^layer-([0-4])$/, ([, l]) => `bg-background-light-${l} dark:bg-background-dark-${l}`],
+    ],
   }
 }
 

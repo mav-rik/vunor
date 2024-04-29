@@ -7,7 +7,7 @@ export interface TVunorUnoPresetOpts {
     dense: number
   }
   typography?: {
-    [name in TTypographyNames]?: TTypography
+    [name in TTypographyNames]: TTypography | undefined
   }
 }
 

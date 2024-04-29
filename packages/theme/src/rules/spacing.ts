@@ -1,16 +1,19 @@
-import { Theme } from '@unocss/preset-mini'
-import { Rule } from 'unocss'
-import { TVunorTheme } from '../theme'
-import { round } from '../utils'
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable sonarjs/cognitive-complexity */
+/* eslint-disable complexity */
+import type { Theme } from '@unocss/preset-mini'
+import type { Rule } from 'unocss'
 
-export const spacingRules: Rule<Theme & TVunorTheme>[] = [
+import type { TVunorTheme } from '../theme'
+
+export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
   [
     // special text margin (vertical) that compensates
     // the line height
-    /^text-m(y|t|b)?-(.*)$/,
+    /^text-m([bty])?-(.*)$/,
     (match, { theme }) => {
-      const dir = match[1] as 'y' | 't' | 'b'
-      const size = match[2] as keyof TVunorTheme['spacing']
+      const dir = match[1] as 'y' | 't' | 'b' | undefined
+      const size = match[2]
       const d = dir
         ? { y: ['top', 'bottom'], t: ['top'], b: ['bottom'] }[dir]
         : ['top', 'bottom', 'left', 'right']
@@ -23,8 +26,8 @@ export const spacingRules: Rule<Theme & TVunorTheme>[] = [
         }
         return result
       } else if (/^\d+(em|rem|px)?$/.test(size)) {
-        let s = size as string
-        if (/^[0-9\.]+$/.test(size)) {
+        let s = size
+        if (/^[\d.]+$/.test(size)) {
           s = `${Number(size) * 0.25}rem`
         }
         for (const prop of d) {
@@ -40,18 +43,16 @@ export const spacingRules: Rule<Theme & TVunorTheme>[] = [
   ],
   [
     /^card-dense$/,
-    (match, { theme }) => {
-      return {
-        '--card-spacing': 'var(--card-spacing-dense)',
-      }
-    },
+    (match, { theme }) => ({
+      '--card-spacing': 'var(--card-spacing-dense)',
+    }),
     { layer: 'utilities' },
   ],
   [
     /^card-(.*)$/,
     (match, { theme }) => {
       const name = match[1]
-      if (theme.fontSize[name]) {
+      if (theme.fontSize?.[name]) {
         const props = theme.fontSize[name][1]
         return {
           '--card-spacing': `${unitBy(props['--font-corrected'], theme.cardSpacingFactor.regular)}`,

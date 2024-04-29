@@ -1,6 +1,8 @@
-import { Theme } from '@unocss/preset-mini'
-import { Rule } from 'unocss'
-import { TVunorTheme } from '../theme'
+import type { Theme } from '@unocss/preset-mini'
+import type { Rule } from 'unocss'
+
+import type { TVunorTheme } from '../theme'
+import { paletteRules } from './palette'
 import { spacingRules } from './spacing'
 
-export const rules: Rule<Theme & TVunorTheme>[] = [...spacingRules]
+export const rules: Array<Rule<Theme & TVunorTheme>> = [...spacingRules, ...paletteRules]

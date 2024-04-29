@@ -1,11 +1,13 @@
-import type { PresetFactory, Preset } from 'unocss'
-import { presetWind } from 'unocss'
 import type { Theme } from '@unocss/preset-mini'
-import { TVunorTheme, themeFactory } from './theme'
 import { defu } from 'defu'
-import { TVunorUnoPresetOpts } from './types'
+import type { Preset, PresetFactory } from 'unocss'
+import { presetWind } from 'unocss'
+
 import { fontsPreflights } from './preflights'
 import { rules } from './rules'
+import type { TVunorTheme } from './theme'
+import { themeFactory } from './theme'
+import type { TVunorUnoPresetOpts } from './types'
 import { defaultTypography } from './typography'
 
 const defaultOptions: Required<TVunorUnoPresetOpts> = {
@@ -42,16 +44,15 @@ export const presetVunor: PresetFactory<TVunorTheme, TVunorUnoPresetOpts> = (
 function getFixedWind() {
   const wind = presetWind() as unknown as Preset<TVunorTheme>
   wind.rules?.forEach(r => {
-    if (r[0] instanceof RegExp) {
-      if (
-        r[0].source.startsWith('^m-') ||
+    if (
+      r[0] instanceof RegExp &&
+      (r[0].source.startsWith('^m-') ||
         r[0].source.startsWith('^ma?') ||
         r[0].source.startsWith('^p-?') ||
-        r[0].source.startsWith('^pa?')
-      ) {
-        r[2] = r[2] || {}
-        r[2].layer = 'utilities'
-      }
+        r[0].source.startsWith('^pa?'))
+    ) {
+      r[2] = r[2] || {}
+      r[2].layer = 'utilities'
     }
   })
   return wind
