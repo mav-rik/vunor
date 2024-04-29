@@ -23,6 +23,40 @@ export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
 html.dark, .dark {
    --un-default-border-color: rgba(255,255,255,10%);
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0,0,0,0.3);
+}
+
+
+.dark ::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255,255,255,0.3);
+}
 `,
 }
 

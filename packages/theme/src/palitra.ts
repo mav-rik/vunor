@@ -7,6 +7,8 @@ import type { Shortcut, UserShortcuts } from 'unocss'
 
 import type { TVunorTheme } from './theme'
 
+const layerDepth = 0.08
+
 export function generatePalette(_opts?: TPaletteOptions) {
   const opts = defu(_opts, defaultOpts) as typeof defaultOpts
 
@@ -14,7 +16,7 @@ export function generatePalette(_opts?: TPaletteOptions) {
   const bgOptions: TScaleOptionsInput & TPalitraOptions = {
     count: 5,
     preserveInputColor: false,
-    luminance: { dark: opts.darkest, light: opts.darkest + 0.08, useMiddle: false },
+    luminance: { dark: opts.darkest, light: opts.darkest + layerDepth, useMiddle: false },
     saturate: { dark: 0, light: 0 },
     vivid: { dark: 0, light: 0 },
     suffixes: ['dark-0', 'dark-1', 'dark-2', 'dark-3', 'dark-4'],
@@ -23,7 +25,7 @@ export function generatePalette(_opts?: TPaletteOptions) {
 
   // light bg
   bgOptions.suffixes = ['light-0', 'light-1', 'light-2', 'light-3', 'light-4'].reverse()
-  bgOptions.luminance = { dark: 0.9, light: 1, useMiddle: false }
+  bgOptions.luminance = { dark: 1 - layerDepth, light: 1, useMiddle: false }
   const lights = palitra(desaturate(opts.colors), bgOptions).toStrings()
 
   // the rest of the palette
@@ -44,7 +46,7 @@ export function generatePalette(_opts?: TPaletteOptions) {
     {
       count: 10,
       preserveInputColor: false,
-      luminance: { dark: opts.darkest + 0.12, light: opts.lightest, useMiddle: false },
+      luminance: { dark: opts.darkest + layerDepth + 0.02, light: opts.lightest, useMiddle: false },
       saturate: { dark: 0.1, light: 0.1 },
       vivid: { dark: 0.1, light: 0.2 },
     }

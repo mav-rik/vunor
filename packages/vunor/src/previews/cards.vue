@@ -40,10 +40,10 @@ const dense = ref(true)
       </Card>
     </div>
     <h3 class="mb-$s mt-$l border-b border-b-2px">Density</h3>
-    <div class="flex flex-col gap-$l">
+    <div class="grid grid-cols-2 gap-$l">
       <Card
         level="h3"
-        class="border max-w-md scope-info surface-0"
+        class="border w-full scope-info surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"
@@ -59,7 +59,7 @@ const dense = ref(true)
       </Card>
       <Card
         level="h4"
-        class="border max-w-md scope-info surface-0"
+        class="border w-full scope-info surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"
@@ -75,7 +75,7 @@ const dense = ref(true)
       </Card>
       <Card
         level="h5"
-        class="border max-w-md scope-info surface-0"
+        class="border w-full scope-info surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"
@@ -91,7 +91,7 @@ const dense = ref(true)
       </Card>
       <Card
         level="h6"
-        class="border max-w-md scope-info surface-0"
+        class="border w-full scope-info surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"

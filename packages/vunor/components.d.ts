@@ -7,11 +7,20 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AppLayout: typeof import('./src/components/AppLayout/AppLayout.vue')['default']
     Button: typeof import('./src/components/Button/Button.vue')['default']
     Card: typeof import('./src/components/Card/Card.vue')['default']
     CardHeader: typeof import('./src/components/Card/CardHeader.vue')['default']
     CardInner: typeof import('./src/components/Card/CardInner.vue')['default']
     CardTester: typeof import('./src/components/test/card-tester.vue')['default']
+    ComboboxContent: typeof import('radix-vue')['ComboboxContent']
+    ComboboxEmpty: typeof import('radix-vue')['ComboboxEmpty']
+    ComboboxGroup: typeof import('radix-vue')['ComboboxGroup']
+    ComboboxInput: typeof import('radix-vue')['ComboboxInput']
+    ComboboxItem: typeof import('radix-vue')['ComboboxItem']
+    ComboboxLabel: typeof import('radix-vue')['ComboboxLabel']
+    ComboboxRoot: typeof import('radix-vue')['ComboboxRoot']
+    Menu: typeof import('./src/components/Menu/Menu.vue')['default']
     PreviewAlerts: typeof import('@/previews/alerts.vue')['default']
     Primitive: typeof import('radix-vue')['Primitive']
     TypographyTester: typeof import('./src/components/test/typography-tester.vue')['default']
