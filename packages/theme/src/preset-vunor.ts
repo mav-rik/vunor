@@ -26,6 +26,7 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
     reverseDark: false,
     reverseLight: false,
   },
+  fingertip: '3rem',
 }
 
 export const presetVunor: PresetFactory<

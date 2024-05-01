@@ -5,6 +5,7 @@ import { shortcuts } from './src/components/shortcuts'
 import presetIcons from '@unocss/preset-icons'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 import { presetScrollbar } from 'unocss-preset-scrollbar'
+import { h } from 'vue'
 
 export default defineConfig({
   presets: [
@@ -23,15 +24,27 @@ export default defineConfig({
     }) as PresetOrFactory<TVunorTheme>,
     presetScrollbar({}) as PresetOrFactory<TVunorTheme>,
     presetVunor({
-      actualFontHeightFactor: 0.8,
-      actualFontHeightTopBottomRatio: 0.495, //0.495,
+      actualFontHeightFactor: 0.76, // 0.76,
+      actualFontHeightTopBottomRatio: 0.5, //0.495,
       layers: {
         reverseLight: false,
         reverseDark: false,
       },
     }),
   ],
-  shortcuts: [...shortcuts],
+  shortcuts: [
+    ...shortcuts,
+    {
+      'bg-hl': 'bg-scope-color-500/05 [&.filled]:bg-scope-color-600',
+      'bg-pressed':
+        '[&:not(.filled)]:bg-scope-color-800/10 [&:not(.filled)]:dark:bg-scope-color-200/10 [&.filled]:bg-scope-color-800',
+      'filled': 'bg-scope-color-500 text-white',
+      'text-hl': 'text-scope-color-500 dark:text-scope-color-300 ',
+      'text-icon':
+        '[&:not(.filled)]:text-scope-dark-2/40 [&:not(.filled)]:dark:text-scope-light-2/40 [&.filled]:text-white',
+      'border-hl': 'border-scope-color-500 dark:border-scope-color-300',
+    },
+  ],
   // theme: {
   //   fontFamily: {
   //     sans: 'Inter, sans-serif',
@@ -39,7 +52,9 @@ export default defineConfig({
   // } as unknown as TVunorTheme,
   preflights: [
     {
-      getCSS: () => `html, body { font-family: "Inter var", sans-serif; }`,
+      getCSS: () =>
+        `html, body { font-family: "Inter var", sans-serif; }
+      html * { transition: color, fill, stroke, opacity, left, top, right, bottom, width, height, background-color, border-color 0.15s ease-in-out; }`,
     },
   ],
 })

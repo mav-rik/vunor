@@ -20,6 +20,7 @@ declare module 'vue' {
     ComboboxItem: typeof import('radix-vue')['ComboboxItem']
     ComboboxLabel: typeof import('radix-vue')['ComboboxLabel']
     ComboboxRoot: typeof import('radix-vue')['ComboboxRoot']
+    Input: typeof import('./src/components/Input/Input.vue')['default']
     Menu: typeof import('./src/components/Menu/Menu.vue')['default']
     PreviewAlerts: typeof import('@/previews/alerts.vue')['default']
     Primitive: typeof import('radix-vue')['Primitive']

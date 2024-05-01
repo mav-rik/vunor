@@ -23,6 +23,7 @@ export const themeFactory = (
     '$l': `${round(opts.spacingFactor, 3)}em`,
     '$xl': `${round(opts.spacingFactor ** 2, 3)}em`,
     '$xxl': `${round(opts.spacingFactor ** 3, 3)}em`,
+    'fingertip': opts.fingertip,
     // font-based
     '$font-tc': 'var(--font-bc)',
     '$font-bc': 'var(--font-tc)',

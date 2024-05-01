@@ -13,6 +13,7 @@ export interface TVunorUnoPresetOpts {
     reverseDark?: boolean
     reverseLight?: boolean
   }
+  fingertip?: string
 }
 
 export interface TTypography {

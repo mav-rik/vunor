@@ -31,14 +31,14 @@ export function generatePalette(_opts?: TPaletteOptions) {
   // the rest of the palette
   const colors = palitra(
     {
-      brand: {
-        color: opts.colors.brand,
+      primary: {
+        color: opts.colors.primary,
         preserveInputColor: true,
         saturate: { dark: 0.25, light: 0.25 },
       },
       background: { color: opts.colors.background, saturate: { dark: 0, light: 0 } },
-      accent: { color: opts.colors.accent, vivid: { dark: 0.4, light: 0.4 } },
-      info: { color: opts.colors.info, vivid: { dark: 0.1, light: 0.1 } },
+      secondary: { color: opts.colors.secondary, vivid: { dark: 0.4, light: 0.4 } },
+      neutral: { color: opts.colors.neutral, vivid: { dark: 0.1, light: 0.1 } },
       good: { color: opts.colors.good, vivid: { dark: 0.2, light: 0.5 } },
       warn: { color: opts.colors.warn, vivid: { dark: 0.2, light: 0.3 } },
       error: { color: opts.colors.error },
@@ -91,10 +91,10 @@ const defaultOpts: Required<
   TPaletteOptions & { colors: Required<Required<TPaletteOptions>['colors']> }
 > = {
   colors: {
-    brand: '#004eaf',
+    primary: '#004eaf',
     background: '#888888',
-    accent: '#edd812',
-    info: '#5da0c5',
+    secondary: '#edd812',
+    neutral: '#5da0c5',
     good: '#7bc76a',
     warn: '#ef9421',
     error: '#bf5a5f',
@@ -105,10 +105,10 @@ const defaultOpts: Required<
 
 export interface TPaletteOptions {
   colors?: {
-    brand?: string
+    primary?: string
+    secondary?: string
     background: string
-    accent?: string
-    info?: string // neutral
+    neutral?: string // neutral
     good?: string // positive
     warn?: string // warning
     error?: string // negative
@@ -130,7 +130,7 @@ export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
         if (theme.reverseLightLayers) {
           l = 4 - Number(a)
         }
-        return `bg-scope-light-${l} dark:bg-scope-dark-${d} [&.dark]:bg-scope-dark-${d} text-scope-dark-2 dark:text-scope-light-2 [&.dark]:text-scope-light-2 dark:shadow-black/30 border-scope-color-100 dark:border-scope-color-900`
+        return `bg-scope-light-${l} dark:bg-scope-dark-${d} [&.dark]:bg-scope-dark-${d} text-scope-dark-2 dark:text-scope-light-2 [&.dark]:text-scope-light-2 dark:shadow-black/30`
       },
     ],
     [

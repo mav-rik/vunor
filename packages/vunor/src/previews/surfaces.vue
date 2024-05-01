@@ -38,8 +38,8 @@ const surfaces = [
       </Card>
     </div>
 
-    <h3 class="mb-$s mt-$l border-b border-b-2px">Scope "brand"</h3>
-    <div class="flex flex-wrap gap-$l scope-brand">
+    <h3 class="mb-$s mt-$l border-b border-b-2px">Scope "primary"</h3>
+    <div class="flex flex-wrap gap-$l scope-primary">
       <Card v-for="s of surfaces" level="h4" rounded class="border w-sm" :class="s">
         <CardHeader class="mb-$s fw-bold">{{ s }}</CardHeader>
         <p class="text-my-0">{{ lorem }}</p>

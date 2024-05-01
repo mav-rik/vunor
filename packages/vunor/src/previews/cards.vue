@@ -2,7 +2,7 @@
 const lorem =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet pariatur ab maiores voluptatibus ipsum officia nobis! Eveniet error rerum dolore eligendi, tempora qui nobis soluta fugit quibusdam cupiditate, ducimus magnam!'
 const levels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'body'] as const
-const guides = ref(true)
+const guides = ref(false)
 const dense = ref(true)
 </script>
 <template>
@@ -43,7 +43,7 @@ const dense = ref(true)
     <div class="grid grid-cols-2 gap-$l">
       <Card
         level="h3"
-        class="border w-full scope-info surface-0"
+        class="border w-full scope-neutral surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"
@@ -59,7 +59,7 @@ const dense = ref(true)
       </Card>
       <Card
         level="h4"
-        class="border w-full scope-info surface-0"
+        class="border w-full scope-neutral surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"
@@ -75,7 +75,7 @@ const dense = ref(true)
       </Card>
       <Card
         level="h5"
-        class="border w-full scope-info surface-0"
+        class="border w-full scope-neutral surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"
@@ -91,7 +91,7 @@ const dense = ref(true)
       </Card>
       <Card
         level="h6"
-        class="border w-full scope-info surface-0"
+        class="border w-full scope-neutral surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"

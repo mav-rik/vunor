@@ -27,7 +27,7 @@ const groups = computed(() => {
     grps[_item.group].push(_item)
   }
   return Object.entries(grps)
-    .sort(([a], [b]) => (a === '' ? 1 : b === '' ? -1 : 0))
+    .sort(([a], [b]) => (a === '' ? -1 : b === '' ? 1 : 0))
     .map(([group, items]) => ({ group, items }))
 })
 </script>
@@ -64,17 +64,20 @@ const groups = computed(() => {
             v-for="item of grp.items"
             :value="item.value"
             :data-active="modelValue === item.value"
-            class="menu-item"
+            class="menu-item relative active:bg-pressed"
           >
             <span
               v-if="item.icon"
               :class="{
                 [item.icon]: true,
-                'opacity-50': modelValue !== item.value,
+                'text-hl': modelValue === item.value,
+                'text-icon': modelValue !== item.value,
               }"
               class="size-[1.25em]"
             ></span>
-            <span class="text-mb-0 text-mt-0">{{ item.label }}</span>
+            <span class="">{{ item.label }}</span>
+            <!-- <div class="absolute left-0 top-0 right-0 h-[1em] bg-green/20"></div>
+            <div class="absolute left-0 bottom-0 right-0 h-[1em] bg-green/20"></div> -->
           </ComboboxItem>
         </ComboboxGroup>
         <!--  -->
