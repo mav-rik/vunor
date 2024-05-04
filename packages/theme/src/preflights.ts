@@ -18,6 +18,8 @@ export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
     }
 :root {
    --un-default-border-color: rgba(0,0,0,10%);
+   --scope-black: 0 0 0;
+   --scope-white: 255 255 255;
 }
 
 html.dark, .dark {

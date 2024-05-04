@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "vitest": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +14,8 @@
     "@unocss/preset-mini": "^0.59.4",
     "defu": "^6.1.4",
     "unocss": "^0.59.4"
+  },
+  "devDependencies": {
+    "vitest": "^1.6.0"
   }
 }

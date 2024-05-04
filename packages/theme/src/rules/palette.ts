@@ -14,6 +14,16 @@ function colorToRgbWithOpacity(c: string) {
 
 export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   [
+    /^scope\[(text|bg|icon)]-((?:color|light|dark|white|black)(?:-\d+)?)$/,
+    (match, { theme }) => {
+      const t = match[1] as 'text' | 'bg' | 'icon'
+      const v = `--scope-${match[2]}`
+      return {
+        [`--scope-${t}`]: `var(${v})`,
+      }
+    },
+  ],
+  [
     /^scope-(.*)$/,
     (match, { theme }) => {
       const c = match[1]
@@ -47,13 +57,14 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
     },
   ],
   [
-    /^(bg|text|fill|stroke|border)-scope-((?:color|dark|light)(?:-\d+)?)(\/\d{1,2})?$/,
+    /^(bg|text|fill|stroke|border|icon)-scope-((?:color|dark|light|text|bg|white|black|icon)(?:-\d+)?)(\/\d{1,2})?$/,
     (match, { theme }) => {
       const t = {
         bg: 'background-color',
         text: 'color',
         fill: 'fill',
         stroke: 'stroke',
+        icon: 'color',
         border: 'border-color',
       }[match[1]] as unknown as string
       const opacityVar = {
@@ -61,6 +72,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
         text: '--un-text-opacity',
         fill: '--un-text-opacity',
         stroke: '--un-text-opacity',
+        icon: '--un-icon-opacity',
         border: '--un-border-opacity',
       }[match[1]] as unknown as string
       const v = match[2]
@@ -70,8 +82,23 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
       const opacityVal = opacity === 1 ? `var(${opacityVar})` : opacity
       return {
         [opacityVar]: opacity,
-        [t]: `rgb(var(--scope-${v}, ${theme.colors[fallback]}) / ${opacityVal})`,
+        [t]: `rgb(var(--scope-${v}, ${theme.colors[fallback] || ''}) / ${opacityVal})`,
       }
     },
+  ],
+  [
+    /^icon-opacity-(\d{1,3})$/,
+    (match, { theme }) => {
+      const o = match[1]
+      return {
+        '--un-icon-opacity': Number(o) / 100,
+      }
+    },
+  ],
+  [
+    /^icon-color$/,
+    () => ({
+      color: `rgb(var(--scope-icon) / var(--un-icon-opacity, 1))`,
+    }),
   ],
 ]

@@ -9,6 +9,8 @@ const menu = [
 ]
 
 const menu2 = [
+  { group: 'Styles', label: 'Interactable', value: 'Interactable', icon: 'i--interact' },
+  { group: 'Styles', label: 'Layers', value: 'Layers', icon: 'i--layers' },
   { group: 'Styles', label: 'Surfaces', value: 'Surfaces', icon: 'i--surfaces' },
   { group: 'Styles', label: 'Typography', value: 'Typography', icon: 'i--typography' },
   { group: 'Components', label: 'Alerts', value: 'Alerts', icon: 'i--alert' },
@@ -20,6 +22,8 @@ const pages = {
   Alerts: PreviewAlerts,
   Cards: PreviewCards,
   Surfaces: PreviewSurfaces,
+  Layers: PreviewLayers,
+  Interactable: PreviewInteractable,
   Typography: PreviewTypography,
   Testing: PreviewTest,
 }
@@ -54,10 +58,10 @@ const dark = useDark()
         >
           <button
             @click="dark = !dark"
-            class="select-none w-full filled hover:bg-hl rounded px-$m flex items-center justify-start gap-$m h-fingertip active:bg-pressed"
+            class="select-none w-full ui-light rounded px-$m flex items-center justify-start gap-$m h-fingertip"
           >
             <span
-              class="size-[1.5em] inline-block text-icon"
+              class="size-[1.5em] inline-block icon-color"
               :class="{
                 'i--dark-mode': !dark,
                 'i--light-mode': dark,

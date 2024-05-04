@@ -8,6 +8,8 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const PreviewAlerts: typeof import('@/previews/alerts.vue')['default']
   const PreviewCards: typeof import('@/previews/cards.vue')['default']
+  const PreviewInteractable: typeof import('@/previews/interactable.vue')['default']
+  const PreviewLayers: typeof import('@/previews/layers.vue')['default']
   const PreviewSurfaces: typeof import('@/previews/surfaces.vue')['default']
   const PreviewTest: typeof import('@/previews/test.vue')['default']
   const PreviewTypofraphy: typeof import('@/previews/typofraphy.vue')['default']

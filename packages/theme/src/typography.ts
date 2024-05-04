@@ -1,6 +1,6 @@
 /* eslint-disable max-params */
 import type { TTypography, TTypographyNames } from './types'
-import { round } from './utils'
+import { round } from './utils/round'
 
 function font(
   weight: number,

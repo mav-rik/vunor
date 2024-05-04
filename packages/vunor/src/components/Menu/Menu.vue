@@ -64,16 +64,14 @@ const groups = computed(() => {
             v-for="item of grp.items"
             :value="item.value"
             :data-active="modelValue === item.value"
-            class="menu-item relative active:bg-pressed"
+            class="menu-item relative"
           >
             <span
               v-if="item.icon"
               :class="{
                 [item.icon]: true,
-                'text-hl': modelValue === item.value,
-                'text-icon': modelValue !== item.value,
               }"
-              class="size-[1.25em]"
+              class="size-[1.25em] icon-color"
             ></span>
             <span class="">{{ item.label }}</span>
             <!-- <div class="absolute left-0 top-0 right-0 h-[1em] bg-green/20"></div>

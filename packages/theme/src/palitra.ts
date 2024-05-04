@@ -6,6 +6,7 @@ import defu from 'defu'
 import type { Shortcut, UserShortcuts } from 'unocss'
 
 import type { TVunorTheme } from './theme'
+import { scFromObject } from './utils/shortcut-obj'
 
 const layerDepth = 0.08
 
@@ -46,7 +47,12 @@ export function generatePalette(_opts?: TPaletteOptions) {
     {
       count: 10,
       preserveInputColor: false,
-      luminance: { dark: opts.darkest + layerDepth + 0.02, light: opts.lightest, useMiddle: false },
+      luminance: {
+        dark: opts.darkest + layerDepth + 0.02,
+        light: opts.lightest,
+        useMiddle: true,
+        middle: 0.62,
+      },
       saturate: { dark: 0.1, light: 0.1 },
       vivid: { dark: 0.1, light: 0.2 },
     }
@@ -130,14 +136,22 @@ export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
         if (theme.reverseLightLayers) {
           l = 4 - Number(a)
         }
-        return `bg-scope-light-${l} dark:bg-scope-dark-${d} [&.dark]:bg-scope-dark-${d} text-scope-dark-2 dark:text-scope-light-2 [&.dark]:text-scope-light-2 dark:shadow-black/30`
+        return scFromObject({
+          '': `scope[bg]-light-${l} scope[text]-dark-2 scope[icon]-dark-2 bg-scope-bg text-scope-text`,
+          'dark:': `scope[bg]-dark-${d} scope[text]-light-2`,
+          '[&.dark]:': `scope[bg]-dark-${d} scope[text]-light-2`,
+        })
       },
     ],
     [
       /^surface-(\d+)$/,
       ([, s], { theme }) =>
         theme.surfaces[s]
-          ? `bg-scope-${theme.surfaces[s][0]} text-scope-${theme.surfaces[s][1]} border-scope-${theme.surfaces[s][2]} dark:bg-scope-${theme.surfaces[s][3]} dark:text-scope-${theme.surfaces[s][4]} dark:border-scope-${theme.surfaces[s][5]} dark:shadow-black/30`
+          ? scFromObject({
+              '': `bg-scope-${theme.surfaces[s][0]} text-scope-${theme.surfaces[s][1]} border-scope-${theme.surfaces[s][2]}`,
+              'dark:': `bg-scope-${theme.surfaces[s][3]} text-scope-${theme.surfaces[s][4]} border-scope-${theme.surfaces[s][5]} shadow-black/30`,
+              '[&.dark]:': `bg-scope-${theme.surfaces[s][3]} text-scope-${theme.surfaces[s][4]} border-scope-${theme.surfaces[s][5]} shadow-black/30`,
+            })
           : '',
     ],
     {
