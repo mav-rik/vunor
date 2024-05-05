@@ -137,9 +137,9 @@ export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
           l = 4 - Number(a)
         }
         return scFromObject({
-          '': `scope[bg]-light-${l} scope[text]-dark-2 scope[icon]-dark-2 bg-scope-bg text-scope-text`,
-          'dark:': `scope[bg]-dark-${d} scope[text]-light-2`,
-          '[&.dark]:': `scope[bg]-dark-${d} scope[text]-light-2`,
+          '': `current-bg-scope-light-${l} current-text-scope-dark-2 current-icon-scope-dark-2 bg-current text-current`,
+          'dark:': `current-bg-scope-dark-${d} current-text-scope-light-2`,
+          '[&.dark]:': `current-bg-scope-dark-${d} current-text-scope-light-2`,
         })
       },
     ],

@@ -36,40 +36,40 @@ export default defineConfig({
     ...shortcuts,
     {
       'ui-filled': scFromObject({
-        '': 'scope[bg]-color-500 scope[text]-white scope[icon]-white icon-opacity-100 bg-scope-bg  text-scope-text',
+        '': 'current-bg-scope-color-500 current-text-white current-icon-white icon-current/100 bg-current  text-current',
         'hover:': 'ui-filled-hover',
         'active:': 'ui-filled-active',
       }),
       'ui-filled-hover': scFromObject({
-        '': 'scope[bg]-color-400',
-        'dark:': 'scope[bg]-color-600',
+        '': 'current-bg-scope-color-400',
+        'dark:': 'current-bg-scope-color-600',
       }),
       'ui-filled-active': scFromObject({
-        '': 'scope[bg]-color-600',
-        'dark:': 'scope[bg]-color-400',
+        '': 'current-bg-scope-color-600',
+        'dark:': 'current-bg-scope-color-400',
       }),
       //
       'ui-transparent': scFromObject({
-        '': 'scope[bg]-color-500 scope[text]-black scope[icon]-black bg-scope-bg/0 text-scope-text/80 icon-opacity-50',
-        'dark:': 'scope[text]-white scope[icon]-white',
+        '': 'current-bg-scope-color-500 current-text-black current-icon-black bg-current/0 text-current/80 icon-current/50',
+        'dark:': 'current-text-white current-icon-white',
         'hover:': 'ui-transparent-hover',
         'active:': 'ui-transparent-active',
         'aria-[selected=true]:': 'ui-transparent-selected',
       }),
       'ui-transparent-hover': scFromObject({
-        '': 'bg-scope-bg/05',
+        '': 'bg-current/05',
       }),
       'ui-transparent-active': scFromObject({
-        '': 'bg-scope-bg/10',
+        '': 'bg-current/10',
       }),
       'ui-transparent-selected': scFromObject({
-        '': 'ui-transparent-hover scope[text]-color-500 text-scope-text scope[icon]-color-500 icon-opacity-100',
-        'dark:': 'scope[text]-color-400 scope[icon]-color-400',
+        '': 'ui-transparent-hover current-text-scope-color-500 text-current current-icon-scope-color-500 icon-current/100',
+        'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
       }),
       //
       'ui-bordered': scFromObject({
-        '': 'ui-transparent border-scope-color-500 border scope[text]-color-500 scope[icon]-color-500 icon-opacity-100',
-        'dark:': 'scope[text]-color-400 scope[icon]-color-400',
+        '': 'ui-transparent border-scope-color-500 border current-text-scope-color-500 current-icon-scope-color-500 icon-current/100',
+        'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
         'hover:': 'ui-bordered-hover',
         'active:': 'ui-bordered-active',
       }),
@@ -77,16 +77,16 @@ export default defineConfig({
       'ui-bordered-active': 'ui-transparent-active',
       //
       'ui-light': scFromObject({
-        '': 'scope[bg]-color-500 scope[text]-color-500 scope[icon]-color-500 bg-scope-bg/10 text-scope-text icon-opacity-80',
-        'dark:': 'scope[text]-color-400 scope[icon]-color-400',
+        '': 'current-bg-scope-color-500 current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80',
+        'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
         'hover:': 'ui-light-hover',
         'active:': 'ui-light-active',
       }),
       'ui-light-hover': scFromObject({
-        '': 'bg-scope-bg/15',
+        '': 'bg-current/15',
       }),
       'ui-light-active': scFromObject({
-        '': 'bg-scope-bg/20',
+        '': 'bg-current/20',
       }),
     },
   ],

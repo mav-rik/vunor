@@ -12,14 +12,67 @@ function colorToRgbWithOpacity(c: string) {
   return `${r} ${g} ${b}`
 }
 
+type TCssColorTarget = 'bg' | 'text' | 'fill' | 'stroke' | 'icon' | 'border'
+function getOpacityVar(key: TCssColorTarget) {
+  return {
+    bg: '--un-bg-opacity',
+    text: '--un-text-opacity',
+    fill: '--un-text-opacity',
+    stroke: '--un-text-opacity',
+    icon: '--un-icon-opacity',
+    border: '--un-border-opacity',
+  }[key]
+}
+
+function getCssTarget(key: TCssColorTarget) {
+  return {
+    bg: 'background-color',
+    text: 'color',
+    fill: 'fill',
+    stroke: 'stroke',
+    icon: 'color',
+    border: 'border-color',
+  }[key]
+}
+
 export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   [
-    /^scope\[(text|bg|icon)]-((?:color|light|dark|white|black)(?:-\d+)?)$/,
+    /^current-(text|bg|icon|border)-(.+)$/,
     (match, { theme }) => {
       const t = match[1] as 'text' | 'bg' | 'icon'
-      const v = `--scope-${match[2]}`
+      const c = match[2]
+      if (c.startsWith('scope-')) {
+        return {
+          [`--current-${t}`]: `var(--${c})`,
+        }
+      }
+      const col = theme.colors[c] as string | undefined
+      if (col) {
+        return {
+          [`--current-${t}`]: colorToRgbWithOpacity(col),
+        }
+      }
+      return undefined
+    },
+  ],
+  [
+    /^(text|bg|icon|border)-current(-text|-bg|-icon|-border)?(\/\d{1,3})?$/,
+    (match, { theme }) => {
+      const target = match[1] as TCssColorTarget
+      const source = match[2] || `-${target}`
+      const opacityVar = getOpacityVar(target)
+      const cssVar = getCssTarget(target)
+      const o = match[3]
+      const opacity = o ? Number(o.slice(1)) / 100 : 1
+      const opacityVal = opacity === 1 ? `var(${opacityVar})` : opacity
+      if (target === 'icon') {
+        return {
+          [opacityVar]: opacity,
+        }
+      }
       return {
-        [`--scope-${t}`]: `var(${v})`,
+        [opacityVar]: opacity,
+        [cssVar]: `rgb(var(--current${source}) / ${opacityVal})`,
       }
     },
   ],
@@ -57,32 +110,20 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
     },
   ],
   [
-    /^(bg|text|fill|stroke|border|icon)-scope-((?:color|dark|light|text|bg|white|black|icon)(?:-\d+)?)(\/\d{1,2})?$/,
+    /^(bg|text|fill|stroke|border|icon)-scope-((?:color|dark|light|text|bg|white|black|icon)(?:-\d+)?)(\/\d{1,3})?$/,
     (match, { theme }) => {
-      const t = {
-        bg: 'background-color',
-        text: 'color',
-        fill: 'fill',
-        stroke: 'stroke',
-        icon: 'color',
-        border: 'border-color',
-      }[match[1]] as unknown as string
-      const opacityVar = {
-        bg: '--un-bg-opacity',
-        text: '--un-text-opacity',
-        fill: '--un-text-opacity',
-        stroke: '--un-text-opacity',
-        icon: '--un-icon-opacity',
-        border: '--un-border-opacity',
-      }[match[1]] as unknown as string
-      const v = match[2]
+      const cssVar = getCssTarget(match[1] as TCssColorTarget)
+      const opacityVar = getOpacityVar(match[1] as TCssColorTarget)
+      const source = match[2]
       const o = match[3]
       const opacity = o ? Number(o.slice(1)) / 100 : 1
-      const fallback = v.startsWith('color') ? `background-${v.slice(6)}` : `background-${v}`
+      const fallback = source.startsWith('color')
+        ? `background-${source.slice(6)}`
+        : `background-${source}`
       const opacityVal = opacity === 1 ? `var(${opacityVar})` : opacity
       return {
         [opacityVar]: opacity,
-        [t]: `rgb(var(--scope-${v}, ${theme.colors[fallback] || ''}) / ${opacityVal})`,
+        [cssVar]: `rgb(var(--scope-${source}, ${theme.colors[fallback] || ''}) / ${opacityVal})`,
       }
     },
   ],
@@ -98,7 +139,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   [
     /^icon-color$/,
     () => ({
-      color: `rgb(var(--scope-icon) / var(--un-icon-opacity, 1))`,
+      color: `rgb(var(--current-icon) / var(--un-icon-opacity, 1))`,
     }),
   ],
 ]

@@ -21,7 +21,6 @@ export default defineConfig({
       resolvers: [
         RadixVueResolver(),
         componentName => {
-          console.log(componentName)
           if (componentName.startsWith('Preview'))
             return {
               name: 'default',
