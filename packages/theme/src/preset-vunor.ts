@@ -1,13 +1,15 @@
 import type { Theme } from '@unocss/preset-mini'
 import { theme } from '@unocss/preset-mini'
 import { defu } from 'defu'
-import type { Preset, PresetFactory } from 'unocss'
+import type { Preset, PresetFactory, StaticShortcut } from 'unocss'
 import { presetWind } from 'unocss'
 
 import type { TPaletteOptions } from './palitra'
 import { getPaletteShortcuts } from './palitra'
 import { fontsPreflights } from './preflights'
 import { rules } from './rules'
+import { c8 } from './shortcuts/c8'
+import { i8 } from './shortcuts/i8'
 import type { TVunorTheme } from './theme'
 import { themeFactory } from './theme'
 import type { TVunorUnoPresetOpts } from './types'
@@ -26,7 +28,7 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
     reverseDark: false,
     reverseLight: false,
   },
-  fingertip: '3rem',
+  fingertip: '3em',
 }
 
 export const presetVunor: PresetFactory<
@@ -43,11 +45,12 @@ export const presetVunor: PresetFactory<
     wind.rules = []
   }
   wind.rules.push(...rules)
+  const paletteShortcuts = getPaletteShortcuts() as StaticShortcut[]
   return {
     ...wind,
     name: 'vunor',
     theme: defu(themeFactory(opts), wind.theme) as TVunorTheme,
-    shortcuts: getPaletteShortcuts(),
+    shortcuts: [...paletteShortcuts, c8, i8],
     layers: {
       preflights: 0,
       shortcuts: 1,

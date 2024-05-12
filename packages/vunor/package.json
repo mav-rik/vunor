@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@vunor/theme": "workspace:^",
-    "radix-vue": "^1.7.2",
+    "radix-vue": "^1.7.4",
     "vue": "^3.4.21"
   },
   "devDependencies": {

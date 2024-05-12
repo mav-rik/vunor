@@ -21,6 +21,8 @@ function getOpacityVar(key: TCssColorTarget) {
     stroke: '--un-text-opacity',
     icon: '--un-icon-opacity',
     border: '--un-border-opacity',
+    outline: '--un-outline-opacity',
+    caret: '--un-caret-opacity',
   }[key]
 }
 
@@ -32,12 +34,14 @@ function getCssTarget(key: TCssColorTarget) {
     stroke: 'stroke',
     icon: 'color',
     border: 'border-color',
+    outline: 'outline-color',
+    caret: 'caret-color',
   }[key]
 }
 
 export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   [
-    /^current-(text|bg|icon|border)-(.+)$/,
+    /^current-(text|bg|icon|border|outline|caret)-(.+)$/,
     (match, { theme }) => {
       const t = match[1] as 'text' | 'bg' | 'icon'
       const c = match[2]
@@ -46,7 +50,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
           [`--current-${t}`]: `var(--${c})`,
         }
       }
-      const col = theme.colors[c] as string | undefined
+      const col = (theme.colors[c] as string | undefined) || c
       if (col) {
         return {
           [`--current-${t}`]: colorToRgbWithOpacity(col),
@@ -56,7 +60,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
     },
   ],
   [
-    /^(text|bg|icon|border)-current(-text|-bg|-icon|-border)?(\/\d{1,3})?$/,
+    /^(text|bg|icon|border|outline|caret)-current(-text|-bg|-icon|-border|-outline|-caret)?(\/\d{1,3})?$/,
     (match, { theme }) => {
       const target = match[1] as TCssColorTarget
       const source = match[2] || `-${target}`
@@ -110,16 +114,14 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
     },
   ],
   [
-    /^(bg|text|fill|stroke|border|icon)-scope-((?:color|dark|light|text|bg|white|black|icon)(?:-\d+)?)(\/\d{1,3})?$/,
+    /^(bg|text|fill|stroke|border|outline|icon|caret)-scope-((?:color|dark|light|text|bg|white|black|icon)(?:-\d+)?)(\/\d{1,3})?$/,
     (match, { theme }) => {
       const cssVar = getCssTarget(match[1] as TCssColorTarget)
       const opacityVar = getOpacityVar(match[1] as TCssColorTarget)
       const source = match[2]
       const o = match[3]
       const opacity = o ? Number(o.slice(1)) / 100 : 1
-      const fallback = source.startsWith('color')
-        ? `background-${source.slice(6)}`
-        : `background-${source}`
+      const fallback = source.startsWith('color') ? `grey-${source.slice(6)}` : `grey-${source}`
       const opacityVal = opacity === 1 ? `var(${opacityVar})` : opacity
       return {
         [opacityVar]: opacity,

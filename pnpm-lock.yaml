@@ -70,8 +70,8 @@ importers:
         specifier: workspace:^
         version: link:../theme
       radix-vue:
-        specifier: ^1.7.2
-        version: 1.7.2(vue@3.4.25)
+        specifier: ^1.7.4
+        version: 1.7.4(vue@3.4.25)
       vue:
         specifier: ^3.4.21
         version: 3.4.25(typescript@5.4.5)
@@ -3435,8 +3435,8 @@ packages:
   /queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  /radix-vue@1.7.2(vue@3.4.25):
-    resolution: {integrity: sha512-KczYzzflm8todIk3flaQIWQ6P1wqtUh0cwMBRhp8Pr2JXs8FMG2qfL4lJly2mhMFXc199bG0U4bNLLsrhn5xoA==}
+  /radix-vue@1.7.4(vue@3.4.25):
+    resolution: {integrity: sha512-Z75iJVb2rNL6347pWwqDIP02ktTowiDKVsScrLRv9y7uj8tMsEcD4pC0oTogVScRP5voZd3rov6zKE20MQTj+A==}
     peerDependencies:
       vue: '>= 3.2.0'
     dependencies:

@@ -3,7 +3,7 @@ const lorem =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet pariatur ab maiores voluptatibus ipsum officia nobis! Eveniet error rerum dolore eligendi, tempora qui nobis soluta fugit quibusdam cupiditate, ducimus magnam!'
 
 const scopes = [
-  'scope-background',
+  'scope-grey',
   'scope-neutral',
   'scope-primary',
   'scope-secondary',

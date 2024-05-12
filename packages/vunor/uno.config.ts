@@ -35,58 +35,27 @@ export default defineConfig({
   shortcuts: [
     ...shortcuts,
     {
-      'ui-filled': scFromObject({
-        '': 'current-bg-scope-color-500 current-text-white current-icon-white icon-current/100 bg-current  text-current',
-        'hover:': 'ui-filled-hover',
-        'active:': 'ui-filled-active',
+      'checkbox-root': scFromObject({
+        '': 'flex gap-$m items-center cursor-pointer current-bg-scope-color-500 current-border-scope-color-500',
+        'data-[error=true]:': 'current-border-error-500',
+        'aria-[disabled=true]:': 'scope-grey opacity-50 cursor-not-allowed',
       }),
-      'ui-filled-hover': scFromObject({
-        '': 'current-bg-scope-color-400',
-        'dark:': 'current-bg-scope-color-600',
+      'checkbox': scFromObject({
+        '': 'select-none flex size-half-fingertip appearance-none items-center justify-center bg-current/0 border current-icon-white',
+        'group-active:enabled:':
+          'current-bg-scope-color-500 bg-current/50 current-icon-scope-color-500',
+        'group-hover:enabled:': 'border-current',
+        'disabled:': 'cursor-not-allowed',
+        'group-data-[error=true]:enabled:': 'border-current',
       }),
-      'ui-filled-active': scFromObject({
-        '': 'current-bg-scope-color-600',
-        'dark:': 'current-bg-scope-color-400',
+      'checkbox-indicator': scFromObject({
+        '': 'bg-current icon-current h-full w-full flex items-center justify-center',
       }),
-      //
-      'ui-transparent': scFromObject({
-        '': 'current-bg-scope-color-500 current-text-black current-icon-black bg-current/0 text-current/80 icon-current/50',
-        'dark:': 'current-text-white current-icon-white',
-        'hover:': 'ui-transparent-hover',
-        'active:': 'ui-transparent-active',
-        'aria-[selected=true]:': 'ui-transparent-selected',
+      'checkbox-icon': scFromObject({
+        '': 'size-0.8em',
       }),
-      'ui-transparent-hover': scFromObject({
-        '': 'bg-current/05',
-      }),
-      'ui-transparent-active': scFromObject({
-        '': 'bg-current/10',
-      }),
-      'ui-transparent-selected': scFromObject({
-        '': 'ui-transparent-hover current-text-scope-color-500 text-current current-icon-scope-color-500 icon-current/100',
-        'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
-      }),
-      //
-      'ui-bordered': scFromObject({
-        '': 'ui-transparent border-scope-color-500 border current-text-scope-color-500 current-icon-scope-color-500 icon-current/100',
-        'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
-        'hover:': 'ui-bordered-hover',
-        'active:': 'ui-bordered-active',
-      }),
-      'ui-bordered-hover': 'ui-transparent-hover',
-      'ui-bordered-active': 'ui-transparent-active',
-      //
-      'ui-light': scFromObject({
-        '': 'current-bg-scope-color-500 current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80',
-        'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
-        'hover:': 'ui-light-hover',
-        'active:': 'ui-light-active',
-      }),
-      'ui-light-hover': scFromObject({
-        '': 'bg-current/15',
-      }),
-      'ui-light-active': scFromObject({
-        '': 'bg-current/20',
+      'checkbox-label': scFromObject({
+        '': 'select-none text-label lh-1em',
       }),
     },
   ],

@@ -7,7 +7,11 @@ export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const PreviewAlerts: typeof import('@/previews/alerts.vue')['default']
+  const PreviewButtons: typeof import('@/previews/buttons.vue')['default']
   const PreviewCards: typeof import('@/previews/cards.vue')['default']
+  const PreviewClickable: typeof import('@/previews/clickable.vue')['default']
+  const PreviewInputable: typeof import('@/previews/inputable.vue')['default']
+  const PreviewInputs: typeof import('@/previews/inputs.vue')['default']
   const PreviewInteractable: typeof import('@/previews/interactable.vue')['default']
   const PreviewLayers: typeof import('@/previews/layers.vue')['default']
   const PreviewSurfaces: typeof import('@/previews/surfaces.vue')['default']

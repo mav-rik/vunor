@@ -1,6 +1,12 @@
+/* eslint-disable sonarjs/cognitive-complexity */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useProvideInject } from '../utils/provide-inject'
 
-const safeTag = (t?: string) => (t && /^h[123456]$/.test(t) ? t : '')
+const safeTag = (t?: string) => (t && /^h[1-6]$/.test(t) ? t : '')
 
 export const useCardPI = () =>
   useProvideInject('__vunor_card_PI', () => {
@@ -17,19 +23,21 @@ export const useCardPI = () =>
       _inject: () => {
         const instance = getCurrentInstance()
         if (instance) {
-          const v = (instance.props.level || safeTag(instance.props.as as string)) as string
-          if (!v) {
+          const v2 = (instance.props.level || safeTag(instance.props.as as string)) as string
+          if (v2) {
+            updateCardLevel(v2)
+          } else {
             onMounted(() => {
               const v = (instance.props.level || safeTag(instance.props.as as string)) as string
               const tag = instance.vnode.el?.tagName.toLowerCase()
               updateCardLevel(v || safeTag(tag) ? tag : '')
             })
-          } else {
-            updateCardLevel(v)
           }
           watch(
             () => [instance.props.level, instance.props.as],
-            () => updateCardLevel((instance.props.level || instance.props.as) as string)
+            () => {
+              updateCardLevel((instance.props.level || instance.props.as) as string)
+            }
           )
         }
       },

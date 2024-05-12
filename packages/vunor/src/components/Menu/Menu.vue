@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import MenuItem from './MenuItem.vue'
+import InputGroup from '../Input/InputGroup.vue'
+import Input from '../Input/Input.vue'
+
 type AcceptableValue = string | number | boolean | Record<string, any>
 type TItem = { label: string; value: AcceptableValue; icon?: string; group?: string }
 type Props = {
   items: (string | TItem)[]
+  emptyText?: string
 }
 const props = defineProps<Props>()
 
@@ -30,6 +35,19 @@ const groups = computed(() => {
     .sort(([a], [b]) => (a === '' ? -1 : b === '' ? 1 : 0))
     .map(([group, items]) => ({ group, items }))
 })
+
+function handleHomeEnd(event: KeyboardEvent) {
+  const target = event.target as HTMLInputElement
+  const length = event.key === 'Home' ? 0 : target.value.length
+  if (event.shiftKey) {
+    target.setSelectionRange(
+      event.key === 'Home' ? 0 : target.selectionEnd ?? target.value.length,
+      event.key === 'Home' ? target.selectionStart ?? 0 : target.value.length
+    )
+  } else {
+    target.setSelectionRange(length, length)
+  }
+}
 </script>
 
 <template>
@@ -40,20 +58,27 @@ const groups = computed(() => {
     class="menu-root"
   >
     <!-- input -->
-    <div class="flex items-center border-b px-3" cmdk-input-wrapper>
-      <div class="i--search mr-2 h-4 w-4 shrink-0 opacity-50" />
-      <ComboboxInput
-        auto-focus
-        placeholder="Type a command or search"
-        class="flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
-      />
-    </div>
+    <ComboboxInput
+      auto-focus
+      design="flat"
+      icon-prepend="i--search"
+      class="px-$m mb-$s"
+      placeholder="Search"
+      :as="InputGroup"
+      @keydown.home.end="handleHomeEnd"
+    />
 
     <!-- list -->
     <ComboboxContent class="overflow-y-auto overflow-x-hidden" :dismissable="false">
       <div role="presentation">
         <!-- empty -->
-        <ComboboxEmpty class="py-6 text-center text-sm"> No commands found </ComboboxEmpty>
+        <ComboboxEmpty v-if="$slots.empty || emptyText">
+          <slot name="empty">
+            <div class="w-full text-center py-$xs" v-if="!!emptyText">
+              {{ emptyText }}
+            </div>
+          </slot>
+        </ComboboxEmpty>
         <!-- group -->
         <ComboboxGroup v-for="grp of groups" class="">
           <ComboboxLabel v-if="grp.group" class="px-$m text-mt-$l text-mb-$m">
@@ -63,20 +88,11 @@ const groups = computed(() => {
           <ComboboxItem
             v-for="item of grp.items"
             :value="item.value"
-            :data-active="modelValue === item.value"
-            class="menu-item relative"
-          >
-            <span
-              v-if="item.icon"
-              :class="{
-                [item.icon]: true,
-              }"
-              class="size-[1.25em] icon-color"
-            ></span>
-            <span class="">{{ item.label }}</span>
-            <!-- <div class="absolute left-0 top-0 right-0 h-[1em] bg-green/20"></div>
-            <div class="absolute left-0 bottom-0 right-0 h-[1em] bg-green/20"></div> -->
-          </ComboboxItem>
+            :icon="item.icon"
+            :label="item.label"
+            :selected="modelValue === item.value"
+            :as="MenuItem"
+          />
         </ComboboxGroup>
         <!--  -->
       </div>

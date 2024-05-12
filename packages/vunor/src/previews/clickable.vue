@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const scopes = [
-  'scope-background',
+  'scope-grey',
   'scope-neutral',
   'scope-primary',
   'scope-secondary',
@@ -9,22 +9,22 @@ const scopes = [
   'scope-error',
 ]
 
-const types = ['ui-filled', 'ui-bordered', 'ui-light', 'ui-transparent']
+const types = ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat']
 
 const selected = reactive<Record<string, boolean>>({
-  'scope-background-ui-transparent': false,
-  'scope-neutral-ui-transparent': false,
-  'scope-primary-ui-transparent': false,
-  'scope-secondary-ui-transparent': false,
-  'scope-good-ui-transparent': false,
-  'scope-warn-ui-transparent': false,
-  'scope-error-ui-transparent': false,
+  'scope-grey-c8-flat': false,
+  'scope-neutral-c8-flat': false,
+  'scope-primary-c8-flat': false,
+  'scope-secondary-c8-flat': false,
+  'scope-good-c8-flat': false,
+  'scope-warn-c8-flat': false,
+  'scope-error-c8-flat': false,
 })
 </script>
 
 <template>
   <Card level="h2">
-    <CardHeader class="mb-$s">Interactable</CardHeader>
+    <CardHeader class="mb-$s">Clickable (c8)</CardHeader>
     <div v-for="t of types" class="mb-$xl">
       <h4 class="text-mb-$m">Class "{{ t }}"</h4>
       <div class="flex gap-$m flex-wrap items-center justify-center">
@@ -36,8 +36,7 @@ const selected = reactive<Record<string, boolean>>({
           :aria-selected="selected[`${scope}-${t}`]"
           :class="{ [scope]: true, [t]: true }"
         >
-          <span class="i--interact icon-color size-[1.25em]"></span
-          >{{ scope.replace('scope-', '') }}
+          <span class="i--click icon-color size-[1.25em]"></span>{{ scope.replace('scope-', '') }}
         </div>
       </div>
     </div>

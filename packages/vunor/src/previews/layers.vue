@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const scopes = [
-  'scope-background',
+  'scope-grey',
   'scope-neutral',
   'scope-primary',
   'scope-secondary',

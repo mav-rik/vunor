@@ -5,6 +5,7 @@ import type { Theme } from '@unocss/preset-mini'
 import type { Rule } from 'unocss'
 
 import type { TVunorTheme } from '../theme'
+import { unitBy } from '../utils/unit-by'
 
 export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
   [
@@ -76,9 +77,3 @@ export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
     },
   ],
 ]
-
-function unitBy(input: string, factor: number): string {
-  const v = Number.parseFloat(input)
-  const units = /(px|em|rem|%)$/.exec(input)?.[1] || ''
-  return `${v * factor}${units}`
-}

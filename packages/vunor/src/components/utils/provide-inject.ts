@@ -1,25 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable arrow-body-style */
 import type { ComponentInternalInstance } from 'vue'
 
-export const useProvideInject = <PR, INJ>(key: string, init: () => TProvideInjectBody<PR, INJ>) => {
+export const useProvideInject = <PA extends any[], IA extends any[], PR, INJ>(
+  key: string,
+  init: () => TProvideInjectBody<PA, IA, PR, INJ>
+) => {
   return {
-    provide: () => {
+    provide: (...args: PA) => {
       const { _provide, _inject } = init()
-      const tr = _provide()
+      const tr = _provide(...args)
       provide<() => INJ>(key, _inject)
       return tr
     },
-    inject: () => {
-      const _inject = inject<() => INJ>(key)
+    inject: (...args: IA) => {
+      const _inject = inject<(...args: IA) => INJ>(key)
       if (_inject) {
-        return _inject()
+        return _inject(...args)
       }
     },
   }
 }
 
-export interface TProvideInjectBody<PR, INJ> {
-  _provide: () => PR
-  _inject: () => INJ
+export interface TProvideInjectBody<PA extends any[], IA extends any[], PR, INJ> {
+  _provide: (...args: PA) => PR
+  _inject: (...args: IA) => INJ
 }
 
 useProvideInject('key', () => {

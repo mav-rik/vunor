@@ -7,6 +7,7 @@ import { generatePalette } from './palitra'
 import type { TTypographyNames, TVunorUnoPresetOpts } from './types'
 import { buildFontTheme } from './typography'
 import { round } from './utils/round'
+import { unitBy } from './utils/unit-by'
 
 export const themeFactory = (
   opts: Required<TVunorUnoPresetOpts> & { palette?: TPaletteOptions }
@@ -24,6 +25,8 @@ export const themeFactory = (
     '$xl': `${round(opts.spacingFactor ** 2, 3)}em`,
     '$xxl': `${round(opts.spacingFactor ** 3, 3)}em`,
     'fingertip': opts.fingertip,
+    'half-fingertip': unitBy(opts.fingertip, 0.5),
+    'quart-fingertip': unitBy(opts.fingertip, 0.25),
     // font-based
     '$font-tc': 'var(--font-bc)',
     '$font-bc': 'var(--font-tc)',
@@ -35,6 +38,12 @@ export const themeFactory = (
     '$card-heading-size': 'var(--card-heading-size)',
     '$card-heading-corrected': 'var(--card-heading-corrected)',
   } as Record<string, string>
+
+  const lineHeight = {
+    'fingertip': opts.fingertip,
+    'half-fingertip': unitBy(opts.fingertip, 0.5),
+    'quart-fingertip': unitBy(opts.fingertip, 0.25),
+  }
 
   /**
    * Typography
@@ -84,6 +93,7 @@ export const themeFactory = (
     borderColor: 'red',
     reverseLightLayers: opts.layers.reverseLight,
     reverseDarkLayers: opts.layers.reverseDark,
+    lineHeight,
     spacing,
     fontWeight,
     actualFontHeightFactor: opts.actualFontHeightFactor,

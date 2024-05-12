@@ -37,7 +37,7 @@ export function generatePalette(_opts?: TPaletteOptions) {
         preserveInputColor: true,
         saturate: { dark: 0.25, light: 0.25 },
       },
-      background: { color: opts.colors.background, saturate: { dark: 0, light: 0 } },
+      grey: { color: opts.colors.grey, saturate: { dark: 0, light: 0 } },
       secondary: { color: opts.colors.secondary, vivid: { dark: 0.4, light: 0.4 } },
       neutral: { color: opts.colors.neutral, vivid: { dark: 0.1, light: 0.1 } },
       good: { color: opts.colors.good, vivid: { dark: 0.2, light: 0.5 } },
@@ -98,7 +98,7 @@ const defaultOpts: Required<
 > = {
   colors: {
     primary: '#004eaf',
-    background: '#888888',
+    grey: '#858892',
     secondary: '#edd812',
     neutral: '#5da0c5',
     good: '#7bc76a',
@@ -113,7 +113,7 @@ export interface TPaletteOptions {
   colors?: {
     primary?: string
     secondary?: string
-    background: string
+    grey: string
     neutral?: string // neutral
     good?: string // positive
     warn?: string // warning
@@ -138,8 +138,8 @@ export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
         }
         return scFromObject({
           '': `current-bg-scope-light-${l} current-text-scope-dark-2 current-icon-scope-dark-2 bg-current text-current`,
-          'dark:': `current-bg-scope-dark-${d} current-text-scope-light-2`,
-          '[&.dark]:': `current-bg-scope-dark-${d} current-text-scope-light-2`,
+          'dark:': `current-bg-scope-dark-${d} current-text-scope-light-2 current-icon-scope-light-2`,
+          '[&.dark]:': `current-bg-scope-dark-${d} current-text-scope-light-2 current-icon-scope-light-2`,
         })
       },
     ],
@@ -148,9 +148,9 @@ export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
       ([, s], { theme }) =>
         theme.surfaces[s]
           ? scFromObject({
-              '': `bg-scope-${theme.surfaces[s][0]} text-scope-${theme.surfaces[s][1]} border-scope-${theme.surfaces[s][2]}`,
-              'dark:': `bg-scope-${theme.surfaces[s][3]} text-scope-${theme.surfaces[s][4]} border-scope-${theme.surfaces[s][5]} shadow-black/30`,
-              '[&.dark]:': `bg-scope-${theme.surfaces[s][3]} text-scope-${theme.surfaces[s][4]} border-scope-${theme.surfaces[s][5]} shadow-black/30`,
+              '': `current-bg-scope-${theme.surfaces[s][0]} current-text-scope-${theme.surfaces[s][1]} current-icon-scope-${theme.surfaces[s][1]} current-border-scope-${theme.surfaces[s][2]} bg-current text-current border-current icon-current`,
+              'dark:': `current-bg-scope-${theme.surfaces[s][3]} current-text-scope-${theme.surfaces[s][4]} current-icon-scope-${theme.surfaces[s][4]} current-border-scope-${theme.surfaces[s][5]} shadow-black/30`,
+              '[&.dark]:': `current-bg-scope-${theme.surfaces[s][3]} current-text-scope-${theme.surfaces[s][4]} current-icon-scope-${theme.surfaces[s][4]} current-border-scope-${theme.surfaces[s][5]} shadow-black/30`,
             })
           : '',
     ],

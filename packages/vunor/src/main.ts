@@ -4,5 +4,10 @@ import 'virtual:uno.css'
 import { createApp } from 'vue'
 
 import App from './App.vue'
+import { i8Focusable } from './directives/i8-focusable'
 
-createApp(App).mount('#app')
+const a = createApp(App)
+
+a.directive('i8-focusable', i8Focusable)
+
+a.mount('#app')
