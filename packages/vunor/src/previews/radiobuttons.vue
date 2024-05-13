@@ -7,7 +7,7 @@ const v3 = ref('item 3')
 </script>
 <template>
   <Card level="h2" class="with-bg relative">
-    <CardHeader class="mb-$s">Testing</CardHeader>
+    <CardHeader class="mb-$s">Radiobuttons</CardHeader>
 
     <div class="relative mb-$xxl flex flex-col gap-$l">
       <RadioGroup :items="items" :disabledValues label-visible label="Test rb-group" v-model="v1" />

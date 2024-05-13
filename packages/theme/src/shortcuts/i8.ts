@@ -2,15 +2,15 @@ import { scFromObject } from '../utils/shortcut-obj'
 
 export const i8 = {
   'i8': scFromObject({
-    '': 'h-fingertip min-w-3em flex items-center select-none relative current-icon-grey-500 icon-current/75 overflow-hidden',
+    '': 'h-fingertip min-w-3em flex items-center select-none relative current-icon-grey-500 icon-current/75 overflow-hidden current-border-grey-500 border-current/20',
     'data-[type=textarea]': 'min-h-fingertip h-auto items-start',
     'data-[active=true]:': 'current-icon-scope-color-500 icon-current/100',
-    'dark:': '',
+    // 'dark:': '',
     '[&.i8-flat]:': {
       '': 'border-b',
     },
     '[&.i8-filled]:': {
-      '': 'backdrop-blur-md current-bg-grey-300 bg-current/10',
+      '': 'backdrop-blur-md current-bg-grey-300 bg-current/10 border border-current/0',
       'data-[active=true]:':
         'current-bg-scope-light-1 bg-current/100 current-outline-scope-color-500 outline-current/50 outline-2px outline',
       'dark:': {
@@ -18,7 +18,11 @@ export const i8 = {
         'data-[active=true]:': 'current-bg-scope-dark-1',
       },
     },
-    '[&.i8-round]:': 'rounded-half-fingertip',
+    '[&.i8-round]:': 'rounded-half-fingertip border border-current/0',
+    // error
+    'group-data-[error=true]:': {
+      '': 'current-border-error-500 border-current',
+    },
   }),
 
   'i8-underline': scFromObject({

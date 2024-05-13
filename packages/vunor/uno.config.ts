@@ -32,33 +32,7 @@ export default defineConfig({
       },
     }),
   ],
-  shortcuts: [
-    ...shortcuts,
-    {
-      'checkbox-root': scFromObject({
-        '': 'flex gap-$m items-center cursor-pointer current-bg-scope-color-500 current-border-scope-color-500',
-        'data-[error=true]:': 'current-border-error-500',
-        'aria-[disabled=true]:': 'scope-grey opacity-50 cursor-not-allowed',
-      }),
-      'checkbox': scFromObject({
-        '': 'select-none flex size-half-fingertip appearance-none items-center justify-center bg-current/0 border current-icon-white',
-        'group-active:enabled:':
-          'current-bg-scope-color-500 bg-current/50 current-icon-scope-color-500',
-        'group-hover:enabled:': 'border-current',
-        'disabled:': 'cursor-not-allowed',
-        'group-data-[error=true]:enabled:': 'border-current',
-      }),
-      'checkbox-indicator': scFromObject({
-        '': 'bg-current icon-current h-full w-full flex items-center justify-center',
-      }),
-      'checkbox-icon': scFromObject({
-        '': 'size-0.8em',
-      }),
-      'checkbox-label': scFromObject({
-        '': 'select-none text-label lh-1em',
-      }),
-    },
-  ],
+  shortcuts: [...shortcuts],
   // theme: {
   //   fontFamily: {
   //     sans: 'Inter, sans-serif',

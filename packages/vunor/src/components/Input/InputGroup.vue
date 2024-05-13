@@ -36,6 +36,7 @@ const { active } = useInputPi().provide()
       'i8-round': design === 'round',
       'scope-error': !!error,
     }"
+    :data-error="!!error"
     :data-group-active="active"
   >
     <div class="flex w-full">
