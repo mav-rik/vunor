@@ -1,8 +1,8 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends { value: string; label: string; disabled?: boolean }">
 import { useId } from 'radix-vue'
 
 const props = defineProps<{
-  items: (string | { value: string; label: string; disabled?: boolean })[]
+  items: (string | T)[]
   defaultValue?: string
   label?: string
   labelVisible?: boolean
@@ -11,10 +11,14 @@ const props = defineProps<{
   disabled?: boolean
   class?: string | Record<string, boolean>
   error?: string | boolean
+  verticalMiddle?: boolean
+  reverse?: boolean
 }>()
 
-const _items = computed(() => {
-  return props.items.map(item => (typeof item === 'string' ? { value: item, label: item } : item))
+const _items = computed<T[]>(() => {
+  return props.items.map(item =>
+    typeof item === 'string' ? ({ value: item, label: item } as T) : item
+  )
 })
 
 const id = useId()
@@ -38,7 +42,15 @@ function isDisabled(val: string) {
       :data-error="!!error"
       :aria-disabled="disabled"
     >
-      <div class="rb-items" v-for="item of _items">
+      <div
+        class="rb-item-wrapper"
+        :class="{
+          'items-center': verticalMiddle,
+          'items-start': !verticalMiddle,
+          'flex-row-reverse': reverse,
+        }"
+        v-for="item of _items"
+      >
         <RadioGroupItem
           :id="id + '-' + item.value"
           class="rb-item"
@@ -54,11 +66,17 @@ function isDisabled(val: string) {
           :for="id + '-' + item.value"
           :aria-disabled="disabled || item.disabled || isDisabled(item.value)"
         >
-          {{ item.label }}
+          <slot v-bind="item">
+            {{ item.label }}
+          </slot>
         </label>
       </div>
     </RadioGroupRoot>
-    <div v-if="!!error && typeof error === 'string'" class="text-caption text-error-500 text-mt-0">
+    <div
+      v-if="!!error && typeof error === 'string'"
+      class="text-caption text-error-500 text-mt-0"
+      :class="{ 'text-right': reverse }"
+    >
       {{ error }}
     </div>
   </div>

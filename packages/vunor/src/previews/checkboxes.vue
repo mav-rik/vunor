@@ -6,7 +6,12 @@ const c = ref<boolean | 'indeterminate'>('indeterminate')
     <CardHeader class="mb-$s">Checkboxes</CardHeader>
 
     <form class="flex flex-col gap-$s relative">
-      <Checkbox label="Checkbox 1" v-model="c" />
+      <Checkbox
+        class="max-w-md"
+        label="Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque maxime, quisquam nam libero dicta animi nulla! Iste tempora et laborum. Consequatur esse veritatis quaerat quos earum nam, cum sint doloribus."
+        v-model="c"
+        vertical-middle
+      />
       <Checkbox label="Checkbox (scope-secondary)" class="scope-secondary" />
       <Checkbox label="Checkbox Disabled" disabled />
       <Checkbox label="Checkbox (scope-secondary) disabled" class="scope-secondary" disabled />
@@ -25,6 +30,14 @@ const c = ref<boolean | 'indeterminate'>('indeterminate')
       />
       <Checkbox label="Checkbox 1 (required)" required />
       <Checkbox label="Checkbox (scope-secondary) (required)" required class="scope-secondary" />
+
+      <Checkbox class="max-w-md" label="Checkbox 1 (reverse)" reverse />
+      <Checkbox
+        class="max-w-md scope-secondary"
+        label="Checkbox (scope-secondary) (reverse)"
+        reverse
+        error="Error text"
+      />
     </form>
 
     <form class="flex flex-col gap-$s text-h3 mt-$xl relative">

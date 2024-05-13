@@ -5,13 +5,24 @@ defineProps<{
   disabled?: boolean
   error?: string | boolean
   required?: boolean
+  verticalMiddle?: boolean
+  reverse?: boolean
 }>()
 </script>
 
 <template>
   <!-- [&>.checkbox]:hover:bg-neutral-100 -->
   <div>
-    <label :aria-disabled="disabled" class="checkbox-root group" :data-error="!!error">
+    <label
+      :aria-disabled="disabled"
+      class="checkbox-root group"
+      :data-error="!!error"
+      :class="{
+        'items-center': verticalMiddle,
+        'items-start': !verticalMiddle,
+        'flex-row-reverse': reverse,
+      }"
+    >
       <CheckboxRoot
         :disabled
         :required="true"
@@ -24,9 +35,17 @@ defineProps<{
           <Icon v-if="modelValue === true" name="i--checkmark" class="checkbox-icon" />
         </CheckboxIndicator>
       </CheckboxRoot>
-      <span class="checkbox-label">{{ label }}</span>
+      <span class="checkbox-label">
+        <slot :label="label">
+          {{ label }}
+        </slot>
+      </span>
     </label>
-    <div v-if="!!error && typeof error === 'string'" class="text-caption text-error-500 text-mt-$s">
+    <div
+      v-if="!!error && typeof error === 'string'"
+      class="text-caption text-error-500 text-mt-$s"
+      :class="{ 'text-right': reverse }"
+    >
       {{ error }}
     </div>
   </div>
