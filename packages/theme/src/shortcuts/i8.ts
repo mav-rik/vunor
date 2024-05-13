@@ -139,4 +139,9 @@ export const i8 = {
     '': 'h-fingertip flex items-center pl-$s current-icon-grey-500 icon-current/75',
     'group-data-[group-active=true]': 'current-icon-scope-color-500 icon-current/100',
   }),
+
+  'i8-icon-clickable': scFromObject({
+    '[&>.icon-color]:': 'cursor-pointer',
+    '[&>.icon-color:hover]:': 'current-icon-scope-color-500 icon-current',
+  }),
 }

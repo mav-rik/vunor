@@ -16,6 +16,12 @@ type Props = {
   autoGrow?: boolean
   limit?: number
   required?: boolean
+
+  // listeners
+  onBeforeClick?: (event: MouseEvent) => void
+  onAfterClick?: (event: MouseEvent) => void
+  onAppendClick?: (event: MouseEvent) => void
+  onPrependClick?: (event: MouseEvent) => void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -25,6 +31,11 @@ const props = withDefaults(defineProps<Props>(), {
 const modelValue = defineModel()
 
 const { active } = useInputPi().provide()
+
+const emit = defineEmits<{
+  (e: 'beforeClick', event: MouseEvent): void
+  (e: 'afterClick', event: MouseEvent): void
+}>()
 </script>
 
 <template>
@@ -40,9 +51,15 @@ const { active } = useInputPi().provide()
     :data-group-active="active"
   >
     <div class="flex w-full">
-      <div class="i8-before" v-if="$slots.before || !!iconBefore">
+      <div
+        class="i8-before"
+        :class="{
+          'i8-icon-clickable': !!onBeforeClick,
+        }"
+        v-if="$slots.before || !!iconBefore"
+      >
         <slot name="before">
-          <Icon :name="iconBefore!" />
+          <Icon :name="iconBefore!" @click="emit('beforeClick', $event)" />
         </slot>
       </div>
 
@@ -62,6 +79,8 @@ const { active } = useInputPi().provide()
               :icon-append
               :limit
               :required
+              @append-click="onAppendClick"
+              @prepend-click="onPrependClick"
             />
           </slot>
         </div>
@@ -81,9 +100,15 @@ const { active } = useInputPi().provide()
           </div>
         </div>
       </div>
-      <div class="i8-after" v-if="$slots.after || !!iconAfter">
+      <div
+        class="i8-after"
+        :class="{
+          'i8-icon-clickable': !!onAfterClick,
+        }"
+        v-if="$slots.after || !!iconAfter"
+      >
         <slot name="after">
-          <Icon :name="iconAfter!" />
+          <Icon :name="iconAfter!" @click="emit('afterClick', $event)" />
         </slot>
       </div>
     </div>

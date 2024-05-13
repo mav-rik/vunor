@@ -13,12 +13,21 @@ type Props = {
   autoGrow?: boolean
   limit?: number
   required?: boolean
+
+  // listeners
+  onAppendClick?: (event: MouseEvent) => void
+  onPrependClick?: (event: MouseEvent) => void
 }
 
 const props = withDefaults(defineProps<Props>(), {
   design: 'flat',
   rows: 3,
 })
+
+const emit = defineEmits<{
+  (e: 'appendClick', event: MouseEvent): void
+  (e: 'prependClick', event: MouseEvent): void
+}>()
 
 const modelValue = defineModel<string | number>()
 
@@ -71,9 +80,15 @@ function focusInput(event: MouseEvent) {
   >
     <span class="i8-underline" />
 
-    <div v-if="$slots.prepend || !!iconPrepend" class="i8-prepend">
+    <div
+      v-if="$slots.prepend || !!iconPrepend"
+      class="i8-prepend"
+      :class="{
+        'i8-icon-clickable': !!onPrependClick,
+      }"
+    >
       <slot name="prepend">
-        <Icon :name="iconPrepend!" />
+        <Icon :name="iconPrepend!" @click="emit('prependClick', $event)" />
       </slot>
     </div>
 
@@ -106,25 +121,31 @@ function focusInput(event: MouseEvent) {
           />
         </div>
         <input
+          v-else
           :data-has-prepend="!!$slots.prepend || !!iconPrepend"
           :data-has-append="!!$slots.append || !!iconAppend"
           :data-has-label="!!label"
           :maxlength="limit"
-          v-else
-          class="i8-input"
-          v-model="modelValue"
           :required
           :placeholder
+          :type="type || 'text'"
+          class="i8-input"
+          v-model="modelValue"
           @focus="focus"
           @blur="blur"
-          :type="type || 'text'"
         />
       </slot>
     </div>
 
-    <div v-if="$slots.append || !!iconAppend" class="i8-append">
+    <div
+      v-if="$slots.append || !!iconAppend"
+      class="i8-append"
+      :class="{
+        'i8-icon-clickable': !!onAppendClick,
+      }"
+    >
       <slot name="append">
-        <Icon :name="iconAppend!" />
+        <Icon :name="iconAppend!" @click="emit('appendClick', $event)" />
       </slot>
     </div>
   </div>

@@ -15,46 +15,32 @@ const showPassword = ref(false)
       </div>
 
       <div class="flex gap-$m">
-        <Input :type="showPassword ? 'text' : 'password'" label="password">
-          <template #append>
-            <div class="hover:current-icon-scope-color-500 active:current-icon-scope-color-700">
-              <Icon
-                :name="showPassword ? 'i--eye' : 'i--eye-slash'"
-                @click="showPassword = !showPassword"
-              />
-            </div>
-          </template>
-        </Input>
-        <Input :type="showPassword ? 'text' : 'password'" label="password" design="filled">
-          <template #append>
-            <div class="hover:current-icon-scope-color-500 active:current-icon-scope-color-700">
-              <Icon
-                :name="showPassword ? 'i--eye' : 'i--eye-slash'"
-                @click="showPassword = !showPassword"
-              />
-            </div>
-          </template>
-        </Input>
-        <Input :type="showPassword ? 'text' : 'password'" label="password" design="round">
-          <template #append>
-            <div class="hover:current-icon-scope-color-500 active:current-icon-scope-color-700">
-              <Icon
-                :name="showPassword ? 'i--eye' : 'i--eye-slash'"
-                @click="showPassword = !showPassword"
-              />
-            </div>
-          </template>
-        </Input>
-        <Input :type="showPassword ? 'text' : 'password'" design="round">
-          <template #append>
-            <div class="hover:current-icon-scope-color-500 active:current-icon-scope-color-700">
-              <Icon
-                :name="showPassword ? 'i--eye' : 'i--eye-slash'"
-                @click="showPassword = !showPassword"
-              />
-            </div>
-          </template>
-        </Input>
+        <Input
+          :type="showPassword ? 'text' : 'password'"
+          label="password"
+          :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
+          @append-click="showPassword = !showPassword"
+        />
+        <Input
+          :type="showPassword ? 'text' : 'password'"
+          label="password"
+          design="filled"
+          :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
+          @append-click="showPassword = !showPassword"
+        />
+        <Input
+          :type="showPassword ? 'text' : 'password'"
+          label="password"
+          design="round"
+          :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
+          @append-click="showPassword = !showPassword"
+        />
+        <Input
+          :type="showPassword ? 'text' : 'password'"
+          design="round"
+          :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
+          @append-click="showPassword = !showPassword"
+        />
       </div>
 
       <h4 class="text-mt-$m">Inputs with icon (prepend)</h4>
