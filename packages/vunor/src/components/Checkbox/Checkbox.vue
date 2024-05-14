@@ -53,7 +53,7 @@ defineProps<{
 
 <style scoped>
 .checkbox-indicator > .checkbox-icon {
-  animation: checkbox-indicator-appear 0.1s ease;
+  animation: checkbox-indicator-appear 0.2s ease;
 }
 
 @keyframes checkbox-indicator-appear {

@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import type { TSelectItems } from '../components/Select/types'
 const designs = ['flat', 'filled', 'round'] as const
-
-const items = {
-  Fruits: ['Apple', 'Banana', 'Blueberry', 'Grapes', 'Pineapple'],
-  Vegetables: ['Aubergine', 'Broccoli', 'Carrot', 'Courgette', 'Leek'],
+const items: TSelectItems = {
+  '': [{ value: null, label: 'None' }],
+  'Fruits': [
+    { value: '👍 Durian', label: '❓ Secret' },
+    '🍏 Apple',
+    '🍌 Banana',
+    '🫐 Blueberry',
+    '🍇 Grapes',
+    '🍍 Pineapple',
+  ],
+  'Vegetables': ['🍆 Aubergine', '🥦 Broccoli', '🥕 Carrot', 'Courgette', 'Leek'],
 }
 const disabled = ['Courgette']
 
@@ -49,6 +57,8 @@ function getDays(month?: string, year?: string): string[] {
 const day = ref<string>()
 const month = ref<string>()
 const year = ref<string>()
+
+const v1 = ref<string>()
 </script>
 <template>
   <Card level="h2" class="with-bg relative">
@@ -58,13 +68,18 @@ const year = ref<string>()
       <div class="flex gap-$m flex-wrap">
         <Select
           v-for="design of designs"
+          @append-click.stop="v1 ? (v1 = undefined) : ''"
+          :icon-append="!!v1 ? 'i--clear' : undefined"
           class="max-w-sm"
+          v-model="v1"
           :design
           :items
           :disabled-values="disabled"
+          :hint="`Value = ${v1}`"
           label="A fruit or Vegetable"
         />
       </div>
+
       <div class="flex gap-$m flex-wrap">
         <Select
           v-for="design of designs"

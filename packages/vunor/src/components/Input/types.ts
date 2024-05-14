@@ -31,10 +31,11 @@ export interface TInputProps extends TInputShellProps {
   hint?: string
   onBeforeClick?: (event: MouseEvent) => void
   onAfterClick?: (event: MouseEvent) => void
+  onClick?: (event: MouseEvent) => void
 }
 
 export type TInputShellEmits = (e: 'prependClick' | 'appendClick', event: MouseEvent) => void
 
 export interface TInputEmits extends TInputShellEmits {
-  (e: 'beforeClick' | 'afterClick', event: MouseEvent): void
+  (e: 'beforeClick' | 'afterClick' | 'click', event: MouseEvent): void
 }

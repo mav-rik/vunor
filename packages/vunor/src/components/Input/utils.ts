@@ -1,10 +1,11 @@
+import type { ComputedRef } from 'vue'
 import type { TInputProps, TInputShellProps, TInputAttrs } from './types'
 
-export function useHtmlInputAttrs(): TInputAttrs | undefined {
+export function useHtmlInputAttrs(): ComputedRef<TInputAttrs> | undefined {
   const instance = getCurrentInstance()
   if (instance) {
     const props = instance.props as unknown as TInputShellProps
-    return {
+    return computed(() => ({
       'placeholder': props.placeholder,
       'type': props.type || 'text',
       'rows': props.rows,
@@ -14,15 +15,15 @@ export function useHtmlInputAttrs(): TInputAttrs | undefined {
       'data-has-prepend': !!instance?.slots.prepend || !!instance?.props.iconPrepend,
       'data-has-append': !!instance?.slots.append || !!instance?.props.iconAppend,
       'data-has-label': !!props.label,
-    }
+    }))
   }
 }
 
-export function useInputProps(): TInputProps | undefined {
+export function useInputProps(): ComputedRef<TInputProps> | undefined {
   const instance = getCurrentInstance()
   if (instance) {
     const props = instance.props as unknown as TInputProps
-    return {
+    return computed(() => ({
       label: props.label,
       placeholder: props.placeholder,
       design: props.design,
@@ -45,14 +46,15 @@ export function useInputProps(): TInputProps | undefined {
       hint: props.hint,
       onBeforeClick: props.onBeforeClick,
       onAfterClick: props.onAfterClick,
-    }
+      onClick: props.onClick,
+    }))
   }
 }
-export function useInputShellProps(): TInputShellProps | undefined {
+export function useInputShellProps(): ComputedRef<TInputShellProps> | undefined {
   const instance = getCurrentInstance()
   if (instance) {
     const props = instance.props as unknown as TInputProps
-    return {
+    return computed(() => ({
       label: props.label,
       placeholder: props.placeholder,
       readonly: props.readonly,
@@ -69,7 +71,7 @@ export function useInputShellProps(): TInputShellProps | undefined {
       active: props.active,
       onAppendClick: props.onAppendClick,
       onPrependClick: props.onPrependClick,
-    }
+    }))
   }
   return undefined
 }
@@ -80,9 +82,7 @@ export function useInputDataAttrs() {
     'data-has-label': instance?.props.label ? '' : undefined,
     'data-has-placeholder': instance?.props.placeholder ? '' : undefined,
     'data-has-value':
-      instance?.props.modelValue !== undefined && instance?.props.modelValue !== null
-        ? ''
-        : undefined,
+      instance?.props.modelValue || instance?.props.modelValue === 0 ? '' : undefined,
     'data-type': instance?.props.type || 'text',
     'aria-disabled': instance?.props.disabled ? true : undefined,
   }))

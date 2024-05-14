@@ -38,7 +38,13 @@ const emit = defineEmits<TInputEmits>()
       </div>
 
       <div class="flex flex-col w-full">
-        <div class="flex w-full">
+        <div
+          class="flex w-full"
+          @click="emit('click', $event)"
+          :class="{
+            'cursor-pointer': !!onClick,
+          }"
+        >
           <slot v-bind="shellProps!">
             <InputShell class="w-full" v-model="modelValue" v-bind="shellProps!">
               <template #prepend v-if="!!$slots.prepend">

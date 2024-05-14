@@ -4,7 +4,7 @@
   generic="
     T extends {
       icon?: string
-      value: string
+      value: string | null | undefined
       label?: string
       disabled?: boolean
     }
@@ -14,7 +14,7 @@ import type { TInputProps, TInputShellProps, TInputEmits } from '../Input/types'
 import { useInputShellProps, useInputProps } from '../Input/utils'
 
 type Props = Omit<TInputProps & TInputShellProps, 'active'> & {
-  disabledValues?: string[]
+  disabledValues?: (string | null | undefined)[]
   popupClass?: string
   bodyPointerEvents?: boolean
   items: (T | string)[] | Record<string, (T | string)[]>
@@ -22,6 +22,13 @@ type Props = Omit<TInputProps & TInputShellProps, 'active'> & {
 
 const props = defineProps<Props>()
 defineEmits<TInputEmits>()
+
+const forwardProps = computed(() => {
+  if (props.groupItem) {
+    return useInputShellProps()?.value
+  }
+  return useInputProps()?.value
+})
 
 const open = defineModel<boolean>('open')
 const modelValue = defineModel<string>()
@@ -50,12 +57,21 @@ const groups = computed(() => {
   }
 })
 
-function isItemDisabled(val: string) {
+const flatItems = computed(() => {
+  const r = new Map<string | null | undefined, string>()
+  for (const grp of groups.value) {
+    for (const item of grp.items) {
+      r.set(item.value, item.label || String(item.value))
+    }
+  }
+  return r
+})
+
+function isItemDisabled(val: string | null | undefined) {
   return props.disabledValues?.includes(val)
 }
 
 async function enableBodyPointerEvents() {
-  console.log('enableBodyPointerEvents')
   if (open.value && props.bodyPointerEvents) {
     await nextTick()
     await nextTick()
@@ -79,6 +95,8 @@ function updatePlaceholder() {
 
 onMounted(updatePlaceholder)
 watch(() => [props.placeholder], updatePlaceholder)
+
+const displayValue = computed(() => flatItems.value.get(modelValue.value) || '')
 </script>
 
 <template>
@@ -86,9 +104,9 @@ watch(() => [props.placeholder], updatePlaceholder)
     <InputShell
       v-if="groupItem"
       class="cursor-pointer select-none"
-      v-bind="useInputShellProps() || {}"
+      v-bind="forwardProps"
       :icon-append="typeof iconAppend === 'string' ? iconAppend : 'i--chevron-down'"
-      :model-value="modelValue"
+      :model-value="displayValue"
       :active="open"
       readonly
       @click="openPopup"
@@ -99,7 +117,7 @@ watch(() => [props.placeholder], updatePlaceholder)
           as="input"
           class="i8-input cursor-pointer"
           v-bind="slotScope"
-          :value="modelValue || ''"
+          :value="displayValue"
           type="text"
           @click="open = !open"
           readonly
@@ -109,10 +127,10 @@ watch(() => [props.placeholder], updatePlaceholder)
     </InputShell>
     <Input
       v-else
-      class="cursor-pointer select-none"
-      v-bind="useInputProps() || {}"
+      class="select-none"
+      v-bind="forwardProps"
       :icon-append="typeof iconAppend === 'string' ? iconAppend : 'i--chevron-down'"
-      :model-value="modelValue"
+      :model-value="displayValue"
       :active="open"
       readonly
       @click="openPopup"
@@ -128,7 +146,7 @@ watch(() => [props.placeholder], updatePlaceholder)
           as="input"
           class="i8-input cursor-pointer"
           v-bind="slotScope"
-          :value="modelValue"
+          :value="displayValue"
           type="text"
           @click="open = !open"
           readonly
