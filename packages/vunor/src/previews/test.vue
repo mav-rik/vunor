@@ -3,11 +3,7 @@
   <Card level="h2" class="with-bg relative">
     <CardHeader class="mb-$s">Testing</CardHeader>
 
-    <div class="relative mb-$xxl flex flex-col gap-$l max-w-md">
-      <Select label="A fruit" design="flat" />
-      <Select label="A fruit" design="filled" />
-      <Select label="A fruit" design="round" />
-    </div>
+    <div class="relative mb-$xxl flex flex-col gap-$l"></div>
   </Card>
 </template>
 

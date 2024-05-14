@@ -65,11 +65,11 @@ export function generatePalette(_opts?: TPaletteOptions) {
     },
     surfaces: {
       //    |   bg   |    text    |   border   | dark:bg |  dark:text | dark:border |
-      '0': ['light-0', 'color-800', 'color-100', 'dark-0', 'color-100', 'color-800'],
-      '1': ['light-1', 'color-800', 'color-100', 'dark-1', 'color-100', 'color-800'],
-      '2': ['light-2', 'color-800', 'color-100', 'dark-2', 'color-100', 'color-800'],
-      '3': ['light-3', 'color-800', 'color-100', 'dark-3', 'color-100', 'color-800'],
-      '4': ['light-4', 'color-800', 'color-100', 'dark-4', 'color-100', 'color-800'],
+      '0': ['light-0', 'dark-1', 'color-100', 'dark-0', 'light-1', 'color-800'],
+      '1': ['light-1', 'dark-1', 'color-100', 'dark-1', 'light-1', 'color-800'],
+      '2': ['light-2', 'dark-1', 'color-100', 'dark-2', 'light-1', 'color-800'],
+      '3': ['light-3', 'dark-1', 'color-100', 'dark-3', 'light-1', 'color-800'],
+      '4': ['light-4', 'dark-1', 'color-100', 'dark-4', 'light-1', 'color-800'],
       '50': ['color-50', 'color-700', 'color-200', 'color-900', 'color-200', 'color-500'],
       '100': ['color-100', 'color-800', 'color-200', 'color-800', 'color-200', 'color-500'],
       '200': ['color-200', 'color-800', 'color-400', 'color-700', 'color-100', 'color-400'],

@@ -8,34 +8,34 @@ const showPassword = ref(false)
     <div class="flex flex-col gap-$l relative pb-$xxl">
       <h4 class="">Plain Inputs</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup class="w-full" :limit="10" :design label="Label" />
-        <InputGroup class="w-full" :limit="10" :design placeholder="placeholder" />
-        <InputGroup class="w-full" :limit="10" :design label="Label" hint="Supporting message" />
-        <InputGroup class="w-full" :limit="10" :design label="Label" error="Error message" />
+        <Input class="w-full" :maxlength="10" :design label="Label" />
+        <Input class="w-full" :maxlength="10" :design placeholder="placeholder" />
+        <Input class="w-full" :maxlength="10" :design label="Label" hint="Supporting message" />
+        <Input class="w-full" :maxlength="10" :design label="Label" error="Error message" />
       </div>
 
       <div class="flex gap-$m">
-        <Input
+        <InputShell
           :type="showPassword ? 'text' : 'password'"
           label="password"
           :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
           @append-click="showPassword = !showPassword"
         />
-        <Input
+        <InputShell
           :type="showPassword ? 'text' : 'password'"
           label="password"
           design="filled"
           :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
           @append-click="showPassword = !showPassword"
         />
-        <Input
+        <InputShell
           :type="showPassword ? 'text' : 'password'"
           label="password"
           design="round"
           :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
           @append-click="showPassword = !showPassword"
         />
-        <Input
+        <InputShell
           :type="showPassword ? 'text' : 'password'"
           design="round"
           :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
@@ -45,40 +45,26 @@ const showPassword = ref(false)
 
       <h4 class="text-mt-$m">Inputs with icon (prepend)</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup class="w-full" :design label="Label" icon-prepend="i--search"> </InputGroup>
-        <InputGroup class="w-full" :design placeholder="placeholder" icon-prepend="i--search">
-        </InputGroup>
-        <InputGroup
+        <Input class="w-full" :design label="Label" icon-prepend="i--search"> </Input>
+        <Input class="w-full" :design placeholder="placeholder" icon-prepend="i--search"> </Input>
+        <Input
           class="w-full"
           :design
           label="Label"
           hint="Supporting message"
           icon-prepend="i--search"
         >
-        </InputGroup>
-        <InputGroup
-          class="w-full"
-          :design
-          label="Label"
-          error="Error message"
-          icon-prepend="i--search"
-        >
-        </InputGroup>
+        </Input>
+        <Input class="w-full" :design label="Label" error="Error message" icon-prepend="i--search">
+        </Input>
       </div>
 
       <h4 class="text-mt-$m">Inputs with icon (prepend) (required)</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup class="w-full" :design label="Label" icon-prepend="i--search" required>
-        </InputGroup>
-        <InputGroup
-          class="w-full"
-          :design
-          placeholder="placeholder"
-          icon-prepend="i--search"
-          required
-        >
-        </InputGroup>
-        <InputGroup
+        <Input class="w-full" :design label="Label" icon-prepend="i--search" required> </Input>
+        <Input class="w-full" :design placeholder="placeholder" icon-prepend="i--search" required>
+        </Input>
+        <Input
           class="w-full"
           :design
           label="Label"
@@ -86,8 +72,8 @@ const showPassword = ref(false)
           icon-prepend="i--search"
           required
         >
-        </InputGroup>
-        <InputGroup
+        </Input>
+        <Input
           class="w-full"
           :design
           label="Label"
@@ -95,51 +81,38 @@ const showPassword = ref(false)
           icon-prepend="i--search"
           required
         >
-        </InputGroup>
+        </Input>
       </div>
 
       <h4 class="text-mt-$m">Inputs with icon (append)</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup class="w-full" :design label="Label" icon-append="i--input"> </InputGroup>
-        <InputGroup class="w-full" :design placeholder="placeholder" icon-append="i--input">
-        </InputGroup>
-        <InputGroup
+        <Input class="w-full" :design label="Label" icon-append="i--input"> </Input>
+        <Input class="w-full" :design placeholder="placeholder" icon-append="i--input"> </Input>
+        <Input
           class="w-full"
           :design
           label="Label"
           hint="Supporting message"
           icon-append="i--input"
         >
-        </InputGroup>
-        <InputGroup
-          class="w-full"
-          :design
-          label="Label"
-          error="Error message"
-          icon-append="i--input"
-        >
-        </InputGroup>
+        </Input>
+        <Input class="w-full" :design label="Label" error="Error message" icon-append="i--input">
+        </Input>
       </div>
 
       <h4 class="text-mt-$m">Inputs with icon (prepend and append)</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup
-          class="w-full"
-          :design
-          label="Label"
-          icon-prepend="i--alert"
-          icon-append="i--input"
-        >
-        </InputGroup>
-        <InputGroup
+        <Input class="w-full" :design label="Label" icon-prepend="i--alert" icon-append="i--input">
+        </Input>
+        <Input
           class="w-full"
           :design
           placeholder="placeholder"
           icon-prepend="i--alert"
           icon-append="i--input"
         >
-        </InputGroup>
-        <InputGroup
+        </Input>
+        <Input
           class="w-full"
           :design
           label="Label"
@@ -147,8 +120,8 @@ const showPassword = ref(false)
           icon-prepend="i--alert"
           icon-append="i--input"
         >
-        </InputGroup>
-        <InputGroup
+        </Input>
+        <Input
           class="w-full"
           :design
           label="Label"
@@ -156,74 +129,48 @@ const showPassword = ref(false)
           icon-prepend="i--alert"
           icon-append="i--input"
         >
-        </InputGroup>
+        </Input>
       </div>
 
       <h4 class="text-mt-$m">Inputs with icon (before)</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup class="w-full" :design label="Label" icon-before="i--search"> </InputGroup>
-        <InputGroup class="w-full" :design placeholder="placeholder" icon-before="i--search">
-        </InputGroup>
-        <InputGroup
+        <Input class="w-full" :design label="Label" icon-before="i--search"> </Input>
+        <Input class="w-full" :design placeholder="placeholder" icon-before="i--search"> </Input>
+        <Input
           class="w-full"
           :design
           label="Label"
           hint="Supporting message"
           icon-before="i--search"
         >
-        </InputGroup>
-        <InputGroup
-          class="w-full"
-          :design
-          label="Label"
-          error="Error message"
-          icon-before="i--search"
-        >
-        </InputGroup>
+        </Input>
+        <Input class="w-full" :design label="Label" error="Error message" icon-before="i--search">
+        </Input>
       </div>
 
       <h4 class="text-mt-$m">Inputs with icon (after)</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup class="w-full" :design label="Label" icon-after="i--input"> </InputGroup>
-        <InputGroup class="w-full" :design placeholder="placeholder" icon-after="i--input">
-        </InputGroup>
-        <InputGroup
-          class="w-full"
-          :design
-          label="Label"
-          hint="Supporting message"
-          icon-after="i--input"
-        >
-        </InputGroup>
-        <InputGroup
-          class="w-full"
-          :design
-          label="Label"
-          error="Error message"
-          icon-after="i--input"
-        >
-        </InputGroup>
+        <Input class="w-full" :design label="Label" icon-after="i--input"> </Input>
+        <Input class="w-full" :design placeholder="placeholder" icon-after="i--input"> </Input>
+        <Input class="w-full" :design label="Label" hint="Supporting message" icon-after="i--input">
+        </Input>
+        <Input class="w-full" :design label="Label" error="Error message" icon-after="i--input">
+        </Input>
       </div>
 
       <h4 class="text-mt-$m">Inputs with icon (before and after)</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup
-          class="w-full"
-          :design
-          label="Label"
-          icon-before="i--alert"
-          icon-after="i--input"
-        >
-        </InputGroup>
-        <InputGroup
+        <Input class="w-full" :design label="Label" icon-before="i--alert" icon-after="i--input">
+        </Input>
+        <Input
           class="w-full"
           :design
           placeholder="placeholder"
           icon-before="i--alert"
           icon-after="i--input"
         >
-        </InputGroup>
-        <InputGroup
+        </Input>
+        <Input
           class="w-full"
           :design
           label="Label"
@@ -231,8 +178,8 @@ const showPassword = ref(false)
           icon-before="i--alert"
           icon-after="i--input"
         >
-        </InputGroup>
-        <InputGroup
+        </Input>
+        <Input
           class="w-full"
           :design
           label="Label"
@@ -240,13 +187,13 @@ const showPassword = ref(false)
           icon-before="i--alert"
           icon-after="i--input"
         >
-        </InputGroup>
+        </Input>
       </div>
 
       <h4 class="text-mt-$m">Groupped inputs</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup :design>
-          <Input
+        <Input :design>
+          <InputShell
             class="w-xxs"
             group-item
             :design
@@ -254,12 +201,13 @@ const showPassword = ref(false)
             icon-prepend="i--alert"
             type="number"
           >
-          </Input>
-          <Input class="w-xxs" group-item :design label="Label2" icon-append="i--input"> </Input>
-        </InputGroup>
+          </InputShell>
+          <InputShell class="w-xxs" group-item :design label="Label2" icon-append="i--input">
+          </InputShell>
+        </Input>
 
-        <InputGroup :design hint="Supporting message">
-          <Input
+        <Input :design hint="Supporting message">
+          <InputShell
             class="w-xxs"
             group-item
             :design
@@ -267,11 +215,12 @@ const showPassword = ref(false)
             icon-prepend="i--alert"
             type="number"
           >
-          </Input>
-          <Input class="w-xxs" group-item :design label="Label2" icon-append="i--input"> </Input>
-        </InputGroup>
-        <InputGroup :design error="Error message">
-          <Input
+          </InputShell>
+          <InputShell class="w-xxs" group-item :design label="Label2" icon-append="i--input">
+          </InputShell>
+        </Input>
+        <Input :design error="Error message">
+          <InputShell
             class="w-xxs"
             group-item
             :design
@@ -279,13 +228,14 @@ const showPassword = ref(false)
             icon-prepend="i--alert"
             type="number"
           >
-          </Input>
-          <Input class="w-xxs" group-item :design label="Label2" icon-append="i--input"> </Input>
-        </InputGroup>
+          </InputShell>
+          <InputShell class="w-xxs" group-item :design label="Label2" icon-append="i--input">
+          </InputShell>
+        </Input>
       </div>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup :design>
-          <Input
+        <Input :design>
+          <InputShell
             class="w-xxs"
             group-item
             :design
@@ -293,12 +243,13 @@ const showPassword = ref(false)
             icon-append="i--alert"
             type="number"
           >
-          </Input>
-          <Input class="w-xxs" group-item :design label="Label2" icon-prepend="i--input"> </Input>
-        </InputGroup>
+          </InputShell>
+          <InputShell class="w-xxs" group-item :design label="Label2" icon-prepend="i--input">
+          </InputShell>
+        </Input>
 
-        <InputGroup :design hint="Supporting message">
-          <Input
+        <Input :design hint="Supporting message">
+          <InputShell
             class="w-xxs"
             group-item
             :design
@@ -306,11 +257,12 @@ const showPassword = ref(false)
             icon-append="i--alert"
             type="number"
           >
-          </Input>
-          <Input class="w-xxs" group-item :design label="Label2" icon-prepend="i--input"> </Input>
-        </InputGroup>
-        <InputGroup :design error="Error message">
-          <Input
+          </InputShell>
+          <InputShell class="w-xxs" group-item :design label="Label2" icon-prepend="i--input">
+          </InputShell>
+        </Input>
+        <Input :design error="Error message">
+          <InputShell
             class="w-xxs"
             group-item
             :design
@@ -318,62 +270,57 @@ const showPassword = ref(false)
             icon-append="i--alert"
             type="number"
           >
-          </Input>
-          <Input class="w-xxs" group-item :design label="Label2" icon-prepend="i--input"> </Input>
-        </InputGroup>
+          </InputShell>
+          <InputShell class="w-xxs" group-item :design label="Label2" icon-prepend="i--input">
+          </InputShell>
+        </Input>
       </div>
 
       <h4 class="text-mt-$m">Text area</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup class="w-full" type="textarea" :design label="Label" />
-        <InputGroup class="w-full" type="textarea" :design placeholder="placeholder" />
-        <InputGroup
-          class="w-full"
-          type="textarea"
-          :design
-          label="Label"
-          hint="Supporting message"
-        />
-        <InputGroup class="w-full" type="textarea" :design label="Label" error="Error message" />
+        <Input class="w-full" type="textarea" :design label="Label" />
+        <Input class="w-full" type="textarea" :design placeholder="placeholder" />
+        <Input class="w-full" type="textarea" :design label="Label" hint="Supporting message" />
+        <Input class="w-full" type="textarea" :design label="Label" error="Error message" />
       </div>
 
       <h4 class="text-mt-$m">Text area with icons</h4>
       <div class="flex gap-$m" v-for="design of designs">
-        <InputGroup
+        <Input
           class="w-full"
           type="textarea"
           icon-prepend="i--alert"
           icon-append="i--input"
           :design
-          :limit="100"
+          :maxlength="100"
           label="Label"
         />
-        <InputGroup
+        <Input
           class="w-full"
           type="textarea"
           icon-prepend="i--alert"
           icon-append="i--input"
           :design
-          :limit="100"
+          :maxlength="100"
           placeholder="placeholder"
         />
-        <InputGroup
+        <Input
           class="w-full"
           type="textarea"
           icon-prepend="i--alert"
           icon-append="i--input"
           :design
-          :limit="100"
+          :maxlength="100"
           label="Label"
           hint="Supporting message"
         />
-        <InputGroup
+        <Input
           class="w-full"
           type="textarea"
           icon-prepend="i--alert"
           icon-append="i--input"
           :design
-          :limit="100"
+          :maxlength="100"
           label="Label"
           error="Error message"
         />

@@ -2,10 +2,10 @@ import { useProvideInject } from '../utils/provide-inject'
 
 export const useInputPi = () =>
   useProvideInject('__vunor_input_PI', () => {
-    const active = computed(() => !!inputs.value.find(a => a.value))
-    const inputs = ref<Ref<boolean>[]>([])
+    const focused = computed(() => !!inputs.value.some(a => a.value))
+    const inputs = ref<Array<Ref<boolean>>>([])
     return {
-      _provide: () => ({ active }),
+      _provide: () => ({ focused }),
       _inject: (a: Ref<boolean>) => {
         inputs.value.push(a)
         onUnmounted(() => {

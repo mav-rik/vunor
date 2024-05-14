@@ -1,152 +1,88 @@
 <script setup lang="ts">
 import { useInputPi } from './pi'
+import type { TInputProps, TInputEmits } from './types'
+import { useInputShellProps } from './utils'
 
-type Props = {
-  label?: string
-  placeholder?: string
-  design?: 'flat' | 'filled' | 'round'
-  iconPrepend?: string
-  iconAppend?: string
-  groupItem?: boolean
-  type?: string
-  rows?: number
-  autoGrow?: boolean
-  limit?: number
-  required?: boolean
-
-  // listeners
-  onAppendClick?: (event: MouseEvent) => void
-  onPrependClick?: (event: MouseEvent) => void
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  design: 'flat',
-  rows: 3,
-})
-
-const emit = defineEmits<{
-  (e: 'appendClick', event: MouseEvent): void
-  (e: 'prependClick', event: MouseEvent): void
-}>()
-
+defineProps<TInputProps>()
+const shellProps = useInputShellProps()
 const modelValue = defineModel<string | number>()
 
-const active = ref<boolean>(false)
+const { focused } = useInputPi().provide()
 
-useInputPi().inject(active)
-
-function focus() {
-  active.value = true
-}
-function blur() {
-  active.value = false
-}
-
-function taGrow(event: Event) {
-  if (props.autoGrow) {
-    const ta = event.target as HTMLTextAreaElement | undefined
-    if (ta) {
-      ta.style.height = 'auto'
-      ta.style.height = ta.scrollHeight + 'px'
-    }
-  }
-}
-
-function focusInput(event: MouseEvent) {
-  const input = (event.target as HTMLDivElement | undefined)?.querySelector(
-    'input, textarea'
-  ) as HTMLInputElement
-  if (input) {
-    input.focus()
-  }
-}
+const emit = defineEmits<TInputEmits>()
 </script>
 
 <template>
   <div
-    @click="focusInput"
-    class="i8 group"
+    class="group"
     :class="{
       'i8-flat': design === 'flat',
       'i8-filled': design === 'filled' || design === 'round',
       'i8-round': design === 'round',
-      'i8-group-item': groupItem,
+      'scope-error': !!error,
     }"
-    :data-has-label="!!label"
-    :data-has-placeholder="!!placeholder"
-    :data-has-value="modelValue !== undefined && modelValue !== null"
-    :data-active="active"
-    :data-type="type || 'text'"
+    :data-error="!!error"
+    :data-group-active="focused || active"
   >
-    <span class="i8-underline" />
-
-    <div
-      v-if="$slots.prepend || !!iconPrepend"
-      class="i8-prepend"
-      :class="{
-        'i8-icon-clickable': !!onPrependClick,
-      }"
-    >
-      <slot name="prepend">
-        <Icon :name="iconPrepend!" @click="emit('prependClick', $event)" />
-      </slot>
-    </div>
-
-    <div class="i8-input-wrapper">
+    <div class="flex w-full">
       <div
-        v-if="!!label"
-        class="i8-label-wrapper"
-        :data-has-prepend="!!$slots.prepend || !!iconPrepend"
-        :data-has-append="!!$slots.append || !!iconAppend"
+        class="i8-before"
+        :class="{
+          'i8-icon-clickable': !!onBeforeClick,
+        }"
+        v-if="$slots.before || !!iconBefore"
       >
-        <label v-if="!!label" class="i8-label" :data-required="required">{{ label }}</label>
+        <slot name="before">
+          <Icon :name="iconBefore!" @click="emit('beforeClick', $event)" />
+        </slot>
       </div>
 
-      <slot :focus :blur>
-        <div v-if="type === 'textarea'" class="i8-ta-wrapper">
-          <textarea
-            :data-has-prepend="!!$slots.prepend || !!iconPrepend"
-            :data-has-append="!!$slots.append || !!iconAppend"
-            :data-has-label="!!label"
-            :maxlength="limit"
-            style="resize: none"
-            class="i8-textarea"
-            v-model="modelValue"
-            :placeholder
-            :rows
-            :required
-            @input="taGrow"
-            @focus="focus"
-            @blur="blur"
-          />
-        </div>
-        <input
-          v-else
-          :data-has-prepend="!!$slots.prepend || !!iconPrepend"
-          :data-has-append="!!$slots.append || !!iconAppend"
-          :data-has-label="!!label"
-          :maxlength="limit"
-          :required
-          :placeholder
-          :type="type || 'text'"
-          class="i8-input"
-          v-model="modelValue"
-          @focus="focus"
-          @blur="blur"
-        />
-      </slot>
-    </div>
+      <div class="flex flex-col w-full">
+        <div class="flex w-full">
+          <slot v-bind="shellProps!">
+            <InputShell class="w-full" v-model="modelValue" v-bind="shellProps!">
+              <template #prepend v-if="!!$slots.prepend">
+                <slot name="prepend"></slot>
+              </template>
+              <template v-if="!!$slots.input" v-slot="slotScope">
+                <slot name="input" v-bind="slotScope"> </slot>
+              </template>
 
-    <div
-      v-if="$slots.append || !!iconAppend"
-      class="i8-append"
-      :class="{
-        'i8-icon-clickable': !!onAppendClick,
-      }"
-    >
-      <slot name="append">
-        <Icon :name="iconAppend!" @click="emit('appendClick', $event)" />
-      </slot>
+              <template #append v-if="!!$slots.append">
+                <slot name="append"></slot>
+              </template>
+            </InputShell>
+          </slot>
+        </div>
+
+        <div class="i8-hint-wrapper">
+          <div class="i8-hint">
+            <slot v-if="$slots.error || (typeof error === 'string' && error.length)" name="error">
+              <span class="text-error-500">
+                {{ error }}
+              </span>
+            </slot>
+            <slot v-else-if="!!hint || $slots.hint" name="hint">
+              <span>{{ hint }}</span>
+            </slot>
+          </div>
+          <div class="i8-counter" v-if="!!maxlength || $slots.counter">
+            <slot name="counter"> {{ String(modelValue || '').length || 0 }}/{{ maxlength }} </slot>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="i8-after"
+        :class="{
+          'i8-icon-clickable': !!onAfterClick,
+        }"
+        v-if="$slots.after || !!iconAfter"
+      >
+        <slot name="after">
+          <Icon :name="iconAfter!" @click="emit('afterClick', $event)" />
+        </slot>
+      </div>
     </div>
   </div>
 </template>

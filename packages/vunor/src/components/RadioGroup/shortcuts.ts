@@ -20,7 +20,7 @@ export const radioShortcuts = {
     "data-[state=checked]:not-[[data-error='true']]:":
       'current-border-scope-color-500 border-current',
     'data-[state=checked]:': 'bg-current',
-    'active:enabled:': 'bg-current/50',
+    'active:enabled:': 'bg-current/20',
     'aria-[disabled=true]:': 'scope-grey opacity-50 cursor-not-allowed',
     'data-[error=true]:': 'current-border-error-500 current-bg-error-500',
   }),

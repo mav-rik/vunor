@@ -19,6 +19,7 @@ export const i8 = {
       },
     },
     '[&.i8-round]:': 'rounded-half-fingertip border border-current/0',
+    'aria-[disabled=true]:': 'opacity-50 cursor-not-allowed',
     // error
     'group-data-[error=true]:': {
       '': 'current-border-error-500 border-current',
@@ -33,14 +34,14 @@ export const i8 = {
 
   'i8-group-item': scFromObject({
     '[&.i8-filled]:': {
-      'first:': 'rounded-r-0',
-      'last:': 'rounded-lt-0 rounded-lb-0',
-      'not-last:not-first:': 'rounded-0',
-      'not-first:': 'border-l',
+      'first-of-type:': 'rounded-r-0',
+      'last-of-type:': 'rounded-lt-0 rounded-lb-0',
+      'not-last-of-type:not-first-of-type:': 'rounded-0',
+      'not-first-of-type:': 'border-l-1px border-l-grey-500/20',
       'data-[active=true]:': 'z-2',
     },
     '[&.i8-flat]:': {
-      'not-first:': 'ml-$xs',
+      'not-first-of-type:': 'ml-$xs',
     },
   }),
 
@@ -56,7 +57,7 @@ export const i8 = {
     'selection:': 'bg-scope-color-500 text-white',
     "group-[.i8-round]:[&[data-has-prepend='false']]:": 'pl-half-fingertip',
     "group-[.i8-round]:[&[data-has-append='false']]:": 'pr-half-fingertip',
-    'group-data-[has-label=true]:': 'pt-$m',
+    'group-data-[has-label]:': 'pt-$m',
     // groupped inputs paddings
     'group-[.i8-group-item:not(.i8-flat):not(:first-child)]:': 'pl-$s',
     'group-[.i8-group-item:not(.i8-flat):not(:last-child)]:': 'pr-$s',
@@ -77,14 +78,14 @@ export const i8 = {
 
   'i8-ta-wrapper': scFromObject({
     '': 'w-full pt-0.75em',
-    'group-data-[has-label=true]:': 'mt-$s',
+    'group-data-[has-label]:': 'mt-$s',
   }),
 
   'i8-label': scFromObject({
     '': 'absolute top-0 h-fingertip text-body text-grey-400 lh-fingertip transition-all transition-duration-300 truncate text-ellipsis overflow-hidden max-w-70%',
     'group-data-[active=true]:': 'h-[2em] lh-2em text-label font-size-[0.8em] text-scope-color-500',
-    'group-data-[has-placeholder=true]:': 'h-[2em] lh-2em text-label font-size-[0.8em]',
-    'group-data-[has-value=true]:': 'h-[2em] lh-2em text-label font-size-[0.8em]',
+    'group-data-[has-placeholder]:': 'h-[2em] lh-2em text-label font-size-[0.8em]',
+    'group-data-[has-value]:': 'h-[2em] lh-2em text-label font-size-[0.8em]',
     // 'data-[required=true]:after:': "content-['*'] text-error-500",
   }),
 

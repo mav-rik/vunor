@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MenuItem from './MenuItem.vue'
-import InputGroup from '../Input/InputGroup.vue'
 import Input from '../Input/Input.vue'
+import InputShell from '../Input/InputShell.vue'
 
 type AcceptableValue = string | number | boolean | Record<string, any>
 type TItem = { label: string; value: AcceptableValue; icon?: string; group?: string }
@@ -64,7 +64,7 @@ function handleHomeEnd(event: KeyboardEvent) {
       icon-prepend="i--search"
       class="px-$m mb-$s"
       placeholder="Search"
-      :as="InputGroup"
+      :as="Input"
       @keydown.home.end="handleHomeEnd"
     />
 

@@ -13,6 +13,7 @@ const menu2 = [
   { group: 'Components', label: 'Checkboxes', value: 'Checkboxes', icon: 'i--checkmark' },
   { group: 'Components', label: 'Inputs', value: 'Inputs', icon: 'i--input' },
   { group: 'Components', label: 'Radiobuttons', value: 'Radiobuttons', icon: 'i--radio' },
+  { group: 'Components', label: 'Selects', value: 'Selects', icon: 'i--select' },
   { group: '', label: 'Testing', value: 'Testing', icon: 'i--test' },
 ]
 
@@ -22,6 +23,7 @@ const pages = {
   Cards: PreviewCards,
   Checkboxes: PreviewCheckboxes,
   Radiobuttons: PreviewRadiobuttons,
+  Selects: PreviewSelects,
   Surfaces: PreviewSurfaces,
   Layers: PreviewLayers,
   Clickable: PreviewClickable,

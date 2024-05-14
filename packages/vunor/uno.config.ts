@@ -32,7 +32,30 @@ export default defineConfig({
       },
     }),
   ],
-  shortcuts: [...shortcuts],
+  shortcuts: [
+    ...shortcuts,
+    {
+      'select-content': scFromObject({
+        '': 'min-w-[160px] surface-0 bg-current/70 backdrop-blur-md rounded-body overflow-hidden shadow-xl z-[100] border-3px current-border-grey-400 border-current/20',
+        // 'data-[side=top]:': 'animate-slideDownAndFade',
+        // 'data-[side=right]:': 'animate-slideLeftAndFade',
+        // 'data-[side=bottom]:': 'animate-slideUpAndFade',
+        // 'data-[side=left]:': 'animate-slideRightAndFade',
+      }),
+      'select-scroll-btn': 'flex items-center justify-center h-fingertip cursor-default',
+      'select-grp-label': scFromObject({
+        '': 'px-$m h-fingertip flex items-center ',
+        '[&>span]:': 'text-label text-grey-400',
+      }),
+      'select-item': scFromObject({
+        '': 'text-body leading-none flex items-center h-fingertip relative select-none relative',
+        'data-[disabled]:': 'opacity-40 pointer-events-none',
+        'data-[highlighted]:': 'outline-none bg-scope-color-500/15',
+        '[&>span]:': 'pl-$l pr-$m',
+        '[&>span]:data-[state=checked]:': 'text-scope-color-500 fw-700!',
+      }),
+    },
+  ],
   // theme: {
   //   fontFamily: {
   //     sans: 'Inter, sans-serif',

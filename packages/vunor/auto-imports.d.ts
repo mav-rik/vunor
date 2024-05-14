@@ -16,6 +16,7 @@ declare global {
   const PreviewInteractable: typeof import('@/previews/interactable.vue')['default']
   const PreviewLayers: typeof import('@/previews/layers.vue')['default']
   const PreviewRadiobuttons: typeof import('@/previews/radiobuttons.vue')['default']
+  const PreviewSelects: typeof import('@/previews/selects.vue')['default']
   const PreviewSurfaces: typeof import('@/previews/surfaces.vue')['default']
   const PreviewTest: typeof import('@/previews/test.vue')['default']
   const PreviewTypofraphy: typeof import('@/previews/typofraphy.vue')['default']
