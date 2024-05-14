@@ -2,7 +2,7 @@ import { scFromObject } from '../utils/shortcut-obj'
 
 export const i8 = {
   'i8': scFromObject({
-    '': 'h-fingertip min-w-3em flex items-center select-none relative current-icon-grey-500 icon-current/75 overflow-hidden current-border-grey-500 border-current/20',
+    '': 'h-fingertip min-w-3em flex items-center select-none relative current-icon-grey-500 icon-current/75 content-box current-border-grey-500 border-current/20',
     'data-[type=textarea]': 'min-h-fingertip h-auto items-start',
     'data-[active=true]:': 'current-icon-scope-color-500 icon-current/100',
     // 'dark:': '',
@@ -28,7 +28,7 @@ export const i8 = {
 
   'i8-underline': scFromObject({
     'group-[.i8-filled]:': 'hidden',
-    '': 'absolute left-50% top-0 right-50% bottom-[-1px] border-b-2px pointer-events-none transition-all transition-duration-300 will-change-left will-change-right current-border-scope-color-500 border-current',
+    '': 'absolute left-50% h-2px right-50% bottom-[-1px] pointer-events-none transition-all transition-duration-300 will-change-left will-change-right current-bg-scope-color-500 bg-current',
     'group-data-[active=true]:': 'left-0 right-0',
   }),
 

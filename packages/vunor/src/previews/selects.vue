@@ -4,7 +4,7 @@ const designs = ['flat', 'filled', 'round'] as const
 const items: TSelectItems = {
   '': [{ value: null, label: 'None' }],
   'Fruits': [
-    { value: '👍 Durian', label: '❓ Secret' },
+    { value: '👍 Durian', label: '❓ Secret', search: 'durian' },
     '🍏 Apple',
     '🍌 Banana',
     '🫐 Blueberry',
@@ -70,6 +70,9 @@ const v1 = ref<string>()
           v-for="design of designs"
           @append-click.stop="v1 ? (v1 = undefined) : ''"
           :icon-append="!!v1 ? 'i--clear' : undefined"
+          :popup-class="{
+            'scope-primary': true,
+          }"
           class="max-w-sm"
           v-model="v1"
           :design
@@ -84,6 +87,9 @@ const v1 = ref<string>()
         <Select
           v-for="design of designs"
           class="max-w-sm"
+          :popup-class="{
+            'scope-primary': true,
+          }"
           :design
           :items
           :disabled-values="disabled"
@@ -94,7 +100,9 @@ const v1 = ref<string>()
         <Select
           v-for="design of designs"
           class="max-w-sm"
-          popup-class="scope-good"
+          :popup-class="{
+            'scope-good': true,
+          }"
           icon-append=""
           icon-prepend="i--chevron-down"
           :design
@@ -107,7 +115,9 @@ const v1 = ref<string>()
         <Select
           v-for="design of designs"
           class="max-w-sm"
-          popup-class="scope-warn"
+          :popup-class="{
+            'scope-warn': true,
+          }"
           icon-append="i--search"
           :design
           :items
@@ -121,7 +131,6 @@ const v1 = ref<string>()
       <Input design="round" icon-before="i--cake">
         <Select
           group-item
-          body-pointer-events
           icon-prepend="i--day"
           :items="getDays(month, year)"
           :disabled-values="disabled"
@@ -131,7 +140,6 @@ const v1 = ref<string>()
         />
         <Select
           group-item
-          body-pointer-events
           icon-prepend="i--month"
           :items="months"
           :disabled-values="disabled"
@@ -141,7 +149,6 @@ const v1 = ref<string>()
         />
         <Select
           group-item
-          body-pointer-events
           :items="years"
           :disabled-values="disabled"
           v-model="year"

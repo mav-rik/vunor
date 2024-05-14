@@ -47,6 +47,9 @@ const emit = defineEmits<TInputEmits>()
         >
           <slot v-bind="shellProps!">
             <InputShell class="w-full" v-model="modelValue" v-bind="shellProps!">
+              <template #overlay v-if="!!$slots.overlay">
+                <slot name="overlay"></slot>
+              </template>
               <template #prepend v-if="!!$slots.prepend">
                 <slot name="prepend"></slot>
               </template>

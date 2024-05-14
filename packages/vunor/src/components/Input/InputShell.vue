@@ -22,6 +22,7 @@ const inputAttrs = useHtmlInputAttrs()
 function onFocus() {
   focused.value = true
 }
+
 function onBlur() {
   focused.value = false
 }
@@ -60,6 +61,9 @@ function focusInput(event: MouseEvent) {
     :data-active="focused || active"
   >
     <span class="i8-underline" />
+    <span class="absolute left-0 right-0 top-0 bottom-0" v-if="!!$slots.overlay">
+      <slot name="overlay"></slot>
+    </span>
 
     <div
       v-if="$slots.prepend || !!iconPrepend"

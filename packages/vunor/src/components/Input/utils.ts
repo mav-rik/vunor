@@ -77,13 +77,18 @@ export function useInputShellProps(): ComputedRef<TInputShellProps> | undefined 
 }
 
 export function useInputDataAttrs() {
-  const instance = getCurrentInstance()
+  const instance = getCurrentInstance() as unknown as
+    | {
+        props: TInputProps
+        setupState?: { modelValue: string | number | undefined }
+      }
+    | undefined
   return computed(() => ({
     'data-has-label': instance?.props.label ? '' : undefined,
     'data-has-placeholder': instance?.props.placeholder ? '' : undefined,
     'data-has-value':
-      instance?.props.modelValue || instance?.props.modelValue === 0 ? '' : undefined,
-    'data-type': instance?.props.type || 'text',
+      instance?.setupState?.modelValue || instance?.setupState?.modelValue === 0 ? '' : undefined,
+    'data-type': (instance?.props.type as string) || 'text',
     'aria-disabled': instance?.props.disabled ? true : undefined,
   }))
 }

@@ -4,6 +4,7 @@
   generic="
     T extends {
       icon?: string
+      search?: string
       value: string | null | undefined
       label?: string
       disabled?: boolean
@@ -15,8 +16,7 @@ import { useInputShellProps, useInputProps } from '../Input/utils'
 
 type Props = Omit<TInputProps & TInputShellProps, 'active'> & {
   disabledValues?: (string | null | undefined)[]
-  popupClass?: string
-  bodyPointerEvents?: boolean
+  popupClass?: string | Record<string, boolean>
   items: (T | string)[] | Record<string, (T | string)[]>
 }
 
@@ -71,15 +71,6 @@ function isItemDisabled(val: string | null | undefined) {
   return props.disabledValues?.includes(val)
 }
 
-async function enableBodyPointerEvents() {
-  if (open.value && props.bodyPointerEvents) {
-    await nextTick()
-    await nextTick()
-    document.body.style.pointerEvents = ''
-  }
-}
-watch([open], enableBodyPointerEvents)
-
 async function openPopup() {
   if (!props.disabled) {
     open.value = !open.value
@@ -93,38 +84,34 @@ function updatePlaceholder() {
   }
 }
 
-onMounted(updatePlaceholder)
 watch(() => [props.placeholder], updatePlaceholder)
 
 const displayValue = computed(() => flatItems.value.get(modelValue.value) || '')
+
+function getSearchValue(item: T) {
+  return item.search || item.label?.replace(/[^\p{L}\p{N}\p{P}\p{M}\p{Zs}]/gu, '').trim()
+}
 </script>
 
 <template>
   <SelectRoot v-model="modelValue" v-model:open="open" :disabled>
-    <InputShell
-      v-if="groupItem"
-      class="cursor-pointer select-none"
-      v-bind="forwardProps"
-      :icon-append="typeof iconAppend === 'string' ? iconAppend : 'i--chevron-down'"
-      :model-value="displayValue"
-      :active="open"
-      readonly
-      @click="openPopup"
-      v-slot="slotScope"
-    >
-      <SelectTrigger as-child :aria-label="label" class="w-full h-full text-left">
-        <SelectValue
-          as="input"
-          class="i8-input cursor-pointer"
-          v-bind="slotScope"
-          :value="displayValue"
-          type="text"
-          @click="open = !open"
-          readonly
-          ref="inputEl"
-        />
-      </SelectTrigger>
-    </InputShell>
+    <SelectTrigger as-child v-if="groupItem">
+      <InputShell
+        class="cursor-pointer select-none"
+        v-bind="forwardProps"
+        :icon-append="typeof iconAppend === 'string' ? iconAppend : 'i--chevron-down'"
+        :model-value="displayValue"
+        :active="open"
+        readonly
+        @click="openPopup"
+        tabindex="-1"
+        @focus="$event.target.querySelector('input')?.focus()"
+      >
+        <template #overlay>
+          <SelectValue class="absolute left-0 right-0 h-0 invisible" />
+        </template>
+      </InputShell>
+    </SelectTrigger>
     <Input
       v-else
       class="select-none"
@@ -134,31 +121,30 @@ const displayValue = computed(() => flatItems.value.get(modelValue.value) || '')
       :active="open"
       readonly
       @click="openPopup"
-      v-slot:input="slotScope"
+      v-slot="shellProps"
     >
-      <SelectTrigger
-        as-child
-        :data-placeholder="slotScope.placeholder"
-        :aria-label="label"
-        class="w-full h-full text-left"
-      >
-        <SelectValue
-          as="input"
-          class="i8-input cursor-pointer"
-          v-bind="slotScope"
-          :value="displayValue"
-          type="text"
-          @click="open = !open"
+      <SelectTrigger as-child>
+        <InputShell
+          class="cursor-pointer select-none"
+          v-bind="shellProps"
+          :model-value="displayValue"
           readonly
-          ref="inputEl"
-        />
+          type="text"
+          tabindex="-1"
+          @focus="$event.target.querySelector('input')?.focus()"
+        >
+          <template #overlay>
+            <SelectValue class="absolute left-[-1px] right-0 h-0 invisible" />
+          </template>
+        </InputShell>
       </SelectTrigger>
     </Input>
 
     <SelectPortal>
       <SelectContent
+        class="select-content group"
+        :data-design="design"
         :class="popupClass || 'scope-primary'"
-        class="select-content"
         :side-offset="0"
         position="item-aligned"
       >
@@ -178,16 +164,21 @@ const displayValue = computed(() => flatItems.value.get(modelValue.value) || '')
               <SelectItem
                 v-for="(item, index) in g.items"
                 :key="index"
-                class="select-item"
+                class="select-item relative"
                 :value="item.value"
                 :disabled="disabled || item.disabled || isItemDisabled(item.value)"
                 :aria-disabled="disabled || item.disabled || isItemDisabled(item.value)"
               >
-                <SelectItemText>
+                <SelectItemText class="absolute">
+                  <span class="hidden">
+                    {{ getSearchValue(item) }}
+                  </span>
+                </SelectItemText>
+                <span>
                   <slot name="item" v-bind="item">
                     {{ item.label }}
                   </slot>
-                </SelectItemText>
+                </span>
               </SelectItem>
             </SelectGroup>
           </template>
