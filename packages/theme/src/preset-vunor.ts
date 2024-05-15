@@ -46,6 +46,7 @@ export const presetVunor: PresetFactory<
   }
   wind.rules.push(...rules)
   const paletteShortcuts = getPaletteShortcuts() as StaticShortcut[]
+  console.log(Object.keys(wind.theme?.animation.keyframes))
   return {
     ...wind,
     name: 'vunor',

@@ -3,6 +3,7 @@ import { cardShortcuts } from './Card/shortcuts'
 import { checkboxShortcuts } from './Checkbox/shortcuts'
 import { menuShortcuts } from './Menu/shortcuts'
 import { radioShortcuts } from './RadioGroup/shortcuts'
+import { selectShortcuts } from './Select/shortcuts'
 
 export const shortcuts = [
   cardShortcuts,
@@ -10,4 +11,5 @@ export const shortcuts = [
   buttonShortcuts,
   checkboxShortcuts,
   radioShortcuts,
+  selectShortcuts,
 ]

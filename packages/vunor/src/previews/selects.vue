@@ -65,11 +65,43 @@ const v1 = ref<string>()
     <CardHeader class="mb-$s">Selects</CardHeader>
 
     <div class="relative mb-$xxl flex flex-col gap-$l">
+      <h4>Base Select</h4>
+      <div
+        class="flex gap-$m flex-wrap"
+        v-for="scope of ['scope-primary', 'scope-secondary', 'scope-error']"
+        :class="scope"
+      >
+        <SelectBase
+          v-for="design of ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat']"
+          class="w-15em pr-$m c8 btn px-0! min-w-100px inline-flex items-center justify-between"
+          :class="{
+            'btn-round': design === 'c8-filled',
+            [design]: true,
+          }"
+          :value-class="{
+            'pl-half-fingertip': design === 'c8-filled',
+            'pl-$s': design !== 'c8-filled',
+          }"
+          :icon-class="{
+            'mr-$m': design === 'c8-filled',
+            'mr-$s': design !== 'c8-filled',
+          }"
+          :popup-class="{
+            [scope]: true,
+          }"
+          :design
+          :items
+          :disabled-values="disabled"
+          popup-position="popper"
+          placeholder="Pick an item"
+        />
+      </div>
+
+      <h4 class="text-mt-$m">Select (Inputs)</h4>
       <div class="flex gap-$m flex-wrap">
         <Select
           v-for="design of designs"
           @append-click.stop="v1 ? (v1 = undefined) : ''"
-          :icon-append="!!v1 ? 'i--clear' : undefined"
           :popup-class="{
             'scope-primary': true,
           }"
@@ -125,37 +157,37 @@ const v1 = ref<string>()
           placeholder="Pick an item"
         />
       </div>
-    </div>
-
-    <div class="relative mb-$xxl flex flex-col gap-$l max-w-sm">
-      <Input design="round" icon-before="i--cake">
-        <Select
-          group-item
-          icon-prepend="i--day"
-          :items="getDays(month, year)"
-          :disabled-values="disabled"
-          v-model="day"
-          placeholder="Day"
-          design="round"
-        />
-        <Select
-          group-item
-          icon-prepend="i--month"
-          :items="months"
-          :disabled-values="disabled"
-          v-model="month"
-          placeholder="Month"
-          design="round"
-        />
-        <Select
-          group-item
-          :items="years"
-          :disabled-values="disabled"
-          v-model="year"
-          placeholder="Year"
-          design="round"
-        />
-      </Input>
+      <h4 class="text-mb-$s text-mt-$m">Groupped Inputs</h4>
+      <div class="relative mb-$xxl flex flex-col gap-$l max-w-sm">
+        <Input design="round" icon-before="i--cake">
+          <Select
+            group-item
+            icon-prepend="i--day"
+            :items="getDays(month, year)"
+            :disabled-values="disabled"
+            v-model="day"
+            placeholder="Day"
+            design="round"
+          />
+          <Select
+            group-item
+            icon-prepend="i--month"
+            :items="months"
+            :disabled-values="disabled"
+            v-model="month"
+            placeholder="Month"
+            design="round"
+          />
+          <Select
+            group-item
+            :items="years"
+            :disabled-values="disabled"
+            v-model="year"
+            placeholder="Year"
+            design="round"
+          />
+        </Input>
+      </div>
     </div>
   </Card>
 </template>

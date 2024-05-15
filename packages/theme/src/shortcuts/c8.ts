@@ -30,10 +30,10 @@ export const c8 = {
     'aria-[selected=true]:': 'c8-flat-selected',
   }),
   'c8-flat-hover': scFromObject({
-    '': 'bg-current/05',
+    '': 'bg-current/05 backdrop-blur-sm',
   }),
   'c8-flat-active': scFromObject({
-    '': 'bg-current/10',
+    '': 'bg-current/10 backdrop-blur-sm',
   }),
   'c8-flat-selected': scFromObject({
     '': 'c8-flat-hover current-text-scope-color-500 text-current current-icon-scope-color-500 icon-current/100',
@@ -54,7 +54,7 @@ export const c8 = {
 
   // LIGHT (Filled/Transparent)
   'c8-light': scFromObject({
-    '': 'current-bg-scope-color-500 current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80',
+    '': 'current-bg-scope-color-500 current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80 backdrop-blur-sm',
     'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
     'hover:': 'c8-light-hover',
     'focus-visible:': 'c8-light-hover',
