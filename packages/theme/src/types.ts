@@ -14,6 +14,7 @@ export interface TVunorUnoPresetOpts {
     reverseLight?: boolean
   }
   fingertip?: string
+  baseRadius?: string
 }
 
 export interface TTypography {

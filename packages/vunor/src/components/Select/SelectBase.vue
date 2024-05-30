@@ -58,7 +58,13 @@ function getSearchValue(item: T) {
 </script>
 
 <template>
-  <SelectRoot v-model="modelValue" v-model:open="open" :disabled :default-value="defaultValue">
+  <SelectRoot
+    v-model="modelValue"
+    v-model:open="open"
+    :disabled
+    :required
+    :default-value="defaultValue"
+  >
     <slot :displayValue :value="modelValue" :openPopup :open :icon="'i--chevron-down'">
       <SelectTrigger :class>
         <SelectValue :placeholder :class="valueClass">
@@ -90,7 +96,7 @@ function getSearchValue(item: T) {
 
         <SelectViewport>
           <template v-for="(g, grpIndex) of groups" :key="grpIndex">
-            <SelectSeparator v-if="grpIndex > 0" class="h-[1px] bg-grey-500/10 mx-$m" />
+            <SelectSeparator v-if="grpIndex > 0" class="h-[1px] bg-grey-500/10 mx-$s" />
             <SelectLabel class="select-grp-label" v-if="!!g.grp">
               <slot name="group" v-bind="g">
                 <span>{{ g.grp }}</span>

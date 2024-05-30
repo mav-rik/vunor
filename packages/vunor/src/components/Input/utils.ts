@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import type { ComputedRef } from 'vue'
-import type { TInputProps, TInputShellProps, TInputAttrs } from './types'
+
+import type { TInputAttrs, TInputProps, TInputShellProps } from './types'
 
 export function useHtmlInputAttrs(): ComputedRef<TInputAttrs> | undefined {
   const instance = getCurrentInstance()
@@ -7,13 +9,13 @@ export function useHtmlInputAttrs(): ComputedRef<TInputAttrs> | undefined {
     const props = instance.props as unknown as TInputShellProps
     return computed(() => ({
       'placeholder': props.placeholder,
-      'type': props.type || 'text',
+      'type': props.type ?? 'text',
       'rows': props.rows,
       'required': props.required,
       'disabled': props.disabled,
       'readonly': props.readonly,
-      'data-has-prepend': !!instance?.slots.prepend || !!instance?.props.iconPrepend,
-      'data-has-append': !!instance?.slots.append || !!instance?.props.iconAppend,
+      'data-has-prepend': !!instance.slots.prepend || !!instance.props.iconPrepend,
+      'data-has-append': !!instance.slots.append || !!instance.props.iconAppend,
       'data-has-label': !!props.label,
     }))
   }
@@ -88,7 +90,7 @@ export function useInputDataAttrs() {
     'data-has-placeholder': instance?.props.placeholder ? '' : undefined,
     'data-has-value':
       instance?.setupState?.modelValue || instance?.setupState?.modelValue === 0 ? '' : undefined,
-    'data-type': (instance?.props.type as string) || 'text',
+    'data-type': instance?.props.type ?? 'text',
     'aria-disabled': instance?.props.disabled ? true : undefined,
   }))
 }

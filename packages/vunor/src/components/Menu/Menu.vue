@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import MenuItem from './MenuItem.vue'
 import Input from '../Input/Input.vue'
-import InputShell from '../Input/InputShell.vue'
 
 type AcceptableValue = string | number | boolean | Record<string, any>
 type TItem = { label: string; value: AcceptableValue; icon?: string; group?: string }

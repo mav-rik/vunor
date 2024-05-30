@@ -1,4 +1,4 @@
-export interface TSelectItem {
+export interface TComboboxItem {
   icon?: string
   search?: string
   value: string | null | undefined
@@ -6,12 +6,11 @@ export interface TSelectItem {
   disabled?: boolean
 }
 
-export type TSelectItems<T extends TSelectItem = TSelectItem> =
+export type TComboboxItems<T extends TComboboxItem = TComboboxItem> =
   | Array<T | string>
   | Record<string, Array<T | string>>
 
-export interface TSelectBaseProps<T extends TSelectItem> {
-  required?: boolean
+export interface TComboboxProps<T extends TComboboxItem> {
   disabledValues?: Array<string | null | undefined>
   defaultValue?: string | null | undefined
   popupClass?: string | Record<string, boolean>
@@ -19,12 +18,14 @@ export interface TSelectBaseProps<T extends TSelectItem> {
   valueClass?: string | Record<string, boolean>
   iconClass?: string | Record<string, boolean>
   class?: string | Record<string, boolean>
-  items: TSelectItems<T>
+  items: TComboboxItems<T>
   disabled?: boolean
   placeholder?: string
-  popupPosition?: 'item-aligned' | 'popper'
+  popupPosition?: 'inline' | 'popper'
   side?: 'top' | 'right' | 'bottom' | 'left'
   sideOffset?: number
   sticky?: 'partial' | 'always'
   updatePositionStrategy?: 'always' | 'optimized'
+  bodyLock?: boolean
+  multiple?: boolean
 }

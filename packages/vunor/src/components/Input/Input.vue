@@ -37,7 +37,7 @@ const emit = defineEmits<TInputEmits>()
         </slot>
       </div>
 
-      <div class="flex flex-col w-full">
+      <div class="w-full relative">
         <div
           class="flex w-full"
           @click="emit('click', $event)"
@@ -46,7 +46,7 @@ const emit = defineEmits<TInputEmits>()
           }"
         >
           <slot v-bind="shellProps!">
-            <InputShell class="w-full" v-model="modelValue" v-bind="shellProps!">
+            <InputShell v-model="modelValue" v-bind="shellProps!">
               <template #overlay v-if="!!$slots.overlay">
                 <slot name="overlay"></slot>
               </template>

@@ -28,6 +28,7 @@ const modelValue = defineModel<string>()
     :icon-class
     :class
     :items
+    :required
     :disabled
     :placeholder
     :defaultValue

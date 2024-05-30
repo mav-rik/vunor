@@ -14,6 +14,7 @@ import type { TVunorTheme } from './theme'
 import { themeFactory } from './theme'
 import type { TVunorUnoPresetOpts } from './types'
 import { defaultTypography } from './typography'
+import { round } from './utils/round'
 
 const defaultOptions: Required<TVunorUnoPresetOpts> = {
   spacingFactor: 1.618,
@@ -29,6 +30,7 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
     reverseLight: false,
   },
   fingertip: '3em',
+  baseRadius: `${round(1 / 1.618, 3)}em`,
 }
 
 export const presetVunor: PresetFactory<
@@ -46,7 +48,6 @@ export const presetVunor: PresetFactory<
   }
   wind.rules.push(...rules)
   const paletteShortcuts = getPaletteShortcuts() as StaticShortcut[]
-  console.log(Object.keys(wind.theme?.animation.keyframes))
   return {
     ...wind,
     name: 'vunor',

@@ -48,9 +48,9 @@ function focusInput(event: MouseEvent) {
 </script>
 
 <template>
-  <div
+  <Primitive
     @click="focusInput"
-    class="i8 group"
+    class="i8 group flex-grow"
     :class="{
       'i8-flat': design === 'flat',
       'i8-filled': design === 'filled' || design === 'round',
@@ -117,9 +117,14 @@ function focusInput(event: MouseEvent) {
         'i8-icon-clickable': !!onAppendClick,
       }"
     >
-      <slot name="append" v-bind="attrs">
+      <slot
+        name="append"
+        v-bind="attrs"
+        :emitClick="(event: MouseEvent) => emit('appendClick', event)"
+        :iconAppend
+      >
         <Icon :name="iconAppend!" @click="emit('appendClick', $event)" />
       </slot>
     </div>
-  </div>
+  </Primitive>
 </template>

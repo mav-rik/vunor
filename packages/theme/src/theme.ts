@@ -37,12 +37,19 @@ export const themeFactory = (
     '$card-spacing-dense': 'var(--card-spacing-dense)',
     '$card-heading-size': 'var(--card-heading-size)',
     '$card-heading-corrected': 'var(--card-heading-corrected)',
+    // radius
+    'base-radius': opts.baseRadius,
   } as Record<string, string>
 
   const lineHeight = {
     'fingertip': opts.fingertip,
     'half-fingertip': unitBy(opts.fingertip, 0.5),
     'quart-fingertip': unitBy(opts.fingertip, 0.25),
+  }
+
+  const borderRadius = {
+    ...spacing,
+    base: opts.baseRadius,
   }
 
   /**
@@ -105,7 +112,7 @@ export const themeFactory = (
     maxHeight: spacing,
     minWidth: spacing,
     minHeight: spacing,
-    borderRadius: spacing,
+    borderRadius,
     animation: {
       durations: {
         'slide-down-and-fade': '100ms',

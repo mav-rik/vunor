@@ -20,6 +20,7 @@ const showPassword = ref(false)
           label="password"
           :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
           @append-click="showPassword = !showPassword"
+          class="w-full"
         />
         <InputShell
           :type="showPassword ? 'text' : 'password'"
@@ -27,6 +28,7 @@ const showPassword = ref(false)
           design="filled"
           :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
           @append-click="showPassword = !showPassword"
+          class="w-full"
         />
         <InputShell
           :type="showPassword ? 'text' : 'password'"
@@ -34,12 +36,14 @@ const showPassword = ref(false)
           design="round"
           :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
           @append-click="showPassword = !showPassword"
+          class="w-full"
         />
         <InputShell
           :type="showPassword ? 'text' : 'password'"
           design="round"
           :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
           @append-click="showPassword = !showPassword"
+          class="w-full"
         />
       </div>
 

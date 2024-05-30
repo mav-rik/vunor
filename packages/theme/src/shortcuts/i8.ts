@@ -10,15 +10,17 @@ export const i8 = {
       '': 'border-b',
     },
     '[&.i8-filled]:': {
-      '': 'backdrop-blur-md current-bg-grey-300 bg-current/10 border border-current/0',
+      '': ' current-bg-scope-light-0 bg-current/50 border border-current/20 rounded-base backdrop-blur-md', // backdrop-blur-md
       'data-[active=true]:':
-        'current-bg-scope-light-1 bg-current/100 current-outline-scope-color-500 outline-current/50 outline-2px outline',
+        'current-bg-scope-light-0 bg-current/100 current-outline-scope-color-500 outline-current/50 outline-2px outline',
       'dark:': {
-        '': 'current-bg-grey-600',
+        '': 'current-bg-scope-dark-0',
         'data-[active=true]:': 'current-bg-scope-dark-1',
       },
     },
-    '[&.i8-round]:': 'rounded-half-fingertip border border-current/0',
+    '[&.i8-no-border]:': 'border-0! outline-none! rounded-0!',
+    '[&.i8-transparent]:': 'bg-transparent!',
+    '[&.i8-round]:': 'rounded-half-fingertip border border-current/20',
     'aria-[disabled=true]:': 'opacity-50 cursor-not-allowed',
     // error
     'group-data-[error=true]:': {
@@ -37,7 +39,7 @@ export const i8 = {
       'first-of-type:': 'rounded-r-0',
       'last-of-type:': 'rounded-lt-0 rounded-lb-0',
       'not-last-of-type:not-first-of-type:': 'rounded-0',
-      'not-first-of-type:': 'border-l-1px border-l-grey-500/20',
+      'not-first-of-type:': 'border-l-0! border-l-grey-500/20',
       'data-[active=true]:': 'z-2',
     },
     '[&.i8-flat]:': {
@@ -53,39 +55,39 @@ export const i8 = {
     '': 'w-full outline-none h-full bg-transparent',
     'group-[.i8-flat]:data-[has-prepend=true]': 'pl-$s',
     'group-[.i8-flat]:data-[has-append=true]': 'pr-$s',
-    'group-[.i8-filled]:': 'px-$s',
+    'group-[.i8-filled]:': 'px-$m',
     'selection:': 'bg-scope-color-500 text-white',
     "group-[.i8-round]:[&[data-has-prepend='false']]:": 'pl-half-fingertip',
     "group-[.i8-round]:[&[data-has-append='false']]:": 'pr-half-fingertip',
     'group-data-[has-label]:': 'pt-$m',
     // groupped inputs paddings
-    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]:': 'pl-$s',
-    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]:': 'pr-$s',
+    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]:': 'pl-$m',
+    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]:': 'pr-$m',
   }),
 
   'i8-textarea': scFromObject({
     '': 'w-full outline-none h-full bg-transparent text-body', // !
     'group-[.i8-flat]:data-[has-prepend=true]': 'pl-$s',
     'group-[.i8-flat]:data-[has-append=true]': 'pr-$s',
-    'group-[.i8-filled]:': 'px-$s',
+    'group-[.i8-filled]:': 'px-$m',
     'selection:': 'bg-scope-color-500 text-white',
     "group-[.i8-round]:[&[data-has-prepend='false']]:": 'pl-half-fingertip',
     "group-[.i8-round]:[&[data-has-append='false']]:": 'pr-half-fingertip',
     // groupped inputs paddings
-    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]:': 'pl-$s',
-    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]:': 'pr-$s',
+    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]:': 'pl-$m',
+    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]:': 'pr-$m',
   }),
 
   'i8-ta-wrapper': scFromObject({
     '': 'w-full pt-0.75em',
-    'group-data-[has-label]:': 'mt-$s',
+    'group-data-[has-label]:': 'mt-$m',
   }),
 
   'i8-label': scFromObject({
     '': 'absolute top-0 h-fingertip text-body text-grey-400 lh-fingertip transition-all transition-duration-300 truncate text-ellipsis overflow-hidden max-w-70%',
-    'group-data-[active=true]:': 'h-[2em] lh-2em text-label font-size-[0.8em] text-scope-color-500',
-    'group-data-[has-placeholder]:': 'h-[2em] lh-2em text-label font-size-[0.8em]',
-    'group-data-[has-value]:': 'h-[2em] lh-2em text-label font-size-[0.8em]',
+    'group-data-[active=true]:': 'h-[2em] lh-2em text-label font-size-[0.7em] text-scope-color-500',
+    'group-data-[has-placeholder]:': 'h-[2em] lh-2em text-label font-size-[0.7em]',
+    'group-data-[has-value]:': 'h-[2em] lh-2em text-label font-size-[0.7em]',
     // 'data-[required=true]:after:': "content-['*'] text-error-500",
   }),
 
@@ -94,12 +96,12 @@ export const i8 = {
     // paddings
     'group-[.i8-flat]:data-[has-prepend=true]': 'pl-$s',
     'group-[.i8-flat]:data-[has-append=true]': 'pr-$s',
-    'group-[.i8-filled]:': 'px-$s',
+    'group-[.i8-filled]:': 'px-$m',
     "group-[.i8-round]:[&[data-has-prepend='false']]:": 'pl-half-fingertip',
     "group-[.i8-round]:[&[data-has-append='false']]:": 'pr-half-fingertip',
     // groupped inputs paddings
-    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]:': 'pl-$s',
-    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]:': 'pr-$s',
+    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]:': 'pl-$m',
+    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]:': 'pr-$m',
   }),
 
   'i8-hint': scFromObject({
@@ -111,33 +113,33 @@ export const i8 = {
   }),
 
   'i8-hint-wrapper': scFromObject({
-    '': 'px-$s relative flex justify-between',
+    '': 'px-$m relative flex justify-between',
     'group-[.i8-round]:': 'px-half-fingertip relative',
     'group-[.i8-flat]:': 'px-0',
   }),
 
   'i8-prepend': scFromObject({
     '': 'my-1em',
-    'group-[.i8-filled]:': 'pl-$s',
+    'group-[.i8-filled]:': 'pl-$m',
     'group-[.i8-round]:': 'pl-$m',
     // groupped inputs paddings
-    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]:': 'pl-$s',
+    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]:': 'pl-$m',
   }),
 
   'i8-append': scFromObject({
     '': 'my-1em',
-    'group-[.i8-filled]:': 'pr-$s',
+    'group-[.i8-filled]:': 'pr-$m',
     'group-[.i8-round]:': 'pr-$m',
     // groupped inputs paddings
-    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]:': 'pr-$s',
+    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]:': 'pr-$m',
   }),
 
   'i8-before': scFromObject({
-    '': 'h-fingertip flex items-center pr-$s current-icon-grey-500 icon-current/75',
+    '': 'h-fingertip flex items-center pr-$m current-icon-grey-500 icon-current/75',
     'group-data-[group-active=true]': 'current-icon-scope-color-500 icon-current/100',
   }),
   'i8-after': scFromObject({
-    '': 'h-fingertip flex items-center pl-$s current-icon-grey-500 icon-current/75',
+    '': 'h-fingertip flex items-center pl-$m current-icon-grey-500 icon-current/75',
     'group-data-[group-active=true]': 'current-icon-scope-color-500 icon-current/100',
   }),
 
