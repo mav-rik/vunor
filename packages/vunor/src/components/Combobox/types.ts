@@ -28,4 +28,6 @@ export interface TComboboxProps<T extends TComboboxItem> {
   updatePositionStrategy?: 'always' | 'optimized'
   bodyLock?: boolean
   multiple?: boolean
+  checkboxItems?: boolean
+  dropdownIcon?: string
 }

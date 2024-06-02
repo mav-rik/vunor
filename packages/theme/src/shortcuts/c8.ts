@@ -11,12 +11,12 @@ export const c8 = {
     'active:': 'c8-filled-active',
   }),
   'c8-filled-hover': scFromObject({
-    '': 'current-bg-scope-color-400',
-    'dark:': 'current-bg-scope-color-600',
+    'enabled:': 'current-bg-scope-color-400',
+    'dark:enabled:': 'current-bg-scope-color-600',
   }),
   'c8-filled-active': scFromObject({
-    '': 'current-bg-scope-color-600',
-    'dark:': 'current-bg-scope-color-400',
+    'enabled:': 'current-bg-scope-color-600',
+    'dark:enabled:': 'current-bg-scope-color-400',
   }),
 
   // FLAT (Transparent)
@@ -30,10 +30,10 @@ export const c8 = {
     'aria-[selected=true]:': 'c8-flat-selected',
   }),
   'c8-flat-hover': scFromObject({
-    '': 'bg-current/05 backdrop-blur-sm',
+    'enabled:': 'bg-current/05 backdrop-blur-sm',
   }),
   'c8-flat-active': scFromObject({
-    '': 'bg-current/10 backdrop-blur-sm',
+    'enabled:': 'bg-current/10 backdrop-blur-sm',
   }),
   'c8-flat-selected': scFromObject({
     '': 'c8-flat-hover current-text-scope-color-500 text-current current-icon-scope-color-500 icon-current/100',
@@ -62,9 +62,9 @@ export const c8 = {
     'active:': 'c8-light-active',
   }),
   'c8-light-hover': scFromObject({
-    '': 'bg-current/15',
+    'enabled:': 'bg-current/15',
   }),
   'c8-light-active': scFromObject({
-    '': 'bg-current/20',
+    'enabled:': 'bg-current/20',
   }),
 }

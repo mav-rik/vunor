@@ -1,334 +1,123 @@
 <script setup lang="ts">
-const designs = ['flat', 'filled', 'round'] as const
-const showPassword = ref(false)
+const states3 = [{ design: 'flat' }, { design: 'filled' }, { design: 'round' }] as const
+const states2 = [
+  { placeholder: 'Placeholder' },
+  { label: 'Label' },
+  { label: 'Label', placeholder: 'Placeholder' },
+]
+const states1 = [
+  {
+    title: 'Normal State',
+    bind: {},
+  },
+  {
+    title: 'Loading State',
+    bind: { loading: true, modelValue: 'Text' },
+  },
+  {
+    title: 'Readonly State',
+    bind: { readonly: true, modelValue: 'Text' },
+  },
+  {
+    title: 'Disabled State',
+    bind: { disabled: true, modelValue: 'Text' },
+  },
+  {
+    title: 'Error State',
+    bind: { error: 'Error Message' },
+  },
+] as const
+
+const iconItems = [
+  { label: '-', value: 'undefined' },
+  { label: 'Search', value: 'i--search', icon: 'i--search' },
+  { label: 'Clear', value: 'i--clear', icon: 'i--clear' },
+  { label: 'Config', value: 'i--config', icon: 'i--config' },
+  { label: 'Eye', value: 'i--eye', icon: 'i--eye' },
+]
+const typeItems = ['text', 'textarea', 'password', 'number']
+
+const iconBefore = ref<string>('undefined')
+const iconAfter = ref<string>('undefined')
+const iconPrepend = ref<string>('undefined')
+const iconAppend = ref<string>('undefined')
+
+const type = ref('text')
 </script>
 <template>
   <Card level="h2" class="with-bg relative">
     <CardHeader class="mb-$s">Inputs</CardHeader>
-    <div class="flex flex-col gap-$l relative pb-$xxl">
-      <h4 class="">Plain Inputs</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input class="w-full" :maxlength="10" :design label="Label" />
-        <Input class="w-full" :maxlength="10" :design placeholder="placeholder" />
-        <Input class="w-full" :maxlength="10" :design label="Label" hint="Supporting message" />
-        <Input class="w-full" :maxlength="10" :design label="Label" error="Error message" />
-      </div>
 
-      <div class="flex gap-$m">
-        <InputShell
-          :type="showPassword ? 'text' : 'password'"
-          label="password"
-          :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
-          @append-click="showPassword = !showPassword"
-          class="w-full"
-        />
-        <InputShell
-          :type="showPassword ? 'text' : 'password'"
-          label="password"
-          design="filled"
-          :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
-          @append-click="showPassword = !showPassword"
-          class="w-full"
-        />
-        <InputShell
-          :type="showPassword ? 'text' : 'password'"
-          label="password"
-          design="round"
-          :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
-          @append-click="showPassword = !showPassword"
-          class="w-full"
-        />
-        <InputShell
-          :type="showPassword ? 'text' : 'password'"
-          design="round"
-          :icon-append="showPassword ? 'i--eye' : 'i--eye-slash'"
-          @append-click="showPassword = !showPassword"
-          class="w-full"
-        />
+    <div class="layer-4 pa-$m rounded-$m backdrop-blur-md">
+      <div class="flex gap-$m mt-$s">
+        <Select :items="typeItems" v-model="type" label="Type" design="filled" />
       </div>
-
-      <h4 class="text-mt-$m">Inputs with icon (prepend)</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input class="w-full" :design label="Label" icon-prepend="i--search"> </Input>
-        <Input class="w-full" :design placeholder="placeholder" icon-prepend="i--search"> </Input>
-        <Input
-          class="w-full"
-          :design
-          label="Label"
-          hint="Supporting message"
-          icon-prepend="i--search"
-        >
-        </Input>
-        <Input class="w-full" :design label="Label" error="Error message" icon-prepend="i--search">
-        </Input>
+      <div class="flex gap-$m mt-$s">
+        <Select :items="iconItems" v-model="iconBefore" label="Icon Before" design="filled" />
+        <Select :items="iconItems" v-model="iconPrepend" label="Icon Prepend" design="filled" />
+        <Select :items="iconItems" v-model="iconAppend" label="Icon Append" design="filled" />
+        <Select :items="iconItems" v-model="iconAfter" label="Icon After" design="filled" />
       </div>
+    </div>
 
-      <h4 class="text-mt-$m">Inputs with icon (prepend) (required)</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input class="w-full" :design label="Label" icon-prepend="i--search" required> </Input>
-        <Input class="w-full" :design placeholder="placeholder" icon-prepend="i--search" required>
-        </Input>
-        <Input
-          class="w-full"
-          :design
-          label="Label"
-          hint="Supporting message"
-          icon-prepend="i--search"
-          required
-        >
-        </Input>
-        <Input
-          class="w-full"
-          :design
-          label="Label"
-          error="Error message"
-          icon-prepend="i--search"
-          required
-        >
-        </Input>
+    <div class="relative mb-$xxl flex flex-col gap-$l">
+      <template v-for="state1 of states1">
+        <h4 class="text-mt-$m">{{ state1.title }}</h4>
+        <div v-for="state2 of states2">
+          <div class="flex gap-$m flex-wrap w-full max-w-1020px">
+            <Input
+              class="flex-grow"
+              v-for="state3 of states3"
+              v-bind="{ ...state1.bind, ...state2, ...state3 }"
+              :icon-before="iconBefore === 'undefined' ? undefined : iconBefore"
+              :icon-after="iconAfter === 'undefined' ? undefined : iconAfter"
+              :icon-prepend="iconPrepend === 'undefined' ? undefined : iconPrepend"
+              :icon-append="iconAppend === 'undefined' ? undefined : iconAppend"
+              :type
+            />
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <h3>Groupped Inputs</h3>
+
+    <div class="layer-2 pa-$m rounded-$m backdrop-blur-md">
+      <div class="flex gap-$m mt-$s">
+        <Select :items="typeItems" v-model="type" label="Type" design="filled" />
       </div>
-
-      <h4 class="text-mt-$m">Inputs with icon (append)</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input class="w-full" :design label="Label" icon-append="i--input"> </Input>
-        <Input class="w-full" :design placeholder="placeholder" icon-append="i--input"> </Input>
-        <Input
-          class="w-full"
-          :design
-          label="Label"
-          hint="Supporting message"
-          icon-append="i--input"
-        >
-        </Input>
-        <Input class="w-full" :design label="Label" error="Error message" icon-append="i--input">
-        </Input>
+      <div class="flex gap-$m mt-$s">
+        <Select :items="iconItems" v-model="iconBefore" label="Icon Before" design="filled" />
+        <Select :items="iconItems" v-model="iconPrepend" label="Icon Prepend" design="filled" />
+        <Select :items="iconItems" v-model="iconAppend" label="Icon Append" design="filled" />
+        <Select :items="iconItems" v-model="iconAfter" label="Icon After" design="filled" />
       </div>
+    </div>
 
-      <h4 class="text-mt-$m">Inputs with icon (prepend and append)</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input class="w-full" :design label="Label" icon-prepend="i--alert" icon-append="i--input">
-        </Input>
-        <Input
-          class="w-full"
-          :design
-          placeholder="placeholder"
-          icon-prepend="i--alert"
-          icon-append="i--input"
-        >
-        </Input>
-        <Input
-          class="w-full"
-          :design
-          label="Label"
-          hint="Supporting message"
-          icon-prepend="i--alert"
-          icon-append="i--input"
-        >
-        </Input>
-        <Input
-          class="w-full"
-          :design
-          label="Label"
-          error="Error message"
-          icon-prepend="i--alert"
-          icon-append="i--input"
-        >
-        </Input>
-      </div>
-
-      <h4 class="text-mt-$m">Inputs with icon (before)</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input class="w-full" :design label="Label" icon-before="i--search"> </Input>
-        <Input class="w-full" :design placeholder="placeholder" icon-before="i--search"> </Input>
-        <Input
-          class="w-full"
-          :design
-          label="Label"
-          hint="Supporting message"
-          icon-before="i--search"
-        >
-        </Input>
-        <Input class="w-full" :design label="Label" error="Error message" icon-before="i--search">
-        </Input>
-      </div>
-
-      <h4 class="text-mt-$m">Inputs with icon (after)</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input class="w-full" :design label="Label" icon-after="i--input"> </Input>
-        <Input class="w-full" :design placeholder="placeholder" icon-after="i--input"> </Input>
-        <Input class="w-full" :design label="Label" hint="Supporting message" icon-after="i--input">
-        </Input>
-        <Input class="w-full" :design label="Label" error="Error message" icon-after="i--input">
-        </Input>
-      </div>
-
-      <h4 class="text-mt-$m">Inputs with icon (before and after)</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input class="w-full" :design label="Label" icon-before="i--alert" icon-after="i--input">
-        </Input>
-        <Input
-          class="w-full"
-          :design
-          placeholder="placeholder"
-          icon-before="i--alert"
-          icon-after="i--input"
-        >
-        </Input>
-        <Input
-          class="w-full"
-          :design
-          label="Label"
-          hint="Supporting message"
-          icon-before="i--alert"
-          icon-after="i--input"
-        >
-        </Input>
-        <Input
-          class="w-full"
-          :design
-          label="Label"
-          error="Error message"
-          icon-before="i--alert"
-          icon-after="i--input"
-        >
-        </Input>
-      </div>
-
-      <h4 class="text-mt-$m">Groupped inputs</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input :design>
-          <InputShell
-            class="w-xxs"
-            group-item
-            :design
-            label="Label1"
-            icon-prepend="i--alert"
-            type="number"
-          >
-          </InputShell>
-          <InputShell class="w-xxs" group-item :design label="Label2" icon-append="i--input">
-          </InputShell>
-        </Input>
-
-        <Input :design hint="Supporting message">
-          <InputShell
-            class="w-xxs"
-            group-item
-            :design
-            label="Label1"
-            icon-prepend="i--alert"
-            type="number"
-          >
-          </InputShell>
-          <InputShell class="w-xxs" group-item :design label="Label2" icon-append="i--input">
-          </InputShell>
-        </Input>
-        <Input :design error="Error message">
-          <InputShell
-            class="w-xxs"
-            group-item
-            :design
-            label="Label1"
-            icon-prepend="i--alert"
-            type="number"
-          >
-          </InputShell>
-          <InputShell class="w-xxs" group-item :design label="Label2" icon-append="i--input">
-          </InputShell>
-        </Input>
-      </div>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input :design>
-          <InputShell
-            class="w-xxs"
-            group-item
-            :design
-            label="Label1"
-            icon-append="i--alert"
-            type="number"
-          >
-          </InputShell>
-          <InputShell class="w-xxs" group-item :design label="Label2" icon-prepend="i--input">
-          </InputShell>
-        </Input>
-
-        <Input :design hint="Supporting message">
-          <InputShell
-            class="w-xxs"
-            group-item
-            :design
-            label="Label1"
-            icon-append="i--alert"
-            type="number"
-          >
-          </InputShell>
-          <InputShell class="w-xxs" group-item :design label="Label2" icon-prepend="i--input">
-          </InputShell>
-        </Input>
-        <Input :design error="Error message">
-          <InputShell
-            class="w-xxs"
-            group-item
-            :design
-            label="Label1"
-            icon-append="i--alert"
-            type="number"
-          >
-          </InputShell>
-          <InputShell class="w-xxs" group-item :design label="Label2" icon-prepend="i--input">
-          </InputShell>
-        </Input>
-      </div>
-
-      <h4 class="text-mt-$m">Text area</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input class="w-full" type="textarea" :design label="Label" />
-        <Input class="w-full" type="textarea" :design placeholder="placeholder" />
-        <Input class="w-full" type="textarea" :design label="Label" hint="Supporting message" />
-        <Input class="w-full" type="textarea" :design label="Label" error="Error message" />
-      </div>
-
-      <h4 class="text-mt-$m">Text area with icons</h4>
-      <div class="flex gap-$m" v-for="design of designs">
-        <Input
-          class="w-full"
-          type="textarea"
-          icon-prepend="i--alert"
-          icon-append="i--input"
-          :design
-          :maxlength="100"
-          label="Label"
-        />
-        <Input
-          class="w-full"
-          type="textarea"
-          icon-prepend="i--alert"
-          icon-append="i--input"
-          :design
-          :maxlength="100"
-          placeholder="placeholder"
-        />
-        <Input
-          class="w-full"
-          type="textarea"
-          icon-prepend="i--alert"
-          icon-append="i--input"
-          :design
-          :maxlength="100"
-          label="Label"
-          hint="Supporting message"
-        />
-        <Input
-          class="w-full"
-          type="textarea"
-          icon-prepend="i--alert"
-          icon-append="i--input"
-          :design
-          :maxlength="100"
-          label="Label"
-          error="Error message"
-        />
-      </div>
+    <div class="relative mb-$xxl flex flex-col gap-$l">
+      <template v-for="state1 of states1">
+        <h4 class="text-mt-$m">{{ state1.title }}</h4>
+        <div v-for="state2 of states2">
+          <div class="flex gap-$m flex-wrap w-full max-w-1020px">
+            <Input
+              class="flex-grow"
+              v-for="state3 of states3"
+              v-bind="{ ...state1.bind, ...state2, ...state3 }"
+              :icon-before="iconBefore === 'undefined' ? undefined : iconBefore"
+              :icon-after="iconAfter === 'undefined' ? undefined : iconAfter"
+            >
+              <InputShell
+                v-for="n in 3"
+                v-bind="{ ...state1.bind, ...state2, ...state3 }"
+                :icon-prepend="iconPrepend === 'undefined' ? undefined : iconPrepend"
+                :icon-append="iconAppend === 'undefined' ? undefined : iconAppend"
+                :type
+                group-item
+              />
+            </Input>
+          </div>
+        </div>
+      </template>
     </div>
   </Card>
 </template>

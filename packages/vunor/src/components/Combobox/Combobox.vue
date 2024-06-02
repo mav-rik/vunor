@@ -14,6 +14,7 @@ const props = withDefaults(
   {
     sideOffset: 2,
     popupPosition: 'popper',
+    dropdownIcon: 'i--chevron-down',
   }
 )
 defineEmits<TInputEmits>()
@@ -30,15 +31,6 @@ const shellProps = computed(() => {
 
 const modelOpen = defineModel<boolean>('open')
 const modelValue = defineModel<string | string[]>()
-
-const modelValueString = computed<string>(() => {
-  if (!modelValue.value && (modelValue.value as unknown as number) !== 0) return ''
-  return typeof modelValue.value === 'string'
-    ? modelValue.value
-    : Array.isArray(modelValue.value)
-      ? modelValue.value.map(item => flatItems.value.get(item as string) || '').join(', ')
-      : String(modelValue.value)
-})
 
 const groups = computed(() => {
   if (Array.isArray(props.items)) {
@@ -65,27 +57,58 @@ const groups = computed(() => {
 })
 
 const flatItems = computed(() => {
-  const r = new Map<string | null | undefined, string>()
+  const r = [] as T[]
   for (const grp of groups.value) {
     for (const item of grp.items) {
-      r.set(item.value, item.label || String(item.value))
+      r.push(item)
     }
   }
   return r
+})
+
+const flatItemsMap = computed(() => {
+  const r = new Map<string | number | null | undefined, T>()
+  for (const item of flatItems.value) {
+    r.set(item.value, item)
+  }
+  return r
+})
+
+function isItemSelected(v?: string | null) {
+  return Array.isArray(modelValue.value)
+    ? modelValue.value.includes(v as string)
+    : modelValue.value === v
+}
+
+const selectedItems = computed(() => {
+  if (modelValue.value && Array.isArray(modelValue.value)) {
+    return modelValue.value.map(v => flatItemsMap.value.get(v)!) as T[]
+  } else {
+    const item = flatItemsMap.value.get(modelValue.value)
+    if (item) {
+      return [item] as T[]
+    }
+  }
+  return [] as T[]
+})
+
+const selectedLabels = computed<string>(() => {
+  if (!modelValue.value && (modelValue.value as unknown as number) !== 0) return ''
+  return selectedItems.value.map(item => item.label || item.value).join(', ')
 })
 
 function isItemDisabled(val: string | null | undefined) {
   return props.disabledValues?.includes(val)
 }
 
-const displayValue = computed(() => flatItems.value.get(modelValue.value as string) || '')
+const displayValue = computed(() => flatItemsMap.value.get(modelValue.value as string)?.label || '')
 
 const input = computed(
   () => inputTemplate.value?.$el.querySelector('input') as HTMLInputElement | undefined
 )
 
 async function openPopup() {
-  if (!props.disabled && !usePopover.value) {
+  if (!props.readonly && !props.disabled && !usePopover.value) {
     modelOpen.value = !modelOpen.value
     await nextTick()
     if (input.value) {
@@ -136,7 +159,7 @@ watch([modelOpen], async () => {
 const popoverProps = computed(() => ({
   class: {
     [typeof props.popupClass === 'string' ? props.popupClass : 'scope-primary']: true,
-    'select-content group rounded': true,
+    'select-content group/i8 rounded': true,
     ...(typeof props.popupClass === 'object' ? props.popupClass : {}),
   },
   dataDesign: props.popupRound ? 'round' : undefined,
@@ -189,6 +212,9 @@ function onBlur() {
   focused.value = false
 }
 function onKeydown(event: KeyboardEvent) {
+  if (props.disabled || props.readonly) {
+    return
+  }
   if (['Enter', 'Space'].includes(event.code)) {
     popupOpen.value = true
   } else if (/Key[a-zA-Z0-9]/.test(event.code)) {
@@ -209,9 +235,9 @@ function onKeydown(event: KeyboardEvent) {
         </ComboboxEmpty>
 
         <ComboboxGroup v-for="(g, grpIndex) of groups" :key="grpIndex">
-          <ComboboxSeparator v-if="grpIndex > 0" class="h-[1px] bg-grey-500/10 mx-$s" />
+          <ComboboxSeparator v-if="grpIndex > 0" class="select-separator" />
           <ComboboxLabel class="select-grp-label" v-if="!!g.grp">
-            <slot name="group" v-bind="g">
+            <slot name="group-label" v-bind="g">
               <span>{{ g.grp }}</span>
             </slot>
           </ComboboxLabel>
@@ -226,12 +252,19 @@ function onKeydown(event: KeyboardEvent) {
             @click="focusOnInput"
           >
             <span>
-              <slot name="item" v-bind="item">
-                {{ item.label }}
+              <slot name="item" v-bind="item" :selected="isItemSelected(item.value)">
+                <Checkbox
+                  v-if="checkboxItems"
+                  readonly
+                  :label="item.label"
+                  :model-value="isItemSelected(item.value)"
+                />
+                <template v-else>
+                  {{ item.label }}
+                </template>
               </slot>
             </span>
           </ComboboxItem>
-          <ComboboxSeparator class="h-[1px] bg-grass6 m-[5px]" />
         </ComboboxGroup>
       </ComboboxViewport>
     </ComboboxContent>
@@ -257,24 +290,36 @@ function onKeydown(event: KeyboardEvent) {
           :active="modelOpen"
           v-model="modelValue"
           v-bind="shellProps"
-          v-slot="slotProps"
+          :type="usePopover ? 'text' : shellProps?.type"
           :label="usePopover ? '' : shellProps?.label"
           :placeholder="usePopover ? 'Search' : shellProps?.placeholder"
           :design="usePopover ? 'filled' : shellProps?.design"
-          :icon-append="usePopover ? undefined : 'i--chevron-down'"
+          :icon-append="usePopover ? undefined : dropdownIcon"
           :icon-prepend="usePopover ? 'i--search' : shellProps?.iconPrepend"
-          :class="usePopover ? 'i8-no-border' : ''"
+          :class="usePopover ? 'i8-no-border' : 'i8-combobox'"
+          @append-click="openPopup"
+          :data-expanded="usePopover ? undefined : modelOpen"
         >
-          <ComboboxInput as-child class="i8-input">
-            <input
-              class="i8-input"
-              ref="input"
-              v-bind="slotProps"
-              @focus="slotProps.onFocus"
-              @blur="slotProps.onBlur"
-              @keydown.home.end="handleHomeEnd"
-            />
-          </ComboboxInput>
+          <template v-slot="slotProps">
+            <ComboboxInput as-child class="i8-input">
+              <input
+                class="i8-input"
+                ref="input"
+                v-bind="slotProps"
+                @focus="slotProps.onFocus"
+                @blur="slotProps.onBlur"
+                @keydown.home.end="handleHomeEnd"
+              />
+            </ComboboxInput>
+          </template>
+
+          <template #prepend v-if="!usePopover && !!$slots.prepend">
+            <slot name="prepend"></slot>
+          </template>
+
+          <template #append v-if="!usePopover && !!$slots.append">
+            <slot name="append"></slot>
+          </template>
         </InputShell>
       </DefineInputShellTemplate>
 
@@ -286,7 +331,7 @@ function onKeydown(event: KeyboardEvent) {
       </ComboboxAnchor>
 
       <UseContentTemplate v-if="usePopover" />
-      <ComboboxPortal as-child v-else>
+      <ComboboxPortal v-else as-child>
         <UseContentTemplate />
       </ComboboxPortal>
     </ComboboxRoot>
@@ -294,80 +339,141 @@ function onKeydown(event: KeyboardEvent) {
 
   <!-- reusabe templates end -->
 
-  <template v-if="usePopover">
+  <template v-if="readonly || disabled">
+    <InputShell
+      v-if="groupItem"
+      v-bind="shellProps"
+      v-model="modelValue"
+      :class
+      :icon-append="props.iconAppend || dropdownIcon"
+    >
+      <template #prepend v-if="!!$slots.prepend">
+        <slot name="prepend"></slot>
+      </template>
+
+      <template #append v-if="!!$slots.append">
+        <slot name="append"></slot>
+      </template>
+    </InputShell>
+    <Input
+      v-else
+      v-bind="forwardProps"
+      v-model="modelValue"
+      :class
+      :icon-append="props.iconAppend || dropdownIcon"
+    >
+      <template #before v-if="!!$slots.before">
+        <slot name="before"></slot>
+      </template>
+      <template #after v-if="!!$slots.after">
+        <slot name="after"></slot>
+      </template>
+
+      <template #prepend v-if="!!$slots.prepend">
+        <slot name="prepend"></slot>
+      </template>
+      <template #append v-if="!!$slots.append">
+        <slot name="append"></slot>
+      </template>
+    </Input>
+  </template>
+
+  <template v-else-if="usePopover">
     <PopoverRoot v-model:open="popupOpen">
       <DefineItemsTemplate>
-        <!-- <div class="i8-ta-wrapper">
-          <div class="i8-textarea flex items-center">
-            {{ modelValueString }}
+        <slot name="selected-items" :items="selectedItems">
+          <div class="combobox-multi-input">
+            <div class="combobox-multi-items">
+              {{ selectedLabels }}
+            </div>
           </div>
-        </div> -->
-        <div class="i8-input relative flex items-center">
-          <div class="text-ellipsis overflow-hidden whitespace-nowrap absolute max-w-full pr-$m">
-            {{ modelValueString }}
-          </div>
-        </div>
+        </slot>
       </DefineItemsTemplate>
 
-      <PopoverTrigger v-if="groupItem" as-child>
+      <PopoverTrigger v-if="groupItem" as-child :data-expanded="popupOpen" class="i8-combobox">
         <InputShell
-          class="text-left outline-0 outline-offset-0"
+          class="combobox-embedded-input"
           tabindex="0"
           @keydown="onKeydown"
           @focus="onFocus"
           @blur="onBlur"
           v-bind="forwardProps"
-          :model-value="modelValueString"
+          :model-value="selectedLabels"
           readonly
-          icon-append="i--chevron-down"
+          :icon-append="dropdownIcon"
+          @append-click="popupOpen = !popupOpen"
           :class
           :active="popupOpen || focused"
-          ><UseItemsTemplate />
+        >
+          <template>
+            <UseItemsTemplate />
+          </template>
+
+          <template #prepend v-if="!!$slots.prepend">
+            <slot name="prepend"></slot>
+          </template>
+          <template #append v-if="!!$slots.append">
+            <slot name="append"></slot>
+          </template>
         </InputShell>
       </PopoverTrigger>
       <Input
         v-else
         v-bind="forwardProps"
-        :model-value="modelValueString"
+        :model-value="selectedLabels"
         :class
         :active="popupOpen"
-        v-slot="slotProps"
+        :data-expanded="popupOpen"
+        class="i8-combobox"
       >
-        <PopoverTrigger as-child>
-          <InputShell
-            class="text-left outline-0 outline-offset-0"
-            tabindex="0"
-            @keydown="onKeydown"
-            @focus="onFocus"
-            @blur="onBlur"
-            v-bind="slotProps"
-            readonly
-            icon-append="i--chevron-down"
-            :model-value="modelValueString"
-            :active="popupOpen || focused"
-          >
-            <UseItemsTemplate />
-            <template v-slot:append="{ iconAppend }">
-              <div class="flex gap-$s">
-                <Icon
-                  v-if="!!modelValueString"
-                  name="i--clear"
-                  @click.stop="clearValue"
-                  class="hover:current-icon-scope-color-500 hover:icon-current cursor-pointer"
-                />
-                <Icon
-                  :name="iconAppend!"
-                  class="hover:current-icon-scope-color-500 hover:icon-current cursor-pointer"
-                />
-              </div>
-            </template>
-          </InputShell>
-        </PopoverTrigger>
+        <template v-slot="slotProps">
+          <PopoverTrigger as-child>
+            <InputShell
+              class="combobox-embedded-input"
+              tabindex="0"
+              @keydown="onKeydown"
+              @focus="onFocus"
+              @blur="onBlur"
+              v-bind="slotProps"
+              readonly
+              :icon-append="dropdownIcon"
+              @append-click="popupOpen = !popupOpen"
+              :model-value="selectedLabels"
+              :active="popupOpen || focused"
+            >
+              <UseItemsTemplate />
+
+              <template #prepend v-if="!!$slots.prepend">
+                <slot name="prepend"></slot>
+              </template>
+              <template v-slot:append="{ iconAppend }">
+                <div class="flex gap-$s">
+                  <Icon
+                    v-if="!!selectedLabels && !readonly && !disabled"
+                    name="i--clear"
+                    @click.stop="clearValue"
+                    class="combobox-c8-icon"
+                  />
+                  <Icon :name="dropdownIcon" class="combobox-c8-icon" />
+                </div>
+              </template>
+            </InputShell>
+          </PopoverTrigger>
+        </template>
+
+        <template #before v-if="!!$slots.before">
+          <slot name="before"></slot>
+        </template>
+        <template #after v-if="!!$slots.after">
+          <slot name="after"></slot>
+        </template>
       </Input>
 
       <PopoverPortal>
         <PopoverContent
           v-bind="popoverContentProps"
+          avoidCollisions
+          :collision-padding="50"
           :style="{
             'max-height': 'var(--radix-popper-available-height)',
             'overflow': 'auto',
@@ -395,5 +501,9 @@ function onKeydown(event: KeyboardEvent) {
 
 .select-content > div[data-radix-combobox-viewport]::-webkit-scrollbar {
   display: block;
+}
+
+[data-expanded='true'].i8-combobox .i8-append .i--chevron-down {
+  transform: scaleY(-1);
 }
 </style>

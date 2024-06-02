@@ -11,9 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "@prostojs/palitra": "^0.0.3",
-    "@unocss/preset-mini": "^0.59.4",
+    "@unocss/preset-mini": "^0.60.4",
     "defu": "^6.1.4",
-    "unocss": "^0.59.4"
+    "unocss": "^0.60.4"
   },
   "devDependencies": {
     "vitest": "^1.6.0"

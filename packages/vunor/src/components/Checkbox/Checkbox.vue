@@ -7,6 +7,7 @@ defineProps<{
   required?: boolean
   verticalMiddle?: boolean
   reverse?: boolean
+  readonly?: boolean
 }>()
 </script>
 
@@ -14,8 +15,12 @@ defineProps<{
   <!-- [&>.checkbox]:hover:bg-neutral-100 -->
   <div>
     <label
+      :style="{
+        'pointer-events': readonly ? 'none' : undefined,
+      }"
       :aria-disabled="disabled"
-      class="checkbox-root group"
+      class="checkbox-root group/cb"
+      :aria-readonly="readonly || undefined"
       :data-error="!!error"
       :class="{
         'items-center': verticalMiddle,
@@ -28,7 +33,9 @@ defineProps<{
         :required="true"
         :aria-required="required"
         v-model:checked="modelValue"
+        :tabindex="readonly ? '-1' : undefined"
         class="checkbox"
+        :aria-readonly="readonly || undefined"
       >
         <CheckboxIndicator class="checkbox-indicator">
           <Icon v-if="modelValue === 'indeterminate'" name="i--dash" class="checkbox-icon" />

@@ -50,7 +50,7 @@ function focusInput(event: MouseEvent) {
 <template>
   <Primitive
     @click="focusInput"
-    class="i8 group flex-grow"
+    class="i8 group/i8 flex-grow"
     :class="{
       'i8-flat': design === 'flat',
       'i8-filled': design === 'filled' || design === 'round',
@@ -111,12 +111,13 @@ function focusInput(event: MouseEvent) {
     </div>
 
     <div
-      v-if="$slots.append || !!iconAppend"
+      v-if="$slots.append || !!iconAppend || loading"
       class="i8-append"
       :class="{
         'i8-icon-clickable': !!onAppendClick,
       }"
     >
+      <LoadingIndicator v-if="loading" class="text-grey" />
       <slot
         name="append"
         v-bind="attrs"

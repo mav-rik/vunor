@@ -3,7 +3,9 @@ import { useInputPi } from './pi'
 import type { TInputProps, TInputEmits } from './types'
 import { useInputShellProps } from './utils'
 
-defineProps<TInputProps>()
+withDefaults(defineProps<TInputProps>(), {
+  groupTemplate: 'repeat(1, 1fr)',
+})
 const shellProps = useInputShellProps()
 const modelValue = defineModel<string | number>()
 
@@ -14,7 +16,7 @@ const emit = defineEmits<TInputEmits>()
 
 <template>
   <div
-    class="group"
+    class="group/i8"
     :class="{
       'i8-flat': design === 'flat',
       'i8-filled': design === 'filled' || design === 'round',
@@ -39,7 +41,7 @@ const emit = defineEmits<TInputEmits>()
 
       <div class="w-full relative">
         <div
-          class="flex w-full"
+          class="i8-input-group w-full"
           @click="emit('click', $event)"
           :class="{
             'cursor-pointer': !!onClick,
@@ -95,3 +97,12 @@ const emit = defineEmits<TInputEmits>()
     </div>
   </div>
 </template>
+
+<style>
+.i8-input-group {
+  display: grid;
+  grid-template-columns: v-bind(groupTemplate);
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+}
+</style>

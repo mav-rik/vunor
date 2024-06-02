@@ -157,11 +157,12 @@ const v1 = ref<string>()
           placeholder="Pick an item"
         />
       </div>
-      <h4 class="text-mb-$s text-mt-$m">Groupped Inputs</h4>
-      <div class="relative mb-$xxl flex flex-col gap-$l max-w-sm">
-        <Input design="round" icon-before="i--cake">
+      <h4 class="text-mb-$s text-mt-$m">Groupped Selects</h4>
+      <div class="relative mb-$xxl flex flex-col gap-$l max-w-lg">
+        <Input design="round" icon-before="i--cake" group-template="2fr 3fr 2fr">
           <Select
             group-item
+            popup-position="popper"
             icon-prepend="i--day"
             :items="getDays(month, year)"
             :disabled-values="disabled"
@@ -171,6 +172,7 @@ const v1 = ref<string>()
           />
           <Select
             group-item
+            popup-position="popper"
             icon-prepend="i--month"
             :items="months"
             :disabled-values="disabled"
@@ -180,6 +182,7 @@ const v1 = ref<string>()
           />
           <Select
             group-item
+            popup-position="popper"
             :items="years"
             :disabled-values="disabled"
             v-model="year"

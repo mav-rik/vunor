@@ -5,7 +5,9 @@ import type { TSelectBaseProps, TSelectItem } from './types'
 
 type Props = Omit<TInputProps & TInputShellProps, 'active'> & TSelectBaseProps<T>
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  sideOffset: 2,
+})
 defineEmits<TInputEmits>()
 
 const forwardProps = computed(() => {
@@ -23,7 +25,7 @@ const modelValue = defineModel<string>()
     v-model="modelValue"
     :disabled-values
     :popup-class
-    :popup-round="popupRound || design === 'round'"
+    :popup-round
     :value-class
     :icon-class
     :class
@@ -44,7 +46,7 @@ const modelValue = defineModel<string>()
         class="cursor-pointer select-none"
         v-bind="forwardProps"
         :icon-append="typeof iconAppend === 'string' ? iconAppend : s.icon"
-        :model-value="s.displayValue"
+        :model-value="s.displayItem?.label || s.displayItem?.value"
         :active="s.open"
         readonly
         @click="s.openPopup"
@@ -61,7 +63,7 @@ const modelValue = defineModel<string>()
       class="select-none"
       v-bind="forwardProps"
       :icon-append="typeof iconAppend === 'string' ? iconAppend : s.icon"
-      :model-value="s.displayValue"
+      :model-value="s.displayItem?.label || s.displayItem?.value"
       :active="s.open"
       readonly
       @click="s.openPopup"
@@ -71,7 +73,7 @@ const modelValue = defineModel<string>()
         <InputShell
           class="cursor-pointer select-none"
           v-bind="shellProps"
-          :model-value="s.displayValue"
+          :model-value="s.displayItem?.label || s.displayItem?.value"
           readonly
           type="text"
           tabindex="-1"

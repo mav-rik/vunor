@@ -11,6 +11,7 @@ declare global {
   const PreviewCards: typeof import('@/previews/cards.vue')['default']
   const PreviewCheckboxes: typeof import('@/previews/checkboxes.vue')['default']
   const PreviewClickable: typeof import('@/previews/clickable.vue')['default']
+  const PreviewComboboxes: typeof import('@/previews/comboboxes.vue')['default']
   const PreviewInputable: typeof import('@/previews/inputable.vue')['default']
   const PreviewInputs: typeof import('@/previews/inputs.vue')['default']
   const PreviewInteractable: typeof import('@/previews/interactable.vue')['default']

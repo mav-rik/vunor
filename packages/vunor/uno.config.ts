@@ -35,7 +35,18 @@ export default defineConfig({
       baseRadius: '.5em',
     }),
   ],
-  shortcuts: [...shortcuts],
+  shortcuts: [
+    ...shortcuts,
+    {
+      'segmented-btn': scFromObject({
+        'first-of-type:': 'rounded-r-0!',
+        'last-of-type:': 'rounded-lt-0! rounded-lb-0!',
+        'not-last-of-type:not-first-of-type:': 'rounded-0!',
+        'not-first-of-type:': 'border-l-0! border-l-grey-500/20',
+        'data-[active=true]:': 'z-2',
+      }),
+    },
+  ],
   // theme: {
   //   fontFamily: {
   //     sans: 'Inter, sans-serif',

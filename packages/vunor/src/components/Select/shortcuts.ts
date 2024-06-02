@@ -23,4 +23,5 @@ export const selectShortcuts = {
     'group-data-[design=round]:[&>span]:': 'px-half-fingertip',
     '[&>span]:data-[state=checked]:': 'text-scope-color-500 fw-700!',
   }),
+  'select-separator': 'h-[1px] bg-grey-500/10 mx-$s',
 }

@@ -31,10 +31,10 @@ const groups = computed(() => {
 })
 
 const flatItems = computed(() => {
-  const r = new Map<string | null | undefined, string>()
+  const r = new Map<string | null | undefined, T>()
   for (const grp of groups.value) {
     for (const item of grp.items) {
-      r.set(item.value, item.label || String(item.value))
+      r.set(item.value, item)
     }
   }
   return r
@@ -50,7 +50,7 @@ async function openPopup() {
   }
 }
 
-const displayValue = computed(() => flatItems.value.get(modelValue.value) || '')
+const displayItem = computed(() => flatItems.value.get(modelValue.value))
 
 function getSearchValue(item: T) {
   return item.search || item.label?.replace(/[^\p{L}\p{N}\p{P}\p{M}\p{Zs}]/gu, '').trim()
@@ -65,10 +65,16 @@ function getSearchValue(item: T) {
     :required
     :default-value="defaultValue"
   >
-    <slot :displayValue :value="modelValue" :openPopup :open :icon="'i--chevron-down'">
+    <slot :displayItem="displayItem" :value="modelValue" :openPopup :open :icon="'i--chevron-down'">
       <SelectTrigger :class>
+        <Icon
+          v-if="!!displayItem?.icon"
+          :name="displayItem.icon"
+          class="inline-block vertical-middle mr-$xs"
+          style="color: currentColor"
+        />
         <SelectValue :placeholder :class="valueClass">
-          {{ displayValue }}
+          {{ displayItem?.label }}
         </SelectValue>
         <Icon name="i--chevron-down" :class="iconClass" />
       </SelectTrigger>
@@ -96,7 +102,7 @@ function getSearchValue(item: T) {
 
         <SelectViewport>
           <template v-for="(g, grpIndex) of groups" :key="grpIndex">
-            <SelectSeparator v-if="grpIndex > 0" class="h-[1px] bg-grey-500/10 mx-$s" />
+            <SelectSeparator v-if="grpIndex > 0" class="select-separator" />
             <SelectLabel class="select-grp-label" v-if="!!g.grp">
               <slot name="group" v-bind="g">
                 <span>{{ g.grp }}</span>
@@ -118,6 +124,12 @@ function getSearchValue(item: T) {
                 </SelectItemText>
                 <span>
                   <slot name="item" v-bind="item">
+                    <Icon
+                      v-if="!!item.icon"
+                      :name="item.icon"
+                      class="inline-block vertical-middle mr-$xs"
+                      style="color: currentColor"
+                    />
                     {{ item.label }}
                   </slot>
                 </span>

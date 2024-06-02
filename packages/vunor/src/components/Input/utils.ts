@@ -15,7 +15,8 @@ export function useHtmlInputAttrs(): ComputedRef<TInputAttrs> | undefined {
       'disabled': props.disabled,
       'readonly': props.readonly,
       'data-has-prepend': !!instance.slots.prepend || !!instance.props.iconPrepend,
-      'data-has-append': !!instance.slots.append || !!instance.props.iconAppend,
+      'data-has-append':
+        !!instance.slots.append || !!instance.props.iconAppend || !!instance.props.loading,
       'data-has-label': !!props.label,
     }))
   }
@@ -40,6 +41,7 @@ export function useInputProps(): ComputedRef<TInputProps> | undefined {
       maxlength: props.maxlength,
       required: props.required,
       active: props.active,
+      loading: props.loading,
       onAppendClick: props.onAppendClick,
       onPrependClick: props.onPrependClick,
       iconBefore: props.iconBefore,
@@ -62,6 +64,7 @@ export function useInputShellProps(): ComputedRef<TInputShellProps> | undefined 
       readonly: props.readonly,
       design: props.design,
       disabled: props.disabled,
+      loading: props.loading,
       iconPrepend: props.iconPrepend,
       iconAppend: props.iconAppend,
       groupItem: props.groupItem,

@@ -13,6 +13,8 @@ const c = ref<boolean | 'indeterminate'>('indeterminate')
         vertical-middle
       />
       <Checkbox label="Checkbox (scope-secondary)" class="scope-secondary" />
+      <Checkbox label="Checkbox Readonly" readonly />
+      <Checkbox label="Checkbox Readonly" readonly :model-value="true" />
       <Checkbox label="Checkbox Disabled" disabled />
       <Checkbox label="Checkbox (scope-secondary) disabled" class="scope-secondary" disabled />
       <Checkbox :model-value="true" label="Checkbox Disabled" disabled />

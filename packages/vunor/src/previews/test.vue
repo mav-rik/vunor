@@ -1,126 +1,67 @@
 <script setup lang="ts">
-import type { TComboboxItems } from '../components/Combobox/types'
-const designs = ['flat', 'filled', 'round'] as const
-const items: TComboboxItems = {
-  '': [{ value: null, label: 'None' }],
-  'Fruits': [
-    { value: '👍 Durian', label: '❓ Secret', search: 'durian' },
-    '🍏 Apple',
-    '🍌 Banana',
-    '🫐 Blueberry',
-    '🍇 Grapes',
-    '🍍 Pineapple',
-  ],
-  'Vegetables': ['🍆 Aubergine', '🥦 Broccoli', '🥕 Carrot', 'Courgette', 'Leek'],
-}
-const disabled = ['Courgette']
-const v1 = ref<string>()
+const designs = ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat'] as const
+const maxVisible = ref(25)
 </script>
 <template>
   <Card level="h2" class="with-bg relative">
     <CardHeader class="mb-$s">Testing</CardHeader>
 
-    <div class="relative mb-$xxl flex flex-col gap-$l">
-      <h4 class="text-mt-$m">Combobox (Inputs)</h4>
-      <div class="flex gap-$m flex-wrap w-full">
-        <Combobox
-          v-for="design of designs"
-          @append-click.stop="v1 ? (v1 = undefined) : ''"
-          :popup-class="{
-            'scope-primary': true,
-          }"
-          class="max-w-sm w-full flex-grow"
-          :design
-          :items
-          :disabled-values="disabled"
-          :hint="`Value = ${v1}`"
-          label="A fruit or Vegetable"
-        />
-      </div>
-      <h4 class="text-mt-$m">Combobox (Multiple)</h4>
-      <div class="flex gap-$m flex-wrap w-full">
-        <Combobox
-          v-for="design of designs"
-          @append-click.stop="v1 ? (v1 = undefined) : ''"
-          :popup-class="{
-            'scope-primary': true,
-          }"
-          :popup-round="design === 'round'"
-          multiple
-          class="max-w-sm w-full"
-          :design
-          :items
-          :disabled-values="disabled"
-          :hint="`Value = ${v1}`"
-          label="A fruit or Vegetable"
-        />
-      </div>
-      <h4 class="text-mt-$m">Combobox (Groupped)</h4>
-      <div class="flex gap-$m flex-wrap w-full">
-        <Input v-for="design of designs" :design>
-          <Combobox
-            @append-click.stop="v1 ? (v1 = undefined) : ''"
-            :popup-class="{
-              'scope-primary': true,
-            }"
-            :popup-round="design === 'round'"
-            :design
-            :items
-            :disabled-values="disabled"
-            label="Left Item"
-            group-item
-          />
-          <Combobox
-            @append-click.stop="v1 ? (v1 = undefined) : ''"
-            :popup-class="{
-              'scope-primary': true,
-            }"
-            multiple
-            :popup-round="design === 'round'"
-            :design
-            :items
-            :disabled-values="disabled"
-            label="Center Left Item"
-            group-item
-          />
-          <Combobox
-            @append-click.stop="v1 ? (v1 = undefined) : ''"
-            :popup-class="{
-              'scope-primary': true,
-            }"
-            :popup-round="design === 'round'"
-            :design
-            :items
-            :disabled-values="disabled"
-            label="Center Right Item"
-            group-item
-          />
-          <Combobox
-            @append-click.stop="v1 ? (v1 = undefined) : ''"
-            :popup-class="{
-              'scope-primary': true,
-            }"
-            multiple
-            :popup-round="design === 'round'"
-            :design
-            :items
-            :disabled-values="disabled"
-            label="Right Item"
-            group-item
-          />
-        </Input>
-      </div>
+    <Input
+      v-model="maxVisible"
+      type="number"
+      max="25"
+      min="0"
+      design="filled"
+      class="w-200px"
+      label="Max Visible Buttons"
+    />
 
-      <Combobox
-        :popup-class="{
-          'scope-primary': true,
-        }"
-        multiple
-        class="w-full"
-        :items
-        :disabled-values="disabled"
-        label="A fruit or Vegetable"
-      />
+    <div class="relative mb-$xxl flex flex-col gap-$l">
+      <h4 class="text-mt-$m">Segmented Buttons</h4>
+      <div class="flex gap-$m flex-col w-full max-w-1020px" v-for="design of designs">
+        <OverflowContainer
+          class="max-w-full justify-end overflow-hidden"
+          :max-visible
+          :items="[
+            'Button 1',
+            'Button 2',
+            'Button 3',
+            'Button 4',
+            'Button 5',
+            'Button 6',
+            'Button 7',
+            'Button 8',
+            'Button 9',
+            'Button 10',
+            'Button 11',
+            'Button 12',
+            'Button 13',
+            'Button 14',
+            'Button 15',
+            'Button 16',
+            'Button 17',
+            'Button 18',
+            'Button 19',
+            'Button 20',
+            'Button 21',
+            'Button 22',
+            'Button 23',
+            'Button 24',
+            'Button 25',
+          ]"
+        >
+          <template v-slot:default="{ item }">
+            <Button :label="item" class="segmented-btn" :class="design" />
+          </template>
+          <template v-slot:overflow="slotProps">
+            <Button
+              icon="i--more-vert"
+              class="btn-square"
+              :class="{ [design]: true, 'segmented-btn': slotProps.count < 25 }"
+            />
+          </template>
+        </OverflowContainer>
+      </div>
     </div>
   </Card>
 </template>

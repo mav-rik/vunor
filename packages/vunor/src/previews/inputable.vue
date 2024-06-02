@@ -9,7 +9,7 @@ const scopes = [
   'scope-error',
 ]
 
-const types = ['i8 i8-flat group', 'i8 i8-filled group']
+const types = ['i8 i8-flat group/i8', 'i8 i8-filled group/i8']
 
 const selected = reactive<Record<string, boolean>>({
   'scope-grey-c8-flat': false,
@@ -36,7 +36,7 @@ const selected = reactive<Record<string, boolean>>({
             <span class="i8-underline"></span>
             <input class="i8-input" v-i8-focusable placeholder="type anything" />
           </div>
-          <div :class="t === 'i8 i8-filled group' ? 'px-$m' : ''">
+          <div :class="t === 'i8 i8-filled group/i8' ? 'px-$m' : ''">
             <div class="text-caption text-scope-color-500">{{ scope }}</div>
           </div>
         </div>
@@ -64,7 +64,7 @@ const selected = reactive<Record<string, boolean>>({
               <input class="i8-input" v-i8-focusable />
             </div>
           </div>
-          <div :class="t === 'i8 i8-filled group' ? 'px-$m' : ''">
+          <div :class="t === 'i8 i8-filled group/i8' ? 'px-$m' : ''">
             <div class="text-caption text-scope-color-500">{{ scope }}</div>
           </div>
         </div>

@@ -1,15 +1,27 @@
 <script setup lang="ts">
 const designs = ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat'] as const
 const scopes = ['scope-primary', 'scope-neutral', 'scope-error'] as const
+const loading = ref(false)
+const disabled = ref(false)
 </script>
 <template>
   <Card level="h2" class="with-bg relative">
     <CardHeader class="mb-$s">Buttons</CardHeader>
+    <div class="flex gap-$xl mb-$m">
+      <Checkbox label="Loading State" v-model="loading" />
+      <Checkbox label="Disabled State" v-model="disabled" />
+    </div>
     <div v-for="scope of scopes" class="flex flex-col" :class="scope">
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
-        <Button v-for="design of designs" :class="design" :label="design"></Button>
-        <Button class="c8-filled w-md" label="c8-filled w-md"></Button>
+        <Button
+          :loading
+          :disabled
+          v-for="design of designs"
+          :class="design"
+          :label="design"
+        ></Button>
+        <Button :loading :disabled class="c8-filled w-md" label="c8-filled w-md"></Button>
       </div>
     </div>
 
@@ -17,8 +29,15 @@ const scopes = ['scope-primary', 'scope-neutral', 'scope-error'] as const
     <div v-for="scope of scopes" class="flex flex-col" :class="scope">
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
-        <Button v-for="design of designs" :class="design" class="rounded" :label="design"></Button>
-        <Button class="c8-filled w-md rounded" label="c8-filled w-md"></Button>
+        <Button
+          :loading
+          :disabled
+          v-for="design of designs"
+          :class="design"
+          class="rounded"
+          :label="design"
+        ></Button>
+        <Button :loading :disabled class="c8-filled w-md rounded" label="c8-filled w-md"></Button>
       </div>
     </div>
 
@@ -27,12 +46,14 @@ const scopes = ['scope-primary', 'scope-neutral', 'scope-error'] as const
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
         <Button
+          :loading
+          :disabled
           v-for="design of designs"
           :class="design"
           class="btn-round"
           :label="design"
         ></Button>
-        <Button class="c8-filled w-md btn-round" label="c8-filled w-md"></Button>
+        <Button :loading :disabled class="c8-filled w-md btn-round" label="c8-filled w-md"></Button>
       </div>
     </div>
 
@@ -40,8 +61,21 @@ const scopes = ['scope-primary', 'scope-neutral', 'scope-error'] as const
     <div v-for="scope of scopes" class="flex flex-col" :class="scope">
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
-        <Button v-for="design of designs" :class="design" :label="design" icon="i--config" />
-        <Button class="c8-filled w-md" icon="i--config" label="c8-filled w-md"></Button>
+        <Button
+          :loading
+          :disabled
+          v-for="design of designs"
+          :class="design"
+          :label="design"
+          icon="i--config"
+        />
+        <Button
+          :loading
+          :disabled
+          class="c8-filled w-md"
+          icon="i--config"
+          label="c8-filled w-md"
+        ></Button>
       </div>
     </div>
 
@@ -50,13 +84,21 @@ const scopes = ['scope-primary', 'scope-neutral', 'scope-error'] as const
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
         <Button
+          :loading
+          :disabled
           v-for="design of designs"
           :class="design"
           class="btn-round"
           :label="design"
           icon="i--config"
         ></Button>
-        <Button class="c8-filled w-md btn-round" label="c8-filled w-md" icon="i--config"></Button>
+        <Button
+          :loading
+          :disabled
+          class="c8-filled w-md btn-round"
+          label="c8-filled w-md"
+          icon="i--config"
+        ></Button>
       </div>
     </div>
 
@@ -65,6 +107,8 @@ const scopes = ['scope-primary', 'scope-neutral', 'scope-error'] as const
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
         <Button
+          :loading
+          :disabled
           v-for="design of designs"
           :class="design"
           class="btn-square"
@@ -72,6 +116,8 @@ const scopes = ['scope-primary', 'scope-neutral', 'scope-error'] as const
           icon="i--config"
         />
         <Button
+          :loading
+          :disabled
           v-for="design of designs"
           :class="design"
           class="btn-round btn-square"

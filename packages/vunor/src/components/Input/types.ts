@@ -20,6 +20,7 @@ export interface TInputShellProps
   groupItem?: boolean
   autoGrow?: boolean
   active?: boolean
+  loading?: boolean
   onAppendClick?: (event: MouseEvent) => void
   onPrependClick?: (event: MouseEvent) => void
 }
@@ -29,6 +30,7 @@ export interface TInputProps extends TInputShellProps {
   iconAfter?: string
   error?: string | boolean
   hint?: string
+  groupTemplate?: string
   onBeforeClick?: (event: MouseEvent) => void
   onAfterClick?: (event: MouseEvent) => void
   onClick?: (event: MouseEvent) => void
