@@ -9,6 +9,12 @@ const menu2 = [
   { group: 'Styles', label: 'Typography', value: 'Typography', icon: 'i--typography' },
   { group: 'Components', label: 'Alerts', value: 'Alerts', icon: 'i--alert' },
   { group: 'Components', label: 'Buttons', value: 'Buttons', icon: 'i--button' },
+  {
+    group: 'Components',
+    label: 'Overflow Buttons',
+    value: 'OverflowButtons',
+    icon: 'i--segm-button',
+  },
   { group: 'Components', label: 'Cards', value: 'Cards', icon: 'i--cards' },
   { group: 'Components', label: 'Checkboxes', value: 'Checkboxes', icon: 'i--checkmark' },
   { group: 'Components', label: 'Comboboxes', value: 'Comboboxes', icon: 'i--select' },
@@ -21,6 +27,7 @@ const menu2 = [
 const pages = {
   Alerts: PreviewAlerts,
   Buttons: PreviewButtons,
+  OverflowButtons: PreviewOverflowButtons,
   Cards: PreviewCards,
   Checkboxes: PreviewCheckboxes,
   Comboboxes: PreviewComboboxes,

@@ -9,6 +9,7 @@ export const c8 = {
     'focus-visible:': 'c8-filled-hover',
     'data-[highlighted]:': 'c8-filled-hover',
     'active:': 'c8-filled-active',
+    'data-[active]:': 'c8-filled-active',
   }),
   'c8-filled-hover': scFromObject({
     'enabled:': 'current-bg-scope-color-400',
@@ -27,6 +28,7 @@ export const c8 = {
     'focus-visible:': 'c8-flat-hover',
     'data-[highlighted]:': 'c8-flat-hover',
     'active:': 'c8-flat-active',
+    'data-[active]:': 'c8-flat-active',
     'aria-[selected=true]:': 'c8-flat-selected',
   }),
   'c8-flat-hover': scFromObject({
@@ -48,6 +50,7 @@ export const c8 = {
     'focus-visible:': 'c8-outlined-hover',
     'data-[highlighted]:': 'c8-outlined-hover',
     'active:': 'c8-outlined-active',
+    'data-[active]:': 'c8-outlined-active',
   }),
   'c8-outlined-hover': 'c8-flat-hover',
   'c8-outlined-active': 'c8-flat-active',
@@ -60,6 +63,7 @@ export const c8 = {
     'focus-visible:': 'c8-light-hover',
     'data-[highlighted]:': 'c8-light-hover',
     'active:': 'c8-light-active',
+    'data-[active]:': 'c8-light-active',
   }),
   'c8-light-hover': scFromObject({
     'enabled:': 'bg-current/15',

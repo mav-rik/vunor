@@ -177,18 +177,6 @@ const asCheckboxes = ref(false)
         >
         </Combobox>
       </div>
-
-      <!-- <OverflowContainer
-        :items="v1"
-        class="surface-100 w-300px overflow-hidden text-body-s p-$s gap-$xs"
-      >
-        <template v-slot="{ item }">
-          <span
-            class="surface-50 border px-$xs rounded whitespace-nowrap flex items-center gap-$s opacity-90 hover:opacity-100"
-            >{{ item }}</span
-          >
-        </template>
-      </OverflowContainer> -->
     </div>
   </Card>
 </template>

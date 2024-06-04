@@ -60,7 +60,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
     },
   ],
   [
-    /^(text|bg|icon|border|outline|caret)-current(-text|-bg|-icon|-border|-outline|-caret)?(\/\d{1,3})?$/,
+    /^(text|bg|icon|border|outline|caret|fill)-current(-text|-bg|-icon|-border|-outline|-caret)?(\/\d{1,3})?$/,
     (match, { theme }) => {
       const target = match[1] as TCssColorTarget
       const source = match[2] || `-${target}`

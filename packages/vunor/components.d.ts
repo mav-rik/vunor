@@ -34,6 +34,8 @@ declare module 'vue' {
     Menu: typeof import('./src/components/Menu/Menu.vue')['default']
     MenuItem: typeof import('./src/components/Menu/MenuItem.vue')['default']
     OverflowContainer: typeof import('./src/components/OverflowContainer/OverflowContainer.vue')['default']
+    Popover: typeof import('./src/components/Popover/Popover.vue')['default']
+    PopoverArrow: typeof import('radix-vue')['PopoverArrow']
     PopoverContent: typeof import('radix-vue')['PopoverContent']
     PopoverPortal: typeof import('radix-vue')['PopoverPortal']
     PopoverRoot: typeof import('radix-vue')['PopoverRoot']
@@ -58,5 +60,10 @@ declare module 'vue' {
     SelectTrigger: typeof import('radix-vue')['SelectTrigger']
     SelectValue: typeof import('radix-vue')['SelectValue']
     SelectViewport: typeof import('radix-vue')['SelectViewport']
+    Slider: typeof import('./src/components/Slider/Slider.vue')['default']
+    SliderRange: typeof import('radix-vue')['SliderRange']
+    SliderRoot: typeof import('radix-vue')['SliderRoot']
+    SliderThumb: typeof import('radix-vue')['SliderThumb']
+    SliderTrack: typeof import('radix-vue')['SliderTrack']
   }
 }

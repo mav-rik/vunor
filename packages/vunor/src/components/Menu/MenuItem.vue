@@ -12,7 +12,10 @@ defineProps<{
     :icon="icon"
     :aria-selected="selected"
     :label="label"
-    class="justify-start c8-flat gap-$m w-full fw-400 btn-round mb-$xs"
+    :class="{
+      'scope-grey': !selected,
+    }"
+    class="justify-start c8-flat gap-$m w-full fw-400 rounded-0!"
   >
   </Button>
 </template>
