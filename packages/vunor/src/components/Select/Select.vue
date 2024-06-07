@@ -42,11 +42,12 @@ const modelValue = defineModel<string>()
     v-slot="s"
   >
     <SelectTrigger as-child v-if="groupItem">
+      <!-- prettier-ignore-attribute v-model -->
       <InputShell
         class="cursor-pointer select-none"
         v-bind="forwardProps"
         :icon-append="typeof iconAppend === 'string' ? iconAppend : s.icon"
-        :model-value="s.displayItem?.label || s.displayItem?.value"
+        :model-value="(s.displayItem?.label || s.displayItem?.value) as string"
         :active="s.open"
         readonly
         @click="s.openPopup"
@@ -58,12 +59,13 @@ const modelValue = defineModel<string>()
         </template>
       </InputShell>
     </SelectTrigger>
+    <!-- prettier-ignore-attribute v-model -->
     <Input
       v-else
       class="select-none"
       v-bind="forwardProps"
       :icon-append="typeof iconAppend === 'string' ? iconAppend : s.icon"
-      :model-value="s.displayItem?.label || s.displayItem?.value"
+      :model-value="(s.displayItem?.label || s.displayItem?.value) as string"
       :active="s.open"
       :stack-label
       readonly
@@ -71,10 +73,11 @@ const modelValue = defineModel<string>()
       v-slot="shellProps"
     >
       <SelectTrigger as-child>
+        <!-- prettier-ignore-attribute v-model -->
         <InputShell
           class="cursor-pointer select-none"
           v-bind="shellProps"
-          :model-value="s.displayItem?.label || s.displayItem?.value"
+          :model-value="(s.displayItem?.label || s.displayItem?.value) as string"
           readonly
           type="text"
           tabindex="-1"

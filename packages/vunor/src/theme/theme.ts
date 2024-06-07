@@ -142,6 +142,22 @@ export const themeFactory = (
           from { opacity: 0; transform: scale(1.02) }
           to { opacity: 1; transform: scale(1) }
         }`,
+        'loading-dashoffset': `{
+          from {
+            stroke-dashoffset: 0;
+          }
+          to {
+            stroke-dashoffset: -76;
+          }
+        }`,
+        'cb-appear': `{
+          from {
+            clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+          }
+          to {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+          }
+        }`,
       },
     },
 

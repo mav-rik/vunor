@@ -44,7 +44,7 @@ const items: TComboboxItems = {
   'Vegetables': ['🍆 Aubergine', '🥦 Broccoli', '🥕 Carrot', 'Courgette', 'Leek'],
 }
 const disabled = ['Courgette']
-const v1 = ref<string[]>([])
+const v1 = ref<string[] | undefined>([])
 const asCheckboxes = ref(false)
 const stackLabel = ref(false)
 </script>
@@ -176,7 +176,7 @@ const stackLabel = ref(false)
                   {{ item.label }}
                   <Icon
                     name="i--clear"
-                    @click.stop="v1 = v1.filter(i => i !== item.value)"
+                    @click.stop="v1 = v1?.filter(i => i !== item.value)"
                     class="opacity-70 hover:opacity-100 cursor-pointer"
                   />
                 </div>

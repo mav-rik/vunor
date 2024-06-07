@@ -285,10 +285,11 @@ function onKeydown(event: KeyboardEvent) {
       :as-child="usePopover || groupItem"
     >
       <DefineInputShellTemplate>
+        <!-- prettier-ignore-attribute v-model -->
         <InputShell
           @click="openPopup"
           :active="modelOpen"
-          v-model="modelValue"
+          v-model="(modelValue as string)"
           v-bind="shellProps"
           :type="usePopover ? 'text' : shellProps?.type"
           :label="usePopover ? '' : shellProps?.label"
@@ -340,10 +341,11 @@ function onKeydown(event: KeyboardEvent) {
   <!-- reusabe templates end -->
 
   <template v-if="readonly || disabled">
+    <!-- prettier-ignore-attribute v-model -->
     <InputShell
       v-if="groupItem"
       v-bind="shellProps"
-      v-model="modelValue"
+      v-model="(modelValue as string)"
       :class
       :icon-append="props.iconAppend || dropdownIcon"
     >
@@ -355,10 +357,11 @@ function onKeydown(event: KeyboardEvent) {
         <slot name="append"></slot>
       </template>
     </InputShell>
+    <!-- prettier-ignore-attribute v-model -->
     <Input
       v-else
       v-bind="forwardProps"
-      v-model="modelValue"
+      v-model="(modelValue as string)"
       :class
       :icon-append="props.iconAppend || dropdownIcon"
     >
@@ -487,23 +490,10 @@ function onKeydown(event: KeyboardEvent) {
 
   <template v-else>
     <UseRootTemplate v-if="groupItem" :class />
-    <Input v-else v-bind="forwardProps" v-model="modelValue" :class>
+
+    <!-- prettier-ignore-attribute v-model -->
+    <Input v-else v-bind="forwardProps" v-model="(modelValue as string)" :class>
       <UseRootTemplate />
     </Input>
   </template>
 </template>
-
-<style>
-.select-content > div[data-radix-combobox-viewport] {
-  max-height: var(--radix-popper-available-height);
-  scrollbar-width: auto;
-}
-
-.select-content > div[data-radix-combobox-viewport]::-webkit-scrollbar {
-  display: block;
-}
-
-[data-expanded='true'].i8-combobox .i8-append .i--chevron-down {
-  transform: scaleY(-1);
-}
-</style>

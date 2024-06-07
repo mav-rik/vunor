@@ -7,15 +7,22 @@
     "cypress.config.*",
     "nightwatch.conf.*",
     "playwright.config.*",
-    "src/components/shortcuts.ts"
+    "src/theme/**/*",
+    "src/components/**/*",
+    "src/components/**/*.vue",
+    "components.d.ts",
+    "auto-imports.d.ts",
+    "env.d.ts"
   ],
   "compilerOptions": {
     "composite": true,
     "noEmit": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-
+    "lib": ["DOM"],
+    "outDir": "dist",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
+    "declaration": true,
     "types": ["node"]
   }
 }

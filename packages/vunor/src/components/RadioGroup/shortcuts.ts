@@ -1,4 +1,4 @@
-import { scFromObject } from '@vunor/theme/src/utils/shortcut-obj'
+import { scFromObject } from '../../theme/utils/shortcut-obj'
 
 export const radioShortcuts = {
   'rb-container': scFromObject({

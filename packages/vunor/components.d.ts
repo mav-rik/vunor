@@ -36,7 +36,6 @@ declare module 'vue' {
     MenuItem: typeof import('./src/components/Menu/MenuItem.vue')['default']
     OverflowContainer: typeof import('./src/components/OverflowContainer/OverflowContainer.vue')['default']
     Popover: typeof import('./src/components/Popover/Popover.vue')['default']
-    PopoverArrow: typeof import('radix-vue')['PopoverArrow']
     PopoverContent: typeof import('radix-vue')['PopoverContent']
     PopoverPortal: typeof import('radix-vue')['PopoverPortal']
     PopoverRoot: typeof import('radix-vue')['PopoverRoot']

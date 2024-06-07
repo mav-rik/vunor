@@ -58,12 +58,13 @@ function getSearchValue(item: T) {
 </script>
 
 <template>
+  <!-- prettier-ignore-attribute default-value -->
   <SelectRoot
     v-model="modelValue"
     v-model:open="open"
     :disabled
     :required
-    :default-value="defaultValue"
+    :default-value="defaultValue as string"
   >
     <slot :displayItem="displayItem" :value="modelValue" :openPopup :open :icon="'i--chevron-down'">
       <SelectTrigger :class>

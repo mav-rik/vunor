@@ -57,18 +57,3 @@ defineProps<{
     </div>
   </div>
 </template>
-
-<style scoped>
-.checkbox-indicator > .checkbox-icon {
-  animation: checkbox-indicator-appear 0.2s ease;
-}
-
-@keyframes checkbox-indicator-appear {
-  0% {
-    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-  }
-  100% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
-}
-</style>

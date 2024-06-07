@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable arrow-body-style */
-import type { ComponentInternalInstance } from 'vue'
-
 export const useProvideInject = <PA extends any[], IA extends any[], PR, INJ>(
   key: string,
   init: () => TProvideInjectBody<PA, IA, PR, INJ>

@@ -45,7 +45,13 @@ const emit = defineEmits<TInputEmits>()
         </div>
 
         <div
-          class="i8-input-group w-full"
+          class="w-full"
+          :style="{
+            'display': 'grid',
+            'grid-template-columns': groupTemplate,
+            'grid-auto-flow': 'column',
+            'grid-auto-columns': '1fr',
+          }"
           @click="emit('click', $event)"
           :class="{
             'cursor-pointer': !!onClick,
@@ -101,12 +107,3 @@ const emit = defineEmits<TInputEmits>()
     </div>
   </div>
 </template>
-
-<style>
-.i8-input-group {
-  display: grid;
-  grid-template-columns: v-bind(groupTemplate);
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-}
-</style>

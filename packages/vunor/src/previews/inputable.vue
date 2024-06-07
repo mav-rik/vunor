@@ -46,20 +46,20 @@ const selected = reactive<Record<string, boolean>>({
     <h3 class="mb-$s">Inputs Groupping</h3>
     <div v-for="t of types" class="mb-$xxl relative">
       <h4 class="text-mb-$m font-mono">
-        class=<span class="text-secondary-500/80">"{{ t }} i8-group-item"</span>
+        class=<span class="text-secondary-500/80">"{{ t }} segmented"</span>
       </h4>
       <div class="flex gap-$m flex-wrap items-center justify-center relative">
         <div class="flex flex-col gap-$xxs" :class="{ [scope]: true }" v-for="scope of scopes">
           <div class="flex">
-            <div class="i8-group-item w-6em" :class="{ [t]: true }">
+            <div class="segmented w-6em" :class="{ [t]: true }">
               <span class="i8-underline"></span>
               <input class="i8-input" v-i8-focusable />
             </div>
-            <div class="i8-group-item w-4em" :class="{ [t]: true }">
+            <div class="segmented w-4em" :class="{ [t]: true }">
               <span class="i8-underline"></span>
               <input class="i8-input" v-i8-focusable />
             </div>
-            <div class="i8-group-item w-8em" :class="{ [t]: true }">
+            <div class="segmented w-8em" :class="{ [t]: true }">
               <span class="i8-underline"></span>
               <input class="i8-input" v-i8-focusable />
             </div>

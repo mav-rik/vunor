@@ -55,7 +55,7 @@ function focusInput(event: MouseEvent) {
       'i8-flat': design === 'flat',
       'i8-filled': design === 'filled' || design === 'round',
       'i8-round': design === 'round',
-      'i8-group-item': groupItem,
+      'segmented': groupItem,
     }"
     v-bind="attrs"
     :data-active="focused || active"

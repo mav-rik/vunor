@@ -1,4 +1,4 @@
-import { scFromObject } from '@vunor/theme/src/utils/shortcut-obj'
+import { scFromObject } from '../../theme/utils/shortcut-obj'
 
 export const checkboxShortcuts = {
   'checkbox-root': scFromObject({
@@ -19,7 +19,7 @@ export const checkboxShortcuts = {
     '': 'bg-current icon-current h-full w-full flex items-center justify-center',
   }),
   'checkbox-icon': scFromObject({
-    '': 'size-0.9em',
+    '': 'size-0.9em animate-cb-appear animate-duration-200 animate-ease',
   }),
   'checkbox-label': scFromObject({
     '': 'select-none text-body lh-1.5em',

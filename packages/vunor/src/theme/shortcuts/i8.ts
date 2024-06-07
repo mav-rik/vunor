@@ -34,11 +34,11 @@ export const i8 = {
     'group-[[data-active=true]]/i8:': 'left-0 right-0',
   }),
 
-  'i8-group-item': scFromObject({
-    '[&.i8-filled]:': {
-      'first-of-type:': 'rounded-r-0',
-      'last-of-type:': 'rounded-lt-0 rounded-lb-0',
-      'not-last-of-type:not-first-of-type:': 'rounded-0',
+  'segmented': scFromObject({
+    '': {
+      'first-of-type:': 'rounded-r-0!',
+      'last-of-type:': 'rounded-lt-0! rounded-lb-0!',
+      'not-last-of-type:not-first-of-type:': 'rounded-0!',
       'not-first-of-type:': 'border-l-0! border-l-grey-500/20',
       'data-[active=true]:': 'z-2',
     },
@@ -61,8 +61,8 @@ export const i8 = {
     "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-half-fingertip',
     'group-[[data-has-label]]/i8:': 'pt-$m',
     // groupped inputs paddings
-    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
-    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
+    'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
+    'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
   }),
 
   'i8-textarea': scFromObject({
@@ -74,8 +74,8 @@ export const i8 = {
     "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-half-fingertip',
     "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-half-fingertip',
     // groupped inputs paddings
-    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
-    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
+    'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
+    'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
   }),
 
   'i8-ta-wrapper': scFromObject({
@@ -101,8 +101,8 @@ export const i8 = {
     "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-half-fingertip',
     "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-half-fingertip',
     // groupped inputs paddings
-    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
-    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
+    'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
+    'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
   }),
 
   'i8-hint': scFromObject({
@@ -132,7 +132,7 @@ export const i8 = {
     'group-[.i8-filled]/i8:': 'pl-$m',
     'group-[.i8-round]/i8:': 'pl-$m',
     // groupped inputs paddings
-    'group-[.i8-group-item:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
+    'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
   }),
 
   'i8-append': scFromObject({
@@ -140,7 +140,7 @@ export const i8 = {
     'group-[.i8-filled]/i8:': 'pr-$m',
     'group-[.i8-round]/i8:': 'pr-$m',
     // groupped inputs paddings
-    'group-[.i8-group-item:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
+    'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
   }),
 
   'i8-before': scFromObject({
