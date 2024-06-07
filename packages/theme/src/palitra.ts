@@ -113,7 +113,7 @@ export interface TPaletteOptions {
   colors?: {
     primary?: string
     secondary?: string
-    grey: string
+    grey?: string
     neutral?: string // neutral
     good?: string // positive
     warn?: string // warning

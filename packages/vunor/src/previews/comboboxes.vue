@@ -46,12 +46,16 @@ const items: TComboboxItems = {
 const disabled = ['Courgette']
 const v1 = ref<string[]>([])
 const asCheckboxes = ref(false)
+const stackLabel = ref(false)
 </script>
 <template>
   <Card level="h2" class="with-bg relative">
     <CardHeader class="mb-$s">Comboboxes</CardHeader>
 
-    <Checkbox label="Items as Checkboxes" v-model="asCheckboxes" />
+    <div class="flex gap-$l">
+      <Checkbox label="Items as Checkboxes" v-model="asCheckboxes" />
+      <Checkbox label="Stack Label" v-model="stackLabel" />
+    </div>
 
     <div class="relative mb-$xxl flex flex-col gap-$l">
       <template v-for="state of states">
@@ -68,6 +72,7 @@ const asCheckboxes = ref(false)
             :items
             :disabled-values="disabled"
             label="A fruit or Vegetable"
+            :stack-label
             v-bind="state.bind"
           />
         </div>
@@ -76,7 +81,14 @@ const asCheckboxes = ref(false)
       <template v-for="state of states">
         <h4 class="text-mt-$m">Groupped ({{ state.title }})</h4>
         <div class="flex gap-$m flex-wrap w-full">
-          <Input v-for="design of designs" :design class="w-full" v-bind="state.bind">
+          <Input
+            v-for="design of designs"
+            :design
+            class="w-full"
+            v-bind="state.bind"
+            :stack-label
+            label="Group level label"
+          >
             <Combobox
               :checkbox-items="asCheckboxes"
               @append-click.stop="v1 ? (v1 = undefined) : ''"
@@ -142,7 +154,15 @@ const asCheckboxes = ref(false)
       </template>
 
       <div class="flex gap-$m flex-wrap w-full">
-        <Combobox multiple :items class="w-400px" label="Tokens" design="filled" v-model="v1">
+        <Combobox
+          multiple
+          :items
+          class="w-400px"
+          label="Tokens"
+          design="filled"
+          v-model="v1"
+          :stack-label
+        >
           <template v-slot:selected-items="{ items }">
             <!-- <div class="i8-ta-wrapper"> -->
             <OverflowContainer
@@ -168,6 +188,7 @@ const asCheckboxes = ref(false)
 
         <Combobox
           multiple
+          :stack-label
           :items
           class="w-400px"
           design="filled"

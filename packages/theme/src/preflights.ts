@@ -7,7 +7,7 @@ export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
   getCSS: ({ theme }) =>
     `${
       renderFontCss('body', theme.fontSize.body) +
-      renderFontCss('label', theme.fontSize.label) +
+      // renderFontCss('label', theme.fontSize.label) +
       renderFontCss('figcaption', theme.fontSize.caption) +
       renderFontCss('h1', theme.fontSize.h1) +
       renderFontCss('h2', theme.fontSize.h2) +

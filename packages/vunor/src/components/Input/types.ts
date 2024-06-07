@@ -31,6 +31,7 @@ export interface TInputProps extends TInputShellProps {
   error?: string | boolean
   hint?: string
   groupTemplate?: string
+  stackLabel?: boolean
   onBeforeClick?: (event: MouseEvent) => void
   onAfterClick?: (event: MouseEvent) => void
   onClick?: (event: MouseEvent) => void

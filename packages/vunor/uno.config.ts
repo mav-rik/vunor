@@ -33,20 +33,14 @@ export default defineConfig({
       // fingertip: '3.5em',
       fingertip: '3em',
       baseRadius: '.5em',
+      palette: {
+        colors: {
+          secondary: '#DF6D04',
+        },
+      },
     }),
   ],
-  shortcuts: [
-    ...shortcuts,
-    {
-      'segmented-btn': scFromObject({
-        'first-of-type:': 'rounded-r-0!',
-        'last-of-type:': 'rounded-lt-0! rounded-lb-0!',
-        'not-last-of-type:not-first-of-type:': 'rounded-0!',
-        'not-first-of-type:': 'border-l-0! border-l-grey-500/20',
-        'data-[active=true]:': 'z-2',
-      }),
-    },
-  ],
+  shortcuts: [...shortcuts],
   // theme: {
   //   fontFamily: {
   //     sans: 'Inter, sans-serif',

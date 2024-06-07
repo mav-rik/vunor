@@ -30,6 +30,7 @@ declare module 'vue' {
     Icon: typeof import('./src/components/Icon/Icon.vue')['default']
     Input: typeof import('./src/components/Input/Input.vue')['default']
     InputShell: typeof import('./src/components/Input/InputShell.vue')['default']
+    Label: typeof import('./src/components/Label/Label.vue')['default']
     LoadingIndicator: typeof import('./src/components/Loading/LoadingIndicator.vue')['default']
     Menu: typeof import('./src/components/Menu/Menu.vue')['default']
     MenuItem: typeof import('./src/components/Menu/MenuItem.vue')['default']

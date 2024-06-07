@@ -1,7 +1,13 @@
 <script setup lang="ts"></script>
 <template>
   <Card level="h2" class="with-bg relative">
-    <CardHeader class="mb-$s">Testing</CardHeader>
+    <CardHeader class="mb-$s">Sliders</CardHeader>
+
+    <div class="flex flex-col gap-$m">
+      <Slider display-value label="Single thumb slider" :default-value="[10]" />
+      <Slider display-value label="Range slider" :thumbs="2" :default-value="[12, 70]" />
+      <Slider display-value label="Three thumb slider" :thumbs="3" :default-value="[16, 50, 80]" />
+    </div>
   </Card>
 </template>
 

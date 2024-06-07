@@ -43,20 +43,46 @@ const iconPrepend = ref<string>('undefined')
 const iconAppend = ref<string>('undefined')
 
 const type = ref('text')
+const stackLabel = ref(false)
 </script>
 <template>
   <Card level="h2" class="with-bg relative">
     <CardHeader class="mb-$s">Inputs</CardHeader>
 
     <div class="layer-4 pa-$m rounded-$m backdrop-blur-md">
-      <div class="flex gap-$m mt-$s">
-        <Select :items="typeItems" v-model="type" label="Type" design="filled" />
+      <div class="flex gap-$m mt-$s items-center">
+        <Select :items="typeItems" v-model="type" label="Type" design="filled" :stack-label />
+        <Checkbox label="Stack Label" v-model="stackLabel" />
       </div>
       <div class="flex gap-$m mt-$s">
-        <Select :items="iconItems" v-model="iconBefore" label="Icon Before" design="filled" />
-        <Select :items="iconItems" v-model="iconPrepend" label="Icon Prepend" design="filled" />
-        <Select :items="iconItems" v-model="iconAppend" label="Icon Append" design="filled" />
-        <Select :items="iconItems" v-model="iconAfter" label="Icon After" design="filled" />
+        <Select
+          :stack-label
+          :items="iconItems"
+          v-model="iconBefore"
+          label="Icon Before"
+          design="filled"
+        />
+        <Select
+          :stack-label
+          :items="iconItems"
+          v-model="iconPrepend"
+          label="Icon Prepend"
+          design="filled"
+        />
+        <Select
+          :stack-label
+          :items="iconItems"
+          v-model="iconAppend"
+          label="Icon Append"
+          design="filled"
+        />
+        <Select
+          :stack-label
+          :items="iconItems"
+          v-model="iconAfter"
+          label="Icon After"
+          design="filled"
+        />
       </div>
     </div>
 
@@ -69,6 +95,7 @@ const type = ref('text')
               class="flex-grow"
               v-for="state3 of states3"
               v-bind="{ ...state1.bind, ...state2, ...state3 }"
+              :stack-label
               :icon-before="iconBefore === 'undefined' ? undefined : iconBefore"
               :icon-after="iconAfter === 'undefined' ? undefined : iconAfter"
               :icon-prepend="iconPrepend === 'undefined' ? undefined : iconPrepend"
@@ -83,14 +110,39 @@ const type = ref('text')
     <h3>Groupped Inputs</h3>
 
     <div class="layer-2 pa-$m rounded-$m backdrop-blur-md">
-      <div class="flex gap-$m mt-$s">
-        <Select :items="typeItems" v-model="type" label="Type" design="filled" />
+      <div class="flex gap-$m mt-$s items-center">
+        <Select :stack-label :items="typeItems" v-model="type" label="Type" design="filled" />
+        <Checkbox label="Stack Label" v-model="stackLabel" />
       </div>
       <div class="flex gap-$m mt-$s">
-        <Select :items="iconItems" v-model="iconBefore" label="Icon Before" design="filled" />
-        <Select :items="iconItems" v-model="iconPrepend" label="Icon Prepend" design="filled" />
-        <Select :items="iconItems" v-model="iconAppend" label="Icon Append" design="filled" />
-        <Select :items="iconItems" v-model="iconAfter" label="Icon After" design="filled" />
+        <Select
+          :stack-label
+          :items="iconItems"
+          v-model="iconBefore"
+          label="Icon Before"
+          design="filled"
+        />
+        <Select
+          :stack-label
+          :items="iconItems"
+          v-model="iconPrepend"
+          label="Icon Prepend"
+          design="filled"
+        />
+        <Select
+          :stack-label
+          :items="iconItems"
+          v-model="iconAppend"
+          label="Icon Append"
+          design="filled"
+        />
+        <Select
+          :stack-label
+          :items="iconItems"
+          v-model="iconAfter"
+          label="Icon After"
+          design="filled"
+        />
       </div>
     </div>
 
@@ -105,6 +157,7 @@ const type = ref('text')
               v-bind="{ ...state1.bind, ...state2, ...state3 }"
               :icon-before="iconBefore === 'undefined' ? undefined : iconBefore"
               :icon-after="iconAfter === 'undefined' ? undefined : iconAfter"
+              :stack-label
             >
               <InputShell
                 v-for="n in 3"

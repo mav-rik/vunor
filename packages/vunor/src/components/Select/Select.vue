@@ -65,6 +65,7 @@ const modelValue = defineModel<string>()
       :icon-append="typeof iconAppend === 'string' ? iconAppend : s.icon"
       :model-value="s.displayItem?.label || s.displayItem?.value"
       :active="s.open"
+      :stack-label
       readonly
       @click="s.openPopup"
       v-slot="shellProps"

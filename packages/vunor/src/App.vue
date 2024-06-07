@@ -7,7 +7,7 @@ const menu2 = [
   { group: 'Styles', label: 'Layers', value: 'Layers', icon: 'i--layers' },
   { group: 'Styles', label: 'Surfaces', value: 'Surfaces', icon: 'i--surfaces' },
   { group: 'Styles', label: 'Typography', value: 'Typography', icon: 'i--typography' },
-  { group: 'Components', label: 'Alerts', value: 'Alerts', icon: 'i--alert' },
+  // { group: 'Components', label: 'Alerts', value: 'Alerts', icon: 'i--alert' },
   { group: 'Components', label: 'Buttons', value: 'Buttons', icon: 'i--button' },
   {
     group: 'Components',
@@ -21,6 +21,7 @@ const menu2 = [
   { group: 'Components', label: 'Inputs', value: 'Inputs', icon: 'i--input' },
   { group: 'Components', label: 'Radiobuttons', value: 'Radiobuttons', icon: 'i--radio' },
   { group: 'Components', label: 'Selects', value: 'Selects', icon: 'i--select' },
+  { group: 'Components', label: 'Sliders', value: 'Sliders', icon: 'i--slider' },
   { group: '', label: 'Testing', value: 'Testing', icon: 'i--test' },
 ]
 
@@ -33,6 +34,7 @@ const pages = {
   Comboboxes: PreviewComboboxes,
   Radiobuttons: PreviewRadiobuttons,
   Selects: PreviewSelects,
+  Sliders: PreviewSliders,
   Surfaces: PreviewSurfaces,
   Layers: PreviewLayers,
   Clickable: PreviewClickable,

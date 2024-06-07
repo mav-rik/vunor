@@ -114,9 +114,17 @@ export const i8 = {
   }),
 
   'i8-hint-wrapper': scFromObject({
-    '': 'px-$m relative flex justify-between',
-    'group-[.i8-round]/i8:': 'px-half-fingertip relative',
-    'group-[.i8-flat]/i8:': 'px-0',
+    '': 'relative flex justify-between',
+    'group-[.i8-round]/i8:': 'px-half-fingertip',
+    'group-[.i8-filled]/i8:': 'px-$m',
+  }),
+
+  'i8-hint-wrapper-stack': scFromObject({
+    '': 'relative flex justify-between',
+  }),
+
+  'i8-stack-label': scFromObject({
+    '': 'relative pb-$xxs',
   }),
 
   'i8-prepend': scFromObject({

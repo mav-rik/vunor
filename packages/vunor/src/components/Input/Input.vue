@@ -40,6 +40,10 @@ const emit = defineEmits<TInputEmits>()
       </div>
 
       <div class="w-full relative">
+        <div class="i8-stack-label" v-if="!!label && stackLabel">
+          <Label>{{ label }}</Label>
+        </div>
+
         <div
           class="i8-input-group w-full"
           @click="emit('click', $event)"
@@ -66,7 +70,7 @@ const emit = defineEmits<TInputEmits>()
           </slot>
         </div>
 
-        <div class="i8-hint-wrapper">
+        <div :class="stackLabel ? 'i8-hint-wrapper-stack' : 'i8-hint-wrapper'">
           <div class="i8-hint">
             <slot v-if="$slots.error || (typeof error === 'string' && error.length)" name="error">
               <span class="text-error-500">

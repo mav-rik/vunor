@@ -28,6 +28,7 @@ export function useInputProps(): ComputedRef<TInputProps> | undefined {
     const props = instance.props as unknown as TInputProps
     return computed(() => ({
       label: props.label,
+      stackLabel: props.stackLabel,
       placeholder: props.placeholder,
       design: props.design,
       readonly: props.readonly,
@@ -59,7 +60,7 @@ export function useInputShellProps(): ComputedRef<TInputShellProps> | undefined 
   if (instance) {
     const props = instance.props as unknown as TInputProps
     return computed(() => ({
-      label: props.label,
+      label: props.stackLabel ? undefined : props.label,
       placeholder: props.placeholder,
       readonly: props.readonly,
       design: props.design,

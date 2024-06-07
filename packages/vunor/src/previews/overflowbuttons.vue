@@ -1,27 +1,20 @@
 <script setup lang="ts">
 const designs = ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat'] as const
-const maxVisible = ref(25)
+
+const maxVisibleArray = ref([5])
 </script>
 <template>
   <Card level="h2" class="with-bg relative">
     <CardHeader class="mb-$s">Overflow Buttons</CardHeader>
 
-    <Input
-      v-model="maxVisible"
-      type="number"
-      max="25"
-      min="0"
-      design="filled"
-      class="w-200px"
-      label="Max Visible Buttons"
-    />
+    <Slider v-model="maxVisibleArray" label="Max Visible Buttons" :max="25" :min="0" inverted />
 
     <div class="relative mb-$xxl flex flex-col gap-$l">
       <h4 class="text-mt-$m">Segmented Buttons</h4>
-      <div class="flex gap-$m flex-col w-full max-w-1020px" v-for="design of designs">
+      <div class="flex gap-$m flex-col w-full" v-for="design of designs">
         <OverflowContainer
           class="max-w-full justify-end overflow-hidden"
-          :max-visible
+          :max-visible="maxVisibleArray[0]"
           :items="[
             'Button 1',
             'Button 2',
@@ -51,12 +44,12 @@ const maxVisible = ref(25)
           ]"
         >
           <template v-slot:default="{ item }">
-            <Button :label="item" class="segmented-btn" :class="design" />
+            <Button :label="item" class="segmented" :class="design" />
           </template>
           <template v-slot:overflow="slotProps">
             <Popover
               class="btn-square"
-              :class="{ [design]: true, 'segmented-btn': slotProps.count < 25 }"
+              :class="{ [design]: true, segmented: slotProps.count < 25 }"
             >
               <template v-slot:content="{ close }">
                 <div class="scope-primary flex flex-col layer-0 shadow-xl rounded-$m">
