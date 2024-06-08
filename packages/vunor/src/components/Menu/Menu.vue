@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import MenuItem from './MenuItem.vue'
-import Input from '../Input/Input.vue'
+import VuMenuItem from './MenuItem.vue'
+import VuInput from '../Input/Input.vue'
 
 type AcceptableValue = string | number | boolean | Record<string, any>
 type TItem = { label: string; value: AcceptableValue; icon?: string; group?: string }
@@ -63,7 +63,7 @@ function handleHomeEnd(event: KeyboardEvent) {
       icon-prepend="i--search"
       class="px-$m mb-$s"
       placeholder="Search"
-      :as="Input"
+      :as="VuInput"
       @keydown.home.end="handleHomeEnd"
     />
 
@@ -90,7 +90,7 @@ function handleHomeEnd(event: KeyboardEvent) {
             :icon="item.icon"
             :label="item.label"
             :selected="modelValue === item.value"
-            :as="MenuItem"
+            :as="VuMenuItem"
           />
         </ComboboxGroup>
         <!--  -->

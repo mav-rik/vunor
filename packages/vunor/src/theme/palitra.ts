@@ -3,7 +3,7 @@
 import type { TPalitraOptions, TScaleOptionsInput } from '@prostojs/palitra'
 import { color, palitra } from '@prostojs/palitra'
 import defu from 'defu'
-import type { Shortcut, UserShortcuts } from 'unocss'
+import type { UserShortcuts } from 'unocss'
 
 import type { TVunorTheme } from './theme'
 import { scFromObject } from './utils/shortcut-obj'
@@ -18,16 +18,16 @@ export function generatePalette(_opts?: TPaletteOptions) {
     count: 5,
     preserveInputColor: false,
     luminance: { dark: opts.darkest, light: opts.darkest + layerDepth, useMiddle: false },
-    saturate: { dark: 0, light: 0 },
+    saturate: { dark: -0.2, light: -0.2 },
     vivid: { dark: 0, light: 0 },
     suffixes: ['dark-0', 'dark-1', 'dark-2', 'dark-3', 'dark-4'],
   }
-  const darks = palitra(desaturate(opts.colors), bgOptions).toStrings()
+  const darks = palitra(desaturate(opts.colors, 5), bgOptions).toStrings()
 
   // light bg
   bgOptions.suffixes = ['light-0', 'light-1', 'light-2', 'light-3', 'light-4'].reverse()
   bgOptions.luminance = { dark: 1 - layerDepth, light: 1, useMiddle: false }
-  const lights = palitra(desaturate(opts.colors), bgOptions).toStrings()
+  const lights = palitra(desaturate(opts.colors, 5), bgOptions).toStrings()
 
   // the rest of the palette
   const colors = palitra(
@@ -35,7 +35,7 @@ export function generatePalette(_opts?: TPaletteOptions) {
       primary: {
         color: opts.colors.primary,
         preserveInputColor: true,
-        saturate: { dark: 0.25, light: 0.25 },
+        saturate: { dark: -0.2, light: -0.2 },
       },
       grey: { color: opts.colors.grey, saturate: { dark: 0, light: 0 } },
       secondary: { color: opts.colors.secondary, vivid: { dark: 0.4, light: 0.4 } },
@@ -53,7 +53,7 @@ export function generatePalette(_opts?: TPaletteOptions) {
         useMiddle: true,
         middle: 0.62,
       },
-      saturate: { dark: 0.1, light: 0.1 },
+      saturate: { dark: -0.25, light: -0.25 },
       vivid: { dark: 0.1, light: 0.2 },
     }
   ).toStrings()

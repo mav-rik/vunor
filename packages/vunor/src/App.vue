@@ -52,7 +52,7 @@ const dark = useDark()
 </script>
 
 <template>
-  <app-layout
+  <vu-app-layout
     left
     header-class="border-b"
     scroll-top-on-change-view
@@ -65,22 +65,22 @@ const dark = useDark()
     <template #header> Hello </template>
     <template #left>
       <div class="flex-1 flex flex-col items-end">
-        <Menu :items="menu2" v-model="selected" class="w-full h-full">
+        <VuMenu :items="menu2" v-model="selected" class="w-full h-full">
           <template #empty>
             <div
               class="py-6 flex flex-col items-center justify-center text-grey-500 current-icon-grey-500 icon-current/75 gap-$s"
             >
-              <Icon name="i--sad-doc" class="size-4em" />
+              <VuIcon name="i--sad-doc" class="size-4em" />
               <span class="lh-1em">Nothing found</span>
             </div>
           </template>
-        </Menu>
+        </VuMenu>
       </div>
       <div class="flex-shrink-1 flex flex-col items-end">
         <div
           class="flex flex-col w-full border-t border-color-black/10 dark:border-color-white/10 pt-$m"
         >
-          <Button
+          <VuButton
             class="c8-flat rounded-half-fingertip text-grey-800 dark:text-grey-300"
             @click="dark = !dark"
             :label="dark ? 'Light' : 'Dark'"
@@ -90,5 +90,5 @@ const dark = useDark()
       </div>
     </template>
     <component :is="current"></component>
-  </app-layout>
+  </vu-app-layout>
 </template>

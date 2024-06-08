@@ -1,5 +1,5 @@
 <template>
   <card level="h2">
-    <CardHeader>Alerts</CardHeader>
+    <VuCardHeader>Alerts</VuCardHeader>
   </card>
 </template>

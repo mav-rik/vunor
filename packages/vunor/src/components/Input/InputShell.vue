@@ -73,7 +73,7 @@ function focusInput(event: MouseEvent) {
       }"
     >
       <slot name="prepend" v-bind="attrs">
-        <Icon :name="iconPrepend!" @click="emit('prependClick', $event)" />
+        <VuIcon :name="iconPrepend!" @click="emit('prependClick', $event)" />
       </slot>
     </div>
 
@@ -117,14 +117,14 @@ function focusInput(event: MouseEvent) {
         'i8-icon-clickable': !!onAppendClick,
       }"
     >
-      <LoadingIndicator v-if="loading" class="text-grey" />
+      <VuLoadingIndicator v-if="loading" class="text-grey" />
       <slot
         name="append"
         v-bind="attrs"
         :emitClick="(event: MouseEvent) => emit('appendClick', event)"
         :iconAppend
       >
-        <Icon :name="iconAppend!" @click="emit('appendClick', $event)" />
+        <VuIcon :name="iconAppend!" @click="emit('appendClick', $event)" />
       </slot>
     </div>
   </Primitive>

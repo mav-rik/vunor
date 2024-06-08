@@ -22,13 +22,13 @@ withDefaults(
     :disabled="loading || disabled || undefined"
   >
     <div class="loading-indicator-wrapper" v-if="loading">
-      <LoadingIndicator />
+      <VuLoadingIndicator />
     </div>
-    <Icon v-if="icon && iconSide === 'left'" :name="icon" class="btn-icon btn-icon-left" />
+    <VuIcon v-if="icon && iconSide === 'left'" :name="icon" class="btn-icon btn-icon-left" />
     <slot>
       <span class="btn-label">{{ label }}</span>
     </slot>
 
-    <Icon v-if="icon && iconSide === 'right'" :name="icon" class="btn-icon btn-icon-right" />
+    <VuIcon v-if="icon && iconSide === 'right'" :name="icon" class="btn-icon btn-icon-right" />
   </button>
 </template>

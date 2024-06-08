@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import type { ComputedRef } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 
 import type { TInputAttrs, TInputProps, TInputShellProps } from './types'
 

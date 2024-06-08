@@ -23,8 +23,8 @@ const selected = reactive<Record<string, boolean>>({
 </script>
 
 <template>
-  <Card level="h2">
-    <CardHeader class="mb-$s">Clickable (c8)</CardHeader>
+  <VuCard level="h2">
+    <VuCardHeader class="mb-$s">Clickable (c8)</VuCardHeader>
     <div v-for="t of types" class="mb-$xl">
       <h4 class="text-mb-$m">Class "{{ t }}"</h4>
       <div class="flex gap-$m flex-wrap items-center justify-center">
@@ -40,5 +40,5 @@ const selected = reactive<Record<string, boolean>>({
         </div>
       </div>
     </div>
-  </Card>
+  </VuCard>
 </template>

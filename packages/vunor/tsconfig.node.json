@@ -12,7 +12,8 @@
     "src/components/**/*.vue",
     "components.d.ts",
     "auto-imports.d.ts",
-    "env.d.ts"
+    "env.d.ts",
+    "src/vite.ts"
   ],
   "compilerOptions": {
     "composite": true,

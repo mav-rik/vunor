@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 <template>
-  <Card level="h2">
-    <CardHeader class="mb-$s">Typography</CardHeader>
+  <VuCard level="h2">
+    <VuCardHeader class="mb-$s">Typography</VuCardHeader>
     <h3 class="mb-$s border-b border-b-2px">Regular</h3>
     <div class="flex flex-col gap-2">
       <h1 class="">H1 - Display 1</h1>
@@ -77,5 +77,5 @@
       <div class="fw-$bold text-caption">Caption</div>
       <div class="fw-$bold text-overline uppercase">Overline</div>
     </div>
-  </Card>
+  </VuCard>
 </template>

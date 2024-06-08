@@ -1,5 +1,4 @@
 import type { Theme } from '@unocss/preset-mini'
-import { theme } from '@unocss/preset-mini'
 import { defu } from 'defu'
 import type { Preset, PresetFactory, StaticShortcut } from 'unocss'
 import { presetWind } from 'unocss'

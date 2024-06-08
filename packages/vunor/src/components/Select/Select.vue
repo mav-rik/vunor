@@ -21,7 +21,7 @@ const modelValue = defineModel<string>()
 </script>
 
 <template>
-  <SelectBase
+  <VuSelectBase
     v-model="modelValue"
     :disabled-values
     :popup-class
@@ -43,7 +43,7 @@ const modelValue = defineModel<string>()
   >
     <SelectTrigger as-child v-if="groupItem">
       <!-- prettier-ignore-attribute v-model -->
-      <InputShell
+      <VuInputShell
         class="cursor-pointer select-none"
         v-bind="forwardProps"
         :icon-append="typeof iconAppend === 'string' ? iconAppend : s.icon"
@@ -57,10 +57,10 @@ const modelValue = defineModel<string>()
         <template #overlay>
           <SelectValue class="absolute left-0 right-0 h-0 invisible" />
         </template>
-      </InputShell>
+      </VuInputShell>
     </SelectTrigger>
     <!-- prettier-ignore-attribute v-model -->
-    <Input
+    <VuInput
       v-else
       class="select-none"
       v-bind="forwardProps"
@@ -74,7 +74,7 @@ const modelValue = defineModel<string>()
     >
       <SelectTrigger as-child>
         <!-- prettier-ignore-attribute v-model -->
-        <InputShell
+        <VuInputShell
           class="cursor-pointer select-none"
           v-bind="shellProps"
           :model-value="(s.displayItem?.label || s.displayItem?.value) as string"
@@ -86,8 +86,8 @@ const modelValue = defineModel<string>()
           <template #overlay>
             <SelectValue class="absolute left-[-1px] right-0 h-0 invisible" />
           </template>
-        </InputShell>
+        </VuInputShell>
       </SelectTrigger>
-    </Input>
-  </SelectBase>
+    </VuInput>
+  </VuSelectBase>
 </template>

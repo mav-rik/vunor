@@ -38,8 +38,8 @@ defineProps<{
         :aria-readonly="readonly || undefined"
       >
         <CheckboxIndicator class="checkbox-indicator">
-          <Icon v-if="modelValue === 'indeterminate'" name="i--dash" class="checkbox-icon" />
-          <Icon v-if="modelValue === true" name="i--checkmark" class="checkbox-icon" />
+          <VuIcon v-if="modelValue === 'indeterminate'" name="i--dash" class="checkbox-icon" />
+          <VuIcon v-if="modelValue === true" name="i--checkmark" class="checkbox-icon" />
         </CheckboxIndicator>
       </CheckboxRoot>
       <span class="checkbox-label">

@@ -5,23 +5,23 @@ const loading = ref(false)
 const disabled = ref(false)
 </script>
 <template>
-  <Card level="h2" class="with-bg relative">
-    <CardHeader class="mb-$s">Buttons</CardHeader>
+  <VuCard level="h2" class="with-bg relative">
+    <VuCardHeader class="mb-$s">Buttons</VuCardHeader>
     <div class="flex gap-$xl mb-$m">
-      <Checkbox label="Loading State" v-model="loading" />
-      <Checkbox label="Disabled State" v-model="disabled" />
+      <VuCheckbox label="Loading State" v-model="loading" />
+      <VuCheckbox label="Disabled State" v-model="disabled" />
     </div>
     <div v-for="scope of scopes" class="flex flex-col" :class="scope">
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
-        <Button
+        <VuButton
           :loading
           :disabled
           v-for="design of designs"
           :class="design"
           :label="design"
-        ></Button>
-        <Button :loading :disabled class="c8-filled w-md" label="c8-filled w-md"></Button>
+        ></VuButton>
+        <VuButton :loading :disabled class="c8-filled w-md" label="c8-filled w-md"></VuButton>
       </div>
     </div>
 
@@ -29,15 +29,20 @@ const disabled = ref(false)
     <div v-for="scope of scopes" class="flex flex-col" :class="scope">
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
-        <Button
+        <VuButton
           :loading
           :disabled
           v-for="design of designs"
           :class="design"
           class="rounded"
           :label="design"
-        ></Button>
-        <Button :loading :disabled class="c8-filled w-md rounded" label="c8-filled w-md"></Button>
+        ></VuButton>
+        <VuButton
+          :loading
+          :disabled
+          class="c8-filled w-md rounded"
+          label="c8-filled w-md"
+        ></VuButton>
       </div>
     </div>
 
@@ -45,15 +50,20 @@ const disabled = ref(false)
     <div v-for="scope of scopes" class="flex flex-col" :class="scope">
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
-        <Button
+        <VuButton
           :loading
           :disabled
           v-for="design of designs"
           :class="design"
           class="btn-round"
           :label="design"
-        ></Button>
-        <Button :loading :disabled class="c8-filled w-md btn-round" label="c8-filled w-md"></Button>
+        ></VuButton>
+        <VuButton
+          :loading
+          :disabled
+          class="c8-filled w-md btn-round"
+          label="c8-filled w-md"
+        ></VuButton>
       </div>
     </div>
 
@@ -61,7 +71,7 @@ const disabled = ref(false)
     <div v-for="scope of scopes" class="flex flex-col" :class="scope">
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
-        <Button
+        <VuButton
           :loading
           :disabled
           v-for="design of designs"
@@ -69,13 +79,13 @@ const disabled = ref(false)
           :label="design"
           icon="i--config"
         />
-        <Button
+        <VuButton
           :loading
           :disabled
           class="c8-filled w-md"
           icon="i--config"
           label="c8-filled w-md"
-        ></Button>
+        ></VuButton>
       </div>
     </div>
 
@@ -83,7 +93,7 @@ const disabled = ref(false)
     <div v-for="scope of scopes" class="flex flex-col" :class="scope">
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
-        <Button
+        <VuButton
           :loading
           :disabled
           v-for="design of designs"
@@ -91,14 +101,14 @@ const disabled = ref(false)
           class="btn-round"
           :label="design"
           icon="i--config"
-        ></Button>
-        <Button
+        ></VuButton>
+        <VuButton
           :loading
           :disabled
           class="c8-filled w-md btn-round"
           label="c8-filled w-md"
           icon="i--config"
-        ></Button>
+        ></VuButton>
       </div>
     </div>
 
@@ -106,7 +116,7 @@ const disabled = ref(false)
     <div v-for="scope of scopes" class="flex flex-col" :class="scope">
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>
       <div class="flex flex-wrap mb-$l gap-$m">
-        <Button
+        <VuButton
           :loading
           :disabled
           v-for="design of designs"
@@ -115,7 +125,7 @@ const disabled = ref(false)
           :label="design"
           icon="i--config"
         />
-        <Button
+        <VuButton
           :loading
           :disabled
           v-for="design of designs"
@@ -126,5 +136,5 @@ const disabled = ref(false)
         />
       </div>
     </div>
-  </Card>
+  </VuCard>
 </template>

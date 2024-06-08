@@ -61,8 +61,8 @@ const year = ref<string>()
 const v1 = ref<string>()
 </script>
 <template>
-  <Card level="h2" class="with-bg relative">
-    <CardHeader class="mb-$s">Selects</CardHeader>
+  <VuCard level="h2" class="with-bg relative">
+    <VuCardHeader class="mb-$s">Selects</VuCardHeader>
 
     <div class="relative mb-$xxl flex flex-col gap-$l">
       <h4>Base Select</h4>
@@ -71,7 +71,7 @@ const v1 = ref<string>()
         v-for="scope of ['scope-primary', 'scope-secondary', 'scope-error']"
         :class="scope"
       >
-        <SelectBase
+        <VuSelectBase
           v-for="design of ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat']"
           class="w-15em pr-$m c8 btn px-0! min-w-100px inline-flex items-center justify-between"
           :class="{
@@ -99,7 +99,7 @@ const v1 = ref<string>()
 
       <h4 class="text-mt-$m">Select (Inputs)</h4>
       <div class="flex gap-$m flex-wrap">
-        <Select
+        <VuSelect
           v-for="design of designs"
           @append-click.stop="v1 ? (v1 = undefined) : ''"
           :popup-class="{
@@ -116,7 +116,7 @@ const v1 = ref<string>()
       </div>
 
       <div class="flex gap-$m flex-wrap">
-        <Select
+        <VuSelect
           v-for="design of designs"
           class="max-w-sm"
           :popup-class="{
@@ -129,7 +129,7 @@ const v1 = ref<string>()
         />
       </div>
       <div class="flex gap-$m flex-wrap scope-good">
-        <Select
+        <VuSelect
           v-for="design of designs"
           class="max-w-sm"
           :popup-class="{
@@ -144,7 +144,7 @@ const v1 = ref<string>()
         />
       </div>
       <div class="flex gap-$m flex-wrap scope-warn">
-        <Select
+        <VuSelect
           v-for="design of designs"
           class="max-w-sm"
           :popup-class="{
@@ -159,8 +159,8 @@ const v1 = ref<string>()
       </div>
       <h4 class="text-mb-$s text-mt-$m">Groupped Selects</h4>
       <div class="relative mb-$xxl flex flex-col gap-$l max-w-lg">
-        <Input design="round" icon-before="i--cake" group-template="2fr 3fr 2fr">
-          <Select
+        <VuInput design="round" icon-before="i--cake" group-template="2fr 3fr 2fr">
+          <VuSelect
             group-item
             popup-position="popper"
             icon-prepend="i--day"
@@ -170,7 +170,7 @@ const v1 = ref<string>()
             placeholder="Day"
             design="round"
           />
-          <Select
+          <VuSelect
             group-item
             popup-position="popper"
             icon-prepend="i--month"
@@ -180,7 +180,7 @@ const v1 = ref<string>()
             placeholder="Month"
             design="round"
           />
-          <Select
+          <VuSelect
             group-item
             popup-position="popper"
             :items="years"
@@ -189,10 +189,10 @@ const v1 = ref<string>()
             placeholder="Year"
             design="round"
           />
-        </Input>
+        </VuInput>
       </div>
     </div>
-  </Card>
+  </VuCard>
 </template>
 
 <style scoped>

@@ -1,8 +1,8 @@
 <script setup lang="ts"></script>
 <template>
-  <Card level="h2" class="with-bg relative">
-    <CardHeader class="mb-$s">Testing</CardHeader>
-  </Card>
+  <VuCard level="h2" class="with-bg relative">
+    <VuCardHeader class="mb-$s">Testing</VuCardHeader>
+  </VuCard>
 </template>
 
 <style scoped>

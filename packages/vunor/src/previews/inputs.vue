@@ -46,37 +46,37 @@ const type = ref('text')
 const stackLabel = ref(false)
 </script>
 <template>
-  <Card level="h2" class="with-bg relative">
-    <CardHeader class="mb-$s">Inputs</CardHeader>
+  <VuCard level="h2" class="with-bg relative">
+    <VuCardHeader class="mb-$s">Inputs</VuCardHeader>
 
     <div class="layer-4 pa-$m rounded-$m backdrop-blur-md">
       <div class="flex gap-$m mt-$s items-center">
-        <Select :items="typeItems" v-model="type" label="Type" design="filled" :stack-label />
-        <Checkbox label="Stack Label" v-model="stackLabel" />
+        <VuSelect :items="typeItems" v-model="type" label="Type" design="filled" :stack-label />
+        <VuCheckbox label="Stack Label" v-model="stackLabel" />
       </div>
       <div class="flex gap-$m mt-$s">
-        <Select
+        <VuSelect
           :stack-label
           :items="iconItems"
           v-model="iconBefore"
           label="Icon Before"
           design="filled"
         />
-        <Select
+        <VuSelect
           :stack-label
           :items="iconItems"
           v-model="iconPrepend"
           label="Icon Prepend"
           design="filled"
         />
-        <Select
+        <VuSelect
           :stack-label
           :items="iconItems"
           v-model="iconAppend"
           label="Icon Append"
           design="filled"
         />
-        <Select
+        <VuSelect
           :stack-label
           :items="iconItems"
           v-model="iconAfter"
@@ -91,7 +91,7 @@ const stackLabel = ref(false)
         <h4 class="text-mt-$m">{{ state1.title }}</h4>
         <div v-for="state2 of states2">
           <div class="flex gap-$m flex-wrap w-full max-w-1020px">
-            <Input
+            <VuInput
               class="flex-grow"
               v-for="state3 of states3"
               v-bind="{ ...state1.bind, ...state2, ...state3 }"
@@ -111,32 +111,32 @@ const stackLabel = ref(false)
 
     <div class="layer-2 pa-$m rounded-$m backdrop-blur-md">
       <div class="flex gap-$m mt-$s items-center">
-        <Select :stack-label :items="typeItems" v-model="type" label="Type" design="filled" />
-        <Checkbox label="Stack Label" v-model="stackLabel" />
+        <VuSelect :stack-label :items="typeItems" v-model="type" label="Type" design="filled" />
+        <VuCheckbox label="Stack Label" v-model="stackLabel" />
       </div>
       <div class="flex gap-$m mt-$s">
-        <Select
+        <VuSelect
           :stack-label
           :items="iconItems"
           v-model="iconBefore"
           label="Icon Before"
           design="filled"
         />
-        <Select
+        <VuSelect
           :stack-label
           :items="iconItems"
           v-model="iconPrepend"
           label="Icon Prepend"
           design="filled"
         />
-        <Select
+        <VuSelect
           :stack-label
           :items="iconItems"
           v-model="iconAppend"
           label="Icon Append"
           design="filled"
         />
-        <Select
+        <VuSelect
           :stack-label
           :items="iconItems"
           v-model="iconAfter"
@@ -151,7 +151,7 @@ const stackLabel = ref(false)
         <h4 class="text-mt-$m">{{ state1.title }}</h4>
         <div v-for="state2 of states2">
           <div class="flex gap-$m flex-wrap w-full max-w-1020px">
-            <Input
+            <VuInput
               class="flex-grow"
               v-for="state3 of states3"
               v-bind="{ ...state1.bind, ...state2, ...state3 }"
@@ -159,7 +159,7 @@ const stackLabel = ref(false)
               :icon-after="iconAfter === 'undefined' ? undefined : iconAfter"
               :stack-label
             >
-              <InputShell
+              <VuInputShell
                 v-for="n in 3"
                 v-bind="{ ...state1.bind, ...state2, ...state3 }"
                 :icon-prepend="iconPrepend === 'undefined' ? undefined : iconPrepend"
@@ -167,12 +167,12 @@ const stackLabel = ref(false)
                 :type
                 group-item
               />
-            </Input>
+            </VuInput>
           </div>
         </div>
       </template>
     </div>
-  </Card>
+  </VuCard>
 </template>
 
 <style scoped>

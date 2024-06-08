@@ -35,13 +35,13 @@ const emit = defineEmits<TInputEmits>()
         v-if="$slots.before || !!iconBefore"
       >
         <slot name="before">
-          <Icon :name="iconBefore!" @click="emit('beforeClick', $event)" />
+          <VuIcon :name="iconBefore!" @click="emit('beforeClick', $event)" />
         </slot>
       </div>
 
       <div class="w-full relative">
         <div class="i8-stack-label" v-if="!!label && stackLabel">
-          <Label>{{ label }}</Label>
+          <VuLabel>{{ label }}</VuLabel>
         </div>
 
         <div
@@ -58,7 +58,7 @@ const emit = defineEmits<TInputEmits>()
           }"
         >
           <slot v-bind="shellProps!">
-            <InputShell v-model="modelValue" v-bind="shellProps!">
+            <VuInputShell v-model="modelValue" v-bind="shellProps!">
               <template #overlay v-if="!!$slots.overlay">
                 <slot name="overlay"></slot>
               </template>
@@ -72,7 +72,7 @@ const emit = defineEmits<TInputEmits>()
               <template #append v-if="!!$slots.append">
                 <slot name="append"></slot>
               </template>
-            </InputShell>
+            </VuInputShell>
           </slot>
         </div>
 
@@ -101,7 +101,7 @@ const emit = defineEmits<TInputEmits>()
         v-if="$slots.after || !!iconAfter"
       >
         <slot name="after">
-          <Icon :name="iconAfter!" @click="emit('afterClick', $event)" />
+          <VuIcon :name="iconAfter!" @click="emit('afterClick', $event)" />
         </slot>
       </div>
     </div>

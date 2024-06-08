@@ -27,7 +27,7 @@ function close() {
   <PopoverRoot as-child v-model:open="modelValue">
     <PopoverTrigger as-child>
       <slot :isOpen="modelValue" :close :open
-        ><Button
+        ><VuButton
           :icon="icon || 'i--more-vert'"
           :class
           :label

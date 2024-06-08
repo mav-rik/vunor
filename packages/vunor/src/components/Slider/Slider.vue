@@ -53,7 +53,7 @@ function getSliderClass(n: number) {
 <template>
   <div :class>
     <div class="flex justify-between" v-if="!!label || displayValue">
-      <Label>{{ label || '' }}</Label>
+      <VuLabel>{{ label || '' }}</VuLabel>
       <span class="text-label text-grey-400">{{ modelValue?.join(' | ') }}</span>
     </div>
     <SliderRoot v-bind="forwarded" v-model="modelValue" class="slider" :class="rootClass">

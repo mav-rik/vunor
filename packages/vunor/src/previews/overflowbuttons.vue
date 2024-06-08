@@ -4,15 +4,15 @@ const designs = ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat'] as const
 const maxVisibleArray = ref([5])
 </script>
 <template>
-  <Card level="h2" class="with-bg relative">
-    <CardHeader class="mb-$s">Overflow Buttons</CardHeader>
+  <VuCard level="h2" class="with-bg relative">
+    <VuCardHeader class="mb-$s">Overflow Buttons</VuCardHeader>
 
-    <Slider v-model="maxVisibleArray" label="Max Visible Buttons" :max="25" :min="0" inverted />
+    <VuSlider v-model="maxVisibleArray" label="Max Visible Buttons" :max="25" :min="0" inverted />
 
     <div class="relative mb-$xxl flex flex-col gap-$l">
       <h4 class="text-mt-$m">Segmented Buttons</h4>
       <div class="flex gap-$m flex-col w-full" v-for="design of designs">
-        <OverflowContainer
+        <VuOverflowContainer
           class="max-w-full justify-end overflow-hidden"
           :max-visible="maxVisibleArray[0]"
           :items="[
@@ -44,17 +44,17 @@ const maxVisibleArray = ref([5])
           ]"
         >
           <template v-slot:default="{ item }">
-            <Button :label="item" class="segmented" :class="design" />
+            <VuButton :label="item" class="segmented" :class="design" />
           </template>
           <template v-slot:overflow="slotProps">
-            <Popover
+            <VuPopover
               class="btn-square"
               :class="{ [design]: true, segmented: slotProps.count < 25 }"
             >
               <template v-slot:content="{ close }">
                 <div class="scope-primary flex flex-col layer-0 shadow-xl rounded-$m">
                   <div>
-                    <Button
+                    <VuButton
                       v-for="item of slotProps.items"
                       :label="item"
                       class="c8-flat rounded-0!"
@@ -63,12 +63,12 @@ const maxVisibleArray = ref([5])
                   </div>
                 </div>
               </template>
-            </Popover>
+            </VuPopover>
           </template>
-        </OverflowContainer>
+        </VuOverflowContainer>
       </div>
     </div>
-  </Card>
+  </VuCard>
 </template>
 
 <style scoped>

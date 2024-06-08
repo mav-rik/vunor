@@ -40,11 +40,6 @@ export default defineConfig({
     }),
   ],
   shortcuts: [...shortcuts],
-  // theme: {
-  //   fontFamily: {
-  //     sans: 'Inter, sans-serif',
-  //   },
-  // } as unknown as TVunorTheme,
   preflights: [
     {
       getCSS: () =>

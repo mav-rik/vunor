@@ -30,16 +30,16 @@ const surfaces = [
 ] as const
 </script>
 <template>
-  <Card level="h2">
-    <CardHeader class="mb-$s">Surfaces</CardHeader>
+  <VuCard level="h2">
+    <VuCardHeader class="mb-$s">Surfaces</VuCardHeader>
     <template v-for="scope of scopes">
       <h3 class="mb-$s border-b border-b-2px">Scope "{{ scope }}"</h3>
       <div class="flex flex-wrap gap-$l mb-$xxl" :class="scope">
-        <Card v-for="s of surfaces" level="h4" rounded class="border w-sm" :class="s">
-          <CardHeader class="mb-$s fw-bold">{{ s }}</CardHeader>
+        <VuCard v-for="s of surfaces" level="h4" rounded class="border w-sm" :class="s">
+          <VuCardHeader class="mb-$s fw-bold">{{ s }}</VuCardHeader>
           <p class="text-my-0">{{ lorem }}</p>
-        </Card>
+        </VuCard>
       </div>
     </template>
-  </Card>
+  </VuCard>
 </template>

@@ -18,7 +18,8 @@
     "vue": "^3.4.27"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/components"
   ],
   "exports": {
     "./package.json": "./package.json",
@@ -29,7 +30,12 @@
     "./theme": {
       "import": "./dist/theme.mjs",
       "types": "./dist/theme.d.ts"
-    }
+    },
+    "./vite": {
+      "import": "./dist/vite.mjs",
+      "types": "./dist/vite.d.ts"
+    },
+    "./components/Input": "./src/components/Input/Input.vue"
   },
   "devDependencies": {
     "@iconify/utils": "^2.1.23",
@@ -42,7 +48,7 @@
     "@unocss/reset": "^0.59.4",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/tsconfig": "^0.5.1",
-    "@vueuse/core": "^10.9.0",
+    "@vueuse/core": "^10.10.0",
     "typescript": "~5.4.5",
     "unocss": "^0.60.4",
     "unocss-preset-scrollbar": "^0.3.1",

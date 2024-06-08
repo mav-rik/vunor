@@ -7,6 +7,7 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import RadixVueResolver from 'radix-vue/resolver'
 import dts from 'vite-plugin-dts'
+import { nestedComponents } from './src/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,7 +18,7 @@ export default defineConfig({
   build: {
     lib: {
       // tell the build process to treat this project as library
-      entry: ['src/lib.ts', 'src/theme.ts'],
+      entry: ['src/lib.ts', 'src/theme.ts', 'src/vite.ts'],
       fileName: (format, entry) => entry + '.mjs',
       formats: ['es'],
     },
@@ -64,16 +65,24 @@ export default defineConfig({
     vue(),
     Components({
       dts: true,
-
+      dirs: [],
       resolvers: [
         RadixVueResolver(),
         componentName => {
-          if (componentName.startsWith('Preview'))
+          if (componentName.startsWith('Preview')) {
             return {
               name: 'default',
               as: componentName,
               from: `@/previews/${componentName.slice(7).toLowerCase()}.vue`,
             }
+          } else if (componentName.startsWith('Vu')) {
+            const name = componentName.slice(2)
+            return {
+              name: 'default',
+              as: componentName,
+              from: `@/components/${nestedComponents[name] || name}/${name}.vue`,
+            }
+          }
         },
       ],
     }),

@@ -68,7 +68,7 @@ function getSearchValue(item: T) {
   >
     <slot :displayItem="displayItem" :value="modelValue" :openPopup :open :icon="'i--chevron-down'">
       <SelectTrigger :class>
-        <Icon
+        <VuIcon
           v-if="!!displayItem?.icon"
           :name="displayItem.icon"
           class="inline-block vertical-middle mr-$xs"
@@ -77,7 +77,7 @@ function getSearchValue(item: T) {
         <SelectValue :placeholder :class="valueClass">
           {{ displayItem?.label }}
         </SelectValue>
-        <Icon name="i--chevron-down" :class="iconClass" />
+        <VuIcon name="i--chevron-down" :class="iconClass" />
       </SelectTrigger>
     </slot>
 
@@ -98,7 +98,7 @@ function getSearchValue(item: T) {
         :update-position-strategy
       >
         <SelectScrollUpButton class="select-scroll-btn">
-          <Icon name="i--chevron-up" class="size-1em" />
+          <VuIcon name="i--chevron-up" class="size-1em" />
         </SelectScrollUpButton>
 
         <SelectViewport>
@@ -125,7 +125,7 @@ function getSearchValue(item: T) {
                 </SelectItemText>
                 <span>
                   <slot name="item" v-bind="item">
-                    <Icon
+                    <VuIcon
                       v-if="!!item.icon"
                       :name="item.icon"
                       class="inline-block vertical-middle mr-$xs"
@@ -140,7 +140,7 @@ function getSearchValue(item: T) {
         </SelectViewport>
 
         <SelectScrollDownButton class="select-scroll-btn">
-          <Icon name="i--chevron-down" class="size-1em" />
+          <VuIcon name="i--chevron-down" class="size-1em" />
         </SelectScrollDownButton>
       </SelectContent>
     </SelectPortal>

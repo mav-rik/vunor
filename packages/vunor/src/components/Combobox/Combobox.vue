@@ -253,7 +253,7 @@ function onKeydown(event: KeyboardEvent) {
           >
             <span>
               <slot name="item" v-bind="item" :selected="isItemSelected(item.value)">
-                <Checkbox
+                <VuCheckbox
                   v-if="checkboxItems"
                   readonly
                   :label="item.label"
@@ -286,7 +286,7 @@ function onKeydown(event: KeyboardEvent) {
     >
       <DefineInputShellTemplate>
         <!-- prettier-ignore-attribute v-model -->
-        <InputShell
+        <VuInputShell
           @click="openPopup"
           :active="modelOpen"
           v-model="(modelValue as string)"
@@ -321,7 +321,7 @@ function onKeydown(event: KeyboardEvent) {
           <template #append v-if="!usePopover && !!$slots.append">
             <slot name="append"></slot>
           </template>
-        </InputShell>
+        </VuInputShell>
       </DefineInputShellTemplate>
 
       <div v-if="usePopover" class="sticky top-0 z-1 bg-current/100 border-b-1px">
@@ -342,7 +342,7 @@ function onKeydown(event: KeyboardEvent) {
 
   <template v-if="readonly || disabled">
     <!-- prettier-ignore-attribute v-model -->
-    <InputShell
+    <VuInputShell
       v-if="groupItem"
       v-bind="shellProps"
       v-model="(modelValue as string)"
@@ -356,9 +356,9 @@ function onKeydown(event: KeyboardEvent) {
       <template #append v-if="!!$slots.append">
         <slot name="append"></slot>
       </template>
-    </InputShell>
+    </VuInputShell>
     <!-- prettier-ignore-attribute v-model -->
-    <Input
+    <VuInput
       v-else
       v-bind="forwardProps"
       v-model="(modelValue as string)"
@@ -378,7 +378,7 @@ function onKeydown(event: KeyboardEvent) {
       <template #append v-if="!!$slots.append">
         <slot name="append"></slot>
       </template>
-    </Input>
+    </VuInput>
   </template>
 
   <template v-else-if="usePopover">
@@ -394,7 +394,7 @@ function onKeydown(event: KeyboardEvent) {
       </DefineItemsTemplate>
 
       <PopoverTrigger v-if="groupItem" as-child :data-expanded="popupOpen" class="i8-combobox">
-        <InputShell
+        <VuInputShell
           class="combobox-embedded-input"
           tabindex="0"
           @keydown="onKeydown"
@@ -418,9 +418,9 @@ function onKeydown(event: KeyboardEvent) {
           <template #append v-if="!!$slots.append">
             <slot name="append"></slot>
           </template>
-        </InputShell>
+        </VuInputShell>
       </PopoverTrigger>
-      <Input
+      <VuInput
         v-else
         v-bind="forwardProps"
         :model-value="selectedLabels"
@@ -431,7 +431,7 @@ function onKeydown(event: KeyboardEvent) {
       >
         <template v-slot="slotProps">
           <PopoverTrigger as-child>
-            <InputShell
+            <VuInputShell
               class="combobox-embedded-input"
               tabindex="0"
               @keydown="onKeydown"
@@ -451,16 +451,16 @@ function onKeydown(event: KeyboardEvent) {
               </template>
               <template v-slot:append="{ iconAppend }">
                 <div class="flex gap-$s">
-                  <Icon
+                  <VuIcon
                     v-if="!!selectedLabels && !readonly && !disabled"
                     name="i--clear"
                     @click.stop="clearValue"
                     class="combobox-c8-icon"
                   />
-                  <Icon :name="dropdownIcon" class="combobox-c8-icon" />
+                  <VuIcon :name="dropdownIcon" class="combobox-c8-icon" />
                 </div>
               </template>
-            </InputShell>
+            </VuInputShell>
           </PopoverTrigger>
         </template>
 
@@ -470,7 +470,7 @@ function onKeydown(event: KeyboardEvent) {
         <template #after v-if="!!$slots.after">
           <slot name="after"></slot>
         </template>
-      </Input>
+      </VuInput>
 
       <PopoverPortal>
         <PopoverContent
@@ -492,8 +492,8 @@ function onKeydown(event: KeyboardEvent) {
     <UseRootTemplate v-if="groupItem" :class />
 
     <!-- prettier-ignore-attribute v-model -->
-    <Input v-else v-bind="forwardProps" v-model="(modelValue as string)" :class>
+    <VuInput v-else v-bind="forwardProps" v-model="(modelValue as string)" :class>
       <UseRootTemplate />
-    </Input>
+    </VuInput>
   </template>
 </template>

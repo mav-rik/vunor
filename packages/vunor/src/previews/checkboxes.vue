@@ -2,39 +2,39 @@
 const c = ref<boolean | 'indeterminate'>('indeterminate')
 </script>
 <template>
-  <Card level="h2" class="with-bg relative">
-    <CardHeader class="mb-$s">Checkboxes</CardHeader>
+  <VuCard level="h2" class="with-bg relative">
+    <VuCardHeader class="mb-$s">Checkboxes</VuCardHeader>
 
     <form class="flex flex-col gap-$s relative">
-      <Checkbox
+      <VuCheckbox
         class="max-w-md"
         label="Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque maxime, quisquam nam libero dicta animi nulla! Iste tempora et laborum. Consequatur esse veritatis quaerat quos earum nam, cum sint doloribus."
         v-model="c"
         vertical-middle
       />
-      <Checkbox label="Checkbox (scope-secondary)" class="scope-secondary" />
-      <Checkbox label="Checkbox Readonly" readonly />
-      <Checkbox label="Checkbox Readonly" readonly :model-value="true" />
-      <Checkbox label="Checkbox Disabled" disabled />
-      <Checkbox label="Checkbox (scope-secondary) disabled" class="scope-secondary" disabled />
-      <Checkbox :model-value="true" label="Checkbox Disabled" disabled />
-      <Checkbox
+      <VuCheckbox label="Checkbox (scope-secondary)" class="scope-secondary" />
+      <VuCheckbox label="Checkbox Readonly" readonly />
+      <VuCheckbox label="Checkbox Readonly" readonly :model-value="true" />
+      <VuCheckbox label="Checkbox Disabled" disabled />
+      <VuCheckbox label="Checkbox (scope-secondary) disabled" class="scope-secondary" disabled />
+      <VuCheckbox :model-value="true" label="Checkbox Disabled" disabled />
+      <VuCheckbox
         :model-value="true"
         label="Checkbox (scope-secondary) disabled"
         class="scope-secondary"
         disabled
       />
-      <Checkbox label="Checkbox 1 with error" error="Has Error" />
-      <Checkbox
+      <VuCheckbox label="Checkbox 1 with error" error="Has Error" />
+      <VuCheckbox
         label="Checkbox (scope-secondary) with error"
         error="Has Error"
         class="scope-secondary"
       />
-      <Checkbox label="Checkbox 1 (required)" required />
-      <Checkbox label="Checkbox (scope-secondary) (required)" required class="scope-secondary" />
+      <VuCheckbox label="Checkbox 1 (required)" required />
+      <VuCheckbox label="Checkbox (scope-secondary) (required)" required class="scope-secondary" />
 
-      <Checkbox class="max-w-md" label="Checkbox 1 (reverse)" reverse />
-      <Checkbox
+      <VuCheckbox class="max-w-md" label="Checkbox 1 (reverse)" reverse />
+      <VuCheckbox
         class="max-w-md scope-secondary"
         label="Checkbox (scope-secondary) (reverse)"
         reverse
@@ -43,27 +43,27 @@ const c = ref<boolean | 'indeterminate'>('indeterminate')
     </form>
 
     <form class="flex flex-col gap-$s text-h3 mt-$xl relative">
-      <Checkbox label="Checkbox 1" v-model="c" />
-      <Checkbox label="Checkbox (scope-secondary)" class="scope-secondary" />
-      <Checkbox label="Checkbox Disabled" disabled />
-      <Checkbox label="Checkbox (scope-secondary) disabled" class="scope-secondary" disabled />
-      <Checkbox :model-value="true" label="Checkbox Disabled" disabled />
-      <Checkbox
+      <VuCheckbox label="Checkbox 1" v-model="c" />
+      <VuCheckbox label="Checkbox (scope-secondary)" class="scope-secondary" />
+      <VuCheckbox label="Checkbox Disabled" disabled />
+      <VuCheckbox label="Checkbox (scope-secondary) disabled" class="scope-secondary" disabled />
+      <VuCheckbox :model-value="true" label="Checkbox Disabled" disabled />
+      <VuCheckbox
         :model-value="true"
         label="Checkbox (scope-secondary) disabled"
         class="scope-secondary"
         disabled
       />
-      <Checkbox label="Checkbox 1 with error" error="Has Error" />
-      <Checkbox
+      <VuCheckbox label="Checkbox 1 with error" error="Has Error" />
+      <VuCheckbox
         label="Checkbox (scope-secondary) with error"
         error="Has Error"
         class="scope-secondary"
       />
-      <Checkbox label="Checkbox 1 (required)" required />
-      <Checkbox label="Checkbox (scope-secondary) (required)" required class="scope-secondary" />
+      <VuCheckbox label="Checkbox 1 (required)" required />
+      <VuCheckbox label="Checkbox (scope-secondary) (required)" required class="scope-secondary" />
     </form>
-  </Card>
+  </VuCard>
 </template>
 
 <style scoped>

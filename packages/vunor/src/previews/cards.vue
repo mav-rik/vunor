@@ -6,18 +6,18 @@ const guides = ref(false)
 const dense = ref(true)
 </script>
 <template>
-  <Card level="h2">
-    <CardHeader class="mb-$s">Cards</CardHeader>
+  <VuCard level="h2">
+    <VuCardHeader class="mb-$s">Cards</VuCardHeader>
     <h3 class="mb-$s border-b border-b-2px">Levels</h3>
     <div class="flex flex-col gap-$l">
-      <Card
+      <VuCard
         v-for="level of levels"
         :level="level"
         rounded
         class="border max-w-xl relative"
         @click="guides = !guides"
       >
-        <CardHeader class="mb-$xxs fw-bold">Level {{ level }}</CardHeader>
+        <VuCardHeader class="mb-$xxs fw-bold">Level {{ level }}</VuCardHeader>
         <p class="text-my-0">{{ lorem }}</p>
         <template v-if="guides">
           <div
@@ -37,18 +37,18 @@ const dense = ref(true)
             class="h-$card-heading-corrected top-$card-spacing pointer-events-none border border-dashed border-color-green-500 bg-green-700 bg-opacity-5 absolute left-0 right-0"
           ></div>
         </template>
-      </Card>
+      </VuCard>
     </div>
     <h3 class="mb-$s mt-$l border-b border-b-2px">Density</h3>
     <div class="grid grid-cols-2 gap-$l">
-      <Card
+      <VuCard
         level="h3"
         class="border w-full scope-neutral surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"
       >
-        <CardHeader>Card H3</CardHeader>
+        <VuCardHeader>Card H3</VuCardHeader>
         <p class="text-mb-0">
           Density =
           <span class="surface-50 border inline-block rounded px-$m">{{
@@ -56,15 +56,15 @@ const dense = ref(true)
           }}</span
           ><br />Click here to change density.
         </p>
-      </Card>
-      <Card
+      </VuCard>
+      <VuCard
         level="h4"
         class="border w-full scope-neutral surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"
       >
-        <CardHeader>Card H4</CardHeader>
+        <VuCardHeader>Card H4</VuCardHeader>
         <p class="text-mb-0">
           Density =
           <span class="surface-50 border inline-block rounded px-$m">{{
@@ -72,15 +72,15 @@ const dense = ref(true)
           }}</span
           ><br />Click here to change density.
         </p>
-      </Card>
-      <Card
+      </VuCard>
+      <VuCard
         level="h5"
         class="border w-full scope-neutral surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"
       >
-        <CardHeader>Card H5</CardHeader>
+        <VuCardHeader>Card H5</VuCardHeader>
         <p class="text-mb-0">
           Density =
           <span class="surface-50 border inline-block rounded px-$m">{{
@@ -88,15 +88,15 @@ const dense = ref(true)
           }}</span
           ><br />Click here to change density.
         </p>
-      </Card>
-      <Card
+      </VuCard>
+      <VuCard
         level="h6"
         class="border w-full scope-neutral surface-0"
         rounded
         :dense="dense"
         @click="dense = !dense"
       >
-        <CardHeader>Card H6</CardHeader>
+        <VuCardHeader>Card H6</VuCardHeader>
         <p class="text-mb-0">
           Density =
           <span class="surface-50 border inline-block rounded px-$m">{{
@@ -104,7 +104,7 @@ const dense = ref(true)
           }}</span
           ><br />Click here to change density.
         </p>
-      </Card>
+      </VuCard>
     </div>
-  </Card>
+  </VuCard>
 </template>

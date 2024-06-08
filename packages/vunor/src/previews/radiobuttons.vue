@@ -12,11 +12,11 @@ const items2 = [
 ]
 </script>
 <template>
-  <Card level="h2" class="with-bg relative">
-    <CardHeader class="mb-$s">Radiobuttons</CardHeader>
+  <VuCard level="h2" class="with-bg relative">
+    <VuCardHeader class="mb-$s">Radiobuttons</VuCardHeader>
 
     <div class="relative mb-$l flex flex-col gap-$l">
-      <RadioGroup
+      <VuRadioGroup
         :items="items"
         :disabledValues
         label-visible
@@ -26,10 +26,10 @@ const items2 = [
       >
         <div class="flex gap-$xs items-center">
           <span>{{ label }}</span>
-          <Icon :name="icon" class="current-icon-grey-400" />
+          <VuIcon :name="icon" class="current-icon-grey-400" />
         </div>
-      </RadioGroup>
-      <RadioGroup
+      </VuRadioGroup>
+      <VuRadioGroup
         class="max-w-200px"
         :items="items"
         :disabledValues
@@ -41,10 +41,10 @@ const items2 = [
       >
         <div class="flex gap-$xs items-center">
           <span>{{ label }}</span>
-          <Icon :name="icon" class="current-icon-grey-400" />
+          <VuIcon :name="icon" class="current-icon-grey-400" />
         </div>
-      </RadioGroup>
-      <RadioGroup
+      </VuRadioGroup>
+      <VuRadioGroup
         class="scope-secondary"
         :items="items"
         :disabledValues
@@ -56,10 +56,10 @@ const items2 = [
       >
         <div class="flex gap-$xs items-center">
           <span>{{ label }}</span>
-          <Icon :name="icon" class="current-icon-grey-400" />
+          <VuIcon :name="icon" class="current-icon-grey-400" />
         </div>
-      </RadioGroup>
-      <RadioGroup
+      </VuRadioGroup>
+      <VuRadioGroup
         class="max-w-200px"
         :items="items"
         :disabledValues
@@ -69,7 +69,7 @@ const items2 = [
         disabled
         v-model="v3"
       />
-      <RadioGroup
+      <VuRadioGroup
         :items="items"
         :disabledValues
         label-visible
@@ -80,7 +80,7 @@ const items2 = [
     </div>
 
     <div class="relative mb-$xxl flex flex-col gap-$l">
-      <RadioGroup
+      <VuRadioGroup
         :items="items2"
         :disabledValues
         label-visible
@@ -89,7 +89,7 @@ const items2 = [
         vertical-middle
         class="w-md"
       />
-      <RadioGroup
+      <VuRadioGroup
         class="scope-secondary"
         :items="items2"
         :disabledValues
@@ -100,8 +100,8 @@ const items2 = [
         v-slot="{ label }"
       >
         <div class="max-w-200px">{{ label }}</div>
-      </RadioGroup>
-      <RadioGroup
+      </VuRadioGroup>
+      <VuRadioGroup
         :items="items2"
         :disabledValues
         label-visible
@@ -113,8 +113,8 @@ const items2 = [
         v-slot="{ label }"
       >
         <div class="max-w-200px">{{ label }}</div>
-      </RadioGroup>
-      <RadioGroup
+      </VuRadioGroup>
+      <VuRadioGroup
         :items="items2"
         :disabledValues
         label-visible
@@ -126,8 +126,14 @@ const items2 = [
     </div>
 
     <div class="relative mb-$l flex flex-col gap-$l text-h3">
-      <RadioGroup :items="items" :disabledValues label-visible label="Test rb-group" v-model="v1" />
-      <RadioGroup
+      <VuRadioGroup
+        :items="items"
+        :disabledValues
+        label-visible
+        label="Test rb-group"
+        v-model="v1"
+      />
+      <VuRadioGroup
         class="scope-secondary"
         :items="items"
         :disabledValues
@@ -136,7 +142,7 @@ const items2 = [
         row
         v-model="v2"
       />
-      <RadioGroup
+      <VuRadioGroup
         :items="items"
         :disabledValues
         label-visible
@@ -145,7 +151,7 @@ const items2 = [
         disabled
         v-model="v3"
       />
-      <RadioGroup
+      <VuRadioGroup
         :items="items"
         :disabledValues
         label-visible
@@ -154,7 +160,7 @@ const items2 = [
         error="Error text"
       />
     </div>
-  </Card>
+  </VuCard>
 </template>
 
 <style scoped>

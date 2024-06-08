@@ -11,8 +11,8 @@ const scopes = [
 </script>
 
 <template>
-  <Card level="h2">
-    <CardHeader class="mb-$s">Layers</CardHeader>
+  <VuCard level="h2">
+    <VuCardHeader class="mb-$s">Layers</VuCardHeader>
 
     <div v-for="scope of scopes" :class="scope" class="mb-$xxl">
       <h3>Scope "{{ scope }}"</h3>
@@ -22,5 +22,5 @@ const scopes = [
       <div class="layer-3 py-$xl px-$m">Layer-3</div>
       <div class="layer-4 py-$xl px-$m">Layer-4</div>
     </div>
-  </Card>
+  </VuCard>
 </template>

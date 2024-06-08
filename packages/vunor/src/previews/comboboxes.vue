@@ -49,19 +49,19 @@ const asCheckboxes = ref(false)
 const stackLabel = ref(false)
 </script>
 <template>
-  <Card level="h2" class="with-bg relative">
-    <CardHeader class="mb-$s">Comboboxes</CardHeader>
+  <VuCard level="h2" class="with-bg relative">
+    <VuCardHeader class="mb-$s">Comboboxes</VuCardHeader>
 
     <div class="flex gap-$l">
-      <Checkbox label="Items as Checkboxes" v-model="asCheckboxes" />
-      <Checkbox label="Stack Label" v-model="stackLabel" />
+      <VuCheckbox label="Items as Checkboxes" v-model="asCheckboxes" />
+      <VuCheckbox label="Stack Label" v-model="stackLabel" />
     </div>
 
     <div class="relative mb-$xxl flex flex-col gap-$l">
       <template v-for="state of states">
         <h4 class="text-mt-$m">{{ state.title }}</h4>
         <div class="flex gap-$m flex-wrap w-full">
-          <Combobox
+          <VuCombobox
             :checkbox-items="asCheckboxes"
             v-for="design of designs"
             :popup-class="{
@@ -81,7 +81,7 @@ const stackLabel = ref(false)
       <template v-for="state of states">
         <h4 class="text-mt-$m">Groupped ({{ state.title }})</h4>
         <div class="flex gap-$m flex-wrap w-full">
-          <Input
+          <VuInput
             v-for="design of designs"
             :design
             class="w-full"
@@ -89,7 +89,7 @@ const stackLabel = ref(false)
             :stack-label
             label="Group level label"
           >
-            <Combobox
+            <VuCombobox
               :checkbox-items="asCheckboxes"
               @append-click.stop="v1 ? (v1 = undefined) : ''"
               :popup-class="{
@@ -104,7 +104,7 @@ const stackLabel = ref(false)
               label="Left Item"
               group-item
             />
-            <Combobox
+            <VuCombobox
               :checkbox-items="asCheckboxes"
               @append-click.stop="v1 ? (v1 = undefined) : ''"
               :popup-class="{
@@ -119,7 +119,7 @@ const stackLabel = ref(false)
               label="Center Left Item"
               group-item
             />
-            <Combobox
+            <VuCombobox
               :checkbox-items="asCheckboxes"
               @append-click.stop="v1 ? (v1 = undefined) : ''"
               :popup-class="{
@@ -134,7 +134,7 @@ const stackLabel = ref(false)
               label="Center Right Item"
               group-item
             />
-            <Combobox
+            <VuCombobox
               :checkbox-items="asCheckboxes"
               @append-click.stop="v1 ? (v1 = undefined) : ''"
               :popup-class="{
@@ -149,12 +149,12 @@ const stackLabel = ref(false)
               label="Right Item"
               group-item
             />
-          </Input>
+          </VuInput>
         </div>
       </template>
 
       <div class="flex gap-$m flex-wrap w-full">
-        <Combobox
+        <VuCombobox
           multiple
           :items
           class="w-400px"
@@ -165,7 +165,7 @@ const stackLabel = ref(false)
         >
           <template v-slot:selected-items="{ items }">
             <!-- <div class="i8-ta-wrapper"> -->
-            <OverflowContainer
+            <VuOverflowContainer
               :items
               class="i8-input items-center text-body-s flex gap-$s absolute left-0 top-0 right-0 bottom-0"
             >
@@ -174,19 +174,19 @@ const stackLabel = ref(false)
                   class="surface-50 border px-$xs rounded whitespace-nowrap flex items-center gap-$s opacity-90 hover:opacity-100"
                 >
                   {{ item.label }}
-                  <Icon
+                  <VuIcon
                     name="i--clear"
                     @click.stop="v1 = v1?.filter(i => i !== item.value)"
                     class="opacity-70 hover:opacity-100 cursor-pointer"
                   />
                 </div>
               </template>
-            </OverflowContainer>
+            </VuOverflowContainer>
             <!-- </div> -->
           </template>
-        </Combobox>
+        </VuCombobox>
 
-        <Combobox
+        <VuCombobox
           multiple
           :stack-label
           :items
@@ -196,10 +196,10 @@ const stackLabel = ref(false)
           icon-before="i--config"
           icon-after="i--click"
         >
-        </Combobox>
+        </VuCombobox>
       </div>
     </div>
-  </Card>
+  </VuCard>
 </template>
 
 <style scoped>

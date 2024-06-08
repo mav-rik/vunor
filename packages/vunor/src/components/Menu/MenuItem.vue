@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <Button
+  <VuButton
     :icon="icon"
     :aria-selected="selected"
     :label="label"
@@ -17,5 +17,5 @@ defineProps<{
     }"
     class="justify-start c8-flat gap-$m w-full fw-400 rounded-0!"
   >
-  </Button>
+  </VuButton>
 </template>
