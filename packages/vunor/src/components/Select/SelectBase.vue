@@ -90,7 +90,7 @@ function getSearchValue(item: T) {
           'overflow': popupPosition === 'popper' ? 'auto' : '',
         }"
         :data-design="popupRound ? 'round' : undefined"
-        :class="popupClass || 'scope-primary'"
+        :class="popupClass"
         :position="popupPosition"
         :side
         :side-offset

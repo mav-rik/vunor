@@ -158,7 +158,7 @@ watch([modelOpen], async () => {
 
 const popoverProps = computed(() => ({
   class: {
-    [typeof props.popupClass === 'string' ? props.popupClass : 'scope-primary']: true,
+    [typeof props.popupClass === 'string' ? props.popupClass : '']: true,
     'select-content group/i8 rounded': true,
     ...(typeof props.popupClass === 'object' ? props.popupClass : {}),
   },

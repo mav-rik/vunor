@@ -40,5 +40,28 @@ const selected = reactive<Record<string, boolean>>({
         </div>
       </div>
     </div>
+    <div>
+      <h4 class="text-mb-$m">Segmented</h4>
+      <div class="flex">
+        <div
+          tabindex="0"
+          class="segmented c8-outlined h-[2rem] rounded flex items-center justify-center px-$m gap-$m select-none"
+        >
+          Button 1
+        </div>
+        <div
+          tabindex="0"
+          class="segmented c8-outlined h-[2rem] rounded flex items-center justify-center px-$m gap-$m select-none"
+        >
+          Button 2
+        </div>
+        <div
+          tabindex="0"
+          class="segmented c8-outlined h-[2rem] rounded flex items-center justify-center px-$m gap-$m select-none"
+        >
+          Button 3
+        </div>
+      </div>
+    </div>
   </VuCard>
 </template>

@@ -2,7 +2,7 @@ import { scFromObject } from '../../theme/utils/shortcut-obj'
 
 export const selectShortcuts = {
   'select-content': scFromObject({
-    '': 'min-w-[60px] rounded-base surface-0 bg-current/70 backdrop-blur-md overflow-hidden shadow-xl z-[100] current-border-grey-400 border-current/20 ',
+    '': 'min-w-[60px] rounded-base surface-0 bg-current/70 backdrop-blur-xl overflow-hidden shadow-xl z-[100] current-border-grey-400 border-current/20 ',
     'data-[design=round]:': 'rounded-half-fingertip',
     '[&>div[data-radix-combobox-viewport]]:':
       'max-h-[var(--radix-popper-available-height)] [scrollbar-width:auto]',

@@ -60,7 +60,7 @@ const dark = useDark()
     left-w="16rem"
     left-class=" flex flex-col justify-between p-$m border-r"
     main-class="min-h-100vh"
-    class="scope-primary layer-0"
+    class="layer-0"
   >
     <template #header> Hello </template>
     <template #left>

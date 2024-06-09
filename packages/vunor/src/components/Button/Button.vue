@@ -1,34 +1,47 @@
 <script setup lang="ts">
-withDefaults(
-  defineProps<{
-    label?: string
-    icon?: string
-    iconSide?: 'left' | 'right'
-    loading?: boolean
-    disabled?: boolean
-  }>(),
-  {
-    iconSide: 'left',
-  }
-)
+import { RouterLink, type RouteLocationRaw } from 'vue-router'
+
+const props = defineProps<{
+  label?: string
+  icon?: string
+  iconSide?: 'left' | 'right'
+  loading?: boolean
+  disabled?: boolean
+  active?: boolean
+  pressed?: boolean
+  selected?: boolean
+  to?: RouteLocationRaw
+  class?: string | Record<string, boolean>
+  style?: string | Record<string, string>
+}>()
 </script>
 
 <template>
-  <button
-    class="btn group/btn"
-    :data-has-label="!!label || $slots.default"
-    :data-has-icon="!!icon"
-    :data-loading="loading ? '' : undefined"
-    :disabled="loading || disabled || undefined"
-  >
-    <div class="loading-indicator-wrapper" v-if="loading">
-      <VuLoadingIndicator />
-    </div>
-    <VuIcon v-if="icon && iconSide === 'left'" :name="icon" class="btn-icon btn-icon-left" />
-    <slot>
-      <span class="btn-label">{{ label }}</span>
-    </slot>
+  <RouterLink v-if="!!to" custom :to v-slot="{ isActive, href }">
+    <VuButtonBase as="a" :href :aria-selected="isActive" v-bind="props">
+      <template #icon-left v-if="$slots['icon-left']">
+        <slot name="icon-left"></slot>
+      </template>
+      <slot></slot>
+      <template #icon-right v-if="$slots['icon-right']">
+        <slot name="icon-right"></slot>
+      </template>
+    </VuButtonBase>
+  </RouterLink>
 
-    <VuIcon v-if="icon && iconSide === 'right'" :name="icon" class="btn-icon btn-icon-right" />
-  </button>
+  <VuButtonBase
+    v-else
+    v-bind="props"
+    :data-active="active ? '' : undefined"
+    :aria-pressed="typeof pressed === 'boolean' ? pressed : undefined"
+    :aria-selected="typeof selected === 'boolean' ? selected : undefined"
+  >
+    <template #icon-left v-if="$slots['icon-left']">
+      <slot name="icon-left"></slot>
+    </template>
+    <slot></slot>
+    <template #icon-right v-if="$slots['icon-right']">
+      <slot name="icon-right"></slot>
+    </template>
+  </VuButtonBase>
 </template>

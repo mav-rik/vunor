@@ -16,7 +16,7 @@ export const buttonShortcuts = {
     '': '',
   }),
   'btn-label': scFromObject({
-    '': 'lh-1em truncate',
+    '': 'lh-1em ellipsis whitespace-nowrap overflow-x-clip overflow-y-visible',
     'group-[.btn-square]/btn:': 'hidden',
   }),
   'btn-icon': scFromObject({

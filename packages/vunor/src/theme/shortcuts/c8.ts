@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { scFromObject } from '../utils/shortcut-obj'
 
 // c8 - clickable
@@ -12,12 +13,12 @@ export const c8 = {
     'data-[active]:': 'c8-filled-active',
   }),
   'c8-filled-hover': scFromObject({
-    'enabled:': 'current-bg-scope-color-400',
-    'dark:enabled:': 'current-bg-scope-color-600',
+    'not-([disabled]):': 'current-bg-scope-color-400',
+    'dark:not-([disabled]):': 'current-bg-scope-color-600',
   }),
   'c8-filled-active': scFromObject({
-    'enabled:': 'current-bg-scope-color-600',
-    'dark:enabled:': 'current-bg-scope-color-400',
+    'not-([disabled]):': 'current-bg-scope-color-600',
+    'dark:not-([disabled]):': 'current-bg-scope-color-400',
   }),
 
   // FLAT (Transparent)
@@ -30,12 +31,13 @@ export const c8 = {
     'active:': 'c8-flat-active',
     'data-[active]:': 'c8-flat-active',
     'aria-[selected=true]:': 'c8-flat-selected',
+    'aria-[pressed=true]:': 'c8-flat-selected',
   }),
   'c8-flat-hover': scFromObject({
-    'enabled:': 'bg-current/05 backdrop-blur-sm',
+    'not-([disabled]):': 'bg-current/05 backdrop-blur-xl',
   }),
   'c8-flat-active': scFromObject({
-    'enabled:': 'bg-current/10 backdrop-blur-sm',
+    'not-([disabled]):': 'bg-current/10 backdrop-blur-xl',
   }),
   'c8-flat-selected': scFromObject({
     '': 'c8-flat-hover current-text-scope-color-500 text-current current-icon-scope-color-500 icon-current/100',
@@ -57,18 +59,20 @@ export const c8 = {
 
   // LIGHT (Filled/Transparent)
   'c8-light': scFromObject({
-    '': 'current-bg-scope-color-500 rounded-base current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80 backdrop-blur-sm',
+    '': 'current-bg-scope-color-500 rounded-base current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80 backdrop-blur-xl',
     'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
     'hover:': 'c8-light-hover',
     'focus-visible:': 'c8-light-hover',
     'data-[highlighted]:': 'c8-light-hover',
     'active:': 'c8-light-active',
     'data-[active]:': 'c8-light-active',
+    'aria-[selected=true]:': 'c8-light-hover',
+    'aria-[pressed=true]:': 'c8-light-hover',
   }),
   'c8-light-hover': scFromObject({
-    'enabled:': 'bg-current/15',
+    'not-([disabled]):': 'bg-current/15',
   }),
   'c8-light-active': scFromObject({
-    'enabled:': 'bg-current/20',
+    'not-([disabled]):': 'bg-current/20',
   }),
 }

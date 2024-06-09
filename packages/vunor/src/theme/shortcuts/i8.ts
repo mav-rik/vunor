@@ -10,7 +10,7 @@ export const i8 = {
       '': 'border-b',
     },
     '[&.i8-filled]:': {
-      '': ' current-bg-scope-light-0 bg-current/75 border border-current/20 rounded-base backdrop-blur-md', // backdrop-blur-md
+      '': ' current-bg-scope-light-0 bg-current/75 border border-current/20 rounded-base backdrop-blur-xl',
       'data-[active=true]:':
         'current-bg-scope-light-0 bg-current/100 current-outline-scope-color-500 outline-current/50 outline-2px outline',
       'dark:': {

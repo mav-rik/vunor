@@ -1,5 +1,6 @@
-import type { ComponentResolver } from 'unplugin-vue-components'
 import { join } from 'node:path'
+
+import type { ComponentResolver } from 'unplugin-vue-components'
 
 const wd = process.cwd()
 
@@ -10,6 +11,7 @@ export const nestedComponents = {
   LoadingIndicator: 'Loading',
   MenuItem: 'Menu',
   SelectBase: 'Select',
+  ButtonBase: 'Button',
 } as Record<string, string | undefined>
 
 export const VunorVueResolver: ComponentResolver = componentName => {

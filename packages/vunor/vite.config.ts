@@ -25,6 +25,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'vue',
+        'vue-router',
         'radix-vue',
         'path',
         'fs',

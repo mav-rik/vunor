@@ -2,6 +2,24 @@
 <template>
   <VuCard level="h2" class="with-bg relative">
     <VuCardHeader class="mb-$s">Testing</VuCardHeader>
+
+    <VuPopover align="end">
+      <VuButton label="Artem M" icon="i--more-vert" icon-side="right">
+        <template #icon-left>
+          <VuIcon name="i--search" class="size-2em bg-red rounded-full" />
+        </template>
+      </VuButton>
+
+      <template v-slot:content="{ close }">
+        <div
+          class="scope-primary flex flex-col layer-0 shadow-xl rounded-$m min-w-[var(--radix-popover-trigger-width)] w-500px"
+        >
+          <div>
+            <VuButton label="item" class="c8-flat rounded-0!" @click="close" />
+          </div>
+        </div>
+      </template>
+    </VuPopover>
   </VuCard>
 </template>
 

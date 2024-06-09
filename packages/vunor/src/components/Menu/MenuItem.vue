@@ -10,12 +10,11 @@ defineProps<{
 <template>
   <VuButton
     :icon="icon"
-    :aria-selected="selected"
+    :selected="selected"
     :label="label"
     :class="{
       'scope-grey': !selected,
     }"
-    class="justify-start c8-flat gap-$m w-full fw-400 rounded-0!"
-  >
-  </VuButton>
+    class="menu-item"
+  />
 </template>

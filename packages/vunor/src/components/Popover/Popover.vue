@@ -2,7 +2,7 @@
 import type { PopoverContentProps } from 'radix-vue'
 
 const props = defineProps<
-  PopoverContentProps & { class: string | Record<string, boolean>; icon?: string; label?: string }
+  PopoverContentProps & { class?: string | Record<string, boolean>; icon?: string; label?: string }
 >()
 
 const popupContentProps = computed(() => {
