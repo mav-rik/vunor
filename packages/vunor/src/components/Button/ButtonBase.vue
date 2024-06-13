@@ -21,7 +21,7 @@ withDefaults(
     class="btn group/btn"
     :as
     :href
-    :data-has-label="!!label || $slots.default"
+    :data-has-label="!!label || !!$slots.default"
     :data-has-icon="!!icon"
     :data-loading="loading ? '' : undefined"
     :disabled="loading || disabled || undefined"

@@ -24,10 +24,6 @@
   ],
   "exports": {
     "./package.json": "./package.json",
-    ".": {
-      "import": "./dist/lib.mjs",
-      "types": "./dist/lib.d.ts"
-    },
     "./theme": {
       "import": "./dist/theme.mjs",
       "types": "./dist/theme.d.ts"
@@ -36,7 +32,28 @@
       "import": "./dist/vite.mjs",
       "types": "./dist/vite.d.ts"
     },
-    "./components/Input": "./src/components/Input/Input.vue"
+    "./Input.vue": "./src/components/Input/Input.vue",
+    "./InputBase.vue": "./src/components/Input/InputBase.vue",
+    "./Button.vue": "./src/components/Button/Button.vue",
+    "./ButtonBase.vue": "./src/components/Button/ButtonBase.vue",
+    "./AppLayout.vue": "./src/components/AppLayout/AppLayout.vue",
+    "./Card.vue": "./src/components/Card/Card.vue",
+    "./CardHeader.vue": "./src/components/Card/CardHeader.vue",
+    "./CardInner.vue": "./src/components/Card/CardInner.vue",
+    "./Checkbox.vue": "./src/components/Checkbox/Checkbox.vue",
+    "./Combobox.vue": "./src/components/Combobox/Combobox.vue",
+    "./Icon.vue": "./src/components/Icon/Icon.vue",
+    "./InputShell.vue": "./src/components/Input/InputShell.vue",
+    "./Label.vue": "./src/components/Label/Label.vue",
+    "./LoadingIndicator.vue": "./src/components/Loading/LoadingIndicator.vue",
+    "./Menu.vue": "./src/components/Menu/Menu.vue",
+    "./MenuItem.vue": "./src/components/Menu/MenuItem.vue",
+    "./OverflowContainer.vue": "./src/components/OverflowContainer/OverflowContainer.vue",
+    "./Popover.vue": "./src/components/Popover/Popover.vue",
+    "./RadioGroup.vue": "./src/components/RadioGroup/RadioGroup.vue",
+    "./Select.vue": "./src/components/Select/Select.vue",
+    "./SelectBase.vue": "./src/components/Select/SelectBase.vue",
+    "./Slider.vue": "./src/components/Slider/Slider.vue"
   },
   "devDependencies": {
     "@iconify/utils": "^2.1.23",

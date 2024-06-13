@@ -2,7 +2,12 @@
 import type { PopoverContentProps } from 'radix-vue'
 
 const props = defineProps<
-  PopoverContentProps & { class?: string | Record<string, boolean>; icon?: string; label?: string }
+  PopoverContentProps & {
+    class?: string | Record<string, boolean>
+    icon?: string
+    label?: string
+    asLink?: boolean
+  }
 >()
 
 const popupContentProps = computed(() => {
@@ -28,6 +33,7 @@ function close() {
     <PopoverTrigger as-child>
       <slot :isOpen="modelValue" :close :open
         ><VuButton
+          :as-link
           :icon="icon || 'i--more-vert'"
           :class
           :label

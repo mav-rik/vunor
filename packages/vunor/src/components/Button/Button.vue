@@ -13,6 +13,7 @@ const props = defineProps<{
   to?: RouteLocationRaw
   class?: string | Record<string, boolean>
   style?: string | Record<string, string>
+  asLink?: boolean
 }>()
 </script>
 
@@ -31,6 +32,7 @@ const props = defineProps<{
 
   <VuButtonBase
     v-else
+    :as="asLink ? 'a' : 'button'"
     v-bind="props"
     :data-active="active ? '' : undefined"
     :aria-pressed="typeof pressed === 'boolean' ? pressed : undefined"

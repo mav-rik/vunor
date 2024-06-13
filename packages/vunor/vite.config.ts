@@ -7,7 +7,16 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import RadixVueResolver from 'radix-vue/resolver'
 import dts from 'vite-plugin-dts'
-import { nestedComponents } from './src/vite'
+
+export const nestedComponents = {
+  InputShell: 'Input',
+  CardHeader: 'Card',
+  CardInner: 'Card',
+  LoadingIndicator: 'Loading',
+  MenuItem: 'Menu',
+  SelectBase: 'Select',
+  ButtonBase: 'Button',
+} as Record<string, string | undefined>
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,8 +26,7 @@ export default defineConfig({
 
   build: {
     lib: {
-      // tell the build process to treat this project as library
-      entry: ['src/lib.ts', 'src/theme.ts', 'src/vite.ts'],
+      entry: ['src/theme.ts', 'src/vite.ts'],
       fileName: (format, entry) => entry + '.mjs',
       formats: ['es'],
     },
