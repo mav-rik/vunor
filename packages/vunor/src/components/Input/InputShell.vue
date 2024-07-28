@@ -19,12 +19,14 @@ useInputPi().inject(focused)
 const attrs = useInputDataAttrs()
 const inputAttrs = useHtmlInputAttrs()
 
-function onFocus() {
+function onFocus(event: FocusEvent) {
   focused.value = true
+  emit('focus', event)
 }
 
-function onBlur() {
+function onBlur(event: FocusEvent) {
   focused.value = false
+  emit('blur', event)
 }
 
 function taGrow(event: Event) {

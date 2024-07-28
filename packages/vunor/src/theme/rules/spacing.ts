@@ -76,4 +76,29 @@ export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
       return undefined
     },
   ],
+  [
+    /^fingertip-(.*)/,
+    (match, { theme }) => {
+      const name = match[1]
+      if (name.startsWith('[') && name.endsWith(']')) {
+        return {
+          '--v-fingertip': name.slice(1, -1),
+          '--v-fingertip-half': unitBy(name.slice(1, -1), 0.5),
+        }
+      }
+      if (['xs', 's', 'm', 'l', 'xl'].includes(name)) {
+        return {
+          '--v-fingertip': theme.spacing[`fingertip-${name}`],
+          '--v-fingertip-half': unitBy(theme.spacing[`fingertip-${name}`], 0.5),
+        }
+      }
+      if (theme.spacing[name]) {
+        return {
+          '--v-fingertip': theme.spacing[name],
+          '--v-fingertip-half': unitBy(theme.spacing[name], 0.5),
+        }
+      }
+      return undefined
+    },
+  ],
 ]

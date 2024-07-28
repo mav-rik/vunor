@@ -41,18 +41,30 @@ const iconBefore = ref<string>('undefined')
 const iconAfter = ref<string>('undefined')
 const iconPrepend = ref<string>('undefined')
 const iconAppend = ref<string>('undefined')
+const large = ref(false)
 
 const type = ref('text')
 const stackLabel = ref(false)
+
+function onBlur() {
+  console.log('blurred!')
+}
 </script>
 <template>
-  <VuCard level="h2" class="with-bg relative">
+  <VuCard
+    level="h2"
+    class="with-bg relative"
+    :class="{
+      'fingertip-l': large,
+    }"
+  >
     <VuCardHeader class="mb-$s">Inputs</VuCardHeader>
 
     <div class="layer-4 pa-$m rounded-$m backdrop-blur-md">
       <div class="flex gap-$m mt-$s items-center">
         <VuSelect :items="typeItems" v-model="type" label="Type" design="filled" :stack-label />
         <VuCheckbox label="Stack Label" v-model="stackLabel" />
+        <VuCheckbox label="Large" v-model="large" />
       </div>
       <div class="flex gap-$m mt-$s">
         <VuSelect
@@ -92,6 +104,7 @@ const stackLabel = ref(false)
         <div v-for="state2 of states2">
           <div class="flex gap-$m flex-wrap w-full max-w-1020px">
             <VuInput
+              @blur="onBlur"
               class="flex-grow"
               v-for="state3 of states3"
               v-bind="{ ...state1.bind, ...state2, ...state3 }"

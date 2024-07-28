@@ -24,9 +24,13 @@ export const themeFactory = (
     '$l': `${round(opts.spacingFactor, 3)}em`,
     '$xl': `${round(opts.spacingFactor ** 2, 3)}em`,
     '$xxl': `${round(opts.spacingFactor ** 3, 3)}em`,
-    'fingertip': opts.fingertip,
-    'half-fingertip': unitBy(opts.fingertip, 0.5),
-    'quart-fingertip': unitBy(opts.fingertip, 0.25),
+    'fingertip': 'var(--v-fingertip)',
+    'fingertip-half': 'var(--v-fingertip-half)',
+    'fingertip-xs': opts.fingertip.xs,
+    'fingertip-s': opts.fingertip.s,
+    'fingertip-m': opts.fingertip.m,
+    'fingertip-l': opts.fingertip.l,
+    'fingertip-xl': opts.fingertip.xl,
     // font-based
     '$font-tc': 'var(--font-bc)',
     '$font-bc': 'var(--font-tc)',
@@ -42,9 +46,13 @@ export const themeFactory = (
   } as Record<string, string>
 
   const lineHeight = {
-    'fingertip': opts.fingertip,
-    'half-fingertip': unitBy(opts.fingertip, 0.5),
-    'quart-fingertip': unitBy(opts.fingertip, 0.25),
+    'fingertip': 'var(--v-fingertip)',
+    'fingertip-half': 'var(--v-fingertip-half)',
+    'fingertip-xs': opts.fingertip.xs,
+    'fingertip-s': opts.fingertip.s,
+    'fingertip-m': opts.fingertip.m,
+    'fingertip-l': opts.fingertip.l,
+    'fingertip-xl': opts.fingertip.xl,
   }
 
   const borderRadius = {

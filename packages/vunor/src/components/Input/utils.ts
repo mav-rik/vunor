@@ -46,6 +46,8 @@ export function useInputProps(): ComputedRef<TInputProps> | undefined {
       loading: props.loading,
       onAppendClick: props.onAppendClick,
       onPrependClick: props.onPrependClick,
+      onBlur: props.onBlur,
+      onFocus: props.onFocus,
       iconBefore: props.iconBefore,
       iconAfter: props.iconAfter,
       error: props.error,
@@ -78,6 +80,8 @@ export function useInputShellProps(): ComputedRef<TInputShellProps> | undefined 
       active: props.active,
       onAppendClick: props.onAppendClick,
       onPrependClick: props.onPrependClick,
+      onBlur: props.onBlur,
+      onFocus: props.onFocus,
     }))
   }
   return undefined

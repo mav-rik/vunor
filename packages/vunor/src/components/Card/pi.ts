@@ -4,7 +4,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { useProvideInject } from '../utils/provide-inject'
+
+import { useProvideInject } from '../utils'
 
 const safeTag = (t?: string) => (t && /^h[1-6]$/.test(t) ? t : '')
 

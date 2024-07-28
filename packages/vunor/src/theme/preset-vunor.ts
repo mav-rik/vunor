@@ -15,6 +15,10 @@ import type { TVunorUnoPresetOpts } from './types'
 import { defaultTypography } from './typography'
 import { round } from './utils/round'
 
+function k(n: number, base = 1) {
+  return base * Math.sqrt(1.618) ** n
+}
+
 const defaultOptions: Required<TVunorUnoPresetOpts> = {
   spacingFactor: 1.618,
   actualFontHeightFactor: 1,
@@ -28,7 +32,13 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
     reverseDark: false,
     reverseLight: false,
   },
-  fingertip: '3em',
+  fingertip: {
+    xs: `${round(k(-2, 3), 3)}em`,
+    s: `${round(k(-1, 3), 3)}em`,
+    m: '3em',
+    l: `3.5em`,
+    xl: `4em`,
+  },
   baseRadius: `${round(1 / 1.618, 3)}em`,
 }
 

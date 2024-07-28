@@ -23,6 +23,8 @@ export interface TInputShellProps
   loading?: boolean
   onAppendClick?: (event: MouseEvent) => void
   onPrependClick?: (event: MouseEvent) => void
+  onBlur?: (event: FocusEvent) => void
+  onFocus?: (event: FocusEvent) => void
 }
 
 export interface TInputProps extends TInputShellProps {
@@ -35,9 +37,14 @@ export interface TInputProps extends TInputShellProps {
   onBeforeClick?: (event: MouseEvent) => void
   onAfterClick?: (event: MouseEvent) => void
   onClick?: (event: MouseEvent) => void
+  onBlur?: (event: FocusEvent) => void
+  onFocus?: (event: FocusEvent) => void
 }
 
-export type TInputShellEmits = (e: 'prependClick' | 'appendClick', event: MouseEvent) => void
+export interface TInputShellEmits {
+  (e: 'prependClick' | 'appendClick', event: MouseEvent): void
+  (e: 'blur' | 'focus', event: FocusEvent): void
+}
 
 export interface TInputEmits extends TInputShellEmits {
   (e: 'beforeClick' | 'afterClick' | 'click', event: MouseEvent): void

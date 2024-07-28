@@ -1,6 +1,6 @@
 import { computed, onUnmounted, ref } from 'vue'
 
-import { useProvideInject } from '../utils/provide-inject'
+import { useProvideInject } from '../utils'
 
 export const useInputPi = () =>
   useProvideInject('__vunor_input_PI', () => {

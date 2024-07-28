@@ -13,7 +13,13 @@ export interface TVunorUnoPresetOpts {
     reverseDark?: boolean
     reverseLight?: boolean
   }
-  fingertip?: string
+  fingertip?: {
+    xs?: string
+    s?: string
+    m?: string
+    l?: string
+    xl?: string
+  }
   baseRadius?: string
 }
 

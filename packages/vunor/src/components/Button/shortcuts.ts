@@ -3,7 +3,7 @@ import { scFromObject } from '../../theme/utils/shortcut-obj'
 export const buttonShortcuts = {
   'btn': scFromObject({
     '': 'h-fingertip flex items-center justify-center px-$m gap-$xs select-none fw-bold tracking-wide relative',
-    '[&.btn-round]:': 'px-half-fingertip rounded-half-fingertip',
+    '[&.btn-round]:': 'px-fingertip-half rounded-fingertip-half',
     '[&.btn-square]:': 'size-fingertip px-0',
     '[&.btn-round.btn-square]:': 'px-0',
     'disabled:': 'opacity-80 cursor-not-allowed',

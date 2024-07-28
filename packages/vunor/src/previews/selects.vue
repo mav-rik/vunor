@@ -79,7 +79,7 @@ const v1 = ref<string>()
             [design]: true,
           }"
           :value-class="{
-            'pl-half-fingertip': design === 'c8-filled',
+            'pl-fingertip-half': design === 'c8-filled',
             'pl-$s': design !== 'c8-filled',
           }"
           :icon-class="{

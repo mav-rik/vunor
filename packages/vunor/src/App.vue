@@ -22,6 +22,7 @@ const menu2 = [
   { group: 'Components', label: 'Radiobuttons', value: 'Radiobuttons', icon: 'i--radio' },
   { group: 'Components', label: 'Selects', value: 'Selects', icon: 'i--select' },
   { group: 'Components', label: 'Sliders', value: 'Sliders', icon: 'i--slider' },
+  { group: 'Components', label: 'Pagination', value: 'Pagination', icon: 'i--pagination' },
   { group: '', label: 'Testing', value: 'Testing', icon: 'i--test' },
 ]
 
@@ -42,6 +43,7 @@ const pages = {
   Typography: PreviewTypography,
   Testing: PreviewTest,
   Inputs: PreviewInputs,
+  Pagination: PreviewPagination,
 }
 
 const selected = ref<keyof typeof pages>('Testing')
@@ -81,7 +83,7 @@ const dark = useDark()
           class="flex flex-col w-full border-t border-color-black/10 dark:border-color-white/10 pt-$m"
         >
           <VuButton
-            class="c8-flat rounded-half-fingertip text-grey-800 dark:text-grey-300"
+            class="c8-flat rounded-fingertip-half text-grey-800 dark:text-grey-300"
             @click="dark = !dark"
             :label="dark ? 'Light' : 'Dark'"
             :icon="dark ? 'i--light-mode' : 'i--dark-mode'"

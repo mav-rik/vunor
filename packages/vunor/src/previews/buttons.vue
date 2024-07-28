@@ -3,13 +3,21 @@ const designs = ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat'] as const
 const scopes = ['scope-primary', 'scope-neutral', 'scope-error'] as const
 const loading = ref(false)
 const disabled = ref(false)
+const dense = ref(false)
 </script>
 <template>
-  <VuCard level="h2" class="with-bg relative">
+  <VuCard
+    level="h2"
+    class="with-bg relative"
+    :class="{
+      'fingertip-s': dense,
+    }"
+  >
     <VuCardHeader class="mb-$s">Buttons</VuCardHeader>
     <div class="flex gap-$xl mb-$m">
       <VuCheckbox label="Loading State" v-model="loading" />
       <VuCheckbox label="Disabled State" v-model="disabled" />
+      <VuCheckbox label="Dense" v-model="dense" />
     </div>
     <div v-for="scope of scopes" class="flex flex-col" :class="scope">
       <h4 class="mb-$xs text-scope-color-500">{{ scope }}</h4>

@@ -49,11 +49,13 @@
     "./Menu.vue": "./src/components/Menu/Menu.vue",
     "./MenuItem.vue": "./src/components/Menu/MenuItem.vue",
     "./OverflowContainer.vue": "./src/components/OverflowContainer/OverflowContainer.vue",
+    "./Pagination.vue": "./src/components/Pagination/Pagination.vue",
     "./Popover.vue": "./src/components/Popover/Popover.vue",
     "./RadioGroup.vue": "./src/components/RadioGroup/RadioGroup.vue",
     "./Select.vue": "./src/components/Select/Select.vue",
     "./SelectBase.vue": "./src/components/Select/SelectBase.vue",
-    "./Slider.vue": "./src/components/Slider/Slider.vue"
+    "./Slider.vue": "./src/components/Slider/Slider.vue",
+    "./utils": "./src/components/utils/index.ts"
   },
   "devDependencies": {
     "@iconify/utils": "^2.1.23",

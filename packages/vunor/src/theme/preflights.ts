@@ -2,6 +2,7 @@ import type { Theme } from '@unocss/preset-mini'
 import type { Preflight } from 'unocss'
 
 import type { TVunorTheme } from './theme'
+import { unitBy } from './utils/unit-by'
 
 export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
   getCSS: ({ theme }) =>
@@ -20,6 +21,8 @@ export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
    --un-default-border-color: rgba(0,0,0,10%);
    --scope-black: 0 0 0;
    --scope-white: 255 255 255;
+   --v-fingertip: ${theme.spacing['fingertip-m'] || '3em'};
+   --v-fingertip-half: ${unitBy(theme.spacing['fingertip-m'] || '3em', 0.5)};
 }
 
 html.dark, .dark {

@@ -20,7 +20,7 @@ export const i8 = {
     },
     '[&.i8-no-border]:': 'border-0! outline-none! rounded-0!',
     '[&.i8-transparent]:': 'bg-transparent!',
-    '[&.i8-round]:': 'rounded-half-fingertip border border-current/20',
+    '[&.i8-round]:': 'rounded-fingertip-half border border-current/20',
     'aria-[disabled=true]:': 'opacity-50 cursor-not-allowed',
     // error
     'group-[[data-error=true]]/i8:': {
@@ -57,8 +57,8 @@ export const i8 = {
     'group-[.i8-flat]/i8:data-[has-append=true]': 'pr-$s',
     'group-[.i8-filled]/i8:': 'px-$m',
     'selection:': 'bg-scope-color-500 text-white',
-    "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-half-fingertip',
-    "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-half-fingertip',
+    "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-fingertip-half',
+    "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-fingertip-half',
     'group-[[data-has-label]]/i8:': 'pt-$m',
     // groupped inputs paddings
     'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
@@ -71,8 +71,8 @@ export const i8 = {
     'group-[.i8-flat]/i8:data-[has-append=true]': 'pr-$s',
     'group-[.i8-filled]/i8:': 'px-$m',
     'selection:': 'bg-scope-color-500 text-white',
-    "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-half-fingertip',
-    "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-half-fingertip',
+    "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-fingertip-half',
+    "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-fingertip-half',
     // groupped inputs paddings
     'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
     'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
@@ -98,8 +98,8 @@ export const i8 = {
     'group-[.i8-flat]/i8:data-[has-prepend=true]': 'pl-$s',
     'group-[.i8-flat]/i8:data-[has-append=true]': 'pr-$s',
     'group-[.i8-filled]/i8:': 'px-$m',
-    "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-half-fingertip',
-    "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-half-fingertip',
+    "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-fingertip-half',
+    "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-fingertip-half',
     // groupped inputs paddings
     'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
     'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
@@ -115,7 +115,7 @@ export const i8 = {
 
   'i8-hint-wrapper': scFromObject({
     '': 'relative flex justify-between',
-    'group-[.i8-round]/i8:': 'px-half-fingertip',
+    'group-[.i8-round]/i8:': 'px-fingertip-half',
     'group-[.i8-filled]/i8:': 'px-$m',
   }),
 

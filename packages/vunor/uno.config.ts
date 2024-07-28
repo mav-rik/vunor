@@ -29,8 +29,6 @@ export default defineConfig({
         reverseLight: false,
         reverseDark: false,
       },
-      // fingertip: '3.5em',
-      fingertip: '3em',
       baseRadius: '.5em',
       palette: {
         colors: {
