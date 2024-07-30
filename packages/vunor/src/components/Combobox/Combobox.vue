@@ -94,7 +94,10 @@ const selectedItems = computed(() => {
 
 const selectedLabels = computed<string>(() => {
   if (!modelValue.value && (modelValue.value as unknown as number) !== 0) return ''
-  return selectedItems.value.map(item => item.label || item.value).join(', ')
+  return selectedItems.value
+    .filter(item => !!item)
+    .map(item => item.label || item.value)
+    .join(', ')
 })
 
 function isItemDisabled(val: string | null | undefined) {

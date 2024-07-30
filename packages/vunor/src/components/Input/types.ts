@@ -9,6 +9,7 @@ export interface TInputAttrs {
   'data-has-label': boolean
   'disabled'?: boolean
   'readonly'?: boolean
+  'autocomplete'?: string
 }
 
 export interface TInputShellProps
