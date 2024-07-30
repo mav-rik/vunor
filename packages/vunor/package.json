@@ -7,6 +7,7 @@
     "build-with-checks": "run-p type-check \"build {@}\" --",
     "preview": "vite preview",
     "build": "vite build",
+    "pub": "npm publish --access public",
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
