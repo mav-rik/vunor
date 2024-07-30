@@ -5,7 +5,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "pub": "pnpm -r pub",
+    "version:patch": "pnpm run test && pnpm version patch && node ./scripts/sync && pnpm run build && git add . && git commit -m \"chore: bump version\" && git push && pnpm run pub"
   },
   "keywords": [],
   "author": "Artem Maltsev",
