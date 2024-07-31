@@ -60,6 +60,7 @@ function focusInput(event: MouseEvent) {
       'segmented': groupItem,
     }"
     v-bind="attrs"
+    :data-has-value="!!modelValue"
     :data-active="focused || active"
   >
     <span class="i8-underline" />
@@ -74,7 +75,7 @@ function focusInput(event: MouseEvent) {
         'i8-icon-clickable': !!onPrependClick,
       }"
     >
-      <slot name="prepend" v-bind="attrs">
+      <slot name="prepend" v-bind="attrs" :data-has-value="!!modelValue">
         <VuIcon :name="iconPrepend!" @click="emit('prependClick', $event)" />
       </slot>
     </div>
@@ -123,6 +124,7 @@ function focusInput(event: MouseEvent) {
       <slot
         name="append"
         v-bind="attrs"
+        :data-has-value="!!modelValue"
         :emitClick="(event: MouseEvent) => emit('appendClick', event)"
         :iconAppend
       >
