@@ -21,7 +21,7 @@ async function writePackageJson(data) {
 }
 
 // Recursive function to find .vue files
-async function findVueFiles(dir) {
+export async function findVueFiles(dir) {
   const files = await fs.promises.readdir(dir, { withFileTypes: true })
   let vueFiles = []
   for (const file of files) {

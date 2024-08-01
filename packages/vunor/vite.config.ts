@@ -8,6 +8,31 @@ import AutoImport from 'unplugin-auto-import/vite'
 import RadixVueResolver from 'radix-vue/resolver'
 import dts from 'vite-plugin-dts'
 
+import fs from 'fs'
+import path from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const componentsDir = path.join(__dirname, 'src', 'components')
+
+// Recursive function to find .vue files
+function findVueFiles(dir: string) {
+  const files = fs.readdirSync(dir, { withFileTypes: true })
+  let vueFiles = [] as string[]
+  for (const file of files) {
+    const fullPath = path.join(dir, file.name)
+    if (file.isDirectory()) {
+      vueFiles = vueFiles.concat(findVueFiles(fullPath))
+    } else if (file.isFile() && file.name.endsWith('.vue')) {
+      vueFiles.push(fullPath)
+    }
+  }
+  return vueFiles
+}
+
+const vueFiles = findVueFiles(componentsDir).map(file => path.basename(file).slice(0, -4))
+
 export const nestedComponents = {
   InputShell: 'Input',
   CardHeader: 'Card',
@@ -24,9 +49,13 @@ export default defineConfig({
     host: '0.0.0.0',
   },
 
+  define: {
+    __vue_files__: JSON.stringify(vueFiles, null, '  '),
+  },
+
   build: {
     lib: {
-      entry: ['src/theme.ts', 'src/vite.ts'],
+      entry: ['src/theme.ts', 'src/nuxt.ts', 'src/vite.ts'],
       fileName: (format, entry) => entry + '.mjs',
       formats: ['es'],
     },
@@ -58,6 +87,7 @@ export default defineConfig({
         'buffer',
         'assert',
         'events',
+        '@nuxt/kit',
       ],
     },
   },

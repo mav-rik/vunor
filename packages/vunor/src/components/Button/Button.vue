@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, type RouteLocationRaw } from 'vue-router'
+import VuButtonBase from './ButtonBase.vue'
 
 const props = defineProps<{
   label?: string
