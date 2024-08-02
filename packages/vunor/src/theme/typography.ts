@@ -1,5 +1,6 @@
 /* eslint-disable max-params */
 import type { TTypography, TTypographyNames } from './types'
+import { k } from './types'
 import { round } from './utils/round'
 
 function font(
@@ -16,10 +17,6 @@ function font(
     height,
     spacing,
   }
-}
-
-function k(n: number, base = 1) {
-  return base * 1.618 ** n
 }
 
 export const defaultTypography: Record<TTypographyNames, TTypography> = {

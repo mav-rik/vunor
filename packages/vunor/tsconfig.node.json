@@ -24,7 +24,7 @@
     "noEmit": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "lib": ["DOM"],
-    "baseUrl": ".",
+    
     "outDir": "dist",
     "module": "ESNext",
     "moduleResolution": "bundler",

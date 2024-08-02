@@ -55,7 +55,7 @@ export default defineConfig({
 
   build: {
     lib: {
-      entry: ['src/theme.ts', 'src/nuxt.ts', 'src/vite.ts'],
+      entry: ['src/theme.ts', 'src/vite.ts', 'src/nuxt.ts'],
       fileName: (format, entry) => entry + '.mjs',
       formats: ['es'],
     },
@@ -69,6 +69,7 @@ export default defineConfig({
         '@prostojs/palitra',
         '@unocss/preset-mini',
         '@vueuse/core',
+        'unplugin-vue-components',
         'defu',
         'unocss',
         'util',
@@ -88,6 +89,7 @@ export default defineConfig({
         'assert',
         'events',
         '@nuxt/kit',
+        '@nuxt/schema',
       ],
     },
   },

@@ -50,3 +50,7 @@ export type TTypographyNames =
   | 'label'
   | 'caption'
   | 'overline'
+
+export function k(n: number, base = 1) {
+  return base * 1.618 ** n
+}

@@ -7,7 +7,6 @@ import { generatePalette } from './palitra'
 import type { TTypographyNames, TVunorUnoPresetOpts } from './types'
 import { buildFontTheme } from './typography'
 import { round } from './utils/round'
-import { unitBy } from './utils/unit-by'
 
 export const themeFactory = (
   opts: Required<TVunorUnoPresetOpts> & { palette?: TPaletteOptions }

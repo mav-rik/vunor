@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { addComponent, defineNuxtModule } from '@nuxt/kit'
+import type { NuxtModule } from '@nuxt/schema'
 
 const components = __vue_files__
 
-const index = defineNuxtModule({
+const index: NuxtModule<any> = defineNuxtModule({
   meta: {
     name: 'vunor/nuxt',
     configKey: 'vunor',
