@@ -1,7 +1,7 @@
 {
   "name": "vunorjs",
   "private": true,
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "type": "module",
   "main": "index.js",
