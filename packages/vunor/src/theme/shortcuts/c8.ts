@@ -35,10 +35,10 @@ export const c8 = {
     'aria-[pressed=true]:': 'c8-flat-selected',
   }),
   'c8-flat-hover': scFromObject({
-    'not-([disabled]):': 'bg-current/05 backdrop-blur-xl',
+    'not-([disabled]):': 'bg-current/05',
   }),
   'c8-flat-active': scFromObject({
-    'not-([disabled]):': 'bg-current/10 backdrop-blur-xl',
+    'not-([disabled]):': 'bg-current/10',
   }),
   'c8-flat-selected': scFromObject({
     '': 'c8-flat-hover current-text-scope-color-500 text-current current-icon-scope-color-500 icon-current/100',
@@ -60,7 +60,7 @@ export const c8 = {
 
   // LIGHT (Filled/Transparent)
   'c8-light': scFromObject({
-    '': 'current-bg-scope-color-500 rounded-base current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80 backdrop-blur-xl',
+    '': 'current-bg-scope-color-500 rounded-base current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80',
     'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
     'hover:': 'c8-light-hover',
     'focus-visible:': 'c8-light-hover',

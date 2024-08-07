@@ -259,6 +259,7 @@ function onKeydown(event: KeyboardEvent) {
                 <VuCheckbox
                   v-if="checkboxItems"
                   readonly
+                  vertical-middle
                   :label="item.label"
                   :model-value="isItemSelected(item.value)"
                 />

@@ -2,17 +2,17 @@ import { scFromObject } from '../utils/shortcut-obj'
 
 export const i8 = {
   'i8': scFromObject({
-    '': 'h-fingertip min-w-3em flex items-center select-none relative current-icon-grey-500 icon-current/75 content-box current-border-grey-500 border-current/20',
+    '': 'h-fingertip min-w-3em flex items-center select-none relative current-icon-grey-500 icon-current content-box current-border-grey-500 border-current/20',
     'data-[type=textarea]': 'min-h-fingertip h-auto items-start',
-    'data-[active=true]:': 'current-icon-scope-color-500 icon-current/100 current-bg-white',
+    'data-[active=true]:': 'icon-current-hl current-bg-white',
     // 'dark:': '',
     '[&.i8-flat]:': {
       '': 'border-b',
     },
     '[&.i8-filled]:': {
-      '': ' current-bg-scope-light-0 bg-current/75 border border-current/20 rounded-base backdrop-blur-xl',
+      '': ' current-bg-scope-light-0 bg-current border border-current/20 rounded-base',
       'data-[active=true]:':
-        'current-bg-scope-light-0 bg-current/100 current-outline-scope-color-500 outline-current/50 outline-2px outline',
+        'current-bg-scope-light-0 bg-current current-outline-hl outline-current/50 outline-2px outline',
       'dark:': {
         '': 'current-bg-scope-dark-2',
         'data-[active=true]:': 'current-bg-scope-dark-0',
@@ -30,7 +30,7 @@ export const i8 = {
 
   'i8-underline': scFromObject({
     'group-[.i8-filled]/i8:': 'hidden',
-    '': 'absolute left-50% h-2px right-50% bottom-[-1px] pointer-events-none transition-all transition-duration-300 will-change-left will-change-right current-bg-scope-color-500 bg-current',
+    '': 'absolute left-50% h-2px right-50% bottom-[-1px] pointer-events-none transition-all transition-duration-300 will-change-left will-change-right bg-current-hl',
     'group-[[data-active=true]]/i8:': 'left-0 right-0',
   }),
 
@@ -85,8 +85,7 @@ export const i8 = {
 
   'i8-label': scFromObject({
     '': 'absolute top-0 h-fingertip text-body text-grey-400 lh-fingertip transition-all transition-duration-300 truncate text-ellipsis overflow-hidden max-w-70%',
-    'group-[[data-active=true]]/i8:':
-      'h-[2em] lh-2em text-label font-size-[0.7em] text-scope-color-500',
+    'group-[[data-active=true]]/i8:': 'h-[2em] lh-2em text-label font-size-[0.7em] text-current-hl',
     'group-[[data-has-placeholder]]/i8:': 'h-[2em] lh-2em text-label font-size-[0.7em]',
     'group-[[data-has-value]]/i8:': 'h-[2em] lh-2em text-label font-size-[0.7em]',
     // 'data-[required=true]:after:': "content-['*'] text-error-500",
@@ -144,12 +143,12 @@ export const i8 = {
   }),
 
   'i8-before': scFromObject({
-    '': 'h-fingertip flex items-center pr-$m current-icon-grey-500 icon-current/75',
-    'group-[[data-group-active=true]]/i8:': 'current-icon-scope-color-500 icon-current/100',
+    '': 'h-fingertip flex items-center pr-$m current-icon-grey-500 icon-current',
+    'group-[[data-group-active=true]]/i8:': 'icon-current-hl',
   }),
   'i8-after': scFromObject({
-    '': 'h-fingertip flex items-center pl-$m current-icon-grey-500 icon-current/75',
-    'group-[[data-group-active=true]]/i8:': 'current-icon-scope-color-500 icon-current/100',
+    '': 'h-fingertip flex items-center pl-$m current-icon-grey-500 icon-current',
+    'group-[[data-group-active=true]]/i8:': 'icon-current-hl',
   }),
 
   'i8-icon-clickable': scFromObject({

@@ -60,6 +60,7 @@ declare module 'vue' {
     VuButtonBase: typeof import('@/components/Button/ButtonBase.vue')['default']
     VuCard: typeof import('@/components/Card/Card.vue')['default']
     VuCardHeader: typeof import('@/components/Card/CardHeader.vue')['default']
+    VuCardInner: typeof import('@/components/Card/CardInner.vue')['default']
     VuCheckbox: typeof import('@/components/Checkbox/Checkbox.vue')['default']
     VuCombobox: typeof import('@/components/Combobox/Combobox.vue')['default']
     VuIcon: typeof import('@/components/Icon/Icon.vue')['default']

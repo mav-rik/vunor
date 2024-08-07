@@ -21,6 +21,7 @@ export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
    --un-default-border-color: rgba(0,0,0,10%);
    --scope-black: 0 0 0;
    --scope-white: 255 255 255;
+   --scope-hl: var(--scope-color-500);
    --v-fingertip: ${theme.spacing['fingertip-m'] || '3em'};
    --v-fingertip-half: ${unitBy(theme.spacing['fingertip-m'] || '3em', 0.5)};
 }

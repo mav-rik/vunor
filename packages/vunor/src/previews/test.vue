@@ -1,25 +1,19 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const items = ['item 1', 'item 2', 'item 3', 'item 4', 'item 5']
+</script>
 <template>
   <VuCard level="h2" class="with-bg relative">
     <VuCardHeader class="mb-$s">Testing</VuCardHeader>
 
-    <VuPopover align="end">
-      <VuButton label="Artem M" icon="i--more-vert" icon-side="right">
-        <template #icon-left>
-          <VuIcon name="i--search" class="size-2em bg-red rounded-full" />
-        </template>
-      </VuButton>
-
-      <template v-slot:content="{ close }">
-        <div
-          class="scope-primary flex flex-col layer-0 shadow-xl rounded-$m min-w-[var(--radix-popover-trigger-width)] w-500px"
-        >
-          <div>
-            <VuButton label="item" class="c8-flat rounded-0!" @click="close" />
-          </div>
+    <h4>Combobox with custom items</h4>
+    <VuCombobox design="filled" :items>
+      <template v-slot:item="item">
+        <div class="h-5em flex gap-$l items-center">
+          <VuIcon name="i--config" class="size-3em" />
+          {{ item.label }}
         </div>
       </template>
-    </VuPopover>
+    </VuCombobox>
   </VuCard>
 </template>
 

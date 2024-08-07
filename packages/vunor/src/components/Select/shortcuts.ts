@@ -2,7 +2,7 @@ import { scFromObject } from '../../theme/utils/shortcut-obj'
 
 export const selectShortcuts = {
   'select-content': scFromObject({
-    '': 'min-w-[60px] rounded-base surface-0 bg-current/70 backdrop-blur-xl overflow-hidden shadow-xl z-[100] current-border-grey-400 border-current/20 ',
+    '': 'min-w-[60px] rounded-base surface-0 bg-current overflow-hidden shadow-xl z-[100] current-border-grey-400 border-current/20 ',
     'data-[design=round]:': 'rounded-fingertip-half',
     '[&>div[data-radix-combobox-viewport]]:':
       'max-h-[var(--radix-popper-available-height)] [scrollbar-width:auto]',
@@ -19,7 +19,7 @@ export const selectShortcuts = {
     '[&>span]:': 'text-label text-grey-400',
   }),
   'select-item': scFromObject({
-    '': 'text-body leading-none flex items-center h-fingertip relative select-none relative',
+    '': 'text-body leading-none flex items-center min-h-fingertip relative select-none relative',
     'data-[disabled]:': 'opacity-40 pointer-events-none',
     'data-[highlighted]:': 'outline-none bg-scope-color-500/15',
     '[&>span]:': 'px-$m',

@@ -41,7 +41,7 @@ function getCssTarget(key: TCssColorTarget) {
 
 export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   [
-    /^current-(text|bg|icon|border|outline|caret)-(.+)$/,
+    /^current-(text|bg|icon|border|outline|caret|hl)-(.+)$/,
     (match, { theme }) => {
       const t = match[1] as 'text' | 'bg' | 'icon'
       const c = match[2]
@@ -50,17 +50,24 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
           [`--current-${t}`]: `var(--${c})`,
         }
       }
-      const col = (theme.colors[c] as string | undefined) || c
+      if (c === 'hl') {
+        return {
+          [`--current-${t}`]: `var(--current-hl)`,
+        }
+      }
+      const col = (theme.colors[c] as string | { DEFAULT?: string } | undefined) || c
       if (col) {
         return {
-          [`--current-${t}`]: colorToRgbWithOpacity(col),
+          // @ts-expect-error
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          [`--current-${t}`]: colorToRgbWithOpacity(col.DEFAULT || col),
         }
       }
       return undefined
     },
   ],
   [
-    /^(text|bg|icon|border|outline|caret|fill)-current(-text|-bg|-icon|-border|-outline|-caret)?(\/\d{1,3})?$/,
+    /^(text|bg|icon|border|outline|caret|fill)-current(-text|-bg|-icon|-border|-outline|-caret|-hl)?(\/\d{1,3})?$/,
     (match, { theme }) => {
       const target = match[1] as TCssColorTarget
       const source = match[2] || `-${target}`
@@ -72,6 +79,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
       if (target === 'icon') {
         return {
           [opacityVar]: opacity,
+          '--current-icon': source === '-hl' ? `var(--current${source})` : undefined,
         }
       }
       return {
@@ -108,6 +116,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
           '--scope-dark-2': colorToRgbWithOpacity(theme.colors[`${c}-dark-2`]) || '',
           '--scope-dark-3': colorToRgbWithOpacity(theme.colors[`${c}-dark-3`]) || '',
           '--scope-dark-4': colorToRgbWithOpacity(theme.colors[`${c}-dark-4`]) || '',
+          '--current-hl': colorToRgbWithOpacity(theme.colors[`${c}-500`]) || '',
         }
       }
       return undefined

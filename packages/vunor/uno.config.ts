@@ -26,7 +26,7 @@ export default defineConfig({
       actualFontHeightFactor: 0.76, // 0.76,
       actualFontHeightTopBottomRatio: 0.5, //0.495,
       layers: {
-        reverseLight: false,
+        reverseLight: true,
         reverseDark: false,
       },
       baseRadius: '.5em',

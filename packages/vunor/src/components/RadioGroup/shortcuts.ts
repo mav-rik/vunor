@@ -16,7 +16,7 @@ export const radioShortcuts = {
     '': 'flex',
   }),
   'rb-item': scFromObject({
-    '': 'select-none shrink-0 current-bg-scope-color-500 bg-current/0 size-1.25em rounded-full cursor-default current-border-grey-500 border-current/40 border-[0.16em] transition-none backdrop-blur-sm',
+    '': 'select-none shrink-0 current-bg-scope-color-500 bg-current/0 size-1.25em rounded-full cursor-default current-border-grey-500 border-current/40 border-[0.16em] transition-none',
     "data-[state=checked]:not-[[data-error='true']]:":
       'current-border-scope-color-500 border-current',
     'data-[state=checked]:': 'bg-current',

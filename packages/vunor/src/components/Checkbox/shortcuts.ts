@@ -7,11 +7,11 @@ export const checkboxShortcuts = {
     'aria-[disabled=true]:': 'scope-grey opacity-50 cursor-not-allowed',
   }),
   'checkbox': scFromObject({
-    '': 'cursor-default shrink-0 select-none rounded-[0.28em] transition-all transition-duration-100 flex size-1.5em appearance-none items-center justify-center bg-current/0 backdrop-blur-sm border-current border-[0.16em] current-icon-white',
+    '': 'cursor-default shrink-0 select-none rounded-[0.28em] transition-all transition-duration-100 flex size-1.5em appearance-none items-center justify-center bg-current/0 border-current border-[0.16em] current-icon-white',
     'group-active/cb:enabled:':
       'current-bg-scope-color-500 bg-current/20 current-icon-scope-color-500',
     // 'group-hover/cb:enabled:': 'border-current',
-    'disabled:': 'cursor-not-allowed border-1px backdrop-blur-sm',
+    'disabled:': 'cursor-not-allowed border-1px',
     'group-[[data-error=true]]/cb:enabled:': 'current-border-error-500 border-current',
     'data-[state=unchecked]': 'current-border-grey-500 border-current/40',
   }),
