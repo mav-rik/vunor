@@ -1,10 +1,11 @@
 import { PresetOrFactory, defineConfig } from 'unocss'
 import { presetVunor } from './src/theme/preset-vunor'
 import { TVunorTheme } from './src/theme/theme'
-import { shortcuts } from './src/components/shortcuts'
 import presetIcons from '@unocss/preset-icons'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 import { presetScrollbar } from 'unocss-preset-scrollbar'
+import { vunorShortcuts } from './src/theme'
+const sc = vunorShortcuts()
 
 export default defineConfig({
   presets: [
@@ -37,7 +38,7 @@ export default defineConfig({
       },
     }),
   ],
-  shortcuts: [...shortcuts],
+  shortcuts: [sc],
   preflights: [
     {
       getCSS: () =>

@@ -1,3 +1,5 @@
+import { defineShortcuts } from '../../theme/utils/define-sc'
+
 const headers = [
   'h1',
   'h2',
@@ -12,8 +14,8 @@ const headers = [
   'callout',
 ]
 
-export const cardShortcuts = {
+export const cardShortcuts = defineShortcuts({
   card: `data-[rounded=true]:rounded-$card-spacing data-[dense=true]:card-dense! ${headers
     .map(header => `data-[level=${header}]:card-${header}`)
     .join(' ')}`,
-}
+})

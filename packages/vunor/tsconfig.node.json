@@ -14,7 +14,8 @@
     "auto-imports.d.ts",
     "env.d.ts",
     "src/vite.ts",
-    "src/nuxt.ts"
+    "src/nuxt.ts",
+    "src/theme.ts"
   ],
   "paths": {
     "@nuxt/kit": ["node_modules/@nuxt/kit"]

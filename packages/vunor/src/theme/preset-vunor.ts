@@ -7,8 +7,6 @@ import type { TPaletteOptions } from './palitra'
 import { getPaletteShortcuts } from './palitra'
 import { fontsPreflights } from './preflights'
 import { rules } from './rules'
-import { c8 } from './shortcuts/c8'
-import { i8 } from './shortcuts/i8'
 import type { TVunorTheme } from './theme'
 import { themeFactory } from './theme'
 import type { TVunorUnoPresetOpts } from './types'
@@ -61,7 +59,7 @@ export const presetVunor: PresetFactory<
     ...wind,
     name: 'vunor',
     theme: defu(themeFactory(opts), wind.theme) as TVunorTheme,
-    shortcuts: [...paletteShortcuts, c8, i8],
+    shortcuts: paletteShortcuts,
     layers: {
       preflights: 0,
       shortcuts: 1,

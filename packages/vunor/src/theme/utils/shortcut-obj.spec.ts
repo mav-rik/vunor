@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { scFromObject } from './shortcut-obj'
+import { mergeAllShortcuts, mergeShortcuts, scFromObject } from './shortcut-obj'
 
 describe('shortcut objects', () => {
   it('must flatten sc object', () => {
@@ -45,5 +45,46 @@ describe('shortcut objects', () => {
     ).toEqual(
       `bg-scope-light-${l} text-scope-dark-2 dark:bg-scope-dark-${d} dark:text-scope-light-2 dark:shadow-black/30 [&.dark]:bg-scope-dark-${d} [&.dark]:text-scope-light-2 [&.dark]:shadow-black/30`
     )
+  })
+})
+
+describe('mergeShortcuts', () => {
+  it('must merge shortcut objects', () => {
+    const result = mergeAllShortcuts([
+      {
+        i8: {
+          '': 'color-black',
+          'dark:': {
+            'focus:': 'outline',
+          },
+        },
+      },
+      {
+        i8: {
+          'dark:': 'color-white',
+        },
+      },
+      {
+        i8: {
+          'dark:': ['s2', 's3'],
+        },
+      },
+      {
+        i8: 'h-3rem',
+      },
+    ])
+    expect(result).toEqual({
+      i8: {
+        '': 'color-black h-3rem',
+        'dark:': {
+          '': 'color-white s2 s3',
+          'focus:': 'outline',
+        },
+      },
+    })
+  })
+  it('must merge objects with no common props', () => {
+    const result = mergeAllShortcuts([{ prop1: 'val1' }, { prop2: 'val2' }])
+    expect(result).toEqual({ prop1: 'val1', prop2: 'val2' })
   })
 })

@@ -14,6 +14,8 @@ const items = ['item 1', 'item 2', 'item 3', 'item 4', 'item 5']
         </div>
       </template>
     </VuCombobox>
+
+    <div class="my-sc size-4rem"></div>
   </VuCard>
 </template>
 
