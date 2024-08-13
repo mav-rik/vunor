@@ -3,6 +3,7 @@ import type { TComboboxProps, TComboboxItem } from './types'
 import type { TInputProps, TInputShellProps, TInputEmits } from '../Input/types'
 import { createReusableTemplate } from '@vueuse/core'
 import { useInputShellProps, useInputProps } from '../Input/utils'
+import type { ComboboxRootProps } from 'radix-vue'
 
 const [DefineContentTemplate, UseContentTemplate] = createReusableTemplate()
 const [DefineRootTemplate, UseRootTemplate] = createReusableTemplate()
@@ -10,7 +11,13 @@ const [DefineInputShellTemplate, UseInputShellTemplate] = createReusableTemplate
 const [DefineItemsTemplate, UseItemsTemplate] = createReusableTemplate()
 
 const props = withDefaults(
-  defineProps<Omit<TInputProps & TInputShellProps, 'active'> & TComboboxProps<T>>(),
+  defineProps<
+    Omit<TInputProps & TInputShellProps, 'active'> &
+      TComboboxProps<T> & {
+        align?: 'start' | 'center' | 'end'
+        filterFunction?: ComboboxRootProps<any>['filterFunction']
+      }
+  >(),
   {
     sideOffset: 2,
     popupPosition: 'popper',
@@ -31,6 +38,7 @@ const shellProps = computed(() => {
 
 const modelOpen = defineModel<boolean>('open')
 const modelValue = defineModel<string | string[]>()
+const searchTerm = defineModel<string>('searchTerm')
 
 const groups = computed(() => {
   if (Array.isArray(props.items)) {
@@ -107,7 +115,7 @@ function isItemDisabled(val: string | null | undefined) {
 const displayValue = computed(() => flatItemsMap.value.get(modelValue.value as string)?.label || '')
 
 const input = computed(
-  () => inputTemplate.value?.$el.querySelector('input') as HTMLInputElement | undefined
+  () => inputTemplate.value?.$el?.querySelector('input') as HTMLInputElement | undefined
 )
 
 async function openPopup() {
@@ -137,8 +145,6 @@ function handleHomeEnd(event: KeyboardEvent) {
     target.setSelectionRange(length, length)
   }
 }
-
-const searchTerm = ref('')
 
 const usePopover = computed(() => props.multiple)
 if (usePopover.value) {
@@ -173,6 +179,7 @@ const popoverProps = computed(() => ({
   sideOffset: _sideOffset.value,
   updatePositionStrategy: props.updatePositionStrategy,
   bodyLock: props.bodyLock,
+  align: props.align,
 }))
 
 const comboboxContentProps = computed(() => {
@@ -282,6 +289,7 @@ function onKeydown(event: KeyboardEvent) {
       :default-open="usePopover"
       v-model:open="modelOpen"
       v-model:search-term="searchTerm"
+      :filter-function="filterFunction"
       :display-value="() => displayValue"
       :disabled
       :required
@@ -386,7 +394,7 @@ function onKeydown(event: KeyboardEvent) {
   </template>
 
   <template v-else-if="usePopover">
-    <PopoverRoot v-model:open="popupOpen">
+    <PopoverRoot v-model:open="popupOpen" modal>
       <DefineItemsTemplate>
         <slot name="selected-items" :items="selectedItems">
           <div class="combobox-multi-input">
@@ -479,8 +487,7 @@ function onKeydown(event: KeyboardEvent) {
       <PopoverPortal>
         <PopoverContent
           v-bind="popoverContentProps"
-          avoidCollisions
-          :collision-padding="50"
+          avoid-collisions
           :style="{
             'max-height': 'var(--radix-popper-available-height)',
             'overflow': 'auto',
