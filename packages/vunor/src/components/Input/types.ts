@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface TInputAttrs {
   'placeholder'?: string
   'type'?: string
@@ -22,10 +23,10 @@ export interface TInputShellProps
   autoGrow?: boolean
   active?: boolean
   loading?: boolean
-  onAppendClick?: (event: MouseEvent) => void
-  onPrependClick?: (event: MouseEvent) => void
-  onBlur?: (event: FocusEvent) => void
-  onFocus?: (event: FocusEvent) => void
+  onAppendClick?: (event: MouseEvent) => any
+  onPrependClick?: (event: MouseEvent) => any
+  onBlur?: (event: FocusEvent) => any
+  onFocus?: (event: FocusEvent) => any
 }
 
 export interface TInputProps extends TInputShellProps {
@@ -35,11 +36,11 @@ export interface TInputProps extends TInputShellProps {
   hint?: string
   groupTemplate?: string
   stackLabel?: boolean
-  onBeforeClick?: (event: MouseEvent) => void
-  onAfterClick?: (event: MouseEvent) => void
-  onClick?: (event: MouseEvent) => void
-  onBlur?: (event: FocusEvent) => void
-  onFocus?: (event: FocusEvent) => void
+  onBeforeClick?: (event: MouseEvent) => any
+  onAfterClick?: (event: MouseEvent) => any
+  onClick?: (event: MouseEvent) => any
+  onBlur?: (event: FocusEvent) => any
+  onFocus?: (event: FocusEvent) => any
 }
 
 export interface TInputShellEmits {

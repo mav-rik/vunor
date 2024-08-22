@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import VuCard from '../components/Card/Card.vue'
+import VuCardHeader from '../components/Card/CardHeader.vue'
+import VuSlider from '../components/Slider/Slider.vue'
+import VuCheckbox from '../components/Checkbox/Checkbox.vue'
+import VuPagination from '../components/Pagination/Pagination.vue'
+import { ref } from 'vue'
+
 const showEdges = ref(true)
 const showArrows = ref(true)
 const total = ref([100])

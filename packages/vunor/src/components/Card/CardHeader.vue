@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useCardPI } from './pi'
+import { Primitive } from 'radix-vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
   as?: string
@@ -23,4 +25,3 @@ useCardPI().inject()
     <slot></slot>
   </Primitive>
 </template>
-./pi

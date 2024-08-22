@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { CheckboxRoot, CheckboxIndicator } from 'radix-vue'
+import VuIcon from '../Icon/Icon.vue'
+
 const modelValue = defineModel<boolean | undefined | 'indeterminate'>()
 defineProps<{
   label?: string

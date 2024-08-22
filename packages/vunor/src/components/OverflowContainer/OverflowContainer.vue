@@ -1,4 +1,7 @@
 <script setup lang="ts" generic="T">
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { Primitive } from 'radix-vue'
+
 const props = defineProps<{ items: T[]; maxVisible?: number }>()
 
 const hiddenCount = ref(0)

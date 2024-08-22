@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import VuCard from '../components/Card/Card.vue'
+import VuCardHeader from '../components/Card/CardHeader.vue'
+</script>
 <template>
   <VuCard level="h2" class="with-bg relative">
     <VuCardHeader class="mb-$s">Testing</VuCardHeader>

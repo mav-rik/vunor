@@ -1,5 +1,23 @@
 <script setup lang="ts" generic="T extends TSelectItem">
 import type { TSelectBaseProps, TSelectItem } from './types'
+import {
+  SelectRoot,
+  SelectTrigger,
+  SelectPortal,
+  SelectContent,
+  SelectScrollUpButton,
+  SelectViewport,
+  SelectSeparator,
+  SelectLabel,
+  SelectGroup,
+  SelectItem,
+  SelectItemText,
+  SelectValue,
+} from 'radix-vue'
+
+import VuIcon from '../Icon/Icon.vue'
+
+import { computed } from 'vue'
 
 const props = defineProps<TSelectBaseProps<T>>()
 

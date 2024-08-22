@@ -3,9 +3,6 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
-import Components from 'unplugin-vue-components/vite'
-import AutoImport from 'unplugin-auto-import/vite'
-import RadixVueResolver from 'radix-vue/resolver'
 import dts from 'vite-plugin-dts'
 
 import fs from 'fs'
@@ -55,7 +52,7 @@ export default defineConfig({
 
   build: {
     lib: {
-      entry: ['src/theme.ts', 'src/vite.ts', 'src/nuxt.ts'],
+      entry: ['src/theme.ts', 'src/vite.ts', 'src/nuxt.ts', 'src/utils.ts'],
       fileName: (format, entry) => entry + '.mjs',
       formats: ['es'],
     },
@@ -104,46 +101,6 @@ export default defineConfig({
     }),
     UnoCSS(),
     vue(),
-    Components({
-      dts: true,
-      dirs: [],
-      resolvers: [
-        RadixVueResolver(),
-        componentName => {
-          if (componentName.startsWith('Preview')) {
-            return {
-              name: 'default',
-              as: componentName,
-              from: `@/previews/${componentName.slice(7).toLowerCase()}.vue`,
-            }
-          } else if (componentName.startsWith('Vu')) {
-            const name = componentName.slice(2)
-            return {
-              name: 'default',
-              as: componentName,
-              from: `@/components/${nestedComponents[name] || name}/${name}.vue`,
-            }
-          }
-        },
-      ],
-    }),
-    AutoImport({
-      dts: true,
-      imports: ['vue'],
-      resolvers: [
-        {
-          type: 'component',
-          resolve: componentName => {
-            if (componentName.startsWith('Preview'))
-              return {
-                name: 'default',
-                as: componentName,
-                from: `@/previews/${componentName.slice(7).toLowerCase()}.vue`,
-              }
-          },
-        },
-      ],
-    }),
   ],
   resolve: {
     alias: {

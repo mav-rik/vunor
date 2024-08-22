@@ -2,6 +2,9 @@
 import { useInputPi } from './pi'
 import type { TInputProps, TInputEmits } from './types'
 import { useInputShellProps } from './utils'
+import VuInputShell from './InputShell.vue'
+import VuIcon from '../Icon/Icon.vue'
+import VuLabel from '../Label/Label.vue'
 
 withDefaults(defineProps<TInputProps>(), {
   groupTemplate: 'repeat(1, 1fr)',

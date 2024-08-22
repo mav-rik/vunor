@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import VuCard from '../components/Card/Card.vue'
+import VuCardHeader from '../components/Card/CardHeader.vue'
 const lorem =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet pariatur ab maiores voluptatibus ipsum officia nobis! Eveniet error rerum dolore eligendi, tempora qui nobis soluta fugit quibusdam cupiditate, ducimus magnam!'
 

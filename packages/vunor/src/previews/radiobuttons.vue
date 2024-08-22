@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
+import VuCard from '../components/Card/Card.vue'
+import VuCardHeader from '../components/Card/CardHeader.vue'
+import VuRadioGroup from '../components/RadioGroup/RadioGroup.vue'
+import VuIcon from '../components/Icon/Icon.vue'
+
 const items = ['item 1', 'item 2', 'item 3', { value: 'item 4', label: 'item 4', icon: 'i--eye' }]
 const disabledValues = ['item 3']
 const v1 = ref('item 1')

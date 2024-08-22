@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { PopoverContentProps } from 'radix-vue'
+import { PopoverRoot, PopoverTrigger, PopoverPortal, PopoverContent } from 'radix-vue'
+import VuButton from '../Button/Button.vue'
+import { computed } from 'vue'
 
 const props = defineProps<
   PopoverContentProps & {

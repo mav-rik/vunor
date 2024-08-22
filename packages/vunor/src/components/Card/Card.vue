@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useCardPI } from './pi'
+import { Primitive } from 'radix-vue'
+import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -44,4 +46,3 @@ const _level = computed(() => props.level || headerLevel.value || 'h6')
     <slot />
   </Primitive>
 </template>
-./pi

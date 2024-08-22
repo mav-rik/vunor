@@ -2,6 +2,11 @@
 import { useInputPi } from './pi'
 import type { TInputShellProps, TInputShellEmits } from './types'
 import { useInputDataAttrs, useHtmlInputAttrs } from './utils'
+import { Primitive } from 'radix-vue'
+import { ref, computed } from 'vue'
+
+import VuLoadingIndicator from '../Loading/LoadingIndicator.vue'
+import VuIcon from '../Icon/Icon.vue'
 
 const props = withDefaults(defineProps<TInputShellProps>(), {
   design: 'flat',

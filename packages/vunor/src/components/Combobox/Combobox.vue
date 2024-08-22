@@ -4,6 +4,30 @@ import type { TInputProps, TInputShellProps, TInputEmits } from '../Input/types'
 import { createReusableTemplate } from '@vueuse/core'
 import { useInputShellProps, useInputProps } from '../Input/utils'
 import type { ComboboxRootProps } from 'radix-vue'
+import { watch, ref, computed, nextTick } from 'vue'
+
+import VuCheckbox from '../Checkbox/Checkbox.vue'
+import VuInputShell from '../Input/InputShell.vue'
+import VuInput from '../Input/Input.vue'
+import VuIcon from '../Icon/Icon.vue'
+
+import {
+  ComboboxRoot,
+  ComboboxContent,
+  ComboboxViewport,
+  ComboboxEmpty,
+  ComboboxGroup,
+  ComboboxSeparator,
+  ComboboxLabel,
+  ComboboxItem,
+  ComboboxInput,
+  ComboboxAnchor,
+  ComboboxPortal,
+  PopoverRoot,
+  PopoverTrigger,
+  PopoverPortal,
+  PopoverContent,
+} from 'radix-vue'
 
 const [DefineContentTemplate, UseContentTemplate] = createReusableTemplate()
 const [DefineRootTemplate, UseRootTemplate] = createReusableTemplate()
@@ -115,7 +139,7 @@ function isItemDisabled(val: string | null | undefined) {
 const displayValue = computed(() => flatItemsMap.value.get(modelValue.value as string)?.label || '')
 
 const input = computed(
-  () => inputTemplate.value?.$el?.querySelector('input') as HTMLInputElement | undefined
+  () => inputTemplate.value?.$el?.querySelector?.('input') as HTMLInputElement | undefined
 )
 
 async function openPopup() {

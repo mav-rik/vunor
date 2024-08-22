@@ -2,6 +2,11 @@
 import type { TInputProps, TInputShellProps, TInputEmits } from '../Input/types'
 import { useInputShellProps, useInputProps } from '../Input/utils'
 import type { TSelectBaseProps, TSelectItem } from './types'
+import VuSelectBase from './SelectBase.vue'
+import { SelectTrigger, SelectValue } from 'radix-vue'
+import VuInputShell from '../Input/InputShell.vue'
+import VuInput from '../Input/Input.vue'
+import { computed } from 'vue'
 
 type Props = Omit<TInputProps & TInputShellProps, 'active'> & TSelectBaseProps<T>
 

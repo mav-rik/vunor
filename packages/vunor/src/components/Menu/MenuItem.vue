@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import VuButton from '../Button/Button.vue'
 defineProps<{
   icon?: string
   selected?: boolean

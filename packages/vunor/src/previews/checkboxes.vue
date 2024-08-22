@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import VuCard from '../components/Card/Card.vue'
+import VuCardHeader from '../components/Card/CardHeader.vue'
+import VuCheckbox from '../components/Checkbox/Checkbox.vue'
+import { ref } from 'vue'
+
 const c = ref<boolean | 'indeterminate'>('indeterminate')
 </script>
 <template>

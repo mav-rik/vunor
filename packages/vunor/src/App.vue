@@ -1,5 +1,29 @@
 <script setup lang="ts">
 import { useDark } from '@vueuse/core'
+import { ref, computed } from 'vue'
+
+import VuAppLayout from './components/AppLayout/AppLayout.vue'
+import VuIcon from './components/Icon/Icon.vue'
+import VuMenu from './components/Menu/Menu.vue'
+import VuButton from './components/Button/Button.vue'
+
+import PreviewAlerts from './previews/alerts.vue'
+import PreviewButtons from './previews/buttons.vue'
+import PreviewOverflowButtons from './previews/overflowbuttons.vue'
+import PreviewCards from './previews/cards.vue'
+import PreviewCheckboxes from './previews/checkboxes.vue'
+import PreviewComboboxes from './previews/comboboxes.vue'
+import PreviewRadiobuttons from './previews/radiobuttons.vue'
+import PreviewSelects from './previews/selects.vue'
+import PreviewSliders from './previews/sliders.vue'
+import PreviewSurfaces from './previews/surfaces.vue'
+import PreviewLayers from './previews/layers.vue'
+import PreviewClickable from './previews/clickable.vue'
+import PreviewInputable from './previews/inputable.vue'
+import PreviewTypography from './previews/typography.vue'
+import PreviewTest from './previews/test.vue'
+import PreviewInputs from './previews/inputs.vue'
+import PreviewPagination from './previews/pagination.vue'
 
 const menu2 = [
   { group: 'Styles', label: 'Clickable (c8)', value: 'Clickable', icon: 'i--click' },

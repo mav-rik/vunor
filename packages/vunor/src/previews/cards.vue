@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import VuCard from '../components/Card/Card.vue'
+import VuCardHeader from '../components/Card/CardHeader.vue'
+import { ref } from 'vue'
+
 const lorem =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet pariatur ab maiores voluptatibus ipsum officia nobis! Eveniet error rerum dolore eligendi, tempora qui nobis soluta fugit quibusdam cupiditate, ducimus magnam!'
 const levels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'body'] as const

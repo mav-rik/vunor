@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 const props = withDefaults(
   defineProps<{
     maxW?: string

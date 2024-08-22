@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { SliderRootEmits, SliderRootProps } from 'radix-vue'
-import { useForwardPropsEmits } from 'radix-vue'
+import VuLabel from '../Label/Label.vue'
+import { SliderRoot, SliderTrack, SliderRange, SliderThumb, useForwardPropsEmits } from 'radix-vue'
+import { computed } from 'vue'
 
 type TClass = string | Record<string, boolean>
 

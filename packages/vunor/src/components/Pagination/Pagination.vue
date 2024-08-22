@@ -1,4 +1,17 @@
 <script setup lang="ts">
+import {
+  PaginationRoot,
+  PaginationList,
+  PaginationFirst,
+  PaginationPrev,
+  PaginationListItem,
+  PaginationEllipsis,
+  PaginationNext,
+  PaginationLast,
+} from 'radix-vue'
+
+import VuIcon from '../Icon/Icon.vue'
+
 defineProps<{
   total: number
   defaultPage?: number

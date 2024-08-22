@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { Primitive } from 'radix-vue'
+import VuLoadingIndicator from '../Loading/LoadingIndicator.vue'
+import VuIcon from '../Icon/Icon.vue'
+
 withDefaults(
   defineProps<{
     label?: string

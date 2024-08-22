@@ -2,6 +2,18 @@
 import VuMenuItem from './MenuItem.vue'
 import VuInput from '../Input/Input.vue'
 
+import {
+  ComboboxRoot,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxGroup,
+  ComboboxLabel,
+  ComboboxItem,
+} from 'radix-vue'
+
+import { computed } from 'vue'
+
 type AcceptableValue = string | number | boolean | Record<string, any>
 type TItem = { label: string; value: AcceptableValue; icon?: string; group?: string }
 type Props = {

@@ -29,6 +29,10 @@
       "import": "./dist/theme.mjs",
       "types": "./dist/theme.d.ts"
     },
+    "./utils": {
+      "import": "./dist/utils.mjs",
+      "types": "./dist/utils.d.ts"
+    },
     "./vite": {
       "import": "./dist/vite.mjs",
       "types": "./dist/vite.d.ts"
@@ -59,8 +63,7 @@
     "./RadioGroup.vue": "./src/components/RadioGroup/RadioGroup.vue",
     "./Select.vue": "./src/components/Select/Select.vue",
     "./SelectBase.vue": "./src/components/Select/SelectBase.vue",
-    "./Slider.vue": "./src/components/Slider/Slider.vue",
-    "./utils": "./src/components/utils/index.ts"
+    "./Slider.vue": "./src/components/Slider/Slider.vue"
   },
   "devDependencies": {
     "@iconify/utils": "^2.1.23",
