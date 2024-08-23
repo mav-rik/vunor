@@ -369,14 +369,14 @@ const defaultOpts: Required<TVunorPaletteOptions & { colors: TVunorPaletteColor 
 
 export function generatePalette(_opts?: TVunorPaletteOptions) {
   // transform _opts.colors to TPaletteColor (in case if it is strings)
-  const _colors = defaultOpts?.colors || ({} as Record<string, TVunorPaletteColor>)
+  const _colors = _opts?.colors || ({} as Record<string, TVunorPaletteColor>)
   for (const key of Object.keys(_colors)) {
-    const col = defaultOpts?.colors[key as 'primary']
+    const col = _opts?.colors?.[key as 'primary']
     if (typeof col === 'string') {
       _colors[key as 'primary'] = { color: col }
     }
   }
-  const opts = defu(_opts, { ...defaultOpts, colors: _colors }) as typeof defaultOpts
+  const opts = defu({ ..._opts, colors: _colors }, defaultOpts) as typeof defaultOpts
 
   // dark bg
   const bgOptions: TScaleOptionsInput & TPalitraOptions = {

@@ -5,7 +5,9 @@ import presetIcons from '@unocss/preset-icons'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 import { presetScrollbar } from 'unocss-preset-scrollbar'
 import { vunorShortcuts } from './src/theme'
-const sc = vunorShortcuts()
+const sc = vunorShortcuts({
+  // 'c8-filled': 'current-bg-scope-color',
+})
 
 export default defineConfig({
   presets: [
@@ -33,6 +35,7 @@ export default defineConfig({
       baseRadius: '.5em',
       palette: {
         colors: {
+          // primary: '#FFBBAA',
           secondary: '#DF6D04',
         },
         surfaces: {
