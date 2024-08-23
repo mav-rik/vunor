@@ -5,6 +5,11 @@ import VuCardHeader from '../components/Card/CardHeader.vue'
 <template>
   <VuCard level="h2" class="with-bg relative">
     <VuCardHeader class="mb-$s">Testing</VuCardHeader>
+
+    <div class="flex flex-col gap-$m">
+      <div class="surface-test size-10rem p-$m border">text here</div>
+      <div class="surface-200 size-10rem p-$m border">text here</div>
+    </div>
   </VuCard>
 </template>
 

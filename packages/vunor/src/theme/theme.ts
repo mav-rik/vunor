@@ -2,14 +2,14 @@
 /* eslint-disable complexity */
 import type { Theme } from '@unocss/preset-mini'
 
-import type { TPaletteOptions } from './palitra'
+import type { TVunorPaletteOptions } from './palitra'
 import { generatePalette } from './palitra'
 import type { TTypographyNames, TVunorUnoPresetOpts } from './types'
 import { buildFontTheme } from './typography'
 import { round } from './utils/round'
 
 export const themeFactory = (
-  opts: Required<TVunorUnoPresetOpts> & { palette?: TPaletteOptions }
+  opts: Required<TVunorUnoPresetOpts> & { palette?: TVunorPaletteOptions }
 ) => {
   /**
    * Spacing

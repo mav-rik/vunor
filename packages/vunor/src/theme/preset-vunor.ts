@@ -3,7 +3,7 @@ import { defu } from 'defu'
 import type { Preset, PresetFactory, StaticShortcut } from 'unocss'
 import { presetWind } from 'unocss'
 
-import type { TPaletteOptions } from './palitra'
+import type { TVunorPaletteOptions } from './palitra'
 import { getPaletteShortcuts } from './palitra'
 import { fontsPreflights } from './preflights'
 import { rules } from './rules'
@@ -42,7 +42,7 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
 
 export const presetVunor: PresetFactory<
   TVunorTheme,
-  TVunorUnoPresetOpts & { palette?: TPaletteOptions }
+  TVunorUnoPresetOpts & { palette?: TVunorPaletteOptions }
 > = (_opts?: TVunorUnoPresetOpts): Preset<Theme & TVunorTheme> => {
   const opts: Required<TVunorUnoPresetOpts> = defu(_opts, defaultOptions)
   const wind = getFixedWind()

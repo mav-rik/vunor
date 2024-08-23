@@ -35,6 +35,10 @@ export default defineConfig({
         colors: {
           secondary: '#DF6D04',
         },
+        surfaces: {
+          //    [bg,     text,    border, dark:bg, dark:text, dark:border]
+          test: ['red', 'white', 'blue', 'red', 'white', 'blue'],
+        },
       },
     }),
   ],

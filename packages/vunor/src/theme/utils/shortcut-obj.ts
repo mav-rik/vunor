@@ -1,9 +1,15 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable complexity */
+/* eslint-disable sonarjs/no-nested-template-literals */
+
 import type { TVunorShortcut } from './define-sc'
 
-/* eslint-disable sonarjs/no-nested-template-literals */
-export function scFromObject(obj: TVunorShortcut): string {
+/**
+ * Build uno shortcut from vunor shortcut object
+ * @param obj - shortcut object
+ * @returns string
+ */
+export function toUnoShortcut(obj: TVunorShortcut): string {
   let s = ''
   for (const [key, val] of Object.entries(obj)) {
     const a = prepareScArray(val as TVunorShortcut)
@@ -26,7 +32,15 @@ function prepareScArray(input: string | string[] | TVunorShortcut): string[] {
   return a
 }
 
-export const mergeShortcuts = (target: TVunorShortcut, source: TVunorShortcut): TVunorShortcut => {
+/**
+ * Merges source vunor shortcut with target vunor shortcut
+ * The target vunor shortcut has more power
+ *
+ * @param target TVunorShortcut
+ * @param source TVunorShortcut
+ * @returns TVunorShortcut
+ */
+const mergeTwoVunorShortcuts = (target: TVunorShortcut, source: TVunorShortcut): TVunorShortcut => {
   const result = {} as TVunorShortcut
   const keys = new Set([...Object.keys(source), ...Object.keys(target)])
   // eslint-disable-next-line guard-for-in
@@ -50,16 +64,23 @@ export const mergeShortcuts = (target: TVunorShortcut, source: TVunorShortcut): 
       if (typeof sourceValue === 'string' && typeof targetValue === 'string') {
         result[key] = `${targetValue} ${sourceValue}`
       } else if (typeof sourceValue === 'object' && typeof targetValue === 'string') {
-        result[key] = `${targetValue} ${scFromObject(sourceValue)}`
+        result[key] = `${targetValue} ${toUnoShortcut(sourceValue)}`
       } else if (typeof sourceValue === 'string' && typeof targetValue === 'object') {
-        result[key] = `${scFromObject(targetValue)} ${sourceValue}`
+        result[key] = `${toUnoShortcut(targetValue)} ${sourceValue}`
       } else if (typeof sourceValue === 'object' && typeof targetValue === 'object') {
-        result[key] = `${scFromObject(targetValue)} ${scFromObject(sourceValue)}`
+        result[key] = `${toUnoShortcut(targetValue)} ${toUnoShortcut(sourceValue)}`
       }
     }
   }
   return result
 }
 
-export const mergeAllShortcuts = (shortcuts: TVunorShortcut[]): TVunorShortcut =>
-  shortcuts.reduce((acc, shortcut) => mergeShortcuts(acc, shortcut), {})
+/**
+ * Merges an array of vunor shortcuts
+ * Items from the beginning have less priority
+ *
+ * @param shortcuts TVunorShortcut[]
+ * @returns TVunorShortcut
+ */
+export const mergeVunorShortcuts = (shortcuts: TVunorShortcut[]): TVunorShortcut =>
+  shortcuts.reduce((acc, shortcut) => mergeTwoVunorShortcuts(acc, shortcut), {})

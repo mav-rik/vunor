@@ -23,6 +23,10 @@ const forwardProps = computed(() => {
 })
 
 const modelValue = defineModel<string>()
+
+function onFocus(event: FocusEvent) {
+  ;(event.target as HTMLDivElement | undefined)?.querySelector?.('input')?.focus()
+}
 </script>
 
 <template>
@@ -57,7 +61,7 @@ const modelValue = defineModel<string>()
         readonly
         @click="s.openPopup"
         tabindex="-1"
-        @focus="$event.target.querySelector('input')?.focus()"
+        @focus="onFocus"
       >
         <template #overlay>
           <SelectValue class="absolute left-0 right-0 h-0 invisible" />
@@ -86,7 +90,7 @@ const modelValue = defineModel<string>()
           readonly
           type="text"
           tabindex="-1"
-          @focus="$event.target.querySelector('input')?.focus()"
+          @focus="onFocus"
         >
           <template #overlay>
             <SelectValue class="absolute left-[-1px] right-0 h-0 invisible" />
