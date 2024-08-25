@@ -3,6 +3,7 @@ import { useDark } from '@vueuse/core'
 import { ref, computed } from 'vue'
 
 import VuAppLayout from './components/AppLayout/AppLayout.vue'
+import VuDevTools from './components/DevTools/DevTools.vue'
 import VuIcon from './components/Icon/Icon.vue'
 import VuMenu from './components/Menu/Menu.vue'
 import VuButton from './components/Button/Button.vue'
@@ -116,5 +117,7 @@ const dark = useDark()
       </div>
     </template>
     <component :is="current"></component>
+
+    <VuDevTools />
   </vu-app-layout>
 </template>

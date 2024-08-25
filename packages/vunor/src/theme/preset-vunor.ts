@@ -55,10 +55,17 @@ export const presetVunor: PresetFactory<
   }
   wind.rules.push(...rules)
   const paletteShortcuts = getPaletteShortcuts() as StaticShortcut[]
+  const theme = themeFactory(opts)
+  wind.preflights.push({
+    getCSS: () =>
+      `__vunor_palette_options {background-image: url("data:image/gif;base64,${Buffer.from(
+        JSON.stringify({ ...theme.paletteOpts, surfaces: undefined })
+      ).toString('base64')}")}`,
+  })
   return {
     ...wind,
     name: 'vunor',
-    theme: defu(themeFactory(opts), wind.theme) as TVunorTheme,
+    theme: defu(theme.theme, wind.theme) as TVunorTheme,
     shortcuts: paletteShortcuts,
     layers: {
       preflights: 0,

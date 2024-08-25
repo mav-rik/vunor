@@ -431,6 +431,7 @@ export function generatePalette(_opts?: TVunorPaletteOptions) {
     }
   ).toStrings()
   return {
+    opts,
     colors: {
       ...darks,
       ...lights,
