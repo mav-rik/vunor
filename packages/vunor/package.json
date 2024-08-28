@@ -63,7 +63,8 @@
     "./RadioGroup.vue": "./src/components/RadioGroup/RadioGroup.vue",
     "./Select.vue": "./src/components/Select/Select.vue",
     "./SelectBase.vue": "./src/components/Select/SelectBase.vue",
-    "./Slider.vue": "./src/components/Slider/Slider.vue"
+    "./Slider.vue": "./src/components/Slider/Slider.vue",
+    "./Tabs.vue": "./src/components/Tabs/Tabs.vue"
   },
   "devDependencies": {
     "@iconify/utils": "^2.1.23",
