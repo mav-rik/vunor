@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
+import Tabs from '../components/Tabs/Tabs.vue'
 </script>
 <template>
   <VuCard level="h2" class="with-bg relative">
     <VuCardHeader class="mb-$s">Testing</VuCardHeader>
 
-    <div class="flex flex-col gap-$m">
-      <div class="surface-test size-10rem p-$m border">text here</div>
-      <div class="surface-200 size-10rem p-$m border">text here</div>
-    </div>
+    <div class="flex flex-col gap-$m"></div>
   </VuCard>
 </template>
 

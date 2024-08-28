@@ -28,8 +28,8 @@ export const c8 = defineShortcuts({
     'hover:': 'c8-flat-hover',
     'focus-visible:': 'c8-flat-hover',
     'data-[highlighted]:': 'c8-flat-hover',
-    'active:': 'c8-flat-active',
-    'data-[active]:': 'c8-flat-active',
+    // 'active:': 'c8-flat-active',
+    // 'data-[active]:': 'c8-flat-active', // messes up with tabs
     'data-[selected=true]:': 'c8-flat-selected',
     'aria-[selected=true]:': 'c8-flat-selected',
     'aria-[pressed=true]:': 'c8-flat-selected',
@@ -37,9 +37,9 @@ export const c8 = defineShortcuts({
   'c8-flat-hover': {
     'not-([disabled]):': 'bg-current/05',
   },
-  'c8-flat-active': {
-    'not-([disabled]):': 'bg-current/10',
-  },
+  // 'c8-flat-active': {
+  //   'not-([disabled]):': 'bg-current/10', // messes up with tabs
+  // },
   'c8-flat-selected': {
     '': 'c8-flat-hover current-text-scope-color-500 text-current current-icon-scope-color-500 icon-current/100',
     'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',

@@ -4,8 +4,8 @@ import { VuButton } from '../Button'
 import { VuCard, VuCardHeader, VuCardInner } from '../Card'
 import { TVunorPaletteColor, TVunorPaletteOptions } from '../../theme'
 import { VuInput } from '../Input'
-import { TabsList, TabsRoot, TabsTrigger } from 'radix-vue'
 import VuSlider from '../Slider/Slider.vue'
+import VuTabs from '../Tabs/Tabs.vue'
 import { generatePalette } from '../../theme/palitra'
 import { color } from '@prostojs/palitra'
 
@@ -289,28 +289,15 @@ function onMouseMove(event: MouseEvent) {
       </VuCardInner>
 
       <VuCardInner class="layer-0 border-b">
-        <TabsRoot default-value="colors" v-model="tab">
-          <TabsList class="flex gap-$s justify-start">
-            <TabsTrigger
-              class="rounded surface-0 hover:surface-1 data-[active=true]:layer-0 data-[active=true]:border-current/0 border px-$m"
-              value="colors"
-            >
-              Colors
-            </TabsTrigger>
-            <TabsTrigger
-              class="rounded surface-0 hover:surface-1 data-[active=true]:layer-0 data-[active=true]:border-current/0 border px-$m"
-              value="main"
-            >
-              Main Palette
-            </TabsTrigger>
-            <TabsTrigger
-              class="rounded surface-0 hover:surface-1 data-[active=true]:layer-0 data-[active=true]:border-current/0 border px-$m"
-              value="layers"
-            >
-              Layers Palette
-            </TabsTrigger>
-          </TabsList>
-        </TabsRoot>
+        <VuTabs
+          default-value="colors"
+          v-model="tab"
+          :tabs="[
+            { value: 'colors', label: 'Colors ' },
+            { value: 'main', label: 'Main Palette' },
+            { value: 'layers', label: 'Layers Palette' },
+          ]"
+        />
       </VuCardInner>
 
       <VuCardInner class="layer-0 flex-grow overflow-auto pt-$l">

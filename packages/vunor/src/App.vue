@@ -23,6 +23,7 @@ import PreviewClickable from './previews/clickable.vue'
 import PreviewInputable from './previews/inputable.vue'
 import PreviewTypography from './previews/typography.vue'
 import PreviewTest from './previews/test.vue'
+import PreviewTabs from './previews/tabs.vue'
 import PreviewInputs from './previews/inputs.vue'
 import PreviewPagination from './previews/pagination.vue'
 
@@ -47,6 +48,7 @@ const menu2 = [
   { group: 'Components', label: 'Radiobuttons', value: 'Radiobuttons', icon: 'i--radio' },
   { group: 'Components', label: 'Selects', value: 'Selects', icon: 'i--select' },
   { group: 'Components', label: 'Sliders', value: 'Sliders', icon: 'i--slider' },
+  { group: 'Components', label: 'Tabs', value: 'Tabs', icon: 'i--tabs' },
   { group: 'Components', label: 'Pagination', value: 'Pagination', icon: 'i--pagination' },
   { group: '', label: 'Testing', value: 'Testing', icon: 'i--test' },
 ]
@@ -69,6 +71,7 @@ const pages = {
   Testing: PreviewTest,
   Inputs: PreviewInputs,
   Pagination: PreviewPagination,
+  Tabs: PreviewTabs,
 }
 
 const selected = ref<keyof typeof pages>('Testing')
