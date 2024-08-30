@@ -170,10 +170,11 @@ const stackLabel = ref(false)
           v-model="v1"
           :stack-label
         >
-          <template v-slot:selected-items="{ items }">
+          <template v-slot:selected-items="scopeProps">
             <!-- <div class="i8-ta-wrapper"> -->
             <VuOverflowContainer
-              :items
+              :items="scopeProps.items"
+              v-bind="scopeProps.inputAttrs"
               class="i8-input items-center text-body-s flex gap-$s absolute left-0 top-0 right-0 bottom-0"
             >
               <template v-slot="{ item }">

@@ -80,7 +80,7 @@ const emit = defineEmits<TInputEmits>()
         </div>
 
         <div :class="stackLabel ? 'i8-hint-wrapper-stack' : 'i8-hint-wrapper'">
-          <div class="i8-hint">
+          <div class="i8-hint" v-if="hint || error">
             <slot v-if="$slots.error || (typeof error === 'string' && error.length)" name="error">
               <span class="text-error-500">
                 {{ error }}

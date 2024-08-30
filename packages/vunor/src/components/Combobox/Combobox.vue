@@ -333,7 +333,7 @@ function onKeydown(event: KeyboardEvent) {
           :design="usePopover ? 'filled' : shellProps?.design"
           :icon-append="usePopover ? undefined : dropdownIcon"
           :icon-prepend="usePopover ? 'i--search' : shellProps?.iconPrepend"
-          :class="usePopover ? 'i8-no-border' : 'i8-combobox'"
+          :class="usePopover ? 'i8-no-border i8-no-outline' : 'i8-combobox'"
           @append-click="openPopup"
           :data-expanded="usePopover ? undefined : modelOpen"
         >
@@ -419,9 +419,9 @@ function onKeydown(event: KeyboardEvent) {
 
   <template v-else-if="usePopover">
     <PopoverRoot v-model:open="popupOpen" modal>
-      <DefineItemsTemplate>
-        <slot name="selected-items" :items="selectedItems">
-          <div class="combobox-multi-input">
+      <DefineItemsTemplate v-slot="{ inputAttrs }">
+        <slot name="selected-items" :items="selectedItems" :input-attrs>
+          <div class="i8-input combobox-multi-input" v-bind="inputAttrs">
             <div class="combobox-multi-items">
               {{ selectedLabels }}
             </div>
@@ -444,8 +444,8 @@ function onKeydown(event: KeyboardEvent) {
           :class
           :active="popupOpen || focused"
         >
-          <template>
-            <UseItemsTemplate />
+          <template v-slot="inputAttrs">
+            <UseItemsTemplate :input-attrs="inputAttrs" />
           </template>
 
           <template #prepend v-if="!!$slots.prepend">
@@ -480,20 +480,25 @@ function onKeydown(event: KeyboardEvent) {
               :model-value="selectedLabels"
               :active="popupOpen || focused"
             >
-              <UseItemsTemplate />
+              <template v-slot="inputAttrs">
+                <UseItemsTemplate :input-attrs="inputAttrs" />
+              </template>
 
               <template #prepend v-if="!!$slots.prepend">
                 <slot name="prepend"></slot>
               </template>
               <template v-slot:append="{ iconAppend }">
-                <div class="flex gap-$s">
-                  <VuIcon
-                    v-if="!!selectedLabels && !readonly && !disabled"
-                    name="i--clear"
+                <div class="flex">
+                  <div
+                    class="i8-icon-wrap"
                     @click.stop="clearValue"
-                    class="combobox-c8-icon"
-                  />
-                  <VuIcon :name="dropdownIcon" class="combobox-c8-icon" />
+                    v-if="!!selectedLabels && !readonly && !disabled"
+                  >
+                    <VuIcon name="i--clear" class="combobox-c8-icon" />
+                  </div>
+                  <div class="i8-icon-wrap">
+                    <VuIcon :name="dropdownIcon" class="combobox-c8-icon" />
+                  </div>
                 </div>
               </template>
             </VuInputShell>

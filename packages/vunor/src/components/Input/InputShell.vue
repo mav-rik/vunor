@@ -83,7 +83,9 @@ const hasValue = computed(() => (modelValue.value ? '' : undefined))
       }"
     >
       <slot name="prepend" v-bind="attrs" :data-has-value="hasValue">
-        <VuIcon :name="iconPrepend!" @click="emit('prependClick', $event)" />
+        <div class="i8-icon-wrap" @click="emit('prependClick', $event)">
+          <VuIcon :name="iconPrepend!" />
+        </div>
       </slot>
     </div>
 
@@ -129,13 +131,16 @@ const hasValue = computed(() => (modelValue.value ? '' : undefined))
     >
       <VuLoadingIndicator v-if="loading" class="text-grey" />
       <slot
+        v-if="$slots.append || !!iconAppend"
         name="append"
         v-bind="attrs"
         :data-has-value="hasValue"
         :emitClick="(event: MouseEvent) => emit('appendClick', event)"
         :iconAppend
       >
-        <VuIcon :name="iconAppend!" @click="emit('appendClick', $event)" />
+        <div class="i8-icon-wrap" @click="emit('appendClick', $event)">
+          <VuIcon :name="iconAppend!" />
+        </div>
       </slot>
     </div>
   </Primitive>

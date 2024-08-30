@@ -6,6 +6,7 @@ import {
   SelectPortal,
   SelectContent,
   SelectScrollUpButton,
+  SelectScrollDownButton,
   SelectViewport,
   SelectSeparator,
   SelectLabel,

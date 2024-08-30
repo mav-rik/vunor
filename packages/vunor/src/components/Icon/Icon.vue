@@ -5,5 +5,5 @@ defineProps<{
 </script>
 
 <template>
-  <div :class="name" class="icon-color"></div>
+  <div :class="name" class="icon-color icon-size"></div>
 </template>

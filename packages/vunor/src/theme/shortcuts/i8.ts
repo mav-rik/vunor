@@ -2,8 +2,8 @@ import { defineShortcuts } from '../utils/define-sc'
 
 export const i8 = defineShortcuts({
   'i8': {
-    '': 'h-fingertip min-w-3em flex items-center select-none relative current-icon-grey-500 icon-current content-box current-border-grey-500 border-current/20',
-    'data-[type=textarea]': 'min-h-fingertip h-auto items-start',
+    '': 'h-fingertip min-w-3em flex items-center select-none relative current-icon-grey-500 icon-current content-box border-current/20',
+    'data-[type=textarea]:': 'min-h-fingertip h-auto items-start',
     'data-[active=true]:': 'icon-current-hl current-bg-white',
     // 'dark:': '',
     '[&.i8-flat]:': {
@@ -18,7 +18,10 @@ export const i8 = defineShortcuts({
         'data-[active=true]:': 'current-bg-scope-dark-0',
       },
     },
-    '[&.i8-no-border]:': 'border-0! outline-none! rounded-0!',
+    '[&.i8-no-border]:': 'border-0!',
+    '[&.i8-no-outline]:': 'outline-0!',
+    'group-[.i8-no-border]/i8:': 'border-0!',
+    'group-[.i8-no-outline]/i8:': 'outline-0!',
     '[&.i8-transparent]:': 'bg-transparent!',
     '[&.i8-round]:': 'rounded-fingertip-half border border-current/20',
     'aria-[disabled=true]:': 'opacity-50 cursor-not-allowed',
@@ -27,6 +30,8 @@ export const i8 = defineShortcuts({
       '': 'current-border-error-500 border-current',
     },
   },
+
+  'i8-icon-wrap': 'size-fingertip flex items-center justify-center',
 
   'i8-underline': {
     'group-[.i8-filled]/i8:': 'hidden',
@@ -53,29 +58,32 @@ export const i8 = defineShortcuts({
 
   'i8-input': {
     '': 'w-full outline-none h-full bg-transparent',
-    'group-[.i8-flat]/i8:data-[has-prepend=true]': 'pl-$s',
-    'group-[.i8-flat]/i8:data-[has-append=true]': 'pr-$s',
-    'group-[.i8-filled]/i8:': 'px-$m',
+    "group-[.i8-filled]/i8:[&[data-has-prepend='false']]:": 'pl-$m',
+    "group-[.i8-filled]/i8:[&[data-has-append='false']]:": 'pr-$m',
+    // "group-[.i8-filled]/i8:[&[data-has-prepend='true']]:": 'pr-0',
+    // "group-[.i8-filled]/i8:[&[data-has-append='true']]:": 'pl-0',
     'selection:': 'bg-scope-color-500 text-white',
     "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-fingertip-half',
     "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-fingertip-half',
     'group-[[data-has-label]]/i8:': 'pt-$m',
     // groupped inputs paddings
-    'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
-    'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
+    'group-[.segmented.i8-round:not(:first-child)]/i8:[&[data-has-prepend=false]]:': 'pl-$m',
+    'group-[.segmented.i8-round:not(:last-child)]/i8:[&[data-has-append=false]]:': 'pr-$m',
   },
 
   'i8-textarea': {
     '': 'w-full outline-none h-full bg-transparent text-body', // !
-    'group-[.i8-flat]/i8:data-[has-prepend=true]': 'pl-$s',
-    'group-[.i8-flat]/i8:data-[has-append=true]': 'pr-$s',
-    'group-[.i8-filled]/i8:': 'px-$m',
+    // 'group-[.i8-flat]/i8:data-[has-prepend=true]': 'pl-$s',
+    // 'group-[.i8-flat]/i8:data-[has-append=true]': 'pr-$s',
+    // 'group-[.i8-filled]/i8:': 'px-$m',
+    "group-[.i8-filled]/i8:[&[data-has-prepend='false']]:": 'pl-$m',
+    "group-[.i8-filled]/i8:[&[data-has-append='false']]:": 'pr-$m',
     'selection:': 'bg-scope-color-500 text-white',
     "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-fingertip-half',
     "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-fingertip-half',
     // groupped inputs paddings
-    'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
-    'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
+    'group-[.segmented.i8-round:not(:first-child)]/i8:[&[data-has-prepend=false]]:': 'pl-$m',
+    'group-[.segmented.i8-round:not(:last-child)]/i8:[&[data-has-append=false]]:': 'pr-$m',
   },
 
   'i8-ta-wrapper': {
@@ -94,14 +102,14 @@ export const i8 = defineShortcuts({
   'i8-label-wrapper': {
     '': 'pointer-events-none absolute left-0 right-0 bottom-0 top-0',
     // paddings
-    'group-[.i8-flat]/i8:data-[has-prepend=true]': 'pl-$s',
-    'group-[.i8-flat]/i8:data-[has-append=true]': 'pr-$s',
+    'group-[.i8-filled]/i8:data-[has-prepend=true]': 'pl-0',
+    'group-[.i8-filled]/i8:data-[has-append=true]': 'pr-0',
     'group-[.i8-filled]/i8:': 'px-$m',
     "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-fingertip-half',
     "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-fingertip-half',
     // groupped inputs paddings
-    'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
-    'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
+    'group-[.segmented.i8-round:not(:first-child)]/i8:[&[data-has-prepend=false]]:': 'pl-$m',
+    'group-[.segmented.i8-round:not(:last-child)]/i8:[&[data-has-append=false]]:': 'pr-$m',
   },
 
   'i8-hint': {
@@ -127,19 +135,23 @@ export const i8 = defineShortcuts({
   },
 
   'i8-prepend': {
-    '': 'my-1em',
-    'group-[.i8-filled]/i8:': 'pl-$m',
-    'group-[.i8-round]/i8:': 'pl-$m',
+    '': 'flex gap-$s items-center',
+    'group-[[data-type=textarea]]/i8:': 'my-$m',
+    // 'group-[.i8-flat]/i8:': 'pr-$m',
+    // 'group-[.i8-filled]/i8:': 'px-$m',
+    // 'group-[.i8-round]/i8:': 'px-$m',
     // groupped inputs paddings
-    'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'pl-$m',
+    // 'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'px-$m',
   },
 
   'i8-append': {
-    '': 'my-1em flex gap-$s items-center',
-    'group-[.i8-filled]/i8:': 'pr-$m',
-    'group-[.i8-round]/i8:': 'pr-$m',
+    '': 'flex gap-$s items-center',
+    'group-[[data-type=textarea]]/i8:': 'my-$m',
+    // 'group-[.i8-flat]/i8:': 'pl-$m',
+    // 'group-[.i8-filled]/i8:': 'px-$m',
+    // 'group-[.i8-round]/i8:': 'px-$m',
     // groupped inputs paddings
-    'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'pr-$m',
+    // 'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'px-$m',
   },
 
   'i8-before': {
@@ -152,7 +164,7 @@ export const i8 = defineShortcuts({
   },
 
   'i8-icon-clickable': {
-    '[&>.icon-color]:': 'cursor-pointer',
-    '[&>.icon-color:hover]:': 'current-icon-scope-color-500 icon-current',
+    '[&>.i8-icon-wrap]:': 'cursor-pointer',
+    '[&>.i8-icon-wrap:hover]:': 'current-icon-scope-color-500 icon-current',
   },
 })

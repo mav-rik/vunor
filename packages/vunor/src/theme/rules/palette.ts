@@ -153,4 +153,28 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
       color: `rgb(var(--current-icon) / var(--un-icon-opacity, 1))`,
     }),
   ],
+  [
+    /^icon-size-(.*)$/,
+    (match, { theme }) => {
+      const name = match[1]
+      if (name.startsWith('[') && name.endsWith(']')) {
+        return {
+          '--icon-size': name.slice(1, -1),
+        }
+      }
+      if (theme.spacing[name]) {
+        return {
+          '--icon-size': theme.spacing[name],
+        }
+      }
+      return undefined
+    },
+  ],
+  [
+    /^icon-size$/,
+    () => ({
+      width: `var(--icon-size, 1em)`,
+      height: `var(--icon-size, 1em)`,
+    }),
+  ],
 ]

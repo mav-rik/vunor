@@ -467,7 +467,7 @@ export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
           l = 4 - Number(a)
         }
         return toUnoShortcut({
-          '': `current-bg-scope-light-${l} current-text-scope-dark-2 current-icon-scope-dark-2 bg-current text-current`,
+          '': `current-bg-scope-light-${l} current-text-scope-dark-2 current-icon-scope-dark-2 current-border-grey-500 bg-current text-current`,
           'dark:': `current-bg-scope-dark-${d} current-text-scope-light-2 current-icon-scope-light-2`,
           '[&.dark]:': `current-bg-scope-dark-${d} current-text-scope-light-2 current-icon-scope-light-2`,
         })

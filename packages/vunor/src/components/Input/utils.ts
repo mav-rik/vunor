@@ -15,6 +15,7 @@ export function useHtmlInputAttrs(): ComputedRef<TInputAttrs> | undefined {
       'required': props.required,
       'disabled': props.disabled,
       'readonly': props.readonly,
+      'maxlength': props.maxlength,
       'autocomplete': props.autocomplete,
       'data-has-prepend': !!instance.slots.prepend || !!instance.props.iconPrepend,
       'data-has-append':
