@@ -27,7 +27,7 @@ const selected = reactive<Record<string, boolean>>({
 </script>
 
 <template>
-  <VuCard class="with-bg" level="h2">
+  <VuCard class="" level="h2">
     <VuCardHeader class="mb-$s relative">Inputable (i8)</VuCardHeader>
     <h3 class="mb-$s">Single Inputs</h3>
     <div v-for="t of types" class="mb-$xxl relative">
@@ -76,27 +76,3 @@ const selected = reactive<Record<string, boolean>>({
     </div>
   </VuCard>
 </template>
-
-<style scoped>
-.with-bg {
-  position: relative;
-  min-height: 100vh;
-}
-.with-bg:before {
-  content: ' ';
-  position: fixed;
-  pointer-events: none;
-  margin-left: -2.5em;
-  width: 80vw;
-  top: 0;
-  height: 100vh;
-  background-image: url(/bg7.png);
-  background-size: cover;
-  mix-blend-mode: darken;
-  opacity: 0.05;
-}
-.dark .with-bg:before {
-  mix-blend-mode: overlay;
-  opacity: 0.25;
-}
-</style>

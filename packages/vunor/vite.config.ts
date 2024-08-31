@@ -30,15 +30,15 @@ function findVueFiles(dir: string) {
 
 const vueFiles = findVueFiles(componentsDir).map(file => path.basename(file).slice(0, -4))
 
-export const nestedComponents = {
-  InputShell: 'Input',
-  CardHeader: 'Card',
-  CardInner: 'Card',
-  LoadingIndicator: 'Loading',
-  MenuItem: 'Menu',
-  SelectBase: 'Select',
-  ButtonBase: 'Button',
-} as Record<string, string | undefined>
+// export const nestedComponents = {
+//   InputBase: 'Input',
+//   CardHeader: 'Card',
+//   CardInner: 'Card',
+//   LoadingIndicator: 'Loading',
+//   MenuItem: 'Menu',
+//   SelectBase: 'Select',
+//   ButtonBase: 'Button',
+// } as Record<string, string | undefined>
 
 // https://vitejs.dev/config/
 export default defineConfig({

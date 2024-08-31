@@ -2,12 +2,12 @@
 import type { ComputedRef } from 'vue'
 import { computed, getCurrentInstance } from 'vue'
 
-import type { TInputAttrs, TInputProps, TInputShellProps } from './types'
+import type { TInputAttrs, TInputBaseProps, TInputProps } from './types'
 
 export function useHtmlInputAttrs(): ComputedRef<TInputAttrs> | undefined {
   const instance = getCurrentInstance()
   if (instance) {
-    const props = instance.props as unknown as TInputShellProps
+    const props = instance.props as unknown as TInputBaseProps
     return computed(() => ({
       'placeholder': props.placeholder,
       'type': props.type ?? 'text',
@@ -61,7 +61,7 @@ export function useInputProps(): ComputedRef<TInputProps> | undefined {
     }))
   }
 }
-export function useInputShellProps(): ComputedRef<TInputShellProps> | undefined {
+export function useInputBaseProps(): ComputedRef<TInputBaseProps> | undefined {
   const instance = getCurrentInstance()
   if (instance) {
     const props = instance.props as unknown as TInputProps
@@ -81,6 +81,7 @@ export function useInputShellProps(): ComputedRef<TInputShellProps> | undefined 
       maxlength: props.maxlength,
       required: props.required,
       active: props.active,
+      noUnderline: props.noUnderline,
       autocomplete: props.autocomplete,
       onAppendClick: props.onAppendClick,
       onPrependClick: props.onPrependClick,

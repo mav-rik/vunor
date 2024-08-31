@@ -80,8 +80,8 @@ onBeforeUnmount(() => {
 
       <div class="max-w-[var(--app-max-w)] w-full mx-auto flex">
         <aside
-          class="hidden lg:block w-[var(--app-left-w)] top-[var(--app-header-h)] overflow-auto fixed"
-          :style="'height: calc(100vh - var(--app-header-h) - var(--app-footer-h))'"
+          class="hidden lg:block w-[var(--app-left-w)] top-[var(--app-header-h)] overflow-auto fixed bg-doodle"
+          :style="'height: calc(100vh - var(--app-header-h) - var(--app-footer-h));'"
         >
           <div class="min-h-full" :class="leftClass">
             <slot name="left"></slot>
@@ -113,3 +113,18 @@ onBeforeUnmount(() => {
     </footer>
   </div>
 </template>
+
+<style>
+.bg-doodle:before {
+  content: ' ';
+  background-image: url(/src/assets/bg2.jpg);
+  background-size: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0.05;
+  backdrop-filter: brightness(0.3);
+}
+</style>

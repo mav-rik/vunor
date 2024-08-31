@@ -17,7 +17,7 @@ function onUpdate(page: number) {
 }
 </script>
 <template>
-  <VuCard level="h2" class="with-bg relative">
+  <VuCard level="h2" class="relative">
     <VuCardHeader class="mb-$s">Pagination</VuCardHeader>
 
     <div class="flex flex-col gap-$m max-w-lg">

@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
 import VuCheckbox from '../components/Checkbox/Checkbox.vue'
-import VuInputShell from '../components/Input/InputShell.vue'
+import VuInputBase from '../components/Input/InputBase.vue'
 import VuInput from '../components/Input/Input.vue'
 import VuSelect from '../components/Select/Select.vue'
 
@@ -62,7 +62,7 @@ function onBlur() {
 <template>
   <VuCard
     level="h2"
-    class="with-bg relative"
+    class="relative"
     :class="{
       'fingertip-l': large,
     }"
@@ -181,7 +181,7 @@ function onBlur() {
               :icon-after="iconAfter === 'undefined' ? undefined : iconAfter"
               :stack-label
             >
-              <VuInputShell
+              <VuInputBase
                 v-for="n in 3"
                 v-bind="{ ...state1.bind, ...state2, ...state3 }"
                 :icon-prepend="iconPrepend === 'undefined' ? undefined : iconPrepend"
@@ -196,27 +196,3 @@ function onBlur() {
     </div>
   </VuCard>
 </template>
-
-<style scoped>
-.with-bg {
-  position: relative;
-  min-height: 100vh;
-}
-.with-bg:before {
-  content: ' ';
-  position: fixed;
-  pointer-events: none;
-  margin-left: -2.5em;
-  width: 80vw;
-  top: 0;
-  height: 100vh;
-  background-image: url(/bg7.png);
-  background-size: cover;
-  mix-blend-mode: darken;
-  opacity: 0.05;
-}
-.dark .with-bg:before {
-  mix-blend-mode: overlay;
-  opacity: 0.25;
-}
-</style>

@@ -4,7 +4,7 @@ import VuCardHeader from '../components/Card/CardHeader.vue'
 import Tabs from '../components/Tabs/Tabs.vue'
 </script>
 <template>
-  <VuCard level="h2" class="with-bg relative">
+  <VuCard level="h2" class="relative">
     <VuCardHeader class="mb-$s">Testing</VuCardHeader>
 
     <div class="flex flex-col gap-$m">

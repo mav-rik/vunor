@@ -7,7 +7,7 @@ import type { Rule } from 'unocss'
 
 import type { TVunorTheme } from '../theme'
 
-function colorToRgbWithOpacity(c: string) {
+export function colorToRgbWithOpacity(c: string) {
   const [r, g, b, a] = color(c).rgba()
   return `${r} ${g} ${b}`
 }

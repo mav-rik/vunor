@@ -13,7 +13,7 @@ export interface TInputAttrs {
   'autocomplete'?: string
 }
 
-export interface TInputShellProps
+export interface TInputBaseProps
   extends Omit<TInputAttrs, 'data-has-prepend' | 'data-has-append' | 'data-has-label'> {
   label?: string
   design?: 'flat' | 'filled' | 'round'
@@ -23,13 +23,14 @@ export interface TInputShellProps
   autoGrow?: boolean
   active?: boolean
   loading?: boolean
+  noUnderline?: boolean
   onAppendClick?: (event: MouseEvent) => any
   onPrependClick?: (event: MouseEvent) => any
   onBlur?: (event: FocusEvent) => any
   onFocus?: (event: FocusEvent) => any
 }
 
-export interface TInputProps extends TInputShellProps {
+export interface TInputProps extends TInputBaseProps {
   iconBefore?: string
   iconAfter?: string
   error?: string | boolean
@@ -43,11 +44,11 @@ export interface TInputProps extends TInputShellProps {
   onFocus?: (event: FocusEvent) => any
 }
 
-export interface TInputShellEmits {
+export interface TInputBaseEmits {
   (e: 'prependClick' | 'appendClick', event: MouseEvent): void
   (e: 'blur' | 'focus', event: FocusEvent): void
 }
 
-export interface TInputEmits extends TInputShellEmits {
+export interface TInputEmits extends TInputBaseEmits {
   (e: 'beforeClick' | 'afterClick' | 'click', event: MouseEvent): void
 }

@@ -2,33 +2,34 @@ import { defineShortcuts } from '../utils/define-sc'
 
 export const i8 = defineShortcuts({
   'i8': {
-    '': 'h-fingertip min-w-3em flex items-center select-none relative current-icon-grey-500 icon-current content-box border-current/20',
+    '': 'h-fingertip min-w-3em flex items-center select-none relative icon-current content-box',
     'data-[type=textarea]:': 'min-h-fingertip h-auto items-start',
-    'data-[active=true]:': 'icon-current-hl current-bg-white',
+    'data-[active=true]:': 'icon-current-hl',
     // 'dark:': '',
     '[&.i8-flat]:': {
-      '': 'border-b',
+      '': 'border-b-width-[var(--i8-border-width,1px)]',
     },
     '[&.i8-filled]:': {
-      '': ' current-bg-scope-light-0 bg-current border border-current/20 rounded-base',
-      'data-[active=true]:':
-        'current-bg-scope-light-0 bg-current current-outline-hl outline-current/50 outline-2px outline',
-      'dark:': {
-        '': 'current-bg-scope-dark-2',
-        'data-[active=true]:': 'current-bg-scope-dark-0',
-      },
+      '': 'i8-apply-bg current-outline-hl i8-apply-border rounded-base i8-apply-border',
+      'data-[active=true]:': 'current-border-hl outline i8-apply-outline',
+      'focus-within:': 'current-border-hl outline i8-apply-outline',
     },
-    '[&.i8-no-border]:': 'border-0!',
-    '[&.i8-no-outline]:': 'outline-0!',
-    'group-[.i8-no-border]/i8:': 'border-0!',
-    'group-[.i8-no-outline]/i8:': 'outline-0!',
     '[&.i8-transparent]:': 'bg-transparent!',
-    '[&.i8-round]:': 'rounded-fingertip-half border border-current/20',
+    '[&.i8-round]:': {
+      '': 'i8-apply-bg current-outline-hl rounded-fingertip-half i8-apply-border',
+      'data-[active=true]:': 'current-border-hl outline i8-apply-outline',
+      'focus-within:': 'current-border-hl outline i8-apply-outline',
+    },
     'aria-[disabled=true]:': 'opacity-50 cursor-not-allowed',
     // error
     'group-[[data-error=true]]/i8:': {
-      '': 'current-border-error-500 border-current',
+      '': 'current-border-error-500 current-outline-error-500 border-opacity-100 border-current',
     },
+  },
+
+  'i8-loading': {
+    '': 'text-current-icon pl-$m',
+    'last:': 'pr-$m',
   },
 
   'i8-icon-wrap': 'size-fingertip flex items-center justify-center',
@@ -58,32 +59,27 @@ export const i8 = defineShortcuts({
 
   'i8-input': {
     '': 'w-full outline-none h-full bg-transparent',
-    "group-[.i8-filled]/i8:[&[data-has-prepend='false']]:": 'pl-$m',
-    "group-[.i8-filled]/i8:[&[data-has-append='false']]:": 'pr-$m',
-    // "group-[.i8-filled]/i8:[&[data-has-prepend='true']]:": 'pr-0',
-    // "group-[.i8-filled]/i8:[&[data-has-append='true']]:": 'pl-0',
+    'group-[.i8-filled]/i8:[&:not([data-has-prepend=true])]:': 'pl-$m',
+    'group-[.i8-filled]/i8:[&:not([data-has-append=true])]:': 'pr-$m',
     'selection:': 'bg-scope-color-500 text-white',
-    "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-fingertip-half',
-    "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-fingertip-half',
+    'group-[.i8-round]/i8:[&:not([data-has-prepend=true])]:': 'pl-fingertip-half',
+    'group-[.i8-round]/i8:[&:not([data-has-append=true])]:': 'pr-fingertip-half',
     'group-[[data-has-label]]/i8:': 'pt-$m',
     // groupped inputs paddings
-    'group-[.segmented.i8-round:not(:first-child)]/i8:[&[data-has-prepend=false]]:': 'pl-$m',
-    'group-[.segmented.i8-round:not(:last-child)]/i8:[&[data-has-append=false]]:': 'pr-$m',
+    'group-[.segmented.i8-round:not(:first-child)]/i8:[&:not([data-has-prepend=true])]:': 'pl-$m',
+    'group-[.segmented.i8-round:not(:last-child)]/i8:[&:not([data-has-append=true])]:': 'pr-$m',
   },
 
   'i8-textarea': {
     '': 'w-full outline-none h-full bg-transparent text-body', // !
-    // 'group-[.i8-flat]/i8:data-[has-prepend=true]': 'pl-$s',
-    // 'group-[.i8-flat]/i8:data-[has-append=true]': 'pr-$s',
-    // 'group-[.i8-filled]/i8:': 'px-$m',
-    "group-[.i8-filled]/i8:[&[data-has-prepend='false']]:": 'pl-$m',
-    "group-[.i8-filled]/i8:[&[data-has-append='false']]:": 'pr-$m',
+    'group-[.i8-filled]/i8:[&:not([data-has-prepend=true])]:': 'pl-$m',
+    'group-[.i8-filled]/i8:[&:not([data-has-append=true])]:': 'pr-$m',
     'selection:': 'bg-scope-color-500 text-white',
-    "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-fingertip-half',
-    "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-fingertip-half',
+    'group-[.i8-round]/i8:[&:not([data-has-prepend=true])]:': 'pl-fingertip-half',
+    'group-[.i8-round]/i8:[&:not([data-has-append=true])]:': 'pr-fingertip-half',
     // groupped inputs paddings
-    'group-[.segmented.i8-round:not(:first-child)]/i8:[&[data-has-prepend=false]]:': 'pl-$m',
-    'group-[.segmented.i8-round:not(:last-child)]/i8:[&[data-has-append=false]]:': 'pr-$m',
+    'group-[.segmented.i8-round:not(:first-child)]/i8:[&:not([data-has-prepend=true])]:': 'pl-$m',
+    'group-[.segmented.i8-round:not(:last-child)]/i8:[&:not([data-has-append=true])]:': 'pr-$m',
   },
 
   'i8-ta-wrapper': {
@@ -96,7 +92,6 @@ export const i8 = defineShortcuts({
     'group-[[data-active=true]]/i8:': 'h-[2em] lh-2em text-label font-size-[0.7em] text-current-hl',
     'group-[[data-has-placeholder]]/i8:': 'h-[2em] lh-2em text-label font-size-[0.7em]',
     'group-[[data-has-value]]/i8:': 'h-[2em] lh-2em text-label font-size-[0.7em]',
-    // 'data-[required=true]:after:': "content-['*'] text-error-500",
   },
 
   'i8-label-wrapper': {
@@ -105,11 +100,11 @@ export const i8 = defineShortcuts({
     'group-[.i8-filled]/i8:data-[has-prepend=true]': 'pl-0',
     'group-[.i8-filled]/i8:data-[has-append=true]': 'pr-0',
     'group-[.i8-filled]/i8:': 'px-$m',
-    "group-[.i8-round]/i8:[&[data-has-prepend='false']]:": 'pl-fingertip-half',
-    "group-[.i8-round]/i8:[&[data-has-append='false']]:": 'pr-fingertip-half',
+    'group-[.i8-round]/i8:[&:not([data-has-prepend=true])]:': 'pl-fingertip-half',
+    'group-[.i8-round]/i8:[&:not([data-has-append=true])]:': 'pr-fingertip-half',
     // groupped inputs paddings
-    'group-[.segmented.i8-round:not(:first-child)]/i8:[&[data-has-prepend=false]]:': 'pl-$m',
-    'group-[.segmented.i8-round:not(:last-child)]/i8:[&[data-has-append=false]]:': 'pr-$m',
+    'group-[.segmented.i8-round:not(:first-child)]/i8:[&:not([data-has-prepend=true])]:': 'pl-$m',
+    'group-[.segmented.i8-round:not(:last-child)]/i8:[&:not([data-has-append=true])]:': 'pr-$m',
   },
 
   'i8-hint': {
@@ -135,36 +130,26 @@ export const i8 = defineShortcuts({
   },
 
   'i8-prepend': {
-    '': 'flex gap-$s items-center',
+    '': 'flex items-center',
     'group-[[data-type=textarea]]/i8:': 'my-$m',
-    // 'group-[.i8-flat]/i8:': 'pr-$m',
-    // 'group-[.i8-filled]/i8:': 'px-$m',
-    // 'group-[.i8-round]/i8:': 'px-$m',
-    // groupped inputs paddings
-    // 'group-[.segmented:not(.i8-flat):not(:first-child)]/i8:': 'px-$m',
   },
 
   'i8-append': {
-    '': 'flex gap-$s items-center',
+    '': 'flex items-center',
     'group-[[data-type=textarea]]/i8:': 'my-$m',
-    // 'group-[.i8-flat]/i8:': 'pl-$m',
-    // 'group-[.i8-filled]/i8:': 'px-$m',
-    // 'group-[.i8-round]/i8:': 'px-$m',
-    // groupped inputs paddings
-    // 'group-[.segmented:not(.i8-flat):not(:last-child)]/i8:': 'px-$m',
   },
 
   'i8-before': {
-    '': 'h-fingertip flex items-center pr-$m current-icon-grey-500 icon-current',
+    '': 'h-fingertip flex items-center icon-current',
     'group-[[data-group-active=true]]/i8:': 'icon-current-hl',
   },
   'i8-after': {
-    '': 'h-fingertip flex items-center pl-$m current-icon-grey-500 icon-current',
+    '': 'h-fingertip flex items-center icon-current',
     'group-[[data-group-active=true]]/i8:': 'icon-current-hl',
   },
 
   'i8-icon-clickable': {
     '[&>.i8-icon-wrap]:': 'cursor-pointer',
-    '[&>.i8-icon-wrap:hover]:': 'current-icon-scope-color-500 icon-current',
+    '[&>.i8-icon-wrap:hover]:': 'current-icon-hl icon-current',
   },
 })

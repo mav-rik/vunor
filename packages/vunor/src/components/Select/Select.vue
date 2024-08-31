@@ -1,14 +1,14 @@
 <script setup lang="ts" generic="T extends TSelectItem">
-import type { TInputProps, TInputShellProps, TInputEmits } from '../Input/types'
-import { useInputShellProps, useInputProps } from '../Input/utils'
+import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/types'
+import { useInputBaseProps, useInputProps } from '../Input/utils'
 import type { TSelectBaseProps, TSelectItem } from './types'
 import VuSelectBase from './SelectBase.vue'
 import { SelectTrigger, SelectValue } from 'radix-vue'
-import VuInputShell from '../Input/InputShell.vue'
+import VuInputBase from '../Input/InputBase.vue'
 import VuInput from '../Input/Input.vue'
 import { computed } from 'vue'
 
-type Props = Omit<TInputProps & TInputShellProps, 'active'> & TSelectBaseProps<T>
+type Props = Omit<TInputProps & TInputBaseProps, 'active'> & TSelectBaseProps<T>
 
 const props = withDefaults(defineProps<Props>(), {
   sideOffset: 2,
@@ -17,7 +17,7 @@ defineEmits<TInputEmits>()
 
 const forwardProps = computed(() => {
   if (props.groupItem) {
-    return useInputShellProps()?.value
+    return useInputBaseProps()?.value
   }
   return useInputProps()?.value
 })
@@ -52,7 +52,7 @@ function onFocus(event: FocusEvent) {
   >
     <SelectTrigger as-child v-if="groupItem">
       <!-- prettier-ignore-attribute v-model -->
-      <VuInputShell
+      <VuInputBase
         class="cursor-pointer select-none"
         v-bind="forwardProps"
         :icon-append="typeof iconAppend === 'string' ? iconAppend : s.icon"
@@ -66,7 +66,7 @@ function onFocus(event: FocusEvent) {
         <template #overlay>
           <SelectValue class="absolute left-0 right-0 h-0 invisible" />
         </template>
-      </VuInputShell>
+      </VuInputBase>
     </SelectTrigger>
     <!-- prettier-ignore-attribute v-model -->
     <VuInput
@@ -83,7 +83,7 @@ function onFocus(event: FocusEvent) {
     >
       <SelectTrigger as-child>
         <!-- prettier-ignore-attribute v-model -->
-        <VuInputShell
+        <VuInputBase
           class="cursor-pointer select-none"
           v-bind="shellProps"
           :model-value="(s.displayItem?.label || s.displayItem?.value) as string"
@@ -95,7 +95,7 @@ function onFocus(event: FocusEvent) {
           <template #overlay>
             <SelectValue class="absolute left-[-1px] right-0 h-0 invisible" />
           </template>
-        </VuInputShell>
+        </VuInputBase>
       </SelectTrigger>
     </VuInput>
   </VuSelectBase>

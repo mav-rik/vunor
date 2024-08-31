@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useInputPi } from './pi'
 import type { TInputProps, TInputEmits } from './types'
-import { useInputShellProps } from './utils'
-import VuInputShell from './InputShell.vue'
+import { useInputBaseProps } from './utils'
+import VuInputBase from './InputBase.vue'
 import VuIcon from '../Icon/Icon.vue'
 import VuLabel from '../Label/Label.vue'
 
 withDefaults(defineProps<TInputProps>(), {
   groupTemplate: 'repeat(1, 1fr)',
 })
-const shellProps = useInputShellProps()
+const baseProps = useInputBaseProps()
 const modelValue = defineModel<string | number>()
 
 const { focused } = useInputPi().provide()
@@ -38,7 +38,9 @@ const emit = defineEmits<TInputEmits>()
         v-if="$slots.before || !!iconBefore"
       >
         <slot name="before">
-          <VuIcon :name="iconBefore!" @click="emit('beforeClick', $event)" />
+          <div class="i8-icon-wrap" @click="emit('beforeClick', $event)">
+            <VuIcon :name="iconBefore!" />
+          </div>
         </slot>
       </div>
 
@@ -60,8 +62,8 @@ const emit = defineEmits<TInputEmits>()
             'cursor-pointer': !!onClick,
           }"
         >
-          <slot v-bind="shellProps!">
-            <VuInputShell v-model="modelValue" v-bind="shellProps!">
+          <slot v-bind="baseProps!">
+            <VuInputBase v-model="modelValue" v-bind="baseProps!">
               <template #overlay v-if="!!$slots.overlay">
                 <slot name="overlay"></slot>
               </template>
@@ -75,7 +77,7 @@ const emit = defineEmits<TInputEmits>()
               <template #append v-if="!!$slots.append">
                 <slot name="append"></slot>
               </template>
-            </VuInputShell>
+            </VuInputBase>
           </slot>
         </div>
 
@@ -104,7 +106,9 @@ const emit = defineEmits<TInputEmits>()
         v-if="$slots.after || !!iconAfter"
       >
         <slot name="after">
-          <VuIcon :name="iconAfter!" @click="emit('afterClick', $event)" />
+          <div class="i8-icon-wrap" @click="emit('afterClick', $event)">
+            <VuIcon :name="iconAfter!" />
+          </div>
         </slot>
       </div>
     </div>

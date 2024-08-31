@@ -14,7 +14,7 @@ const dense = ref(false)
 <template>
   <VuCard
     level="h2"
-    class="with-bg relative"
+    class="relative"
     :class="{
       'fingertip-s': dense,
     }"

@@ -14,7 +14,7 @@
     "@prostojs/palitra": "^0.0.3",
     "@unocss/preset-mini": "^0.60.4",
     "defu": "^6.1.4",
-    "radix-vue": "^1.8.3",
+    "radix-vue": "^1.9.5",
     "unocss": "^0.60.4",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"
@@ -52,7 +52,6 @@
     "./Checkbox.vue": "./src/components/Checkbox/Checkbox.vue",
     "./Combobox.vue": "./src/components/Combobox/Combobox.vue",
     "./Icon.vue": "./src/components/Icon/Icon.vue",
-    "./InputShell.vue": "./src/components/Input/InputShell.vue",
     "./Label.vue": "./src/components/Label/Label.vue",
     "./LoadingIndicator.vue": "./src/components/Loading/LoadingIndicator.vue",
     "./Menu.vue": "./src/components/Menu/Menu.vue",

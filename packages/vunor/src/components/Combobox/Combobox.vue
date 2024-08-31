@@ -1,13 +1,13 @@
 <script setup lang="ts" generic="T extends TComboboxItem = TComboboxItem">
 import type { TComboboxProps, TComboboxItem } from './types'
-import type { TInputProps, TInputShellProps, TInputEmits } from '../Input/types'
+import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/types'
 import { createReusableTemplate } from '@vueuse/core'
-import { useInputShellProps, useInputProps } from '../Input/utils'
+import { useInputBaseProps, useInputProps } from '../Input/utils'
 import type { ComboboxRootProps } from 'radix-vue'
 import { watch, ref, computed, nextTick } from 'vue'
 
 import VuCheckbox from '../Checkbox/Checkbox.vue'
-import VuInputShell from '../Input/InputShell.vue'
+import VuInputBase from '../Input/InputBase.vue'
 import VuInput from '../Input/Input.vue'
 import VuIcon from '../Icon/Icon.vue'
 
@@ -31,12 +31,12 @@ import {
 
 const [DefineContentTemplate, UseContentTemplate] = createReusableTemplate()
 const [DefineRootTemplate, UseRootTemplate] = createReusableTemplate()
-const [DefineInputShellTemplate, UseInputShellTemplate] = createReusableTemplate()
+const [DefineInputBaseTemplate, UseInputBaseTemplate] = createReusableTemplate()
 const [DefineItemsTemplate, UseItemsTemplate] = createReusableTemplate()
 
 const props = withDefaults(
   defineProps<
-    Omit<TInputProps & TInputShellProps, 'active'> &
+    Omit<TInputProps & TInputBaseProps, 'active'> &
       TComboboxProps<T> & {
         align?: 'start' | 'center' | 'end'
         filterFunction?: ComboboxRootProps<any>['filterFunction']
@@ -52,12 +52,12 @@ defineEmits<TInputEmits>()
 
 const forwardProps = computed(() => {
   if (props.groupItem) {
-    return useInputShellProps()?.value
+    return useInputBaseProps()?.value
   }
   return useInputProps()?.value
 })
 const shellProps = computed(() => {
-  return useInputShellProps()?.value
+  return useInputBaseProps()?.value
 })
 
 const modelOpen = defineModel<boolean>('open')
@@ -320,9 +320,9 @@ function onKeydown(event: KeyboardEvent) {
       :multiple
       :as-child="usePopover || groupItem"
     >
-      <DefineInputShellTemplate>
+      <DefineInputBaseTemplate>
         <!-- prettier-ignore-attribute v-model -->
-        <VuInputShell
+        <VuInputBase
           @click="openPopup"
           :active="modelOpen"
           v-model="(modelValue as string)"
@@ -333,8 +333,9 @@ function onKeydown(event: KeyboardEvent) {
           :design="usePopover ? 'filled' : shellProps?.design"
           :icon-append="usePopover ? undefined : dropdownIcon"
           :icon-prepend="usePopover ? 'i--search' : shellProps?.iconPrepend"
-          :class="usePopover ? 'i8-no-border i8-no-outline' : 'i8-combobox'"
+          :class="usePopover ? 'i8-border-none i8-outline-none' : 'i8-combobox'"
           @append-click="openPopup"
+          :no-underline="usePopover"
           :data-expanded="usePopover ? undefined : modelOpen"
         >
           <template v-slot="slotProps">
@@ -357,14 +358,14 @@ function onKeydown(event: KeyboardEvent) {
           <template #append v-if="!usePopover && !!$slots.append">
             <slot name="append"></slot>
           </template>
-        </VuInputShell>
-      </DefineInputShellTemplate>
+        </VuInputBase>
+      </DefineInputBaseTemplate>
 
       <div v-if="usePopover" class="sticky top-0 z-1 bg-current/100 border-b-1px">
-        <UseInputShellTemplate ref="inputTemplate" />
+        <UseInputBaseTemplate ref="inputTemplate" />
       </div>
       <ComboboxAnchor v-else as-child>
-        <UseInputShellTemplate ref="inputTemplate" />
+        <UseInputBaseTemplate ref="inputTemplate" />
       </ComboboxAnchor>
 
       <UseContentTemplate v-if="usePopover" />
@@ -378,7 +379,7 @@ function onKeydown(event: KeyboardEvent) {
 
   <template v-if="readonly || disabled">
     <!-- prettier-ignore-attribute v-model -->
-    <VuInputShell
+    <VuInputBase
       v-if="groupItem"
       v-bind="shellProps"
       v-model="(modelValue as string)"
@@ -392,7 +393,7 @@ function onKeydown(event: KeyboardEvent) {
       <template #append v-if="!!$slots.append">
         <slot name="append"></slot>
       </template>
-    </VuInputShell>
+    </VuInputBase>
     <!-- prettier-ignore-attribute v-model -->
     <VuInput
       v-else
@@ -430,7 +431,7 @@ function onKeydown(event: KeyboardEvent) {
       </DefineItemsTemplate>
 
       <PopoverTrigger v-if="groupItem" as-child :data-expanded="popupOpen" class="i8-combobox">
-        <VuInputShell
+        <VuInputBase
           class="combobox-embedded-input"
           tabindex="0"
           @keydown="onKeydown"
@@ -454,7 +455,7 @@ function onKeydown(event: KeyboardEvent) {
           <template #append v-if="!!$slots.append">
             <slot name="append"></slot>
           </template>
-        </VuInputShell>
+        </VuInputBase>
       </PopoverTrigger>
       <VuInput
         v-else
@@ -467,7 +468,7 @@ function onKeydown(event: KeyboardEvent) {
       >
         <template v-slot="slotProps">
           <PopoverTrigger as-child>
-            <VuInputShell
+            <VuInputBase
               class="combobox-embedded-input"
               tabindex="0"
               @keydown="onKeydown"
@@ -501,7 +502,7 @@ function onKeydown(event: KeyboardEvent) {
                   </div>
                 </div>
               </template>
-            </VuInputShell>
+            </VuInputBase>
           </PopoverTrigger>
         </template>
 

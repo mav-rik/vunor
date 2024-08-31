@@ -1,4 +1,4 @@
 export { default as VuInput } from './Input.vue'
-export { default as VuInputShell } from './InputShell.vue'
+export { default as VuInputBase } from './InputBase.vue'
 export * from './types'
 export * from './utils'
