@@ -82,6 +82,7 @@ export const themeFactory = (
     ],
   }
   for (const [name, val] of Object.entries(opts.typography)) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (val?.size) {
       const ft = buildFontTheme(
         val.size || 1,
@@ -106,7 +107,7 @@ export const themeFactory = (
     theme: {
       colors: palette.colors,
       surfaces: palette.surfaces,
-      borderColor: 'red',
+      // borderColor: ,
       reverseLightLayers: opts.layers.reverseLight,
       reverseDarkLayers: opts.layers.reverseDark,
       lineHeight,

@@ -22,6 +22,11 @@ export const i8Rules: Array<Rule<Theme & TVunorTheme>> = [
           [`--i8-${target}-color`]: '0',
         }
       }
+      if (value.startsWith('scope-')) {
+        return {
+          [`--i8-${target}-color`]: `var(--${value})`,
+        }
+      }
       const col = theme.colors[value] as { DEFAULT?: string } | undefined
       if (col) {
         return {

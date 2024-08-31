@@ -454,22 +454,31 @@ function multiplySaturation<T extends object>(colors: T, m = 0.5): Record<keyof 
 }
 
 export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  const layerN = (n: number, reverse?: boolean) => (reverse ? 4 - n : n)
+
   return [
     [
       /^layer-([0-4])$/,
       ([, a], { theme }) => {
-        let d = Number(a)
-        let l = Number(a)
-        if (theme.reverseDarkLayers) {
-          d = 4 - Number(a)
-        }
-        if (theme.reverseLightLayers) {
-          l = 4 - Number(a)
-        }
+        const d = layerN(Number(a), theme.reverseDarkLayers)
+        const l = layerN(Number(a), theme.reverseLightLayers)
         return toUnoShortcut({
           '': `current-bg-scope-light-${l} current-text-scope-dark-2 current-icon-scope-dark-2 current-border-grey-500 bg-current text-current`,
           'dark:': `current-bg-scope-dark-${d} current-text-scope-light-2 current-icon-scope-light-2`,
           '[&.dark]:': `current-bg-scope-dark-${d} current-text-scope-light-2 current-icon-scope-light-2`,
+        })
+      },
+    ],
+    [
+      /^(bg|text|current-text|current-bg|current-icon|current-border|current-outline|current-caret|current-hl|i8-bg|i8-border|i8-outline)-layer-([0-4])$/,
+      ([, target, a], { theme }) => {
+        const d = layerN(Number(a), theme.reverseDarkLayers)
+        const l = layerN(Number(a), theme.reverseLightLayers)
+        return toUnoShortcut({
+          '': `${target}-scope-light-${l}`,
+          'dark:': `${target}-scope-dark-${d}`,
+          '[&.dark]:': `${target}-scope-dark-${d}`,
         })
       },
     ],

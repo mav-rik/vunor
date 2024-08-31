@@ -10,17 +10,13 @@ function c() {
   <VuCard level="h2" class="relative">
     <VuCardHeader class="mb-$s">Testing</VuCardHeader>
 
-    <div class="flex gap-$s flex-col current-icon-red w-15em current-hl-black">
-      <VuInput
-        icon-append="i--clear"
-        icon-prepend="i--search"
-        icon-before="i--config"
-        icon-after="i--layers"
-        @after-click="c"
-        @before-click="c"
-        @prepend-click="c"
-        @append-click="c"
-      />
+    <div class="flex gap-$s flex-col layer-4 w-20em p-$m rounded i8-bg-layer-0">
+      <VuInput label="test" design="filled" />
+      <VuInput label="test" design="filled" />
+      <VuInput label="test" design="filled" />
+      <VuInput label="test" design="filled" />
+
+      <div class="current-text-layer-0 text-current">text</div>
     </div>
   </VuCard>
 </template>
