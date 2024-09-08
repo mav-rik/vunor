@@ -10,6 +10,7 @@ import VuButton from './components/Button/Button.vue'
 
 import PreviewAlerts from './previews/alerts.vue'
 import PreviewButtons from './previews/buttons.vue'
+import PreviewDialog from './previews/dialog.vue'
 import PreviewOverflowButtons from './previews/overflowbuttons.vue'
 import PreviewCards from './previews/cards.vue'
 import PreviewCheckboxes from './previews/checkboxes.vue'
@@ -35,6 +36,7 @@ const menu2 = [
   { group: 'Styles', label: 'Typography', value: 'Typography', icon: 'i--typography' },
   // { group: 'Components', label: 'Alerts', value: 'Alerts', icon: 'i--alert' },
   { group: 'Components', label: 'Buttons', value: 'Buttons', icon: 'i--button' },
+  { group: 'Components', label: 'Dialog', value: 'Dialog', icon: 'i--dialog' },
   {
     group: 'Components',
     label: 'Overflow Buttons',
@@ -56,6 +58,7 @@ const menu2 = [
 const pages = {
   Alerts: PreviewAlerts,
   Buttons: PreviewButtons,
+  Dialog: PreviewDialog,
   OverflowButtons: PreviewOverflowButtons,
   Cards: PreviewCards,
   Checkboxes: PreviewCheckboxes,

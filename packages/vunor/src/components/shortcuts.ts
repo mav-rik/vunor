@@ -2,6 +2,7 @@ import { buttonShortcuts } from './Button/shortcuts'
 import { cardShortcuts } from './Card/shortcuts'
 import { checkboxShortcuts } from './Checkbox/shortcuts'
 import { comboboxShortcuts } from './Combobox/shortcuts'
+import { dialogShortcuts } from './Dialog/shortcuts'
 import { loadingShortcuts } from './Loading/shortcuts'
 import { menuShortcuts } from './Menu/shortcuts'
 import { radioShortcuts } from './RadioGroup/shortcuts'
@@ -20,4 +21,5 @@ export const shortcuts = [
   sliderShortcuts,
   loadingShortcuts,
   tabShortcuts,
+  dialogShortcuts,
 ]

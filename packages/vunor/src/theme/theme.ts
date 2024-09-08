@@ -99,6 +99,7 @@ export const themeFactory = (
   }
 
   const palette = generatePalette(opts.palette)
+
   /**
    * Putting all together
    */
@@ -123,60 +124,7 @@ export const themeFactory = (
       minWidth: spacing,
       minHeight: spacing,
       borderRadius,
-      animation: {
-        durations: {
-          'slide-down-and-fade': '100ms',
-          'slide-left-and-fade': '100ms',
-          'slide-up-and-fade': '100ms',
-          'slide-right-and-fade': '100ms',
-          'zoom-fade-in': '100ms',
-        },
-        keyframes: {
-          'slide-down-and-fade': `{
-          from { opacity: 0; transform: translateY(-6px) }
-          to { opacity: 1; transform: translateY(0) }
-        }`,
-          'slide-left-and-fade': `{
-          from { opacity: 0; transform: translateX(6px) }
-          to { opacity: 1; transform: translateX(0) }
-        }`,
-          'slide-up-and-fade': `{
-          from { opacity: 0; transform: translateY(6px) }
-          to { opacity: 1; transform: translateY(0) }
-        }`,
-          'slide-right-and-fade': `{
-          from { opacity: 0; transform: translateX(-6px) }
-          to { opacity: 1; transform: translateX(0) }
-        }`,
-          'zoom-fade-in': `{
-          from { opacity: 0; transform: scale(1.02) }
-          to { opacity: 1; transform: scale(1) }
-        }`,
-          'loading-dashoffset': `{
-          from {
-            stroke-dashoffset: 0;
-          }
-          to {
-            stroke-dashoffset: -76;
-          }
-        }`,
-          'cb-appear': `{
-          from {
-            clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-          }
-          to {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-          }
-        }`,
-        },
-      },
-
-      // animation: {
-      //   slideDownAndFade: 'slideDownAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
-      //   slideLeftAndFade: 'slideLeftAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
-      //   slideUpAndFade: 'slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
-      //   slideRightAndFade: 'slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
-      // },
+      animation: opts.animation,
     },
   }
 }

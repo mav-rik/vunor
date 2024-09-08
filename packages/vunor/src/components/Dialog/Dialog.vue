@@ -1,0 +1,161 @@
+<script setup lang="ts">
+import {
+  DialogRoot,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogTitle,
+  DialogClose,
+} from 'radix-vue'
+import type {
+  PointerDownOutsideEvent,
+  FocusOutsideEvent,
+} from '../../../node_modules/radix-vue/dist/DismissableLayer/utils'
+import VuCard from '../Card/Card.vue'
+import VuCardHeader from '../Card/CardHeader.vue'
+import VuButton from '../Button/Button.vue'
+import VuIcon from '../Icon/Icon.vue'
+import { ComponentInstance, nextTick, ref, onMounted, computed } from 'vue'
+
+type TFooterButton = { label: string; icon?: string; class?: string; closeDialog?: boolean }
+
+const open = defineModel<boolean>('open')
+const props = withDefaults(
+  defineProps<{
+    defaultOpen?: boolean
+    modal?: boolean
+    rounded?: boolean
+    title?: string
+    focusFirstSelector?: string
+    class?: string | string[] | Record<string, boolean>
+    contentClass?: string | string[] | Record<string, boolean>
+    closeButton?: boolean
+    footerButtons?: (TFooterButton | string)[]
+    level?:
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'subheading'
+      | 'body-l'
+      | 'body'
+      | 'body-s'
+      | 'callout'
+    onEscapeKeyDown?: ((event: KeyboardEvent) => any) | undefined
+    onPointerDownOutside?: ((event: PointerDownOutsideEvent) => any) | undefined
+    onFocusOutside?: ((event: FocusOutsideEvent) => any) | undefined
+    onInteractOutside?: ((event: PointerDownOutsideEvent | FocusOutsideEvent) => any) | undefined
+    onOpenAutoFocus?: ((event: Event) => any) | undefined
+    onCloseAutoFocus?: ((event: Event) => any) | undefined
+  }>(),
+  {
+    level: 'h4',
+    focusFirstSelector: 'input',
+    contentClass: 'px-$card-spacing py-$m flex-grow-1 overflow-auto',
+  }
+)
+
+const emit = defineEmits<{
+  (e: 'footerClick', button: string, event: MouseEvent): void
+}>()
+
+async function applyFocusFirstSelector() {
+  await nextTick()
+  const input = root.value?.$el?.querySelector(props.focusFirstSelector)
+  if (input) {
+    input.focus()
+  }
+  root.value?.$el
+    ?.querySelector('a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])')
+    ?.focus()
+}
+
+const _footerButtons = computed<TFooterButton[]>(() => {
+  const b = [] as TFooterButton[]
+  for (const btn of props.footerButtons || []) {
+    if (typeof btn === 'string') {
+      const closeDialog = ['close', 'cancel'].includes(btn.toLowerCase())
+      b.push({
+        label: btn,
+        class: closeDialog ? 'c8-flat' : 'c8-filled',
+        closeDialog,
+      })
+    } else {
+      b.push(btn)
+    }
+  }
+
+  return b
+})
+
+const root = ref<ComponentInstance<typeof VuCard>>()
+
+onMounted(() => {
+  applyFocusFirstSelector()
+})
+</script>
+
+<template>
+  <DialogRoot v-model:open="open" modal>
+    <DialogPortal>
+      <DialogOverlay :class="{ 'dialog-overlay': modal }" />
+      <DialogContent
+        as-child
+        :onEscapeKeyDown
+        :onPointerDownOutside
+        :onFocusOutside
+        :onInteractOutside
+        :onOpenAutoFocus
+        :onCloseAutoFocus
+      >
+        <VuCard ref="root" :level no-padding :rounded class="dialog-card" :class="props.class">
+          <DialogTitle as-child v-if="title || $slots.header || $slots.title">
+            <slot name="header">
+              <header class="dialog-header">
+                <VuCardHeader class="dialog-title">
+                  <slot name="title">
+                    {{ title }}
+                  </slot>
+                </VuCardHeader>
+                <DialogClose v-if="closeButton" as-child>
+                  <button class="dialog-close">
+                    <VuIcon name="i--close" />
+                  </button>
+                </DialogClose>
+              </header>
+            </slot>
+          </DialogTitle>
+
+          <section :class="contentClass">
+            <slot> </slot>
+          </section>
+
+          <slot name="footer" v-if="_footerButtons?.length || $slots.footer">
+            <footer class="dialog-footer">
+              <template v-for="button of _footerButtons">
+                <VuButton
+                  v-if="!button.closeDialog"
+                  :label="button.label"
+                  :icon="button.icon"
+                  :class="button.class"
+                  @click="emit('footerClick', button.label, $event)"
+                />
+
+                <DialogClose v-else as-child>
+                  <VuButton
+                    :label="button.label"
+                    :icon="button.icon"
+                    :class="button.class"
+                    @click="emit('footerClick', button.label, $event)"
+                  />
+                </DialogClose>
+              </template>
+            </footer>
+          </slot>
+        </VuCard>
+      </DialogContent>
+    </DialogPortal>
+  </DialogRoot>
+</template>

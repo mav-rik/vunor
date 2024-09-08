@@ -21,6 +21,10 @@ export interface TVunorUnoPresetOpts {
     xl?: string
   }
   baseRadius?: string
+  animation?: {
+    durations?: Record<string, string>
+    keyframes?: Record<string, string>
+  }
 }
 
 export interface TTypography {

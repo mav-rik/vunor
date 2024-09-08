@@ -18,7 +18,7 @@ export default defineConfig({
             ? svg
             : svg
                 .replace(/#fff/, 'currentColor')
-                .replace(/#000/, 'currentColor')
+                .replace(/#000/, 'cur rentColor')
                 .replace(/white/, 'currentColor')
                 .replace(/black/, 'currentColor')
         ),
