@@ -58,8 +58,8 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  (e: 'footerClick', button: string, event: MouseEvent): void
-  <T extends string>(e: `footerClick.${T}`, event: MouseEvent): void
+  (e: 'footer-click', button: string, event: MouseEvent): void
+  <T extends string>(e: `footer-click-${T}`, event: MouseEvent): void
 }>()
 
 async function applyFocusFirstSelector() {
@@ -94,8 +94,8 @@ const _footerButtons = computed<TFooterButton[]>(() => {
 const root = ref<ComponentInstance<typeof VuCard>>()
 
 function emitFooterClick(btn: string, event: MouseEvent) {
-  emit<typeof btn>(`footerClick.${btn.toLowerCase().replace(/\s*/g, '')}`, event)
-  emit(`footerClick`, btn, event)
+  emit<typeof btn>(`footer-click-${btn.toLowerCase().replace(/\s*/g, '')}`, event)
+  emit(`footer-click`, btn, event)
 }
 
 onMounted(() => {
