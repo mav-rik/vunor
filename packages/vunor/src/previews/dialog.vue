@@ -32,6 +32,7 @@ function onFooterClick(btn: string) {
           close-button
           :footer-buttons="['OK', 'Cancel']"
           @footer-click="onFooterClick"
+          @footer-click.ok="console.log('Click OK')"
         >
           <span>This is a basic dialog with footer buttons.</span>
         </VuDialog>

@@ -59,6 +59,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (e: 'footerClick', button: string, event: MouseEvent): void
+  <T extends string>(e: `footerClick.${T}`, event: MouseEvent): void
 }>()
 
 async function applyFocusFirstSelector() {
@@ -91,6 +92,11 @@ const _footerButtons = computed<TFooterButton[]>(() => {
 })
 
 const root = ref<ComponentInstance<typeof VuCard>>()
+
+function emitFooterClick(btn: string, event: MouseEvent) {
+  emit<typeof btn>(`footerClick.${btn.toLowerCase().replace(/\s*/g, '')}`, event)
+  emit(`footerClick`, btn, event)
+}
 
 onMounted(() => {
   applyFocusFirstSelector()
@@ -140,7 +146,7 @@ onMounted(() => {
                   :label="button.label"
                   :icon="button.icon"
                   :class="button.class"
-                  @click="emit('footerClick', button.label, $event)"
+                  @click="emitFooterClick(button.label, $event)"
                 />
 
                 <DialogClose v-else as-child>
@@ -148,7 +154,7 @@ onMounted(() => {
                     :label="button.label"
                     :icon="button.icon"
                     :class="button.class"
-                    @click="emit('footerClick', button.label, $event)"
+                    @click="emitFooterClick(button.label, $event)"
                   />
                 </DialogClose>
               </template>
