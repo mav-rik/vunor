@@ -6,7 +6,7 @@ const props = defineProps<{ items: T[]; maxVisible?: number }>()
 
 const hiddenCount = ref(0)
 
-const visibleItems = computed(() => {
+const visibleItems = computed<T[]>(() => {
   return props.items.slice(0, props.items.length - hiddenCount.value)
 })
 

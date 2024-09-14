@@ -67,15 +67,17 @@ const emit = defineEmits<TInputEmits>()
               <template #overlay v-if="!!$slots.overlay">
                 <slot name="overlay"></slot>
               </template>
-              <template #prepend v-if="!!$slots.prepend">
-                <slot name="prepend"></slot>
+
+              <template v-slot:prepend="slotProps" v-if="!!$slots.prepend">
+                <slot name="prepend" v-bind="slotProps"></slot>
               </template>
+
               <template v-if="!!$slots.input" v-slot="slotScope">
                 <slot name="input" v-bind="slotScope"> </slot>
               </template>
 
-              <template #append v-if="!!$slots.append">
-                <slot name="append"></slot>
+              <template v-slot:append="slotProps" v-if="!!$slots.append">
+                <slot name="append" v-bind="slotProps"></slot>
               </template>
             </VuInputBase>
           </slot>

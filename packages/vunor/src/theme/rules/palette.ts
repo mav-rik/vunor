@@ -12,7 +12,7 @@ export function colorToRgbWithOpacity(c: string) {
   return `${r} ${g} ${b}`
 }
 
-type TCssColorTarget = 'bg' | 'text' | 'fill' | 'stroke' | 'icon' | 'border'
+type TCssColorTarget = 'bg' | 'text' | 'fill' | 'stroke' | 'icon' | 'border' | 'shadow'
 function getOpacityVar(key: TCssColorTarget) {
   return {
     bg: '--un-bg-opacity',
@@ -23,6 +23,7 @@ function getOpacityVar(key: TCssColorTarget) {
     border: '--un-border-opacity',
     outline: '--un-outline-opacity',
     caret: '--un-caret-opacity',
+    shadow: '--un-shadow-opacity',
   }[key]
 }
 
@@ -36,6 +37,7 @@ function getCssTarget(key: TCssColorTarget) {
     border: 'border-color',
     outline: 'outline-color',
     caret: 'caret-color',
+    shadow: '--un-shadow-color',
   }[key]
 }
 
@@ -67,7 +69,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
     },
   ],
   [
-    /^(text|bg|icon|border|outline|caret|fill)-current(-text|-bg|-icon|-border|-outline|-caret|-hl)?(\/\d{1,3})?$/,
+    /^(text|bg|icon|border|outline|caret|fill|shadow)-current(-text|-bg|-icon|-border|-outline|-caret|-hl)?(\/\d{1,3})?$/,
     (match, { theme }) => {
       const target = match[1] as TCssColorTarget
       const source = match[2] || `-${target}`

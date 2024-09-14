@@ -23,6 +23,7 @@ export interface TVunorUnoPresetOpts {
   baseRadius?: string
   animation?: {
     durations?: Record<string, string>
+    animation?: Record<string, string>
     keyframes?: Record<string, string>
   }
 }

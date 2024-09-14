@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import VuLoadingIndicator from './LoadingIndicator.vue'
 defineProps<{
   size?: string
 }>()

@@ -1,4 +1,5 @@
 import { buttonShortcuts } from './Button/shortcuts'
+import { calendarShortcuts } from './Calendar/shortcuts'
 import { cardShortcuts } from './Card/shortcuts'
 import { checkboxShortcuts } from './Checkbox/shortcuts'
 import { comboboxShortcuts } from './Combobox/shortcuts'
@@ -22,4 +23,8 @@ export const shortcuts = [
   loadingShortcuts,
   tabShortcuts,
   dialogShortcuts,
+  calendarShortcuts,
+  {
+    'shadow-popup': 'shadow-[0_0_10px_rgba(0,0,0,0.1),0_4px_20px_rgba(0,0,0,0.15)]',
+  },
 ]

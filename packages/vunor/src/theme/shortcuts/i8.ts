@@ -5,6 +5,7 @@ export const i8 = defineShortcuts({
     '': 'h-fingertip min-w-3em flex items-center select-none relative icon-current content-box',
     'data-[type=textarea]:': 'min-h-fingertip h-auto items-start',
     'data-[active=true]:': 'icon-current-hl',
+    'focus-within:': 'icon-current-hl',
     // 'dark:': '',
     '[&.i8-flat]:': {
       '': 'border-b-width-[var(--i8-border-width,1px)]',
@@ -89,6 +90,7 @@ export const i8 = defineShortcuts({
 
   'i8-label': {
     '': 'absolute top-0 h-fingertip text-body text-grey-400 lh-fingertip transition-all transition-duration-300 truncate text-ellipsis overflow-hidden max-w-70%',
+    'group-[:focus-within]/i8:': 'h-[2em] lh-2em text-label font-size-[0.7em] text-current-hl',
     'group-[[data-active=true]]/i8:': 'h-[2em] lh-2em text-label font-size-[0.7em] text-current-hl',
     'group-[[data-has-placeholder]]/i8:': 'h-[2em] lh-2em text-label font-size-[0.7em]',
     'group-[[data-has-value]]/i8:': 'h-[2em] lh-2em text-label font-size-[0.7em]',

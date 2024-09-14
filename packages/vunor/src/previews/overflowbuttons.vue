@@ -58,7 +58,7 @@ const maxVisibleArray = ref([5])
               :class="{ [design]: true, segmented: slotProps.count < 25 }"
             >
               <template v-slot:content="{ close }">
-                <div class="scope-primary flex flex-col layer-0 shadow-xl rounded-$m">
+                <div class="scope-primary flex flex-col layer-0 shadow-popup rounded-$m">
                   <div>
                     <VuButton
                       v-for="item of slotProps.items"
