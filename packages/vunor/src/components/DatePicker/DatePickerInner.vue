@@ -12,9 +12,9 @@ import { DatePickerField, DatePickerInput } from 'radix-vue'
           @click.stop
           class="date-picker-literal"
         >
-          {{ item.value }}
+          {{ item.value === '/' ? '.' : item.value }}
         </DatePickerInput>
-        <DatePickerInput v-else @click.stop :part="item.part" class="date-picker-input">
+        <DatePickerInput v-else @click.stop :part="item.part" class="date-picker-input px-0">
           {{ item.value }}
         </DatePickerInput>
       </template>

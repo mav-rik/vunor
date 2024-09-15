@@ -1,6 +1,6 @@
 {
   "name": "vunor",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -53,6 +53,7 @@
     "./Combobox.vue": "./src/components/Combobox/Combobox.vue",
     "./Dialog.vue": "./src/components/Dialog/Dialog.vue",
     "./DatePicker.vue": "./src/components/DatePicker/DatePicker.vue",
+    "./DatePickerBase.vue": "./src/components/DatePicker/DatePickerBase.vue",
     "./DatePickerInner.vue": "./src/components/DatePicker/DatePickerInner.vue",
     "./DatePickerPopup.vue": "./src/components/DatePicker/DatePickerPopup.vue",
     "./Icon.vue": "./src/components/Icon/Icon.vue",

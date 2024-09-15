@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import VuDatePicker from '../components/DatePicker/DatePicker.vue'
+import VuDatePickerBase from '../components/DatePicker/DatePickerBase.vue'
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
 import VuCalendar from '../components/Calendar/Calendar.vue'
+import VuInput from '../components/Input/Input.vue'
 import { ref, type Ref } from 'vue'
 
 import { CalendarDate } from '@internationalized/date'
@@ -21,7 +23,7 @@ const multiDates = ref([
   <VuCard level="h2" class="relative">
     <VuCardHeader class="mb-$s">Calendar</VuCardHeader>
 
-    <div class="flex flex-col gap-$m max-w-20em">
+    <div class="flex flex-col gap-$m max-w-30em">
       <div>
         <h6>Default Calendar</h6>
         <VuCalendar v-model="d" rounded class="border" locale="en-UK" />
@@ -37,15 +39,44 @@ const multiDates = ref([
 
       <div>
         <h6>Default DatePicker</h6>
-        <VuDatePicker v-model="d" locale="en-UK" popup-rounded />
+        <VuDatePicker design="filled" v-model="d" locale="en-UK" popup-rounded />
       </div>
       <div>
         <h6>DatePicker with Label</h6>
-        <VuDatePicker v-model="d" locale="en-UK" label="Select Date" popup-rounded />
+        <VuDatePicker
+          design="filled"
+          v-model="d"
+          locale="en-UK"
+          label="Select Date"
+          popup-rounded
+        />
       </div>
       <div>
         <h6>DatePicker with Open on Click</h6>
-        <VuDatePicker v-model="d" locale="en-UK" popup-rounded open-on-click />
+        <VuDatePicker design="filled" v-model="d" locale="en-UK" popup-rounded open-on-click />
+      </div>
+      <div>
+        <h6>Segmented</h6>
+        <VuInput design="filled">
+          <VuDatePickerBase
+            design="filled"
+            v-model="d"
+            label="Date"
+            locale="en-UK"
+            popup-rounded
+            open-on-click
+            group-item
+          />
+          <VuDatePickerBase
+            design="filled"
+            v-model="d"
+            label="Date"
+            locale="en-UK"
+            popup-rounded
+            open-on-click
+            group-item
+          />
+        </VuInput>
       </div>
       <!-- <div>
         <h6>Range DatePicker</h6>
