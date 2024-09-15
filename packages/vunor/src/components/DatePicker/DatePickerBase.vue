@@ -94,6 +94,9 @@ async function onUpdate(newValue?: DateValue) {
     inputBase.value?.$el.querySelector('[tabindex="0"]')?.focus()
   }
 }
+const emit = defineEmits<{
+  (e: 'keydown-enter'): void
+}>()
 </script>
 <template>
   <DatePickerRoot
@@ -116,6 +119,7 @@ async function onUpdate(newValue?: DateValue) {
           class="i8-input flex items-center"
           v-bind="slotProps"
           @click="onClick"
+          @keydown.enter="emit('keydown-enter')"
           :style="{ cursor: props.openOnClick ? 'pointer' : 'text' }"
         />
       </template>

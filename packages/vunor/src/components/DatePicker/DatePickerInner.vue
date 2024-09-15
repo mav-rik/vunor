@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { DatePickerField, DatePickerInput } from 'radix-vue'
+const emit = defineEmits<{
+  (e: 'keydown-enter'): void
+}>()
 </script>
 
 <template>
@@ -11,6 +14,7 @@ import { DatePickerField, DatePickerInput } from 'radix-vue'
           :part="item.part"
           @click.stop
           class="date-picker-literal"
+          @keydown.enter="emit('keydown-enter')"
         >
           {{ item.value === '/' ? '.' : item.value }}
         </DatePickerInput>
