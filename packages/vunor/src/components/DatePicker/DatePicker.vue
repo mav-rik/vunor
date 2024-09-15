@@ -6,7 +6,7 @@ import VuDatePickerPopup from './DatePickerPopup.vue'
 import VuDatePickerInner from './DatePickerInner.vue'
 import { computed } from 'vue'
 import { TInputProps, useInputProps } from '../Input'
-import { DateValue } from '@internationalized/date'
+import type { DateValue } from '@internationalized/date'
 
 const props = defineProps<
   DatePickerRootProps & {

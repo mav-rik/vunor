@@ -29,10 +29,10 @@ export const calendarShortcuts = defineShortcuts({
   'date-picker-literal': 'opacity-75 cursor-text',
   'date-picker-input': {
     '': 'cursor-text rounded-md p-0.5 text-current',
-    'focus:': 'outline-none current-text-hl underline',
+    'focus:': 'outline-none current-text-hl underline animate-blinking animate-count-infinite',
     'data-[placeholder]:': {
       '': 'text-current/40',
-      ':focus:': 'current-text-hl underline text-current/100',
+      'focus:': 'text-current/100 animate-blinking animate-count-infinite',
     },
   },
 })

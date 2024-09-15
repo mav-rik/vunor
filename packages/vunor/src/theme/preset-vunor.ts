@@ -47,6 +47,7 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
       'dialog-overlay-in': '.15s',
       'dialog-in': '.15s',
       'easy-zoom-in': '.15s',
+      'blinking': '1s',
     },
     keyframes: {
       // dialog start
@@ -54,6 +55,11 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
       'dialog-in': `{from {opacity: 0;transform: translateX(-50%) translateY(-47%) scale(0.9);}to{opacity:1;transform:translateX(-50%) translateY(-50%) scale(1);}}`,
       // dialog end
       'easy-zoom-in': `{from {opacity: 0;transform: scale(0.8);}to{opacity:1;transform: scale(1);}}`,
+      //
+      'blinking': `{
+        0% { text-decoration: underline; }
+        100% { text-decoration: none; }
+      }`,
       //
       'slide-down-and-fade': `{
         from { opacity: 0; transform: translateY(-6px) }

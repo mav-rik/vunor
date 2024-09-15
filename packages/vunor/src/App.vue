@@ -27,6 +27,7 @@ import PreviewTest from './previews/test.vue'
 import PreviewTabs from './previews/tabs.vue'
 import PreviewInputs from './previews/inputs.vue'
 import PreviewPagination from './previews/pagination.vue'
+import PreviewCalendar from './previews/calendar.vue'
 
 const menu2 = [
   { group: 'Styles', label: 'Clickable (c8)', value: 'Clickable', icon: 'i--click' },
@@ -43,6 +44,7 @@ const menu2 = [
     value: 'OverflowButtons',
     icon: 'i--segm-button',
   },
+  { group: 'Components', label: 'Calendar', value: 'Calendar', icon: 'i--calendar' },
   { group: 'Components', label: 'Cards', value: 'Cards', icon: 'i--cards' },
   { group: 'Components', label: 'Checkboxes', value: 'Checkboxes', icon: 'i--checkmark' },
   { group: 'Components', label: 'Comboboxes', value: 'Comboboxes', icon: 'i--select' },
@@ -60,6 +62,7 @@ const pages = {
   Buttons: PreviewButtons,
   Dialog: PreviewDialog,
   OverflowButtons: PreviewOverflowButtons,
+  Calendar: PreviewCalendar,
   Cards: PreviewCards,
   Checkboxes: PreviewCheckboxes,
   Comboboxes: PreviewComboboxes,
