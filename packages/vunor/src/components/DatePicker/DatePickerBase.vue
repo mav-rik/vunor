@@ -4,15 +4,16 @@ import VuIcon from '../Icon/Icon.vue'
 import VuInputBase from '../Input/InputBase.vue'
 import VuDatePickerPopup from './DatePickerPopup.vue'
 import VuDatePickerInner from './DatePickerInner.vue'
-import { ComponentPublicInstance, computed } from 'vue'
-import { TInputProps, useInputProps } from '../Input'
+import { type ComponentPublicInstance, computed } from 'vue'
+import { type TInputProps, useInputProps } from '../Input'
 import type { DateValue } from '@internationalized/date'
 import { ref, watch, nextTick } from 'vue'
+import type { TVueCssClass } from '../utils/merge-class'
 
 const props = defineProps<
   DatePickerRootProps & {
     popupRounded?: boolean
-    popupClass?: string | string[] | Record<string, boolean>
+    popupClass?: TVueCssClass
     openOnClick?: boolean
   } & TInputProps
 >()

@@ -7,19 +7,17 @@ import {
   DialogTitle,
   DialogClose,
 } from 'radix-vue'
-import type {
-  PointerDownOutsideEvent,
-  FocusOutsideEvent,
-} from '../../../node_modules/radix-vue/dist/DismissableLayer/utils'
 import VuCard from '../Card/Card.vue'
 import VuCardHeader from '../Card/CardHeader.vue'
 import VuButton from '../Button/Button.vue'
 import VuIcon from '../Icon/Icon.vue'
-import { ComponentInstance, nextTick, ref, onMounted, computed } from 'vue'
+import { ComponentInstance, nextTick, ref, onMounted, computed, watch } from 'vue'
+import { mergeCssClasses, type TVueCssClass } from '../utils/merge-class'
 
 type TFooterButton = { label: string; icon?: string; class?: string; closeDialog?: boolean }
 
 const open = defineModel<boolean>('open')
+const internalOpen = ref(false)
 const props = withDefaults(
   defineProps<{
     defaultOpen?: boolean
@@ -27,8 +25,9 @@ const props = withDefaults(
     rounded?: boolean
     title?: string
     focusFirstSelector?: string
-    class?: string | string[] | Record<string, boolean>
-    contentClass?: string | string[] | Record<string, boolean>
+    class?: TVueCssClass
+    overlayClass?: TVueCssClass
+    contentClass?: TVueCssClass
     closeButton?: boolean
     footerButtons?: (TFooterButton | string)[]
     level?:
@@ -44,9 +43,9 @@ const props = withDefaults(
       | 'body-s'
       | 'callout'
     onEscapeKeyDown?: ((event: KeyboardEvent) => any) | undefined
-    onPointerDownOutside?: ((event: PointerDownOutsideEvent) => any) | undefined
-    onFocusOutside?: ((event: FocusOutsideEvent) => any) | undefined
-    onInteractOutside?: ((event: PointerDownOutsideEvent | FocusOutsideEvent) => any) | undefined
+    onPointerDownOutside?: ((event: unknown) => any) | undefined
+    onFocusOutside?: ((event: unknown) => any) | undefined
+    onInteractOutside?: ((event: unknown) => any) | undefined
     onOpenAutoFocus?: ((event: Event) => any) | undefined
     onCloseAutoFocus?: ((event: Event) => any) | undefined
   }>(),
@@ -56,7 +55,6 @@ const props = withDefaults(
     contentClass: 'px-$card-spacing py-$m flex-grow-1 overflow-auto',
   }
 )
-
 const emit = defineEmits<{
   (e: 'footer-click', button: string, event: MouseEvent): void
   <T extends string>(e: `footer-click-${T}`, event: MouseEvent): void
@@ -67,10 +65,13 @@ async function applyFocusFirstSelector() {
   const input = root.value?.$el?.querySelector(props.focusFirstSelector)
   if (input) {
     input.focus()
+  } else {
+    root.value?.$el
+      ?.querySelector(
+        'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+      )
+      ?.focus()
   }
-  root.value?.$el
-    ?.querySelector('a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])')
-    ?.focus()
 }
 
 const _footerButtons = computed<TFooterButton[]>(() => {
@@ -98,15 +99,37 @@ function emitFooterClick(btn: string, event: MouseEvent) {
   emit(`footer-click`, btn, event)
 }
 
+const closing = ref(false)
+
+watch([open], () => {
+  if (open.value) {
+    internalOpen.value = true
+    closing.value = false
+    applyFocusFirstSelector()
+  } else {
+    closing.value = true
+    setTimeout(() => {
+      internalOpen.value = false
+    }, 150)
+  }
+})
+
+function onUpdateOpen(newValue: boolean) {
+  open.value = newValue
+}
+
 onMounted(() => {
   applyFocusFirstSelector()
 })
 </script>
 
 <template>
-  <DialogRoot v-model:open="open" modal>
+  <DialogRoot :open="internalOpen" @update:open="onUpdateOpen" modal>
     <DialogPortal>
-      <DialogOverlay :class="{ 'dialog-overlay': modal }" />
+      <DialogOverlay
+        :class="mergeCssClasses({ 'dialog-overlay': modal }, overlayClass)"
+        :data-closing="closing ? '' : undefined"
+      />
       <DialogContent
         as-child
         :onEscapeKeyDown
@@ -116,7 +139,15 @@ onMounted(() => {
         :onOpenAutoFocus
         :onCloseAutoFocus
       >
-        <VuCard ref="root" :level no-padding :rounded class="dialog-card" :class="props.class">
+        <VuCard
+          ref="root"
+          :level
+          no-padding
+          :rounded
+          class="dialog-card"
+          :data-closing="closing ? '' : undefined"
+          :class="props.class"
+        >
           <DialogTitle as-child v-if="title || $slots.header || $slots.title">
             <slot name="header">
               <header class="dialog-header">

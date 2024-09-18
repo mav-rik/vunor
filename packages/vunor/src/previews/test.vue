@@ -15,6 +15,10 @@ const d = ref(date) as Ref<CalendarDate>
   <VuCard level="h2" class="relative">
     <VuCardHeader class="mb-$s">Test</VuCardHeader>
 
-    <div class="flex flex-col gap-$m max-w-20em"></div>
+    <div class="flex flex-col size-10em bg-red relative">
+      <div
+        class="absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center animate-dialog-in animate-reverse bg-blue"
+      ></div>
+    </div>
   </VuCard>
 </template>

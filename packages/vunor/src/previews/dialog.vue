@@ -3,6 +3,7 @@ import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
 import VuButton from '../components/Button/Button.vue'
 import VuDialog from '../components/Dialog/Dialog.vue'
+import VuInput from '../components/Input/Input.vue'
 import { ref } from 'vue'
 const basicDialog = ref(false)
 const scrollDialog = ref(false)
@@ -35,6 +36,7 @@ function onFooterClick(btn: string) {
           @footer-click-ok="console.log('Click OK')"
         >
           <span>This is a basic dialog with footer buttons.</span>
+          <VuInput label="Input" hint="must be autofocused" />
         </VuDialog>
       </section>
 

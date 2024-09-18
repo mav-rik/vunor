@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { DatePickerRootProps } from 'radix-vue'
+import type { DatePickerRootProps } from 'radix-vue'
 import VuInput from '../Input/Input.vue'
-import { TInputProps, useInputProps } from '../Input'
+import { type TInputProps, useInputProps } from '../Input'
 import type { DateValue } from '@internationalized/date'
 import VuDatePickerBase from './DatePickerBase.vue'
+import type { TVueCssClass } from '../utils/merge-class'
 
 const props = defineProps<
   DatePickerRootProps & {
     popupRounded?: boolean
-    popupClass?: string | string[] | Record<string, boolean>
+    popupClass?: TVueCssClass
     openOnClick?: boolean
   } & TInputProps
 >()

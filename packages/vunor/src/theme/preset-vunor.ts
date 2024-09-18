@@ -46,13 +46,17 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
       'slide-right-and-fade': '.15s',
       'dialog-overlay-in': '.15s',
       'dialog-in': '.15s',
+      'dialog-overlay-out': '.15s',
+      'dialog-out': '.15s',
       'easy-zoom-in': '.15s',
       'blinking': '1s',
     },
     keyframes: {
       // dialog start
       'dialog-overlay-in': `{from {opacity:0;}to{opacity: 1;}}`,
+      'dialog-overlay-out': `{from {opacity: 1;}to{opacity:0;}}`,
       'dialog-in': `{from {opacity: 0;transform: translateX(-50%) translateY(-47%) scale(0.9);}to{opacity:1;transform:translateX(-50%) translateY(-50%) scale(1);}}`,
+      'dialog-out': `{from {opacity:1;transform:translateX(-50%) translateY(-50%) scale(1);} to {opacity: 0;transform: translateX(-50%) translateY(-47%) scale(0.9);}}`,
       // dialog end
       'easy-zoom-in': `{from {opacity: 0;transform: scale(0.8);}to{opacity:1;transform: scale(1);}}`,
       //

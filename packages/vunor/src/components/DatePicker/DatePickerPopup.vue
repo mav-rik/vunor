@@ -17,10 +17,11 @@ import {
 } from 'radix-vue'
 import VuCard from '../Card/Card.vue'
 import VuButton from '../Button/Button.vue'
+import type { TVueCssClass } from '../utils/merge-class'
 
 const props = defineProps<{
   popupRounded?: boolean
-  popupClass?: string | string[] | Record<string, boolean>
+  popupClass?: TVueCssClass
 }>()
 </script>
 <template>

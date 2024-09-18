@@ -45,7 +45,7 @@ defineProps<{
           <VuIcon v-if="modelValue === true" name="i--checkmark" class="checkbox-icon" />
         </CheckboxIndicator>
       </CheckboxRoot>
-      <span class="checkbox-label">
+      <span v-if="label || $slots.label" class="checkbox-label">
         <slot :label="label">
           {{ label }}
         </slot>
