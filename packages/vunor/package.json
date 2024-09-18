@@ -48,6 +48,7 @@
       "types": "./dist/nuxt.d.ts"
     },
     "./AppLayout.vue": "./src/components/AppLayout/AppLayout.vue",
+    "./AppToasts.vue": "./src/components/AppToasts/AppToasts.vue",
     "./Button.vue": "./src/components/Button/Button.vue",
     "./ButtonBase.vue": "./src/components/Button/ButtonBase.vue",
     "./Calendar.vue": "./src/components/Calendar/Calendar.vue",
@@ -73,6 +74,7 @@
     "./OverflowContainer.vue": "./src/components/OverflowContainer/OverflowContainer.vue",
     "./Pagination.vue": "./src/components/Pagination/Pagination.vue",
     "./Popover.vue": "./src/components/Popover/Popover.vue",
+    "./ProgressBar.vue": "./src/components/ProgressBar/ProgressBar.vue",
     "./RadioGroup.vue": "./src/components/RadioGroup/RadioGroup.vue",
     "./Select.vue": "./src/components/Select/Select.vue",
     "./SelectBase.vue": "./src/components/Select/SelectBase.vue",
