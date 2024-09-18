@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DatePickerRootProps } from 'radix-vue'
 import VuInput from '../Input/Input.vue'
-import { type TInputProps, useInputProps } from '../Input'
+import { type TInputProps, useInputProps } from 'vunor'
 import type { DateValue } from '@internationalized/date'
 import VuDatePickerBase from './DatePickerBase.vue'
 import type { TVueCssClass } from '../utils/merge-class'

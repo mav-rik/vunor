@@ -28,6 +28,7 @@ import PreviewTabs from './previews/tabs.vue'
 import PreviewInputs from './previews/inputs.vue'
 import PreviewPagination from './previews/pagination.vue'
 import PreviewCalendar from './previews/calendar.vue'
+import VuAppToasts from './components/AppToasts/AppToasts.vue'
 
 const menu2 = [
   { group: 'Styles', label: 'Clickable (c8)', value: 'Clickable', icon: 'i--click' },
@@ -128,5 +129,6 @@ const dark = useDark()
     <component :is="current"></component>
 
     <VuDevTools />
+    <VuAppToasts swipe-direction="left" />
   </vu-app-layout>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useInputPi } from './pi'
-import type { TInputBaseProps, TInputBaseEmits } from './types'
-import { useInputDataAttrs, useHtmlInputAttrs } from './utils'
+import { useInputPi } from 'vunor'
+import type { TInputBaseProps, TInputBaseEmits } from 'vunor'
+import { useInputDataAttrs, useHtmlInputAttrs } from 'vunor'
 import { Primitive } from 'radix-vue'
 import { ref, computed } from 'vue'
 

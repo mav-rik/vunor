@@ -1,11 +1,15 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/vunor.ts", "src/utils.ts"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "vunor": ["./src/vunor"],
+      "vunor/utils": ["./src/utils"]
+    }
   }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCardPI } from './pi'
+import { useCardPI } from 'vunor'
 import { Primitive } from 'radix-vue'
 import { computed } from 'vue'
 

@@ -6,8 +6,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 
 import { getCurrentInstance, onMounted, ref, watch } from 'vue'
-
-import { useProvideInject } from '../utils'
+import { useProvideInject } from 'vunor/utils'
 
 const safeTag = (t?: string) => (t && /^h[1-6]$/.test(t) ? t : '')
 

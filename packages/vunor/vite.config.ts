@@ -52,7 +52,7 @@ export default defineConfig({
 
   build: {
     lib: {
-      entry: ['src/theme.ts', 'src/vite.ts', 'src/nuxt.ts', 'src/utils.ts'],
+      entry: ['src/theme.ts', 'src/vite.ts', 'src/nuxt.ts', 'src/utils.ts', 'src/vunor.ts'],
       fileName: (format, entry) => entry + '.mjs',
       formats: ['es'],
     },
@@ -87,6 +87,8 @@ export default defineConfig({
         'events',
         '@nuxt/kit',
         '@nuxt/schema',
+        'vunor',
+        'vunor/utils',
       ],
     },
   },

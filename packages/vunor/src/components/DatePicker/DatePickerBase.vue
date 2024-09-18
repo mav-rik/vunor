@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DatePickerRoot, DatePickerRootProps, DatePickerTrigger } from 'radix-vue'
+import { DatePickerRoot, type DatePickerRootProps, DatePickerTrigger } from 'radix-vue'
 import VuIcon from '../Icon/Icon.vue'
 import VuInputBase from '../Input/InputBase.vue'
 import VuDatePickerPopup from './DatePickerPopup.vue'

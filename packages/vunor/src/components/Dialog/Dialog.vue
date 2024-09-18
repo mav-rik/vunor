@@ -11,8 +11,8 @@ import VuCard from '../Card/Card.vue'
 import VuCardHeader from '../Card/CardHeader.vue'
 import VuButton from '../Button/Button.vue'
 import VuIcon from '../Icon/Icon.vue'
-import { ComponentInstance, nextTick, ref, onMounted, computed, watch } from 'vue'
-import { mergeCssClasses, type TVueCssClass } from '../utils/merge-class'
+import { type ComponentInstance, nextTick, ref, onMounted, computed, watch } from 'vue'
+import { mergeCssClasses, type TVueCssClass } from 'vunor/utils'
 
 type TFooterButton = { label: string; icon?: string; class?: string; closeDialog?: boolean }
 

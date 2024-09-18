@@ -10,10 +10,11 @@ export type TVueCssClass = string | string[] | Record<string, boolean | undefine
  * @param {...(TVueCssClass | undefined)[]} args - CSS classes to merge. Can be strings, arrays of strings, objects, or undefined.
  * @returns {Record<string, boolean>} An object where keys are CSS class names and values are boolean flags.
  */
-export function mergeCssClasses(...args: (TVueCssClass | undefined)[]): Record<string, boolean> {
+export function mergeCssClasses(...args: Array<TVueCssClass | undefined>): Record<string, boolean> {
   const result: Record<string, boolean> = {}
 
   for (const arg of args) {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (!arg) {
       continue
     }

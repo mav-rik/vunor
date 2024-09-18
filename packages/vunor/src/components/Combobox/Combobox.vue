@@ -1,8 +1,8 @@
 <script setup lang="ts" generic="T extends TComboboxItem = TComboboxItem">
 import type { TComboboxProps, TComboboxItem } from './types'
-import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/types'
+import type { TInputProps, TInputBaseProps, TInputEmits } from 'vunor'
 import { createReusableTemplate } from '@vueuse/core'
-import { useInputBaseProps, useInputProps } from '../Input/utils'
+import { useInputBaseProps, useInputProps } from 'vunor'
 import type { ComboboxRootProps } from 'radix-vue'
 import { watch, ref, computed, nextTick } from 'vue'
 

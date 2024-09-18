@@ -18,17 +18,15 @@ export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
       renderFontCss('h6', theme.fontSize.h6)
     }
 :root {
-   --un-default-border-color: rgba(0,0,0,10%);
-   --scope-black: 0 0 0;
-   --scope-white: 255 255 255;
-   --scope-hl: var(--scope-color-500);
-   --v-fingertip: ${theme.spacing['fingertip-m'] || '3em'};
-   --v-fingertip-half: ${unitBy(theme.spacing['fingertip-m'] || '3em', 0.5)};
+  --un-border-opacity: 0.25;
+  --un-default-border-color: rgb(150 150 150 / var(--un-border-opacity));
+  --scope-black: 0 0 0;
+  --scope-white: 255 255 255;
+  --scope-hl: var(--scope-color-500);
+  --v-fingertip: ${theme.spacing['fingertip-m'] || '3em'};
+  --v-fingertip-half: ${unitBy(theme.spacing['fingertip-m'] || '3em', 0.5)};
 }
 
-html.dark, .dark {
-   --un-default-border-color: rgba(255,255,255,10%);
-}
 
 ::-webkit-scrollbar {
     width: 10px;

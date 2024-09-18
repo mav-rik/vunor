@@ -2,8 +2,6 @@
 import type { ComputedRef } from 'vue'
 import { computed, getCurrentInstance } from 'vue'
 
-import type { TInputAttrs, TInputBaseProps, TInputProps } from './types'
-
 export function useHtmlInputAttrs(): ComputedRef<TInputAttrs> | undefined {
   const instance = getCurrentInstance()
   if (instance) {
@@ -104,4 +102,59 @@ export function useInputDataAttrs() {
     'data-type': instance?.props.type ?? 'text',
     'aria-disabled': instance?.props.disabled ? true : undefined,
   }))
+}
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface TInputAttrs {
+  'placeholder'?: string
+  'type'?: string
+  'rows'?: number
+  'required'?: boolean
+  'maxlength'?: number
+  'data-has-prepend': boolean
+  'data-has-append': boolean
+  'data-has-label': boolean
+  'disabled'?: boolean
+  'readonly'?: boolean
+  'autocomplete'?: string
+}
+
+export interface TInputBaseProps
+  extends Omit<TInputAttrs, 'data-has-prepend' | 'data-has-append' | 'data-has-label'> {
+  label?: string
+  design?: 'flat' | 'filled' | 'round'
+  iconPrepend?: string
+  iconAppend?: string
+  groupItem?: boolean
+  autoGrow?: boolean
+  active?: boolean
+  loading?: boolean
+  noUnderline?: boolean
+  onAppendClick?: (event: MouseEvent) => any
+  onPrependClick?: (event: MouseEvent) => any
+  onBlur?: (event: FocusEvent) => any
+  onFocus?: (event: FocusEvent) => any
+}
+
+export interface TInputProps extends TInputBaseProps {
+  iconBefore?: string
+  iconAfter?: string
+  error?: string | boolean
+  hint?: string
+  groupTemplate?: string
+  stackLabel?: boolean
+  onBeforeClick?: (event: MouseEvent) => any
+  onAfterClick?: (event: MouseEvent) => any
+  onClick?: (event: MouseEvent) => any
+  onBlur?: (event: FocusEvent) => any
+  onFocus?: (event: FocusEvent) => any
+}
+
+export interface TInputBaseEmits {
+  (e: 'prependClick' | 'appendClick', event: MouseEvent): void
+  (e: 'blur' | 'focus', event: FocusEvent): void
+}
+
+export interface TInputEmits extends TInputBaseEmits {
+  (e: 'beforeClick' | 'afterClick' | 'click', event: MouseEvent): void
 }

@@ -181,10 +181,10 @@ const stackLabel = ref(false)
                 <div
                   class="surface-50 border px-$xs rounded whitespace-nowrap flex items-center gap-$s opacity-90 hover:opacity-100"
                 >
-                  {{ item.label }}
+                  {{ (item as any).label }}
                   <VuIcon
                     name="i--clear"
-                    @click.stop="v1 = v1?.filter(i => i !== item.value)"
+                    @click.stop="v1 = v1?.filter(i => i !== (item as any).value)"
                     class="opacity-70 hover:opacity-100 cursor-pointer"
                   />
                 </div>

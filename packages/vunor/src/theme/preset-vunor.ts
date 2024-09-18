@@ -50,6 +50,10 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
       'dialog-out': '.15s',
       'easy-zoom-in': '.15s',
       'blinking': '1s',
+      'progress-bar': '4s',
+      'hide': '0.1s',
+      'slide-in': '0.15s',
+      'swipe-out': '0.15s',
     },
     keyframes: {
       // dialog start
@@ -58,29 +62,29 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
       'dialog-in': `{from {opacity: 0;transform: translateX(-50%) translateY(-47%) scale(0.9);}to{opacity:1;transform:translateX(-50%) translateY(-50%) scale(1);}}`,
       'dialog-out': `{from {opacity:1;transform:translateX(-50%) translateY(-50%) scale(1);} to {opacity: 0;transform: translateX(-50%) translateY(-47%) scale(0.9);}}`,
       // dialog end
-      'easy-zoom-in': `{from {opacity: 0;transform: scale(0.8);}to{opacity:1;transform: scale(1);}}`,
+      'progress-bar': `{
+        0% {background-position: -100% 0;}
+        50% {background-position: 200% 0;}
+        100% {background-position: 200% 0;}
+      }`,
+      // toasts
+      'hide': `{from { opacity: 1 } to { opacity: 0 }}`,
+      'slide-in': `{
+        from { transform: translateX(var(--toast-out-x)) }
+        to { transform: translateX(0) }
+      }`,
+      'swipe-out': `{
+        from { transform: translateX(var(--radix-toast-swipe-end-x)) }
+        to { transform: translateX(var(--toast-out-x)) }
+      }`,
       //
+      'easy-zoom-in': `{from {opacity: 0;transform: scale(0.8);}to{opacity:1;transform: scale(1);}}`,
+      // blinking used in Date Input dd.mm.yyyy
       'blinking': `{
         0% { text-decoration: underline; }
         100% { text-decoration: none; }
       }`,
-      //
-      'slide-down-and-fade': `{
-        from { opacity: 0; transform: translateY(-6px) }
-        to { opacity: 1; transform: translateY(0) }
-      }`,
-      'slide-left-and-fade': `{
-        from { opacity: 0; transform: translateX(6px) }
-        to { opacity: 1; transform: translateX(0) }
-      }`,
-      'slide-up-and-fade': `{
-        from { opacity: 0; transform: translateY(6px) }
-        to { opacity: 1; transform: translateY(0) }
-      }`,
-      'slide-right-and-fade': `{
-        from { opacity: 0; transform: translateX(-6px) }
-        to { opacity: 1; transform: translateX(0) }
-      }`,
+      // loading indicator
       'loading-dashoffset': `{
         from {
           stroke-dashoffset: 0;
@@ -89,6 +93,7 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
           stroke-dashoffset: -76;
         }
       }`,
+      // checkbox appear animation
       'cb-appear': `{
         from {
           clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
