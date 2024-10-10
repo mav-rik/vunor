@@ -10,7 +10,7 @@ import {
 } from 'radix-vue'
 import type { ToastProviderProps } from 'radix-vue'
 import { type TToastInternal, useAppToasts } from 'vunor'
-import { TVueCssClass } from 'vunor/utils'
+import { type TVueCssClass } from 'vunor/utils'
 import VuButton from '../Button/Button.vue'
 
 const { toasts, close } = useAppToasts()

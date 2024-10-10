@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends TSelectItem">
-import type { TInputProps, TInputBaseProps, TInputEmits } from 'vunor'
+import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/utils'
 import { useInputBaseProps, useInputProps } from 'vunor'
 import type { TSelectBaseProps, TSelectItem } from './types'
 import VuSelectBase from './SelectBase.vue'

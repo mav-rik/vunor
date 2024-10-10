@@ -119,6 +119,7 @@ function onUpdateOpen(newValue: boolean) {
 }
 
 onMounted(() => {
+  internalOpen.value = !!open.value
   applyFocusFirstSelector()
 })
 </script>

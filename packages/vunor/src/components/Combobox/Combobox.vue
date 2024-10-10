@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends TComboboxItem = TComboboxItem">
 import type { TComboboxProps, TComboboxItem } from './types'
-import type { TInputProps, TInputBaseProps, TInputEmits } from 'vunor'
+import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/utils'
 import { createReusableTemplate } from '@vueuse/core'
 import { useInputBaseProps, useInputProps } from 'vunor'
 import type { ComboboxRootProps } from 'radix-vue'
@@ -48,7 +48,11 @@ const props = withDefaults(
     dropdownIcon: 'i--chevron-down',
   }
 )
-defineEmits<TInputEmits>()
+const emit = defineEmits<
+  TInputEmits & {
+    (e: 'enter', event: KeyboardEvent): void
+  }
+>()
 
 const forwardProps = computed(() => {
   if (props.groupItem) {
@@ -165,6 +169,8 @@ function handleHomeEnd(event: KeyboardEvent) {
       event.key === 'Home' ? 0 : target.selectionEnd ?? target.value.length,
       event.key === 'Home' ? target.selectionStart ?? 0 : target.value.length
     )
+    event.stopPropagation()
+    event.preventDefault()
   } else {
     target.setSelectionRange(length, length)
   }
@@ -254,6 +260,9 @@ function onKeydown(event: KeyboardEvent) {
   } else if (/Key[a-zA-Z0-9]/.test(event.code)) {
     popupOpen.value = true
   }
+}
+function onEnter(event: KeyboardEvent) {
+  emit('enter', event)
 }
 </script>
 
@@ -346,7 +355,8 @@ function onKeydown(event: KeyboardEvent) {
                 v-bind="slotProps"
                 @focus="slotProps.onFocus"
                 @blur="slotProps.onBlur"
-                @keydown.home.end="handleHomeEnd"
+                @keydown.home.end.capture="handleHomeEnd"
+                @keydown.enter.capture="onEnter"
               />
             </ComboboxInput>
           </template>

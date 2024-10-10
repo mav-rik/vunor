@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ProgressIndicator, ProgressRoot, ProgressRootProps } from 'radix-vue'
+import { ProgressIndicator, ProgressRoot, type ProgressRootProps } from 'radix-vue'
 
 const props = withDefaults(defineProps<ProgressRootProps & { loading?: boolean }>(), {
   max: 100,

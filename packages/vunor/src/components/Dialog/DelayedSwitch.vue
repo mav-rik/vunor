@@ -17,6 +17,7 @@
   provided in the slot scope for conditional rendering.
 -->
 <script setup lang="ts">
+import { ref, watch } from 'vue'
 const props = withDefaults(
   defineProps<{
     value?: boolean
