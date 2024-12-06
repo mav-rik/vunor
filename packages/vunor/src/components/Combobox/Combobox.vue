@@ -40,6 +40,7 @@ const props = withDefaults(
       TComboboxProps<T> & {
         align?: 'start' | 'center' | 'end'
         filterFunction?: ComboboxRootProps<any>['filterFunction']
+        resetSearchTermOnBlur?: boolean
       }
   >(),
   {
@@ -319,6 +320,7 @@ function onEnter(event: KeyboardEvent) {
       :class="templateProps.class"
       class="relative w-full h-full"
       v-model="modelValue"
+      :reset-search-term-on-blur
       :default-open="usePopover"
       v-model:open="modelOpen"
       v-model:search-term="searchTerm"
