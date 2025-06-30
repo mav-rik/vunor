@@ -8,7 +8,7 @@ import { type ComponentPublicInstance, computed } from 'vue'
 import { type TInputProps, useInputProps } from '../Input/utils'
 import type { DateValue } from '@internationalized/date'
 import { ref, watch, nextTick } from 'vue'
-import type { TVueCssClass } from '../utils/merge-class'
+import type { TVueCssClass } from 'vunor/utils'
 
 const props = defineProps<
   DatePickerRootProps & {

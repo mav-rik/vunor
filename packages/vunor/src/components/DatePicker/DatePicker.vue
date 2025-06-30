@@ -4,7 +4,7 @@ import VuInput from '../Input/Input.vue'
 import { type TInputProps, useInputProps } from '../Input/utils'
 import type { DateValue } from '@internationalized/date'
 import VuDatePickerBase from './DatePickerBase.vue'
-import type { TVueCssClass } from '../utils/merge-class'
+import type { TVueCssClass } from 'vunor/utils'
 
 const props = defineProps<
   DatePickerRootProps & {

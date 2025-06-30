@@ -17,7 +17,7 @@ import {
 } from 'radix-vue'
 import VuCard from '../Card/Card.vue'
 import VuButton from '../Button/Button.vue'
-import type { TVueCssClass } from '../utils/merge-class'
+import type { TVueCssClass } from 'vunor/utils'
 
 const props = defineProps<{
   popupRounded?: boolean

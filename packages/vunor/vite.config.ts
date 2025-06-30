@@ -96,10 +96,10 @@ export default defineConfig({
   plugins: [
     dts({
       rollupTypes: true,
-      tsconfigPath: './tsconfig.json',
-      exclude: ['src/previews'],
+      tsconfigPath: './tsconfig.node.json',
+      exclude: ['components.d.ts', 'auto-imports.d.ts', 'env.d.ts', 'src/**/*.vue'],
       compilerOptions: { moduleResolution: 2 },
-      include: ['components.d.ts', 'auto-imports.d.ts', 'env.d.ts', 'src/**/*', 'src/**/*.vue'],
+      include: ['src/**/*'],
     }),
     UnoCSS(),
     vue(),
