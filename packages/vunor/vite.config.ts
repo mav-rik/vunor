@@ -107,6 +107,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      'vunor/utils': fileURLToPath(new URL('./src/utils', import.meta.url)),
+      'vunor': fileURLToPath(new URL('./src/vunor', import.meta.url)),
     },
   },
 })
