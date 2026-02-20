@@ -13,7 +13,7 @@ const itemsPerPage = ref([10])
 const siblingCount = ref([2])
 
 function onUpdate(page: number) {
-  console.log('update:page ' + page)
+  console.log(`update:page ${page}`)
 }
 </script>
 <template>

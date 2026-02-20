@@ -3,7 +3,7 @@ import { useId, RadioGroupRoot, RadioGroupItem, RadioGroupIndicator } from 'radi
 import { computed } from 'vue'
 
 const props = defineProps<{
-  items: (string | T)[]
+  items: Array<string | T>
   defaultValue?: string
   label?: string
   labelVisible?: boolean

@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable complexity */
-import type { Theme } from '@unocss/preset-mini'
-
-import type { TVunorPaletteOptions } from './palitra'
 import { generatePalette } from './palitra'
-import type { TTypographyNames, TVunorUnoPresetOpts } from './types'
 import { buildFontTheme } from './typography'
 import { round } from './utils/round'
+
+import type { TVunorPaletteOptions } from './palitra'
+import type { TTypographyNames, TVunorUnoPresetOpts } from './types'
+import type { Theme } from '@unocss/preset-mini'
 
 export const themeFactory = (
   opts: Required<TVunorUnoPresetOpts> & { palette?: TVunorPaletteOptions }
@@ -82,7 +80,6 @@ export const themeFactory = (
     ],
   }
   for (const [name, val] of Object.entries(opts.typography)) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (val?.size) {
       const ft = buildFontTheme(
         val.size || 1,

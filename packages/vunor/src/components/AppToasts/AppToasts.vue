@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import {
   ToastAction,
@@ -10,7 +9,7 @@ import {
 } from 'radix-vue'
 import type { ToastProviderProps } from 'radix-vue'
 import { type TToastInternal, useAppToasts } from 'vunor'
-import { type TVueCssClass } from 'vunor/utils'
+import type { TVueCssClass } from 'vunor/utils'
 import VuButton from '../Button/Button.vue'
 
 const { toasts, close } = useAppToasts()

@@ -1,7 +1,7 @@
-/* eslint-disable max-params */
-import type { TTypography, TTypographyNames } from './types'
 import { k } from './types'
 import { round } from './utils/round'
+
+import type { TTypography, TTypographyNames } from './types'
 
 function font(
   weight: number,
@@ -36,7 +36,6 @@ export const defaultTypography: Record<TTypographyNames, TTypography> = {
   'overline': /*    */ font(400, 600, k(-0.5), /*  */ k(0.5), 0.0618),
 }
 
-// eslint-disable-next-line max-params
 export function buildFontTheme(
   size: number,
   w: number,

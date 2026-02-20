@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useInputPi } from 'vunor'
+import { useInputPi, useInputDataAttrs, useHtmlInputAttrs } from 'vunor'
 import type { TInputBaseProps, TInputBaseEmits } from './utils'
-import { useInputDataAttrs, useHtmlInputAttrs } from 'vunor'
 import { Primitive } from 'radix-vue'
 import { ref, computed } from 'vue'
 
@@ -39,7 +38,7 @@ function taGrow(event: Event) {
     const ta = event.target as HTMLTextAreaElement | undefined
     if (ta) {
       ta.style.height = 'auto'
-      ta.style.height = ta.scrollHeight + 'px'
+      ta.style.height = `${ta.scrollHeight}px`
     }
   }
 }

@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable complexity */
-import type { Theme } from '@unocss/preset-mini'
-import type { Rule } from 'unocss'
+import { unitBy } from '../utils/unit-by'
 
 import type { TVunorTheme } from '../theme'
-import { unitBy } from '../utils/unit-by'
+import type { Theme } from '@unocss/preset-mini'
+import type { Rule } from 'unocss'
 
 export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
   [
@@ -44,7 +41,7 @@ export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^card-dense$/,
-    (match, { theme }) => ({
+    (_match, { theme: _theme }) => ({
       '--card-spacing': 'var(--card-spacing-dense)',
     }),
     { layer: 'utilities' },
@@ -53,7 +50,6 @@ export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
     /^card-(.*)$/,
     (match, { theme }) => {
       const name = match[1]
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (theme.fontSize[name]) {
         const props = theme.fontSize[name][1]
         return {

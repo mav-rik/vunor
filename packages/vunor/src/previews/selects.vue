@@ -45,7 +45,9 @@ function getDays(month?: string, year?: string): string[] {
   }
 
   const monthIndex = months.indexOf(month)
-  if (monthIndex === -1) throw new Error('Invalid month')
+  if (monthIndex === -1) {
+    throw new Error('Invalid month')
+  }
 
   let days: number
   const daysInMonth = (month: number, year: number): number => {
@@ -53,7 +55,7 @@ function getDays(month?: string, year?: string): string[] {
   }
 
   if (year) {
-    const yearNum = parseInt(year)
+    const yearNum = Number.parseInt(year, 10)
 
     days = daysInMonth(monthIndex, yearNum)
   } else {

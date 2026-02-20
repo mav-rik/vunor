@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import { defineShortcuts } from '../utils/define-sc'
 
 // c8 - clickable

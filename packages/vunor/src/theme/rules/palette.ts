@@ -1,14 +1,11 @@
-/* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { color } from '@prostojs/palitra'
+
+import type { TVunorTheme } from '../theme'
 import type { Theme } from '@unocss/preset-mini'
 import type { Rule } from 'unocss'
 
-import type { TVunorTheme } from '../theme'
-
 export function colorToRgbWithOpacity(c: string) {
-  const [r, g, b, a] = color(c).rgba()
+  const [r, g, b, _a] = color(c).rgba()
   return `${r} ${g} ${b}`
 }
 
@@ -63,7 +60,6 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
       if (col) {
         return {
           // @ts-expect-error
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           [`--current-${t}`]: colorToRgbWithOpacity(col.DEFAULT || col),
         }
       }
@@ -72,7 +68,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^(text|bg|icon|border|outline|caret|fill|shadow|ring)-current(-text|-bg|-icon|-border|-outline|-caret|-hl)?(\/\d{1,3})?$/,
-    (match, { theme }) => {
+    (match, { theme: _theme }) => {
       const target = match[1] as TCssColorTarget
       const source = match[2] || `-${target}`
       const opacityVar = getOpacityVar(target)
@@ -150,7 +146,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^icon-opacity-(\d{1,3})$/,
-    (match, { theme }) => {
+    (match, { theme: _theme }) => {
       const o = match[1]
       return {
         '--un-icon-opacity': Number(o) / 100,

@@ -1,12 +1,11 @@
+import fs from 'fs'
 import { fileURLToPath, URL } from 'node:url'
+import path from 'path'
 
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-
-import fs from 'fs'
-import path from 'path'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -53,7 +52,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: ['src/theme.ts', 'src/vite.ts', 'src/nuxt.ts', 'src/utils.ts', 'src/vunor.ts'],
-      fileName: (format, entry) => entry + '.mjs',
+      fileName: (_format, entry) => `${entry}.mjs`,
       formats: ['es'],
     },
     rollupOptions: {

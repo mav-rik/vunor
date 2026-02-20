@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { DatePickerRoot, type DatePickerRootProps, DatePickerTrigger } from 'radix-vue'
 import VuIcon from '../Icon/Icon.vue'
-import VuInputBase from '../Input/InputBase.vue'
+import type VuInputBase from '../Input/InputBase.vue'
 import VuDatePickerPopup from './DatePickerPopup.vue'
 import VuDatePickerInner from './DatePickerInner.vue'
-import { type ComponentPublicInstance, computed } from 'vue'
+import { type ComponentPublicInstance, computed, ref, watch, nextTick } from 'vue'
 import { type TInputProps, useInputProps } from '../Input/utils'
 import type { DateValue } from '@internationalized/date'
-import { ref, watch, nextTick } from 'vue'
 import type { TVueCssClass } from 'vunor/utils'
 
 const props = defineProps<

@@ -1,13 +1,11 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import type { TPalitraColor, TPalitraOptions, TScaleOptionsInput } from '@prostojs/palitra'
 import { color, palitra } from '@prostojs/palitra'
 import defu from 'defu'
-import type { UserShortcuts } from 'unocss'
+
+import { toUnoShortcut } from './utils/shortcut-obj'
 
 import type { TVunorTheme } from './theme'
-import { toUnoShortcut } from './utils/shortcut-obj'
+import type { TPalitraColor, TPalitraOptions, TScaleOptionsInput } from '@prostojs/palitra'
+import type { UserShortcuts } from 'unocss'
 
 export interface TVunorPaletteColor {
   /**
@@ -397,8 +395,7 @@ export function generatePalette(_opts?: TVunorPaletteOptions) {
   ).toStrings()
 
   // light bg
-  bgOptions.suffixes = ['light-0', 'light-1', 'light-2', 'light-3', 'light-4'].reverse()
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  bgOptions.suffixes = ['light-0', 'light-1', 'light-2', 'light-3', 'light-4'].toReversed()
   const depth = bgOptions.luminance!.light! - bgOptions.luminance!.dark!
   bgOptions.luminance = { dark: 1 - depth, light: 1, useMiddle: false }
   const lights = palitra(
@@ -454,7 +451,6 @@ function multiplySaturation<T extends object>(colors: T, m = 0.5): Record<keyof 
 }
 
 export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
-  // eslint-disable-next-line unicorn/consistent-function-scoping
   const layerN = (n: number, reverse?: boolean) => (reverse ? 4 - n : n)
 
   return [

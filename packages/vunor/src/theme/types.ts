@@ -6,9 +6,7 @@ export interface TVunorUnoPresetOpts {
     regular: number
     dense: number
   }
-  typography?: {
-    [name in TTypographyNames]: TTypography | undefined
-  }
+  typography?: Record<TTypographyNames, TTypography | undefined>
   layers?: {
     reverseDark?: boolean
     reverseLight?: boolean

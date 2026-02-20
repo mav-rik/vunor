@@ -1,50 +1,32 @@
 {
   "name": "vunor",
   "version": "0.0.30",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build-with-checks": "run-p type-check \"build {@}\" --",
-    "preview": "vite preview",
-    "lint": "eslint",
-    "build": "vite build",
-    "pub": "npm publish --access public",
-    "type-check": "vue-tsc --build --force"
-  },
-  "dependencies": {
-    "@internationalized/date": "^3.11.0",
-    "@prostojs/palitra": "^0.0.3",
-    "@unocss/preset-mini": "^66.6.0",
-    "defu": "^6.1.4",
-    "radix-vue": "^1.9.17",
-    "unocss": "^66.6.0",
-    "vue": "^3.5.28"
-  },
   "files": [
     "dist",
     "src/components"
   ],
+  "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/vunor.mjs",
-      "types": "./dist/vunor.d.ts"
+      "types": "./dist/vunor.d.ts",
+      "import": "./dist/vunor.mjs"
     },
     "./package.json": "./package.json",
     "./theme": {
-      "import": "./dist/theme.mjs",
-      "types": "./dist/theme.d.ts"
+      "types": "./dist/theme.d.ts",
+      "import": "./dist/theme.mjs"
     },
     "./utils": {
-      "import": "./dist/utils.mjs",
-      "types": "./dist/utils.d.ts"
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.mjs"
     },
     "./vite": {
-      "import": "./dist/vite.mjs",
-      "types": "./dist/vite.d.ts"
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.mjs"
     },
     "./nuxt": {
-      "import": "./dist/nuxt.mjs",
-      "types": "./dist/nuxt.d.ts"
+      "types": "./dist/nuxt.d.ts",
+      "import": "./dist/nuxt.mjs"
     },
     "./AppLayout.vue": "./src/components/AppLayout/AppLayout.vue",
     "./AppToasts.vue": "./src/components/AppToasts/AppToasts.vue",
@@ -80,12 +62,30 @@
     "./Slider.vue": "./src/components/Slider/Slider.vue",
     "./Tabs.vue": "./src/components/Tabs/Tabs.vue"
   },
+  "scripts": {
+    "dev": "vite",
+    "build-with-checks": "run-p type-check \"build {@}\" --",
+    "preview": "vite preview",
+    "lint": "oxlint",
+    "fmt": "oxfmt .",
+    "fmt:check": "oxfmt --check .",
+    "build": "vite build",
+    "pub": "npm publish --access public",
+    "type-check": "vue-tsc --build --force"
+  },
+  "dependencies": {
+    "@internationalized/date": "^3.11.0",
+    "@prostojs/palitra": "^0.0.3",
+    "@unocss/preset-mini": "^66.6.0",
+    "defu": "^6.1.4",
+    "radix-vue": "^1.9.17",
+    "unocss": "^66.6.0",
+    "vue": "^3.5.28"
+  },
   "devDependencies": {
     "@iconify/utils": "^3.1.0",
     "@nuxt/kit": "^3.21.1",
     "@nuxt/schema": "^3.21.1",
-    "@prostojs/palitra": "^0.0.3",
-    "@tsconfig/node22": "^22.0.5",
     "@types/node": "^22.19.11",
     "@unocss/preset-icons": "^66.6.0",
     "@unocss/preset-mini": "^66.6.0",

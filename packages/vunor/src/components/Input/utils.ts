@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import type { ComputedRef } from 'vue'
 import { computed, getCurrentInstance } from 'vue'
+
+import type { ComputedRef } from 'vue'
 
 export function useHtmlInputAttrs(): ComputedRef<TInputAttrs> | undefined {
   const instance = getCurrentInstance()
@@ -104,7 +104,6 @@ export function useInputDataAttrs() {
   }))
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface TInputAttrs {
   'placeholder'?: string
   'type'?: string
@@ -119,8 +118,10 @@ export interface TInputAttrs {
   'autocomplete'?: string
 }
 
-export interface TInputBaseProps
-  extends Omit<TInputAttrs, 'data-has-prepend' | 'data-has-append' | 'data-has-label'> {
+export interface TInputBaseProps extends Omit<
+  TInputAttrs,
+  'data-has-prepend' | 'data-has-append' | 'data-has-label'
+> {
   label?: string
   design?: 'flat' | 'filled' | 'round'
   iconPrepend?: string

@@ -1,8 +1,9 @@
 import { shortcuts as sc } from './components/shortcuts'
 import { c8 } from './theme/shortcuts/c8'
 import { i8 } from './theme/shortcuts/i8'
-import type { TVunorShortcut } from './theme/utils/define-sc'
 import { mergeVunorShortcuts, toUnoShortcut } from './theme/utils/shortcut-obj'
+
+import type { TVunorShortcut } from './theme/utils/define-sc'
 
 export type {
   TVunorLayerPaletteAdvanced,

@@ -1,5 +1,0 @@
-# >>> domelint-start
-# this block was auto-generated with do-me-lint
-dist/
-.env
-# <<< domelint-end

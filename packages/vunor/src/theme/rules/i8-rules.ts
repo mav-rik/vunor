@@ -1,10 +1,8 @@
-/* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import type { Theme } from '@unocss/preset-mini'
-import type { Rule } from 'unocss'
+import { colorToRgbWithOpacity } from './palette'
 
 import type { TVunorTheme } from '../theme'
-import { colorToRgbWithOpacity } from './palette'
+import type { Theme } from '@unocss/preset-mini'
+import type { Rule } from 'unocss'
 
 export const i8Rules: Array<Rule<Theme & TVunorTheme>> = [
   [
@@ -60,7 +58,7 @@ export const i8Rules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^i8-(border|outline|bg)-opacity-(\d{1,3})$/,
-    (match, { theme }) => {
+    (match, { theme: _theme }) => {
       const target = match[1]
       const value = match[2]
       return {
@@ -70,7 +68,7 @@ export const i8Rules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^i8-apply-(border|outline|bg)$/,
-    (match, { theme }) => {
+    (match, { theme: _theme }) => {
       const target = match[1] as 'border' | 'outline' | 'bg'
       const prop = {
         border: 'border-color',

@@ -1,8 +1,8 @@
-import type { Theme } from '@unocss/preset-mini'
-import type { Preflight } from 'unocss'
+import { unitBy } from './utils/unit-by'
 
 import type { TVunorTheme } from './theme'
-import { unitBy } from './utils/unit-by'
+import type { Theme } from '@unocss/preset-mini'
+import type { Preflight } from 'unocss'
 
 export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
   getCSS: ({ theme }) =>

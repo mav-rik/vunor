@@ -1,10 +1,13 @@
-import { PresetOrFactory, defineConfig } from 'unocss'
-import { presetVunor } from './src/theme/preset-vunor'
-import { TVunorTheme } from './src/theme/theme'
-import presetIcons from '@unocss/preset-icons'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
+import presetIcons from '@unocss/preset-icons'
+import { defineConfig } from 'unocss'
 import { presetScrollbar } from 'unocss-preset-scrollbar'
+
 import { vunorShortcuts } from './src/theme'
+import { presetVunor } from './src/theme/preset-vunor'
+
+import type { TVunorTheme } from './src/theme/theme'
+import type { PresetOrFactory } from 'unocss'
 const sc = vunorShortcuts({
   // 'c8-filled': 'current-bg-scope-color',
 })

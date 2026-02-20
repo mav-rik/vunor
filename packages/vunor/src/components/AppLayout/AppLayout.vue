@@ -43,7 +43,7 @@ const main = ref<HTMLDivElement>()
 let observer: MutationObserver
 
 const autoScroll: MutationCallback = (changes: MutationRecord[]) => {
-  if (changes.length && changes.some(c => c.type === 'childList') && mainScroll.value) {
+  if (changes.some(c => c.type === 'childList') && mainScroll.value) {
     mainScroll.value.scroll({ top: 0, left: 0 })
   }
 }

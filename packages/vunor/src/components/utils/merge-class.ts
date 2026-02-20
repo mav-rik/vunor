@@ -14,7 +14,6 @@ export function mergeCssClasses(...args: Array<TVueCssClass | undefined>): Recor
   const result: Record<string, boolean> = {}
 
   for (const arg of args) {
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (!arg) {
       continue
     }

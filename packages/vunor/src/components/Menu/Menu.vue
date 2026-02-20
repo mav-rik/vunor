@@ -15,8 +15,13 @@ import {
 import { computed } from 'vue'
 
 type AcceptableValue = string | number | boolean | Record<string, any>
-type TItem = { label: string; value: AcceptableValue; icon?: string; group?: string }
-type Props = {
+interface TItem {
+  label: string
+  value: AcceptableValue
+  icon?: string
+  group?: string
+}
+interface Props {
   items: (string | TItem)[]
   emptyText?: string
 }
@@ -43,7 +48,7 @@ const groups = computed(() => {
     grps[_item.group].push(_item)
   }
   return Object.entries(grps)
-    .sort(([a], [b]) => (a === '' ? -1 : b === '' ? 1 : 0))
+    .toSorted(([a], [b]) => (a === '' ? -1 : b === '' ? 1 : 0))
     .map(([group, items]) => ({ group, items }))
 })
 
@@ -52,8 +57,8 @@ function handleHomeEnd(event: KeyboardEvent) {
   const length = event.key === 'Home' ? 0 : target.value.length
   if (event.shiftKey) {
     target.setSelectionRange(
-      event.key === 'Home' ? 0 : target.selectionEnd ?? target.value.length,
-      event.key === 'Home' ? target.selectionStart ?? 0 : target.value.length
+      event.key === 'Home' ? 0 : (target.selectionEnd ?? target.value.length),
+      event.key === 'Home' ? (target.selectionStart ?? 0) : target.value.length
     )
   } else {
     target.setSelectionRange(length, length)

@@ -1,17 +1,18 @@
-import type { Theme } from '@unocss/preset-mini'
 import { defu } from 'defu'
-import type { Preset, PresetFactory, StaticShortcut } from 'unocss'
 import { presetWind } from 'unocss'
 
-import type { TVunorPaletteOptions } from './palitra'
 import { getPaletteShortcuts } from './palitra'
 import { fontsPreflights } from './preflights'
 import { rules } from './rules'
-import type { TVunorTheme } from './theme'
 import { themeFactory } from './theme'
-import type { TVunorUnoPresetOpts } from './types'
 import { defaultTypography } from './typography'
 import { round } from './utils/round'
+
+import type { TVunorPaletteOptions } from './palitra'
+import type { TVunorTheme } from './theme'
+import type { TVunorUnoPresetOpts } from './types'
+import type { Theme } from '@unocss/preset-mini'
+import type { Preset, PresetFactory, StaticShortcut } from 'unocss'
 
 function k(n: number, base = 1) {
   return base * Math.sqrt(1.618) ** n

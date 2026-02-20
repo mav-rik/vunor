@@ -80,7 +80,7 @@ const groups = computed(() => {
       },
     ]
   } else {
-    const r = [] as { grp: string; items: T[] }[]
+    const r = [] as Array<{ grp: string; items: T[] }>
     for (const [key, val] of Object.entries(props.items)) {
       r.push({
         grp: key,
@@ -130,7 +130,9 @@ const selectedItems = computed<T[]>(() => {
 })
 
 const selectedLabels = computed<string>(() => {
-  if (!modelValue.value && (modelValue.value as unknown as number) !== 0) return ''
+  if (!modelValue.value && (modelValue.value as unknown as number) !== 0) {
+    return ''
+  }
   return selectedItems.value
     .filter(item => !!item)
     .map(item => item.label || item.value)
@@ -167,8 +169,8 @@ function handleHomeEnd(event: KeyboardEvent) {
   const length = event.key === 'Home' ? 0 : target.value.length
   if (event.shiftKey) {
     target.setSelectionRange(
-      event.key === 'Home' ? 0 : target.selectionEnd ?? target.value.length,
-      event.key === 'Home' ? target.selectionStart ?? 0 : target.value.length
+      event.key === 'Home' ? 0 : (target.selectionEnd ?? target.value.length),
+      event.key === 'Home' ? (target.selectionStart ?? 0) : target.value.length
     )
     event.stopPropagation()
     event.preventDefault()
@@ -214,11 +216,15 @@ const popoverProps = computed(() => ({
 }))
 
 const comboboxContentProps = computed(() => {
-  if (usePopover.value) return {}
+  if (usePopover.value) {
+    return {}
+  }
   return popoverProps.value
 })
 const popoverContentProps = computed(() => {
-  if (usePopover.value) return popoverProps.value
+  if (usePopover.value) {
+    return popoverProps.value
+  }
   return {}
 })
 const popupOpen = ref(false)

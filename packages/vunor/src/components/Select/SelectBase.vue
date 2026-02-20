@@ -36,7 +36,7 @@ const groups = computed(() => {
       },
     ]
   } else {
-    const r = [] as { grp: string; items: T[] }[]
+    const r: Array<{ grp: string; items: T[] }> = []
     for (const [key, val] of Object.entries(props.items)) {
       r.push({
         grp: key,
@@ -63,7 +63,7 @@ function isItemDisabled(val: string | null | undefined) {
   return props.disabledValues?.includes(val)
 }
 
-async function openPopup() {
+function openPopup() {
   if (!props.disabled) {
     open.value = !open.value
   }

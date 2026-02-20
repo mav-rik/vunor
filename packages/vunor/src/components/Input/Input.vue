@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useInputPi } from 'vunor'
+import { useInputPi, useInputBaseProps } from 'vunor'
 import type { TInputProps, TInputEmits } from './utils'
-import { useInputBaseProps } from 'vunor'
 import VuInputBase from './InputBase.vue'
 import VuIcon from '../Icon/Icon.vue'
 import VuLabel from '../Label/Label.vue'

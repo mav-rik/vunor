@@ -7,14 +7,19 @@ import {
   DialogTitle,
   DialogClose,
 } from 'radix-vue'
-import VuCard from '../Card/Card.vue'
+import type VuCard from '../Card/Card.vue'
 import VuCardHeader from '../Card/CardHeader.vue'
 import VuButton from '../Button/Button.vue'
 import VuIcon from '../Icon/Icon.vue'
 import { type ComponentInstance, nextTick, ref, onMounted, computed, watch } from 'vue'
 import { mergeCssClasses, type TVueCssClass } from 'vunor/utils'
 
-type TFooterButton = { label: string; icon?: string; class?: string; closeDialog?: boolean }
+interface TFooterButton {
+  label: string
+  icon?: string
+  class?: string
+  closeDialog?: boolean
+}
 
 const open = defineModel<boolean>('open')
 const internalOpen = ref(false)
@@ -29,7 +34,7 @@ const props = withDefaults(
     overlayClass?: TVueCssClass
     contentClass?: TVueCssClass
     closeButton?: boolean
-    footerButtons?: (TFooterButton | string)[]
+    footerButtons?: Array<TFooterButton | string>
     level?:
       | 'h1'
       | 'h2'

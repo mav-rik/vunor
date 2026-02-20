@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type { Directive } from 'vue'
 
 function focus(event: FocusEvent) {

@@ -1,10 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-
 import { getCurrentInstance, onMounted, ref, watch } from 'vue'
 import { useProvideInject } from 'vunor/utils'
 

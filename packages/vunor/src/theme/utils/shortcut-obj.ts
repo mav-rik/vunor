@@ -1,7 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable complexity */
-/* eslint-disable sonarjs/no-nested-template-literals */
-
 import type { TVunorShortcut } from './define-sc'
 
 /**
@@ -43,11 +39,9 @@ function prepareScArray(input: string | string[] | TVunorShortcut): string[] {
 const mergeTwoVunorShortcuts = (target: TVunorShortcut, source: TVunorShortcut): TVunorShortcut => {
   const result = {} as TVunorShortcut
   const keys = new Set([...Object.keys(source), ...Object.keys(target)])
-  // eslint-disable-next-line guard-for-in
   for (const key of Array.from(keys)) {
     if (!Object.prototype.hasOwnProperty.call(source, key)) {
       result[key] = target[key]
-      // eslint-disable-next-line unicorn/no-negated-condition
     } else if (!Object.prototype.hasOwnProperty.call(target, key)) {
       result[key] = source[key]
     } else {

@@ -2,7 +2,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { VuButton } from '../Button'
 import { VuCard, VuCardHeader, VuCardInner } from '../Card'
-import { TVunorPaletteColor, TVunorPaletteOptions } from '../../theme'
+import type { TVunorPaletteColor, TVunorPaletteOptions } from '../../theme'
 import { VuInput } from '../Input'
 import VuSlider from '../Slider/Slider.vue'
 import VuTabs from '../Tabs/Tabs.vue'
@@ -57,7 +57,7 @@ const mainSlider = ref<[number, number, number]>([0, 0, 0])
 function cleanup() {
   const s = document.head.querySelector('style#vunor-palette-sandbox')
   if (s) {
-    document.head.removeChild(s)
+    s.remove()
   }
 }
 
@@ -98,47 +98,47 @@ const apply = debounce(() => {
   ]
 
   for (const c of ['primary', 'secondary', 'grey', 'neutral', 'good', 'warn', 'error']) {
-    newS.innerText += `.scope-${c} {\n`
+    newS.textContent += `.scope-${c} {\n`
     const col = result[c]!
     for (const s of suffixes) {
-      newS.innerText += `--scope-color-${s}: ${
+      newS.textContent += `--scope-color-${s}: ${
         colorToRgbWithOpacity(result[`${c}-${s}`]!) || ''
       };\n`
     }
-    newS.innerText += `--scope-color: ${colorToRgbWithOpacity(col)};\n`
-    newS.innerText += `--current-hl: ${colorToRgbWithOpacity(result[`${c}-500`]!) || ''};\n`
+    newS.textContent += `--scope-color: ${colorToRgbWithOpacity(col)};\n`
+    newS.textContent += `--current-hl: ${colorToRgbWithOpacity(result[`${c}-500`]!) || ''};\n`
 
     for (const s of ld) {
-      newS.innerText += `--scope-${s}: ${colorToRgbWithOpacity(result[`${c}-${s}`]!) || ''};\n`
+      newS.textContent += `--scope-${s}: ${colorToRgbWithOpacity(result[`${c}-${s}`]!) || ''};\n`
     }
-    newS.innerText += '}\n'
+    newS.textContent += '}\n'
 
     for (const s of suffixes) {
-      newS.innerText += `.text-${c}-${s}{color:rgb(${colorToRgbWithOpacity(
+      newS.textContent += `.text-${c}-${s}{color:rgb(${colorToRgbWithOpacity(
         result[`${c}-${s}`]!
       )} / var(--un-text-opacity))}\n`
-      newS.innerText += `.bg-${c}-${s}{background-color:rgb(${colorToRgbWithOpacity(
+      newS.textContent += `.bg-${c}-${s}{background-color:rgb(${colorToRgbWithOpacity(
         result[`${c}-${s}`]!
       )} / var(--un-bg-opacity))}\n`
-      newS.innerText += `.current-outline-${c}-${s}{--current-outline:${colorToRgbWithOpacity(
+      newS.textContent += `.current-outline-${c}-${s}{--current-outline:${colorToRgbWithOpacity(
         result[`${c}-${s}`]!
       )};}\n`
-      newS.innerText += `.current-text-${c}-${s}{--current-text:${colorToRgbWithOpacity(
+      newS.textContent += `.current-text-${c}-${s}{--current-text:${colorToRgbWithOpacity(
         result[`${c}-${s}`]!
       )};}\n`
-      newS.innerText += `.current-bg-${c}-${s}{--current-bg:${colorToRgbWithOpacity(
+      newS.textContent += `.current-bg-${c}-${s}{--current-bg:${colorToRgbWithOpacity(
         result[`${c}-${s}`]!
       )};}\n`
-      newS.innerText += `.current-border-${c}-${s}{--current-border:${colorToRgbWithOpacity(
+      newS.textContent += `.current-border-${c}-${s}{--current-border:${colorToRgbWithOpacity(
         result[`${c}-${s}`]!
       )};}\n`
-      newS.innerText += `.current-icon-${c}-${s}{--current-icon:${colorToRgbWithOpacity(
+      newS.textContent += `.current-icon-${c}-${s}{--current-icon:${colorToRgbWithOpacity(
         result[`${c}-${s}`]!
       )};}\n`
     }
   }
 
-  document.head.appendChild(newS)
+  document.head.append(newS)
 }, 100)
 
 function reset() {
@@ -148,7 +148,7 @@ function reset() {
     const s = document.head.querySelector('style[data-vite-dev-id="\\/__uno.css"]').textContent
     if (s) {
       const base64 =
-        /__vunor_palette_options\s\{background-image:\surl\(\"data:image\/gif;base64,([^"]+)/.exec(
+        /__vunor_palette_options\s\{background-image:\surl\("data:image\/gif;base64,([^"]+)/.exec(
           s
         )?.[1]
       if (base64) {
