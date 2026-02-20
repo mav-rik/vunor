@@ -5,7 +5,6 @@ import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vitest/config'
-import dts from 'vite-plugin-dts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -29,16 +28,6 @@ function findVueFiles(dir: string) {
 
 const vueFiles = findVueFiles(componentsDir).map(file => path.basename(file).slice(0, -4))
 
-// export const nestedComponents = {
-//   InputBase: 'Input',
-//   CardHeader: 'Card',
-//   CardInner: 'Card',
-//   LoadingIndicator: 'Loading',
-//   MenuItem: 'Menu',
-//   SelectBase: 'Select',
-//   ButtonBase: 'Button',
-// } as Record<string, string | undefined>
-
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
@@ -49,56 +38,7 @@ export default defineConfig({
     __vue_files__: JSON.stringify(vueFiles, null, '  '),
   },
 
-  build: {
-    lib: {
-      entry: ['src/theme.ts', 'src/vite.ts', 'src/nuxt.ts', 'src/utils.ts', 'src/vunor.ts'],
-      fileName: (_format, entry) => `${entry}.mjs`,
-      formats: ['es'],
-    },
-    rollupOptions: {
-      external: [
-        'vue',
-        'vue-router',
-        'reka-ui',
-        'path',
-        'fs',
-        '@prostojs/palitra',
-        '@unocss/preset-mini',
-        '@vueuse/core',
-        'unplugin-vue-components',
-        'defu',
-        'unocss',
-        'util',
-        'os',
-        'node:process',
-        'node:assert',
-        'node:path',
-        'node:fs/promises',
-        'node:fs',
-        'node:url',
-        'node:module',
-        'node:util',
-        'node:v8',
-        'child_process',
-        'stream',
-        'buffer',
-        'assert',
-        'events',
-        '@nuxt/kit',
-        '@nuxt/schema',
-        'vunor',
-        'vunor/utils',
-      ],
-    },
-  },
-
   plugins: [
-    dts({
-      rollupTypes: true,
-      tsconfigPath: './tsconfig.node.json',
-      exclude: ['components.d.ts', 'auto-imports.d.ts', 'env.d.ts', 'src/**/*.vue'],
-      include: ['src/**/*'],
-    }),
     UnoCSS(),
     vue(),
   ],

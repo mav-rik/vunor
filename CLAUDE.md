@@ -15,8 +15,8 @@ pnpm workspace monorepo with a single publishable package at `packages/vunor/`. 
 All commands run from `packages/vunor/`:
 
 ```bash
-pnpm dev              # Start dev server (component preview app)
-pnpm build            # Build library to dist/
+pnpm dev              # Start dev server (component preview app, Vite)
+pnpm build            # Build library to dist/ (Rolldown + rolldown-plugin-dts)
 pnpm type-check       # vue-tsc --build --force
 pnpm lint             # oxlint
 pnpm fmt              # oxfmt (format all files)
