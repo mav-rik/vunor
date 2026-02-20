@@ -47,3 +47,5 @@ export function vunorShortcuts(
   }
   return merged as Record<string, string>
 }
+
+export { componentClasses, getComponentClasses } from './theme/generated/component-classes'

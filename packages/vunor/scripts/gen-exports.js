@@ -5,8 +5,9 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const componentsDir = path.join(__dirname, 'src', 'components')
-const packageJsonPath = path.join(__dirname, 'package.json')
+const pkgRoot = path.resolve(__dirname, '..')
+const componentsDir = path.join(pkgRoot, 'src', 'components')
+const packageJsonPath = path.join(pkgRoot, 'package.json')
 
 // Function to read package.json
 async function readPackageJson() {
@@ -43,9 +44,11 @@ async function updatePackageExports() {
     packageJson.exports = packageJson.exports || {}
 
     vueFiles.forEach(file => {
-      const fileName = path.basename(file)
-      const relativePath = `./${path.relative(__dirname, file)}`
-      packageJson.exports[`./${fileName}`] = relativePath
+      const fileName = path.basename(file, '.vue')
+      packageJson.exports[`./${fileName}`] = {
+        types: `./dist/${fileName}.d.mts`,
+        import: `./dist/${fileName}.mjs`,
+      }
     })
 
     await writePackageJson(packageJson)

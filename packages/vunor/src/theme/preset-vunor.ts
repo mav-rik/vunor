@@ -12,7 +12,35 @@ import type { TVunorPaletteOptions } from './palitra'
 import type { TVunorTheme } from './theme'
 import type { TVunorUnoPresetOpts } from './types'
 import type { Theme } from '@unocss/preset-mini'
-import type { Preset, PresetFactory, StaticShortcut } from 'unocss'
+import type { Extractor, Preset, PresetFactory, StaticShortcut } from 'unocss'
+
+import { componentClasses } from './generated/component-classes'
+
+function createVunorExtractor(): Extractor {
+  return {
+    name: 'vunor-component-classes',
+    order: -1,
+    extract({ code }) {
+      const matched = new Set<string>()
+
+      // Match direct imports: import X from 'vunor/Button'
+      for (const [, name] of code.matchAll(/['"]vunor\/(\w+)['"]/g)) {
+        if (componentClasses[name]) {
+          for (const cls of componentClasses[name]) matched.add(cls)
+        }
+      }
+
+      // Match template tags: <VuButton, <VuInput, etc.
+      for (const [, name] of code.matchAll(/<Vu(\w+)/g)) {
+        if (componentClasses[name]) {
+          for (const cls of componentClasses[name]) matched.add(cls)
+        }
+      }
+
+      if (matched.size > 0) return matched
+    },
+  }
+}
 
 function k(n: number, base = 1) {
   return base * Math.sqrt(1.618) ** n
@@ -134,6 +162,7 @@ export const presetVunor: PresetFactory<
     name: 'vunor',
     theme: defu(theme.theme, wind.theme) as TVunorTheme,
     shortcuts: paletteShortcuts,
+    extractors: [createVunorExtractor()],
     layers: {
       preflights: 0,
       shortcuts: 1,

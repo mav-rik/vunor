@@ -2,8 +2,7 @@
   "name": "vunor",
   "version": "0.0.30",
   "files": [
-    "dist",
-    "src/components"
+    "dist"
   ],
   "type": "module",
   "exports": {
@@ -28,39 +27,142 @@
       "types": "./dist/nuxt.d.mts",
       "import": "./dist/nuxt.mjs"
     },
-    "./AppLayout.vue": "./src/components/AppLayout/AppLayout.vue",
-    "./AppToasts.vue": "./src/components/AppToasts/AppToasts.vue",
-    "./Button.vue": "./src/components/Button/Button.vue",
-    "./ButtonBase.vue": "./src/components/Button/ButtonBase.vue",
-    "./Calendar.vue": "./src/components/Calendar/Calendar.vue",
-    "./Card.vue": "./src/components/Card/Card.vue",
-    "./CardHeader.vue": "./src/components/Card/CardHeader.vue",
-    "./CardInner.vue": "./src/components/Card/CardInner.vue",
-    "./Checkbox.vue": "./src/components/Checkbox/Checkbox.vue",
-    "./Combobox.vue": "./src/components/Combobox/Combobox.vue",
-    "./DelayedSwitch.vue": "./src/components/Dialog/DelayedSwitch.vue",
-    "./Dialog.vue": "./src/components/Dialog/Dialog.vue",
-    "./DatePicker.vue": "./src/components/DatePicker/DatePicker.vue",
-    "./DatePickerBase.vue": "./src/components/DatePicker/DatePickerBase.vue",
-    "./DatePickerInner.vue": "./src/components/DatePicker/DatePickerInner.vue",
-    "./DatePickerPopup.vue": "./src/components/DatePicker/DatePickerPopup.vue",
-    "./Icon.vue": "./src/components/Icon/Icon.vue",
-    "./Input.vue": "./src/components/Input/Input.vue",
-    "./InputBase.vue": "./src/components/Input/InputBase.vue",
-    "./Label.vue": "./src/components/Label/Label.vue",
-    "./InnerLoading.vue": "./src/components/Loading/InnerLoading.vue",
-    "./LoadingIndicator.vue": "./src/components/Loading/LoadingIndicator.vue",
-    "./Menu.vue": "./src/components/Menu/Menu.vue",
-    "./MenuItem.vue": "./src/components/Menu/MenuItem.vue",
-    "./OverflowContainer.vue": "./src/components/OverflowContainer/OverflowContainer.vue",
-    "./Pagination.vue": "./src/components/Pagination/Pagination.vue",
-    "./Popover.vue": "./src/components/Popover/Popover.vue",
-    "./ProgressBar.vue": "./src/components/ProgressBar/ProgressBar.vue",
-    "./RadioGroup.vue": "./src/components/RadioGroup/RadioGroup.vue",
-    "./Select.vue": "./src/components/Select/Select.vue",
-    "./SelectBase.vue": "./src/components/Select/SelectBase.vue",
-    "./Slider.vue": "./src/components/Slider/Slider.vue",
-    "./Tabs.vue": "./src/components/Tabs/Tabs.vue"
+    "./AppLayout": {
+      "types": "./dist/AppLayout.d.mts",
+      "import": "./dist/AppLayout.mjs"
+    },
+    "./AppToasts": {
+      "types": "./dist/AppToasts.d.mts",
+      "import": "./dist/AppToasts.mjs"
+    },
+    "./Button": {
+      "types": "./dist/Button.d.mts",
+      "import": "./dist/Button.mjs"
+    },
+    "./ButtonBase": {
+      "types": "./dist/ButtonBase.d.mts",
+      "import": "./dist/ButtonBase.mjs"
+    },
+    "./Calendar": {
+      "types": "./dist/Calendar.d.mts",
+      "import": "./dist/Calendar.mjs"
+    },
+    "./Card": {
+      "types": "./dist/Card.d.mts",
+      "import": "./dist/Card.mjs"
+    },
+    "./CardHeader": {
+      "types": "./dist/CardHeader.d.mts",
+      "import": "./dist/CardHeader.mjs"
+    },
+    "./CardInner": {
+      "types": "./dist/CardInner.d.mts",
+      "import": "./dist/CardInner.mjs"
+    },
+    "./Checkbox": {
+      "types": "./dist/Checkbox.d.mts",
+      "import": "./dist/Checkbox.mjs"
+    },
+    "./Combobox": {
+      "types": "./dist/Combobox.d.mts",
+      "import": "./dist/Combobox.mjs"
+    },
+    "./DatePicker": {
+      "types": "./dist/DatePicker.d.mts",
+      "import": "./dist/DatePicker.mjs"
+    },
+    "./DatePickerBase": {
+      "types": "./dist/DatePickerBase.d.mts",
+      "import": "./dist/DatePickerBase.mjs"
+    },
+    "./DatePickerInner": {
+      "types": "./dist/DatePickerInner.d.mts",
+      "import": "./dist/DatePickerInner.mjs"
+    },
+    "./DatePickerPopup": {
+      "types": "./dist/DatePickerPopup.d.mts",
+      "import": "./dist/DatePickerPopup.mjs"
+    },
+    "./DevTools": {
+      "types": "./dist/DevTools.d.mts",
+      "import": "./dist/DevTools.mjs"
+    },
+    "./DelayedSwitch": {
+      "types": "./dist/DelayedSwitch.d.mts",
+      "import": "./dist/DelayedSwitch.mjs"
+    },
+    "./Dialog": {
+      "types": "./dist/Dialog.d.mts",
+      "import": "./dist/Dialog.mjs"
+    },
+    "./Icon": {
+      "types": "./dist/Icon.d.mts",
+      "import": "./dist/Icon.mjs"
+    },
+    "./Input": {
+      "types": "./dist/Input.d.mts",
+      "import": "./dist/Input.mjs"
+    },
+    "./InputBase": {
+      "types": "./dist/InputBase.d.mts",
+      "import": "./dist/InputBase.mjs"
+    },
+    "./Label": {
+      "types": "./dist/Label.d.mts",
+      "import": "./dist/Label.mjs"
+    },
+    "./InnerLoading": {
+      "types": "./dist/InnerLoading.d.mts",
+      "import": "./dist/InnerLoading.mjs"
+    },
+    "./LoadingIndicator": {
+      "types": "./dist/LoadingIndicator.d.mts",
+      "import": "./dist/LoadingIndicator.mjs"
+    },
+    "./Menu": {
+      "types": "./dist/Menu.d.mts",
+      "import": "./dist/Menu.mjs"
+    },
+    "./MenuItem": {
+      "types": "./dist/MenuItem.d.mts",
+      "import": "./dist/MenuItem.mjs"
+    },
+    "./OverflowContainer": {
+      "types": "./dist/OverflowContainer.d.mts",
+      "import": "./dist/OverflowContainer.mjs"
+    },
+    "./Pagination": {
+      "types": "./dist/Pagination.d.mts",
+      "import": "./dist/Pagination.mjs"
+    },
+    "./Popover": {
+      "types": "./dist/Popover.d.mts",
+      "import": "./dist/Popover.mjs"
+    },
+    "./ProgressBar": {
+      "types": "./dist/ProgressBar.d.mts",
+      "import": "./dist/ProgressBar.mjs"
+    },
+    "./RadioGroup": {
+      "types": "./dist/RadioGroup.d.mts",
+      "import": "./dist/RadioGroup.mjs"
+    },
+    "./Select": {
+      "types": "./dist/Select.d.mts",
+      "import": "./dist/Select.mjs"
+    },
+    "./SelectBase": {
+      "types": "./dist/SelectBase.d.mts",
+      "import": "./dist/SelectBase.mjs"
+    },
+    "./Slider": {
+      "types": "./dist/Slider.d.mts",
+      "import": "./dist/Slider.mjs"
+    },
+    "./Tabs": {
+      "types": "./dist/Tabs.d.mts",
+      "import": "./dist/Tabs.mjs"
+    }
   },
   "scripts": {
     "dev": "vite",
@@ -69,7 +171,10 @@
     "lint": "oxlint",
     "fmt": "oxfmt .",
     "fmt:check": "oxfmt --check .",
-    "build": "rolldown -c",
+    "gen-exports": "node scripts/gen-exports.js",
+    "extract-classes": "tsx scripts/extract-component-classes.ts",
+    "emit-vue-dts": "node scripts/emit-vue-dts.js",
+    "build": "pnpm gen-exports && pnpm extract-classes && rolldown -c && pnpm emit-vue-dts",
     "pub": "npm publish --access public",
     "type-check": "vue-tsc --build --force",
     "test": "vitest run && playwright test",
@@ -99,6 +204,7 @@
     "@vueuse/core": "^13.9.0",
     "rolldown": "1.0.0-rc.5",
     "rolldown-plugin-dts": "^0.22.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "unocss": "^66.6.0",
     "unocss-preset-scrollbar": "^3.2.0",
@@ -107,6 +213,6 @@
     "vite": "^7.3.1",
     "vitest": "^3.2.4",
     "vue-router": "^4.6.4",
-    "vue-tsc": "^2.2.12"
+    "vue-tsc": "^3.2.4"
   }
 }

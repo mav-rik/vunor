@@ -26,7 +26,7 @@ const index: NuxtModule<any> = defineNuxtModule({
         addComponent({
           name: `Vu${component}`,
           export: 'default',
-          filePath: `vunor/${component}.vue`,
+          filePath: `vunor/${component}`,
         })
       }
     }

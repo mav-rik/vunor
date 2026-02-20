@@ -6,7 +6,7 @@ export const VunorVueResolver: ComponentResolver = componentName => {
     return {
       name: 'default',
       as: componentName,
-      from: `vunor/${name}.vue`,
+      from: `vunor/${name}`,
     }
   }
 }
