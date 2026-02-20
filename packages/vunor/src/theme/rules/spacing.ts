@@ -9,7 +9,7 @@ export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
     // special text margin (vertical) that compensates
     // the line height
     /^text-m([bty])?-(.*)$/,
-    (match, { theme }) => {
+    (match: RegExpMatchArray, { theme }: { theme: Theme & TVunorTheme }) => {
       const dir = match[1] as 'y' | 't' | 'b' | undefined
       const size = match[2]
       const d = dir
@@ -41,14 +41,14 @@ export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^card-dense$/,
-    (_match, { theme: _theme }) => ({
+    (_match: RegExpMatchArray, { theme: _theme }: { theme: Theme & TVunorTheme }) => ({
       '--card-spacing': 'var(--card-spacing-dense)',
     }),
     { layer: 'utilities' },
   ],
   [
     /^card-(.*)$/,
-    (match, { theme }) => {
+    (match: RegExpMatchArray, { theme }: { theme: Theme & TVunorTheme }) => {
       const name = match[1]
       if (theme.fontSize[name]) {
         const props = theme.fontSize[name][1]
@@ -74,7 +74,7 @@ export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^fingertip-(.*)/,
-    (match, { theme }) => {
+    (match: RegExpMatchArray, { theme }: { theme: Theme & TVunorTheme }) => {
       const name = match[1]
       if (name.startsWith('[') && name.endsWith(']')) {
         return {

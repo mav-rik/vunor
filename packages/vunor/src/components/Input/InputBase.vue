@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useInputPi, useInputDataAttrs, useHtmlInputAttrs } from 'vunor'
 import type { TInputBaseProps, TInputBaseEmits } from './utils'
-import { Primitive } from 'radix-vue'
+import { Primitive } from 'reka-ui'
 import { ref, computed } from 'vue'
 
 import VuLoadingIndicator from '../Loading/LoadingIndicator.vue'

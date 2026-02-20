@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DatePickerRoot, type DatePickerRootProps, DatePickerTrigger } from 'radix-vue'
+import { DatePickerRoot, type DatePickerRootProps, DatePickerTrigger } from 'reka-ui'
 import VuIcon from '../Icon/Icon.vue'
 import type VuInputBase from '../Input/InputBase.vue'
 import VuDatePickerPopup from './DatePickerPopup.vue'
@@ -74,7 +74,7 @@ const inputBase = ref<ComponentPublicInstance<typeof VuInputBase> | null>(null)
 
 /*
  * This watch is used to force an update of the datepicker input,
- * because in the current version of radix-vue there's an issue
+ * because in the current version of reka-ui there's an issue
  * where the date is not updated when the model is set to undefined.
  */
 watch([modelValue], () => {

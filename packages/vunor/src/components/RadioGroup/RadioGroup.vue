@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends { value: string; label: string; disabled?: boolean }">
-import { useId, RadioGroupRoot, RadioGroupItem, RadioGroupIndicator } from 'radix-vue'
+import { useId, RadioGroupRoot, RadioGroupItem, RadioGroupIndicator } from 'reka-ui'
 import { computed } from 'vue'
 
 const props = defineProps<{

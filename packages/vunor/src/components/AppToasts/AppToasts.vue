@@ -6,8 +6,8 @@ import {
   ToastRoot,
   ToastTitle,
   ToastViewport,
-} from 'radix-vue'
-import type { ToastProviderProps } from 'radix-vue'
+} from 'reka-ui'
+import type { ToastProviderProps } from 'reka-ui'
 import { type TToastInternal, useAppToasts } from 'vunor'
 import type { TVueCssClass } from 'vunor/utils'
 import VuButton from '../Button/Button.vue'

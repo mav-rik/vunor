@@ -10,7 +10,7 @@ import {
   ComboboxGroup,
   ComboboxLabel,
   ComboboxItem,
-} from 'radix-vue'
+} from 'reka-ui'
 
 import { computed } from 'vue'
 

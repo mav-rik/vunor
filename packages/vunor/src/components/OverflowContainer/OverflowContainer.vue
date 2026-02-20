@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T">
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import { Primitive } from 'radix-vue'
+import { Primitive } from 'reka-ui'
 
 const props = defineProps<{ items: T[]; maxVisible?: number }>()
 

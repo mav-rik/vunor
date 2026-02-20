@@ -12,11 +12,11 @@ import {
   CalendarHeadCell,
   CalendarCell,
   CalendarCellTrigger,
-} from 'radix-vue'
+} from 'reka-ui'
 import VuCard from '../Card/Card.vue'
 import VuButton from '../Button/Button.vue'
 import type { DateValue } from '@internationalized/date'
-import type { CalendarRootProps } from 'radix-vue'
+import type { CalendarRootProps } from 'reka-ui'
 
 const props = defineProps<CalendarRootProps>()
 const modelValue = defineModel<DateValue | DateValue[]>()

@@ -71,14 +71,16 @@
     "fmt:check": "oxfmt --check .",
     "build": "vite build",
     "pub": "npm publish --access public",
-    "type-check": "vue-tsc --build --force"
+    "type-check": "vue-tsc --build --force",
+    "test": "vitest run && playwright test",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@internationalized/date": "^3.11.0",
     "@prostojs/palitra": "^0.0.3",
     "@unocss/preset-mini": "^66.6.0",
     "defu": "^6.1.4",
-    "radix-vue": "^1.9.17",
+    "reka-ui": "^2.0.0",
     "unocss": "^66.6.0",
     "vue": "^3.5.28"
   },
@@ -86,6 +88,7 @@
     "@iconify/utils": "^3.1.0",
     "@nuxt/kit": "^3.21.1",
     "@nuxt/schema": "^3.21.1",
+    "@playwright/test": "^1.58.2",
     "@types/node": "^22.19.11",
     "@unocss/preset-icons": "^66.6.0",
     "@unocss/preset-mini": "^66.6.0",

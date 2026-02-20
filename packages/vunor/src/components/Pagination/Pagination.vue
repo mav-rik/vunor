@@ -8,7 +8,7 @@ import {
   PaginationEllipsis,
   PaginationNext,
   PaginationLast,
-} from 'radix-vue'
+} from 'reka-ui'
 
 import VuIcon from '../Icon/Icon.vue'
 
@@ -29,7 +29,7 @@ const emit = defineEmits<{
 <template>
   <PaginationRoot
     :total
-    :itemsPerPage
+    :items-per-page="itemsPerPage ?? 10"
     :sibling-count
     :show-edges
     :default-page

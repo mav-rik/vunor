@@ -75,7 +75,7 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
         to { transform: translateX(0) }
       }`,
       'swipe-out': `{
-        from { transform: translateX(var(--radix-toast-swipe-end-x)) }
+        from { transform: translateX(var(--reka-toast-swipe-end-x)) }
         to { transform: translateX(var(--toast-out-x)) }
       }`,
       //

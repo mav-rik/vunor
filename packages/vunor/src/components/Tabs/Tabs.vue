@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends { icon?: string; label?: string; value: string }">
-import { TabsRoot, TabsList, TabsIndicator, TabsTrigger, TabsContent } from 'radix-vue'
+import { TabsRoot, TabsList, TabsIndicator, TabsTrigger, TabsContent } from 'reka-ui'
 
 withDefaults(
   defineProps<{

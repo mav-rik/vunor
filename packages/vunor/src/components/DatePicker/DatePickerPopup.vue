@@ -14,7 +14,7 @@ import {
   DatePickerGridBody,
   DatePickerCell,
   DatePickerCellTrigger,
-} from 'radix-vue'
+} from 'reka-ui'
 import VuCard from '../Card/Card.vue'
 import VuButton from '../Button/Button.vue'
 import type { TVueCssClass } from 'vunor/utils'

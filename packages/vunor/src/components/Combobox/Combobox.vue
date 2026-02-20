@@ -3,7 +3,6 @@ import type { TComboboxProps, TComboboxItem } from './types'
 import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/utils'
 import { createReusableTemplate } from '@vueuse/core'
 import { useInputBaseProps, useInputProps } from 'vunor'
-import type { ComboboxRootProps } from 'radix-vue'
 import { watch, ref, computed, nextTick } from 'vue'
 
 import VuCheckbox from '../Checkbox/Checkbox.vue'
@@ -27,7 +26,7 @@ import {
   PopoverTrigger,
   PopoverPortal,
   PopoverContent,
-} from 'radix-vue'
+} from 'reka-ui'
 
 const [DefineContentTemplate, UseContentTemplate] = createReusableTemplate()
 const [DefineRootTemplate, UseRootTemplate] = createReusableTemplate()
@@ -39,7 +38,6 @@ const props = withDefaults(
     Omit<TInputProps & TInputBaseProps, 'active'> &
       TComboboxProps<T> & {
         align?: 'start' | 'center' | 'end'
-        filterFunction?: ComboboxRootProps<any>['filterFunction']
         resetSearchTermOnBlur?: boolean
       }
   >(),
@@ -206,7 +204,7 @@ const popoverProps = computed(() => ({
   },
   dataDesign: props.popupRound ? 'round' : undefined,
   style: {
-    'min-width': 'var(--radix-popper-anchor-width)',
+    'min-width': 'var(--reka-popper-anchor-width)',
   },
   side: props.side,
   sideOffset: _sideOffset.value,
@@ -329,9 +327,6 @@ function onEnter(event: KeyboardEvent) {
       :reset-search-term-on-blur
       :default-open="usePopover"
       v-model:open="modelOpen"
-      v-model:search-term="searchTerm"
-      :filter-function="filterFunction"
-      :display-value="() => displayValue"
       :disabled
       :required
       :multiple
@@ -356,7 +351,7 @@ function onEnter(event: KeyboardEvent) {
           :data-expanded="usePopover ? undefined : modelOpen"
         >
           <template v-slot="slotProps">
-            <ComboboxInput as-child class="i8-input">
+            <ComboboxInput as-child v-model="searchTerm" :display-value="() => displayValue" class="i8-input">
               <input
                 class="i8-input"
                 ref="input"
@@ -537,7 +532,7 @@ function onEnter(event: KeyboardEvent) {
           v-bind="popoverContentProps"
           avoid-collisions
           :style="{
-            'max-height': 'var(--radix-popper-available-height)',
+            'max-height': 'var(--reka-popper-available-height)',
             'overflow': 'auto',
           }"
         >

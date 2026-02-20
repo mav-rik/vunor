@@ -4,7 +4,7 @@ import path from 'path'
 
 import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import dts from 'vite-plugin-dts'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -59,7 +59,7 @@ export default defineConfig({
       external: [
         'vue',
         'vue-router',
-        'radix-vue',
+        'reka-ui',
         'path',
         'fs',
         '@prostojs/palitra',
@@ -97,12 +97,15 @@ export default defineConfig({
       rollupTypes: true,
       tsconfigPath: './tsconfig.node.json',
       exclude: ['components.d.ts', 'auto-imports.d.ts', 'env.d.ts', 'src/**/*.vue'],
-      compilerOptions: { moduleResolution: 2 },
       include: ['src/**/*'],
     }),
     UnoCSS(),
     vue(),
   ],
+  test: {
+    exclude: ['e2e/**', 'node_modules/**'],
+  },
+
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

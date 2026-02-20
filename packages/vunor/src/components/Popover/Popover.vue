@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { PopoverContentProps } from 'radix-vue'
-import { PopoverRoot, PopoverTrigger, PopoverPortal, PopoverContent } from 'radix-vue'
+import type { PopoverContentProps } from 'reka-ui'
+import { PopoverRoot, PopoverTrigger, PopoverPortal, PopoverContent } from 'reka-ui'
 import VuButton from '../Button/Button.vue'
 import { computed } from 'vue'
 
@@ -47,7 +47,7 @@ function close() {
       <PopoverContent
         v-bind="popupContentProps"
         :style="{
-          'max-height': 'var(--radix-popper-available-height)',
+          'max-height': 'var(--reka-popper-available-height)',
           'overflow': 'auto',
         }"
         as-child

@@ -17,7 +17,7 @@ export const toastShortcuts = defineShortcuts({
     ].join(' '),
     'data-[state=open]:': 'animate-slide-in',
     'data-[state=closed]:': 'animate-hide',
-    'data-[swipe=move]:': 'translate-x-[var(--radix-toast-swipe-move-x)]',
+    'data-[swipe=move]:': 'translate-x-[var(--reka-toast-swipe-move-x)]',
     'data-[swipe=end]:': 'animate-swipe-out',
     'data-[swipe=cancel]:': 'translate-x-0 transition-[transform_200ms_ease-out]',
     'data-[swipe=left]:': '[--toast-out-x:calc(-100%-var(--viewport-padding))]',

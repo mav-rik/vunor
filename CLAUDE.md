@@ -87,7 +87,7 @@ Each component folder with a `pi.ts` file defines its own PI composable.
 - Source files omit prefix: `Button.vue`, `Input.vue`
 - `VunorVueResolver` (from `vunor/vite`) maps `VuButton` → `import from 'vunor/Button.vue'`
 - Nuxt module (`vunor/nuxt`) auto-registers all `Vu*` components
-- Radix Vue `<Primitive>` is used as the polymorphic base element in components
+- Reka UI `<Primitive>` is used as the polymorphic base element in components
 
 ### Typography & Sizing
 
@@ -103,6 +103,49 @@ Five JS entry points plus individual `.vue` component files:
 - `vunor/utils` — `mergeCssClasses`, `useProvideInject`
 - `vunor/vite` — `VunorVueResolver`
 - `vunor/nuxt` — Nuxt 3 module
+
+## E2E Testing (Playwright)
+
+E2E tests live in `packages/vunor/e2e/` and run against the dev preview app.
+
+```bash
+pnpm test:e2e                              # Run all e2e tests
+pnpm exec playwright test e2e/input.spec.ts  # Run a single file
+pnpm exec playwright test --ui              # Interactive debug mode
+```
+
+Config: `packages/vunor/playwright.config.ts` — Chromium only, auto-starts dev server on port 5179.
+
+### Dev App Navigation
+
+The preview app (`src/App.vue`) has **no URL routes**. Views are switched by clicking sidebar menu items (a `VuMenu` backed by Reka UI `ComboboxRoot`). The `navigateTo()` helper in `e2e/utils.ts` handles this:
+
+```ts
+await navigateTo(page, 'Inputs') // clicks the sidebar menu item
+```
+
+### Reka UI Gotchas for Selectors
+
+1. **Sidebar is always-open ComboboxRoot** — it renders its own `[role="listbox"]` with `[role="option"]` items. Never use unscoped `page.getByRole('option')` or `page.locator('[role="listbox"]')` — they'll match sidebar elements too. Scope to `main` for triggers: `page.locator('main [role="combobox"]')`.
+
+2. **Select popups portal to body** — Reka UI `SelectPortal` teleports the dropdown to `<body>`. Use `page.locator('.select-content')` to target the popup (this CSS class is applied directly to `SelectContent`).
+
+3. **Hidden native `<select>` elements** — Reka UI renders invisible native `<select>/<option>` for form submission alongside custom UI. `getByRole('option')` and `[role="option"]` match BOTH native and custom options. Always scope popup options to `div[role="option"]` within the popup container:
+   ```ts
+   const popup = page.locator('.select-content')
+   popup.locator('div[role="option"]', { hasText: 'Apple' })
+   ```
+
+4. **ARIA attributes, not HTML attributes** — Reka UI uses `aria-disabled="true"` (not `disabled`), `aria-required="true"` (not `required`), and `data-state="checked"|"unchecked"|"indeterminate"` for state.
+
+5. **Port collisions** — The dev server defaults to port 5173 which may conflict with other Vite apps. Playwright config uses port 5179 with `reuseExistingServer: !process.env.CI`.
+
+### Component CSS Classes for Selectors
+
+- **Input**: `.i8` (wrapper), `input.i8-input` / `textarea.i8-textarea`, `label.i8-label`, `[aria-disabled="true"]`, `[data-has-value]`
+- **Checkbox**: `label.checkbox-root`, `button.checkbox`, `.checkbox-indicator`, `[data-state="checked"|"unchecked"|"indeterminate"]`
+- **RadioGroup**: `.rb-root`, `button.rb-item`, `label.rb-item-label`, `.rb-item-indicator`, `[data-state]`, `[data-disabled]`
+- **Select**: `[role="combobox"]` (trigger), `.select-content` (popup), `.select-item` (items)
 
 ## Code Style
 

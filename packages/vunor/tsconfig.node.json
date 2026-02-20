@@ -7,9 +7,15 @@
     "src/vite.ts",
     "src/nuxt.ts",
     "src/theme.ts",
+    "src/utils.ts",
+    "src/vunor.ts",
     "src/theme/**/*.ts",
+    "src/components/utils/**/*.ts",
     "src/components/**/shortcuts.ts",
-    "src/components/shortcuts.ts"
+    "src/components/shortcuts.ts",
+    "src/components/**/pi.ts",
+    "src/components/AppToasts/app-toasts.ts",
+    "src/components/Input/utils.ts"
   ],
   "compilerOptions": {
     "composite": true,

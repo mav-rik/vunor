@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CheckboxRoot, CheckboxIndicator } from 'radix-vue'
+import { CheckboxRoot, CheckboxIndicator } from 'reka-ui'
 import VuIcon from '../Icon/Icon.vue'
 
 const modelValue = defineModel<boolean | undefined | 'indeterminate'>()
@@ -35,7 +35,7 @@ defineProps<{
         :disabled
         :required="true"
         :aria-required="required"
-        v-model:checked="modelValue"
+        v-model="modelValue"
         :tabindex="readonly ? '-1' : undefined"
         class="checkbox"
         :aria-readonly="readonly || undefined"

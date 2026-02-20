@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Primitive } from 'radix-vue'
+import { Primitive } from 'reka-ui'
 </script>
 <template>
   <Primitive class="p-$card-spacing">

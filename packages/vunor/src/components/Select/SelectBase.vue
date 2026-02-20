@@ -14,7 +14,7 @@ import {
   SelectItem,
   SelectItemText,
   SelectValue,
-} from 'radix-vue'
+} from 'reka-ui'
 
 import VuIcon from '../Icon/Icon.vue'
 
@@ -104,8 +104,8 @@ function getSearchValue(item: T) {
       <SelectContent
         class="select-content group"
         :style="{
-          'min-width': 'var(--radix-popper-anchor-width)',
-          'max-height': popupPosition === 'popper' ? 'var(--radix-popper-available-height)' : '',
+          'min-width': 'var(--reka-popper-anchor-width)',
+          'max-height': popupPosition === 'popper' ? 'var(--reka-popper-available-height)' : '',
           'overflow': popupPosition === 'popper' ? 'auto' : '',
         }"
         :data-design="popupRound ? 'round' : undefined"

@@ -43,7 +43,7 @@ function getCssTarget(key: TCssColorTarget) {
 export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   [
     /^current-(text|bg|icon|border|outline|caret|hl)-(.+)$/,
-    (match, { theme }) => {
+    (match: RegExpMatchArray, { theme }: { theme: Theme & TVunorTheme }) => {
       const t = match[1] as 'text' | 'bg' | 'icon'
       const c = match[2]
       if (c.startsWith('scope-')) {
@@ -68,7 +68,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^(text|bg|icon|border|outline|caret|fill|shadow|ring)-current(-text|-bg|-icon|-border|-outline|-caret|-hl)?(\/\d{1,3})?$/,
-    (match, { theme: _theme }) => {
+    (match: RegExpMatchArray, { theme: _theme }: { theme: Theme & TVunorTheme }) => {
       const target = match[1] as TCssColorTarget
       const source = match[2] || `-${target}`
       const opacityVar = getOpacityVar(target)
@@ -96,7 +96,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^scope-(.*)$/,
-    (match, { theme }) => {
+    (match: RegExpMatchArray, { theme }: { theme: Theme & TVunorTheme }) => {
       const c = match[1]
       const col = theme.colors[c] as string | undefined
       if (col) {
@@ -130,7 +130,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^(bg|text|fill|stroke|border|outline|icon|caret)-scope-((?:color|dark|light|text|bg|white|black|icon)(?:-\d+)?)(\/\d{1,3})?$/,
-    (match, { theme }) => {
+    (match: RegExpMatchArray, { theme }: { theme: Theme & TVunorTheme }) => {
       const cssVar = getCssTarget(match[1] as TCssColorTarget)
       const opacityVar = getOpacityVar(match[1] as TCssColorTarget)
       const source = match[2]
@@ -146,7 +146,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^icon-opacity-(\d{1,3})$/,
-    (match, { theme: _theme }) => {
+    (match: RegExpMatchArray, { theme: _theme }: { theme: Theme & TVunorTheme }) => {
       const o = match[1]
       return {
         '--un-icon-opacity': Number(o) / 100,
@@ -161,7 +161,7 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^icon-size-(.*)$/,
-    (match, { theme }) => {
+    (match: RegExpMatchArray, { theme }: { theme: Theme & TVunorTheme }) => {
       const name = match[1]
       if (name.startsWith('[') && name.endsWith(']')) {
         return {
