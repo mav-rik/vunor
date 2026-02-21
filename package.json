@@ -10,7 +10,8 @@
     "test": "pnpm -r test",
     "pub": "pnpm -r pub",
     "dev": "pnpm -F vunor dev",
-    "release": "pnpm run test && pnpm version patch && node ./scripts/sync && pnpm run build && git add . && git commit -m \"chore: bump version\" && git push && pnpm run pub"
+    "release": "pnpm run test && pnpm version patch && node ./scripts/sync && pnpm run build && git add . && git commit -m \"chore: bump version\" && git push && pnpm run pub",
+    "release:minor": "pnpm run test && pnpm version minor && node ./scripts/sync && pnpm run build && git add . && git commit -m \"chore: bump version\" && git push && pnpm run pub"
   },
   "keywords": [],
   "author": "Artem Maltsev",
