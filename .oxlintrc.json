@@ -227,6 +227,7 @@
   ],
   "ignorePatterns": [
     "dist/**",
+    "**/setup-skills.js",
     ".env",
     "auto-imports.d.ts",
     "components.d.ts",

@@ -184,7 +184,8 @@
     "type-check": "vue-tsc --build --force",
     "test": "vitest run && playwright test",
     "test:e2e": "playwright test",
-    "setup-skills": "node ./scripts/setup-skills.js"
+    "setup-skills": "node ./scripts/setup-skills.js",
+    "postinstall": "node ./scripts/setup-skills.js --postinstall"
   },
   "dependencies": {
     "@internationalized/date": "^3.11.0",
