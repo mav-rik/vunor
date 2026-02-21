@@ -1,8 +1,13 @@
 {
   "name": "vunor",
   "version": "0.0.30",
+  "bin": {
+    "setup-skills": "./scripts/setup-skills.js"
+  },
   "files": [
-    "dist"
+    "dist",
+    "skills",
+    "scripts/setup-skills.js"
   ],
   "type": "module",
   "exports": {
@@ -178,7 +183,8 @@
     "pub": "npm publish --access public",
     "type-check": "vue-tsc --build --force",
     "test": "vitest run && playwright test",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "setup-skills": "node ./scripts/setup-skills.js"
   },
   "dependencies": {
     "@internationalized/date": "^3.11.0",
