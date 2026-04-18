@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogClose,
 } from 'reka-ui'
-import type VuCard from '../Card/Card.vue'
+import VuCard from '../Card/Card.vue'
 import VuCardHeader from '../Card/CardHeader.vue'
 import VuButton from '../Button/Button.vue'
 import VuIcon from '../Icon/Icon.vue'
