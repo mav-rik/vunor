@@ -1,6 +1,6 @@
 import { inject, provide } from 'vue'
 
-export const useProvideInject = <PA extends any[], IA extends any[], PR, INJ>(
+export const useProvideInject = <PA extends unknown[], IA extends unknown[], PR, INJ>(
   key: string,
   init: () => TProvideInjectBody<PA, IA, PR, INJ>
 ) => {
@@ -20,7 +20,7 @@ export const useProvideInject = <PA extends any[], IA extends any[], PR, INJ>(
   }
 }
 
-export interface TProvideInjectBody<PA extends any[], IA extends any[], PR, INJ> {
+export interface TProvideInjectBody<PA extends unknown[], IA extends unknown[], PR, INJ> {
   _provide: (...args: PA) => PR
   _inject: (...args: IA) => INJ
 }

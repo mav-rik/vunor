@@ -10,9 +10,7 @@ const props = defineProps<{
 }>()
 
 const _as = computed(() =>
-  props.as
-    ? props.as
-    : ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(props.level || '')
+  props.as || ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(props.level || '')
       ? props.level
       : 'h6'
 )

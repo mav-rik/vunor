@@ -508,22 +508,17 @@ vunor/nuxt       Nuxt 3 module
 vunor/{Name}     Individual Vue components (e.g. vunor/Button)
 ```
 
-## AI Agent Skills
+## AI Agent Skill
 
-`vunor` ships an AI agent skill for Claude Code, Cursor, Windsurf, Codex and other compatible agents.
-The skill teaches your agent the library's APIs, patterns, and best practices — so it can help you write correct code without hallucinating.
-
-**Install the skill into your agent:**
+Install the Vunor AI skill for context-aware assistance in AI coding agents (Claude Code, Cursor, Windsurf, Codex, OpenCode):
 
 ```bash
-# Project-local (recommended — commits with your repo)
-npx vunor setup-skills
-
-# Global (available in all your projects)
-npx vunor setup-skills --global
+npx skills add mav-rik/vunor
 ```
 
-Restart your agent after installing. The skill is version-locked to the package — re-run after upgrading.
+The skill teaches your agent the design system, semantic classes (`scope-*`, `layer-*`, `surface-*`, `c8-*`, `i8-*`), shortcut-override patterns, palette tuning, and the component API — so it writes correct code without hallucinating.
+
+Learn more about AI agent skills at [skills.sh](https://skills.sh).
 
 ## License
 

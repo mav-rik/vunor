@@ -26,18 +26,18 @@ function createVunorExtractor(): Extractor {
       // Match direct imports: import X from 'vunor/Button'
       for (const [, name] of code.matchAll(/['"]vunor\/(\w+)['"]/g)) {
         if (componentClasses[name]) {
-          for (const cls of componentClasses[name]) matched.add(cls)
+          for (const cls of componentClasses[name]) {matched.add(cls)}
         }
       }
 
       // Match template tags: <VuButton, <VuInput, etc.
       for (const [, name] of code.matchAll(/<Vu(\w+)/g)) {
         if (componentClasses[name]) {
-          for (const cls of componentClasses[name]) matched.add(cls)
+          for (const cls of componentClasses[name]) {matched.add(cls)}
         }
       }
 
-      if (matched.size > 0) return matched
+      if (matched.size > 0) {return matched}
     },
   }
 }

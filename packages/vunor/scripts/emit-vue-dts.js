@@ -10,10 +10,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { execSync } from 'node:child_process'
-import { fileURLToPath } from 'node:url'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __dirname = import.meta.dirname
 const root = path.resolve(__dirname, '..')
 const distDir = path.join(root, 'dist')
 const dtsTmpDir = path.join(distDir, 'dts-tmp')
@@ -22,7 +20,7 @@ const dtsTmpDir = path.join(distDir, 'dts-tmp')
 console.log('Running vue-tsc to emit Vue component declarations...')
 try {
   execSync('npx vue-tsc -p tsconfig.dts.json', { cwd: root, stdio: 'pipe' })
-} catch (e) {
+} catch  {
   // vue-tsc may exit with errors (e.g. type mismatches) but still emit declarations
   if (!fs.existsSync(dtsTmpDir)) {
     console.error('vue-tsc failed and no output was generated')
@@ -32,7 +30,7 @@ try {
 }
 
 // Step 2: Read package.json exports to find component entries
-const pkgJson = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf-8'))
+const pkgJson = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'))
 const knownTsExports = new Set(['.', './package.json', './theme', './utils', './vite', './nuxt'])
 
 // Cache for resolved local .d.ts file contents (keyed by absolute path)
@@ -41,9 +39,9 @@ const resolvedCache = new Map()
 let copied = 0
 
 for (const exportPath of Object.keys(pkgJson.exports)) {
-  if (knownTsExports.has(exportPath)) continue
+  if (knownTsExports.has(exportPath)) {continue}
   const match = exportPath.match(/^\.\/(\w+)$/)
-  if (!match) continue
+  if (!match) {continue}
 
   const name = match[1]
 
@@ -55,12 +53,12 @@ for (const exportPath of Object.keys(pkgJson.exports)) {
   }
 
   // Read and bundle (resolve local imports)
-  const content = fs.readFileSync(dtsFile, 'utf-8')
+  const content = fs.readFileSync(dtsFile, 'utf8')
   const bundled = bundleLocalImports(content, path.dirname(dtsFile))
 
   // Write to dist/{Name}.d.mts
   const destPath = path.join(distDir, `${name}.d.mts`)
-  fs.writeFileSync(destPath, bundled, 'utf-8')
+  fs.writeFileSync(destPath, bundled, 'utf8')
   copied++
 }
 
@@ -85,10 +83,10 @@ function bundleLocalImports(content, baseDir) {
     let resolved = path.resolve(baseDir, specifier)
     if (!resolved.endsWith('.d.ts')) {
       // Try .d.ts extension
-      if (fs.existsSync(resolved + '.d.ts')) {
-        resolved = resolved + '.d.ts'
-      } else if (fs.existsSync(resolved + '/index.d.ts')) {
-        resolved = resolved + '/index.d.ts'
+      if (fs.existsSync(`${resolved}.d.ts`)) {
+        resolved += '.d.ts'
+      } else if (fs.existsSync(`${resolved}/index.d.ts`)) {
+        resolved += '/index.d.ts'
       } else {
         // Can't resolve — leave the import as-is
         return match
@@ -109,9 +107,9 @@ function bundleLocalImports(content, baseDir) {
     return ''
   })
 
-  if (inlinedTypes.length === 0) return content
+  if (inlinedTypes.length === 0) {return content}
 
-  return inlinedTypes.join('\n') + '\n' + result
+  return `${inlinedTypes.join('\n')}\n${result}`
 }
 
 /**
@@ -121,9 +119,9 @@ function bundleLocalImports(content, baseDir) {
  * - Removes local relative imports within the helper
  */
 function readAndProcessHelper(filePath) {
-  if (resolvedCache.has(filePath)) return resolvedCache.get(filePath)
+  if (resolvedCache.has(filePath)) {return resolvedCache.get(filePath)}
 
-  const content = fs.readFileSync(filePath, 'utf-8')
+  const content = fs.readFileSync(filePath, 'utf8')
 
   const result = content
     // Remove local relative imports
@@ -141,13 +139,13 @@ function readAndProcessHelper(filePath) {
 }
 
 function findFile(dir, filename) {
-  if (!fs.existsSync(dir)) return undefined
+  if (!fs.existsSync(dir)) {return undefined}
   const entries = fs.readdirSync(dir, { withFileTypes: true })
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name)
     if (entry.isDirectory()) {
       const found = findFile(fullPath, filename)
-      if (found) return found
+      if (found) {return found}
     } else if (entry.name === filename) {
       return fullPath
     }

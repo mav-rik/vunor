@@ -131,10 +131,10 @@ export interface TInputBaseProps extends Omit<
   active?: boolean
   loading?: boolean
   noUnderline?: boolean
-  onAppendClick?: (event: MouseEvent) => any
-  onPrependClick?: (event: MouseEvent) => any
-  onBlur?: (event: FocusEvent) => any
-  onFocus?: (event: FocusEvent) => any
+  onAppendClick?: (event: MouseEvent) => void
+  onPrependClick?: (event: MouseEvent) => void
+  onBlur?: (event: FocusEvent) => void
+  onFocus?: (event: FocusEvent) => void
 }
 
 export interface TInputProps extends TInputBaseProps {
@@ -144,11 +144,11 @@ export interface TInputProps extends TInputBaseProps {
   hint?: string
   groupTemplate?: string
   stackLabel?: boolean
-  onBeforeClick?: (event: MouseEvent) => any
-  onAfterClick?: (event: MouseEvent) => any
-  onClick?: (event: MouseEvent) => any
-  onBlur?: (event: FocusEvent) => any
-  onFocus?: (event: FocusEvent) => any
+  onBeforeClick?: (event: MouseEvent) => void
+  onAfterClick?: (event: MouseEvent) => void
+  onClick?: (event: MouseEvent) => void
+  onBlur?: (event: FocusEvent) => void
+  onFocus?: (event: FocusEvent) => void
 }
 
 export interface TInputBaseEmits {

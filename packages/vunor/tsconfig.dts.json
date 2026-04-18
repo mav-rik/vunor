@@ -5,6 +5,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "declarationDir": "./dist/dts-tmp",
+    "rootDir": "./src",
     "composite": false,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.dts.tsbuildinfo"
   }

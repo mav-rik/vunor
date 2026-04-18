@@ -1,3 +1,4 @@
+import { getScopeCssVars } from './rules/palette'
 import { unitBy } from './utils/unit-by'
 
 import type { TVunorTheme } from './theme'
@@ -25,7 +26,7 @@ export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
   --scope-hl: var(--scope-color-500);
   --v-fingertip: ${theme.spacing['fingertip-m'] || '3em'};
   --v-fingertip-half: ${unitBy(theme.spacing['fingertip-m'] || '3em', 0.5)};
-}
+${renderDefaultScope(theme)}}
 
 
 ::-webkit-scrollbar {
@@ -62,6 +63,14 @@ export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
     background-color: rgba(255,255,255,0.3);
 }
 `,
+}
+
+function renderDefaultScope(theme: TVunorTheme & Theme): string {
+  const vars = getScopeCssVars('neutral', theme)
+  if (!vars) {return ''}
+  return `${Object.entries(vars)
+    .map(([k, v]) => `  ${k}: ${v};`)
+    .join('\n')}\n`
 }
 
 function renderFontCss(

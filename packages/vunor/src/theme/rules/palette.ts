@@ -40,6 +40,27 @@ function getCssTarget(key: TCssColorTarget) {
   }[key]
 }
 
+const SCOPE_SHADES = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900']
+const SCOPE_LAYERS = ['0', '1', '2', '3', '4']
+
+export function getScopeCssVars(
+  c: string,
+  theme: Theme & TVunorTheme
+): Record<string, string> | undefined {
+  const col = theme.colors[c] as string | undefined
+  if (!col) {return undefined}
+  const vars: Record<string, string> = { '--scope-color': colorToRgbWithOpacity(col) }
+  for (const shade of SCOPE_SHADES) {
+    vars[`--scope-color-${shade}`] = colorToRgbWithOpacity(theme.colors[`${c}-${shade}`]) || ''
+  }
+  for (const layer of SCOPE_LAYERS) {
+    vars[`--scope-light-${layer}`] = colorToRgbWithOpacity(theme.colors[`${c}-light-${layer}`]) || ''
+    vars[`--scope-dark-${layer}`] = colorToRgbWithOpacity(theme.colors[`${c}-dark-${layer}`]) || ''
+  }
+  vars['--current-hl'] = colorToRgbWithOpacity(theme.colors[`${c}-500`]) || ''
+  return vars
+}
+
 export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   [
     /^current-(text|bg|icon|border|outline|caret|hl)-(.+)$/,
@@ -96,37 +117,8 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   ],
   [
     /^scope-(.*)$/,
-    (match: RegExpMatchArray, { theme }: { theme: Theme & TVunorTheme }) => {
-      const c = match[1]
-      const col = theme.colors[c] as string | undefined
-      if (col) {
-        return {
-          '--scope-color': colorToRgbWithOpacity(col),
-          '--scope-color-50': colorToRgbWithOpacity(theme.colors[`${c}-50`]) || '',
-          '--scope-color-100': colorToRgbWithOpacity(theme.colors[`${c}-100`]) || '',
-          '--scope-color-200': colorToRgbWithOpacity(theme.colors[`${c}-200`]) || '',
-          '--scope-color-300': colorToRgbWithOpacity(theme.colors[`${c}-300`]) || '',
-          '--scope-color-400': colorToRgbWithOpacity(theme.colors[`${c}-400`]) || '',
-          '--scope-color-500': colorToRgbWithOpacity(theme.colors[`${c}-500`]) || '',
-          '--scope-color-600': colorToRgbWithOpacity(theme.colors[`${c}-600`]) || '',
-          '--scope-color-700': colorToRgbWithOpacity(theme.colors[`${c}-700`]) || '',
-          '--scope-color-800': colorToRgbWithOpacity(theme.colors[`${c}-800`]) || '',
-          '--scope-color-900': colorToRgbWithOpacity(theme.colors[`${c}-900`]) || '',
-          '--scope-light-0': colorToRgbWithOpacity(theme.colors[`${c}-light-0`]) || '',
-          '--scope-light-1': colorToRgbWithOpacity(theme.colors[`${c}-light-1`]) || '',
-          '--scope-light-2': colorToRgbWithOpacity(theme.colors[`${c}-light-2`]) || '',
-          '--scope-light-3': colorToRgbWithOpacity(theme.colors[`${c}-light-3`]) || '',
-          '--scope-light-4': colorToRgbWithOpacity(theme.colors[`${c}-light-4`]) || '',
-          '--scope-dark-0': colorToRgbWithOpacity(theme.colors[`${c}-dark-0`]) || '',
-          '--scope-dark-1': colorToRgbWithOpacity(theme.colors[`${c}-dark-1`]) || '',
-          '--scope-dark-2': colorToRgbWithOpacity(theme.colors[`${c}-dark-2`]) || '',
-          '--scope-dark-3': colorToRgbWithOpacity(theme.colors[`${c}-dark-3`]) || '',
-          '--scope-dark-4': colorToRgbWithOpacity(theme.colors[`${c}-dark-4`]) || '',
-          '--current-hl': colorToRgbWithOpacity(theme.colors[`${c}-500`]) || '',
-        }
-      }
-      return undefined
-    },
+    (match: RegExpMatchArray, { theme }: { theme: Theme & TVunorTheme }) =>
+      getScopeCssVars(match[1], theme),
   ],
   [
     /^(bg|text|fill|stroke|border|outline|icon|caret)-scope-((?:color|dark|light|text|bg|white|black|icon)(?:-\d+)?)(\/\d{1,3})?$/,

@@ -1,8 +1,10 @@
 import { test, expect } from '@playwright/test'
 import { navigateTo } from './utils'
 
+import type { Page } from '@playwright/test'
+
 // Helper to get the Select popup container (portaled to body)
-function selectPopup(page: import('@playwright/test').Page) {
+function selectPopup(page: Page) {
   return page.locator('.select-content')
 }
 

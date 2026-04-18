@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogClose,
 } from 'reka-ui'
-import VuCard from '../Card/Card.vue'
+import type VuCard from '../Card/Card.vue'
 import VuCardHeader from '../Card/CardHeader.vue'
 import VuButton from '../Button/Button.vue'
 import VuIcon from '../Icon/Icon.vue'
@@ -47,12 +47,12 @@ const props = withDefaults(
       | 'body'
       | 'body-s'
       | 'callout'
-    onEscapeKeyDown?: ((event: KeyboardEvent) => any) | undefined
-    onPointerDownOutside?: ((event: unknown) => any) | undefined
-    onFocusOutside?: ((event: unknown) => any) | undefined
-    onInteractOutside?: ((event: unknown) => any) | undefined
-    onOpenAutoFocus?: ((event: Event) => any) | undefined
-    onCloseAutoFocus?: ((event: Event) => any) | undefined
+    onEscapeKeyDown?: ((event: KeyboardEvent) => void) | undefined
+    onPointerDownOutside?: ((event: unknown) => void) | undefined
+    onFocusOutside?: ((event: unknown) => void) | undefined
+    onInteractOutside?: ((event: unknown) => void) | undefined
+    onOpenAutoFocus?: ((event: Event) => void) | undefined
+    onCloseAutoFocus?: ((event: Event) => void) | undefined
   }>(),
   {
     level: 'h4',

@@ -39,6 +39,10 @@ const months: string[] = [
 ]
 const years: string[] = Array.from({ length: 2025 - 2017 + 1 }, (v, i) => String(2017 + i))
 
+function daysInMonth(monthIdx: number, yearNum: number): number {
+  return new Date(yearNum, monthIdx + 1, 0).getDate()
+}
+
 function getDays(month?: string, year?: string): string[] {
   if (!month) {
     return Array.from({ length: 31 }, (v, i) => String(i + 1))
@@ -49,18 +53,8 @@ function getDays(month?: string, year?: string): string[] {
     throw new Error('Invalid month')
   }
 
-  let days: number
-  const daysInMonth = (month: number, year: number): number => {
-    return new Date(year, month + 1, 0).getDate()
-  }
-
-  if (year) {
-    const yearNum = Number.parseInt(year, 10)
-
-    days = daysInMonth(monthIndex, yearNum)
-  } else {
-    days = daysInMonth(monthIndex, 2001)
-  }
+  const yearNum = year ? Number.parseInt(year, 10) : 2001
+  const days = daysInMonth(monthIndex, yearNum)
   return Array.from({ length: days }, (v, i) => String(i + 1))
 }
 

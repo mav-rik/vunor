@@ -27,6 +27,13 @@ export interface TVunorPaletteColor {
    * Vividness on dark/light ends
    */
   vivid?: { dark?: number; light?: number }
+
+  /**
+   * Per-color override for perceptual flatness.
+   *
+   * See {@link TVunorPaletteOptions.flatness}.
+   */
+  flatness?: number
 }
 
 export interface TVunorPaletteOptions {
@@ -62,6 +69,24 @@ export interface TVunorPaletteOptions {
   layersDepth?: number
 
   /**
+   * Controls how strongly shades are normalized for perceptual uniformity.
+   *
+   * Forwarded to `@prostojs/palitra`'s `flatness` option and used as the
+   * default for both the main palette and the layer palette (each can override
+   * via `mainPalette.flatness` / `layerPalette.flatness`, and individual colors
+   * can override via `colors.<name>.flatness`).
+   *
+   * - `1` — fully flat: every shade hits its target perceptual brightness
+   *   exactly, so steps feel evenly spaced across any hue.
+   * - `0` — no normalization: shades follow a raw HSL ramp and each hue keeps
+   *   its natural perceptual weight (yellows read bright, blues read dark).
+   * - Values in between blend the two.
+   *
+   * @default 1
+   */
+  flatness?: number
+
+  /**
    * Advanced main palette configuration
    */
   mainPalette?: TVunorMainPaletteAdvanced
@@ -91,6 +116,13 @@ export interface TVunorMainPaletteAdvanced {
    * @default false
    */
   preserveInputColor?: boolean
+
+  /**
+   * Override perceptual flatness for the main palette only.
+   *
+   * Falls back to the top-level {@link TVunorPaletteOptions.flatness}.
+   */
+  flatness?: number
 
   /**
    * Luminance options
@@ -166,6 +198,13 @@ export interface TVunorLayerPaletteAdvanced {
   desaturate?: number
 
   /**
+   * Override perceptual flatness for the layer palette only.
+   *
+   * Falls back to the top-level {@link TVunorPaletteOptions.flatness}.
+   */
+  flatness?: number
+
+  /**
    * Luminance options
    */
   luminance?: {
@@ -226,6 +265,7 @@ const defaultOpts: Required<TVunorPaletteOptions & { colors: TVunorPaletteColor 
   lightest: 0.97,
   darkest: 0.24,
   layersDepth: 0.08,
+  flatness: 1,
   mainPalette: {
     preserveInputColor: false,
     luminance: {
@@ -377,9 +417,11 @@ export function generatePalette(_opts?: TVunorPaletteOptions) {
   const opts = defu({ ..._opts, colors: _colors }, defaultOpts) as typeof defaultOpts
 
   // dark bg
+  const layerFlatness = opts.layerPalette.flatness ?? opts.flatness
   const bgOptions: TScaleOptionsInput & TPalitraOptions = {
     count: 5,
     preserveInputColor: false,
+    flatness: layerFlatness,
     luminance: {
       dark: opts.layerPalette.luminance?.dark ?? opts.darkest,
       light: opts.layerPalette.luminance?.light ?? opts.darkest + opts.layersDepth,
@@ -396,7 +438,9 @@ export function generatePalette(_opts?: TVunorPaletteOptions) {
 
   // light bg
   bgOptions.suffixes = ['light-0', 'light-1', 'light-2', 'light-3', 'light-4'].toReversed()
-  const depth = bgOptions.luminance!.light! - bgOptions.luminance!.dark!
+  const lumDark = bgOptions.luminance?.dark ?? opts.darkest
+  const lumLight = bgOptions.luminance?.light ?? opts.darkest + opts.layersDepth
+  const depth = lumLight - lumDark
   bgOptions.luminance = { dark: 1 - depth, light: 1, useMiddle: false }
   const lights = palitra(
     multiplySaturation(opts.colors, opts.layerPalette.desaturate),
@@ -417,6 +461,7 @@ export function generatePalette(_opts?: TVunorPaletteOptions) {
     {
       count: 10,
       preserveInputColor: opts.mainPalette.preserveInputColor,
+      flatness: opts.mainPalette.flatness ?? opts.flatness,
       luminance: {
         dark: opts.mainPalette.luminance?.dark ?? opts.darkest + opts.layersDepth + 0.02,
         light: opts.mainPalette.luminance?.light ?? opts.lightest,
@@ -450,9 +495,9 @@ function multiplySaturation<T extends object>(colors: T, m = 0.5): Record<keyof 
   return newObj as Record<keyof T, string>
 }
 
-export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
-  const layerN = (n: number, reverse?: boolean) => (reverse ? 4 - n : n)
+const layerN = (n: number, reverse?: boolean) => (reverse ? 4 - n : n)
 
+export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
   return [
     [
       /^layer-([0-4])$/,

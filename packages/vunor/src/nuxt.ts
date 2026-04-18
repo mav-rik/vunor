@@ -5,6 +5,7 @@ import type { NuxtModule } from '@nuxt/schema'
 declare const __vue_files__: string[]
 const components = __vue_files__
 
+// eslint-disable-next-line typescript/no-explicit-any
 const index: NuxtModule<any> = defineNuxtModule({
   meta: {
     name: 'vunor/nuxt',

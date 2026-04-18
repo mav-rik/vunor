@@ -40,11 +40,9 @@ const mergeTwoVunorShortcuts = (target: TVunorShortcut, source: TVunorShortcut):
   const result = {} as TVunorShortcut
   const keys = new Set([...Object.keys(source), ...Object.keys(target)])
   for (const key of Array.from(keys)) {
-    if (!Object.prototype.hasOwnProperty.call(source, key)) {
-      result[key] = target[key]
-    } else if (!Object.prototype.hasOwnProperty.call(target, key)) {
-      result[key] = source[key]
-    } else {
+    const inSource = Object.prototype.hasOwnProperty.call(source, key)
+    const inTarget = Object.prototype.hasOwnProperty.call(target, key)
+    if (inSource && inTarget) {
       let sourceValue = source[key]
       let targetValue = target[key]
 
@@ -64,6 +62,10 @@ const mergeTwoVunorShortcuts = (target: TVunorShortcut, source: TVunorShortcut):
       } else if (typeof sourceValue === 'object' && typeof targetValue === 'object') {
         result[key] = `${toUnoShortcut(targetValue)} ${toUnoShortcut(sourceValue)}`
       }
+    } else if (inSource) {
+      result[key] = source[key]
+    } else {
+      result[key] = target[key]
     }
   }
   return result

@@ -117,7 +117,9 @@ function isItemSelected(v?: string | null) {
 
 const selectedItems = computed<T[]>(() => {
   if (modelValue.value && Array.isArray(modelValue.value)) {
-    return modelValue.value.map(v => flatItemsMap.value.get(v)!) as T[]
+    return modelValue.value
+      .map(v => flatItemsMap.value.get(v))
+      .filter((item): item is T => item !== undefined)
   } else {
     const item = flatItemsMap.value.get(modelValue.value)
     if (item) {

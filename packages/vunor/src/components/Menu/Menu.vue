@@ -14,7 +14,7 @@ import {
 
 import { computed } from 'vue'
 
-type AcceptableValue = string | number | boolean | Record<string, any>
+type AcceptableValue = string | number | bigint | Record<string, unknown> | null
 interface TItem {
   label: string
   value: AcceptableValue
@@ -22,7 +22,7 @@ interface TItem {
   group?: string
 }
 interface Props {
-  items: (string | TItem)[]
+  items: Array<string | TItem>
   emptyText?: string
 }
 const props = defineProps<Props>()

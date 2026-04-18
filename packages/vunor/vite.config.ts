@@ -6,8 +6,8 @@ import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vitest/config'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __filename = import.meta.filename
+const __dirname = import.meta.dirname
 
 const componentsDir = path.join(__dirname, 'src', 'components')
 

@@ -39,10 +39,10 @@ test.describe('Checkbox Component', () => {
     const disabledLabel = page.locator('label.checkbox-root').filter({ hasText: /^Checkbox Disabled$/ }).first()
     const button = disabledLabel.locator('button.checkbox')
 
-    const stateBefore = await button.getAttribute('data-state')
+    const stateBefore = (await button.getAttribute('data-state')) ?? ''
     // Clicking a disabled checkbox should not change state
     await disabledLabel.click({ force: true })
-    await expect(button).toHaveAttribute('data-state', stateBefore!)
+    await expect(button).toHaveAttribute('data-state', stateBefore)
   })
 
   test('error message is displayed', async ({ page }) => {

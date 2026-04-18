@@ -1,6 +1,5 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 
 import { createGenerator } from 'unocss'
 import vue from '@vitejs/plugin-vue'
@@ -24,21 +23,21 @@ function vunorShortcuts() {
   return merged as Record<string, string>
 }
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const __dirname = import.meta.dirname
 const PKG_ROOT = path.resolve(__dirname, '..')
 
 // Step 1: Parse component entries from package.json exports
-const pkgJson = JSON.parse(fs.readFileSync(path.join(PKG_ROOT, 'package.json'), 'utf-8'))
+const pkgJson = JSON.parse(fs.readFileSync(path.join(PKG_ROOT, 'package.json'), 'utf8'))
 const componentEntries: Record<string, string> = {}
 
 const knownTsExports = new Set(['.', './package.json', './theme', './utils', './vite', './nuxt'])
 for (const exportPath of Object.keys(pkgJson.exports as Record<string, unknown>)) {
-  if (knownTsExports.has(exportPath)) continue
+  if (knownTsExports.has(exportPath)) {continue}
   const match = exportPath.match(/^\.\/(\w+)$/)
-  if (!match) continue
+  if (!match) {continue}
   const name = match[1]
   const found = findVueFile(path.join(PKG_ROOT, 'src', 'components'), `${name}.vue`)
-  if (found) componentEntries[name] = found
+  if (found) {componentEntries[name] = found}
 }
 
 function findVueFile(dir: string, filename: string): string | undefined {
@@ -47,7 +46,7 @@ function findVueFile(dir: string, filename: string): string | undefined {
     const fullPath = path.join(dir, file.name)
     if (file.isDirectory()) {
       const found = findVueFile(fullPath, filename)
-      if (found) return found
+      if (found) {return found}
     } else if (file.name === filename) {
       return fullPath
     }
@@ -62,7 +61,7 @@ const entryIdMap = new Map<string, string>()
 
 function stripQueryParams(id: string): string {
   const idx = id.indexOf('?')
-  return idx >= 0 ? id.substring(0, idx) : id
+  return idx >= 0 ? id.slice(0, idx) : id
 }
 
 const ASSET_RE = /\.(css|scss|less|styl|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot|mp[34]|webm|ogg|pdf)(\?.*)?$/
@@ -144,8 +143,8 @@ function collectVueFiles(entryId: string): Set<string> {
   const queue = [entryId]
 
   while (queue.length > 0) {
-    const id = queue.pop()!
-    if (visited.has(id)) continue
+    const id = queue.pop() as string
+    if (visited.has(id)) {continue}
     visited.add(id)
 
     const cleanId = stripQueryParams(id)
@@ -176,9 +175,9 @@ const componentClassMap: Record<string, string[]> = {}
 
 for (const [name, entryId] of entryIdMap) {
   const vueFiles = collectVueFiles(entryId)
-  const allCode = [...vueFiles].map((f) => fs.readFileSync(f, 'utf-8')).join('\n')
+  const allCode = [...vueFiles].map((f) => fs.readFileSync(f, 'utf8')).join('\n')
   const { matched } = await uno.generate(allCode, { preflights: false })
-  componentClassMap[name] = [...matched].sort()
+  componentClassMap[name] = [...matched].toSorted()
 }
 
 // Warn about components not found in the graph
@@ -199,7 +198,7 @@ const lines = [
   'export const componentClasses: Record<string, string[]> = {',
 ]
 
-for (const [name, classes] of Object.entries(componentClassMap).sort(([a], [b]) =>
+for (const [name, classes] of Object.entries(componentClassMap).toSorted(([a], [b]) =>
   a.localeCompare(b)
 )) {
   lines.push(`  ${name}: [`)
@@ -222,14 +221,14 @@ lines.push('}')
 lines.push('')
 
 const outputPath = path.join(outputDir, 'component-classes.ts')
-fs.writeFileSync(outputPath, lines.join('\n'), 'utf-8')
+fs.writeFileSync(outputPath, lines.join('\n'), 'utf8')
 
 console.log(
   `Generated component classes for ${Object.keys(componentClassMap).length} components → ${path.relative(PKG_ROOT, outputPath)}`
 )
 
 // Print summary
-for (const [name, classes] of Object.entries(componentClassMap).sort(([a], [b]) =>
+for (const [name, classes] of Object.entries(componentClassMap).toSorted(([a], [b]) =>
   a.localeCompare(b)
 )) {
   console.log(`  ${name}: ${classes.length} classes`)
