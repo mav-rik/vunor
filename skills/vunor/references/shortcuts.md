@@ -118,6 +118,7 @@ c8 also requires an active **scope** on the element or any ancestor. Without one
 | `c8-flat` | `bg: transparent`, `text: current` (scoped), hover `bg: current/10` | Secondary / ghost action |
 | `c8-outlined` | `bg: transparent`, `border: current`, `text: current`, hover tinted bg | Outline CTA |
 | `c8-light` | `bg: current/10` (10% scope-500), `text: current`, hover `bg: current/20` | Soft info / positive |
+| `c8-chrome` | `bg: transparent`, `text: scope-dark-2` (chrome body text), `border: grey-500`, hover `bg: scope-light-1` (= layer-1), active `bg: scope-light-2` | Secondary chrome (Cancel, Select all, None) that **must stay neutral** even inside a scoped subtree |
 | `c8-flat-selected` | Selected emphasis on `c8-flat` — auto-applied when the element has `data-selected="true"` or `aria-pressed="true"` | Tabs, segmented controls, menu items, toggle buttons |
 
 Each variant additionally pre-wires:
@@ -130,6 +131,8 @@ Each variant additionally pre-wires:
 `[data-highlighted]` and `[data-active]` are populated by **reka-ui primitives** (menu items, listbox/select items, combobox items) so c8 transitions react to keyboard navigation as well as mouse hover. On a plain `<button>`, only the `:hover` / `:focus-visible` / `:active` portions trigger; the `[data-…]` rules sit dormant. `c8-flat-selected` similarly needs a primitive that toggles `data-selected` (e.g. `<MenuItem>`); plain buttons can opt in manually with `aria-pressed="true"`.
 
 > **Note on tabs:** reka-ui's `<TabsTrigger>` uses `data-state="active"`, **not** `data-selected`. `c8-flat-selected` does **not** style tab triggers — the dedicated `tab` / `tabs-indicator` shortcuts (used by `<VuTabs>`) handle that. Use `c8-flat-selected` for menu items, segmented buttons, and toggle buttons.
+
+> **`c8-chrome` vs. `scope-neutral c8-outlined`:** both produce a "neutral outlined" button. The difference is **scope independence** — `c8-outlined` reads from `--scope-color-*`, so its color follows whatever scope is above it (blue inside `scope-primary`, red inside `scope-error`). `c8-chrome` reads from `--scope-light-*` / `--scope-dark-*` / `grey-500`, which are nearly identical across all scopes, so a chrome button keeps the same neutral look in any context. Reach for `c8-chrome` when you have a scoped subtree (a primary-themed dialog, an error banner) and you want secondary actions inside it to **not** adopt that color. Use `c8-outlined` when you do want the outline to follow the scope.
 
 ### Minimum working button
 
@@ -274,7 +277,7 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 
 | Group | Shortcuts |
 |-------|----------|
-| `c8` | `c8-filled`, `c8-filled-hover`, `c8-filled-active`, `c8-flat`, `c8-flat-hover`, `c8-flat-active` *(disabled — see Gotchas)*, `c8-flat-selected`, `c8-outlined`, `c8-outlined-hover`, `c8-outlined-active`, `c8-light`, `c8-light-hover`, `c8-light-active` |
+| `c8` | `c8-filled`, `c8-filled-hover`, `c8-filled-active`, `c8-flat`, `c8-flat-hover`, `c8-flat-active` *(disabled — see Gotchas)*, `c8-flat-selected`, `c8-outlined`, `c8-outlined-hover`, `c8-outlined-active`, `c8-light`, `c8-light-hover`, `c8-light-active`, `c8-chrome`, `c8-chrome-hover`, `c8-chrome-active`, `c8-chrome-selected` |
 | `i8` | `i8`, `i8-input`, `i8-textarea`, `i8-input-wrapper`, `i8-ta-wrapper`, `i8-label`, `i8-label-wrapper`, `i8-stack-label`, `i8-hint`, `i8-counter`, `i8-hint-wrapper`, `i8-hint-wrapper-stack`, `i8-prepend`, `i8-append`, `i8-before`, `i8-after`, `i8-icon-wrap`, `i8-icon-clickable`, `i8-loading`, `i8-underline`, `segmented` |
 | Card | `card` |
 | Button | `btn`, `btn-square`, `btn-label`, `btn-icon` |

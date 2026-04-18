@@ -9,7 +9,7 @@ description: >-
   VuAppLayout, VuIcon). Plus Vunor UnoCSS rules and semantic classes —
   scopes (primary, secondary, good, warn, error, grey, neutral), layer-0..4
   depth backgrounds, surface-0..900 colored blocks, current-* color system,
-  c8 clickable styles (filled, flat, outlined, light), i8 input styles
+  c8 clickable styles (filled, flat, outlined, light, chrome), i8 input styles
   (flat, filled, round), card / card-dense, fingertip touch targets,
   $xxs..$xxl spacing tokens, text-h1..text-caption typography, text-mt/mb-*
   margin compensation. Plus palette tuning (lightest, darkest, layersDepth,
@@ -174,7 +174,9 @@ import { VunorVueResolver } from 'vunor/vite'   // unplugin-vue-components resol
 <div class="bg-scope-color-500/50 text-scope-light-1">…</div>
 
 <!-- clickable styles -->
-<button class="c8-filled | c8-flat | c8-outlined | c8-light">…</button>
+<button class="c8-filled | c8-flat | c8-outlined | c8-light | c8-chrome">…</button>
+<!-- c8-chrome stays neutral inside any scope (use for Cancel / Select all / None
+     buttons sitting next to a scoped primary CTA) -->
 
 <!-- input styles -->
 <div class="i8 i8-filled | i8-flat | i8-round">…</div>

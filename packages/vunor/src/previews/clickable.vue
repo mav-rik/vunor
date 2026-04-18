@@ -13,7 +13,7 @@ const scopes = [
   'scope-error',
 ]
 
-const types = ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat']
+const types = ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat', 'c8-chrome']
 
 const selected = reactive<Record<string, boolean>>({
   'scope-grey-c8-flat': false,
@@ -44,6 +44,39 @@ const selected = reactive<Record<string, boolean>>({
         </div>
       </div>
     </div>
+    <div class="mb-$xl">
+      <h4 class="text-mb-$m">
+        <code>c8-chrome</code> stays neutral inside any scope
+      </h4>
+      <p class="text-body-s text-current/70 mb-$m">
+        Each row below is wrapped in a different scope. <code>c8-filled</code> follows the scope
+        (it changes color). <code>c8-chrome</code> ignores it — secondary chrome buttons remain
+        neutral and don't compete with the scoped CTA.
+      </p>
+      <div
+        v-for="scope of scopes"
+        :class="scope"
+        class="surface-0 p-$m mb-$xs rounded-base flex items-center gap-$m"
+      >
+        <span class="text-caption opacity-60 w-[8em] truncate">{{ scope }}</span>
+        <button
+          class="c8-filled h-fingertip rounded flex items-center px-$m gap-$xs cursor-pointer select-none"
+        >
+          Apply
+        </button>
+        <button
+          class="c8-chrome h-fingertip rounded flex items-center px-$m gap-$xs cursor-pointer select-none"
+        >
+          Cancel
+        </button>
+        <button
+          class="c8-chrome h-fingertip rounded flex items-center px-$m gap-$xs cursor-pointer select-none"
+        >
+          <span class="i--close icon-color size-[1.1em]"></span>Select all
+        </button>
+      </div>
+    </div>
+
     <div>
       <h4 class="text-mb-$m">Segmented</h4>
       <div class="flex">

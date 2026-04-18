@@ -57,6 +57,36 @@ export const c8 = defineShortcuts({
   'c8-outlined-hover': 'c8-flat-hover',
   'c8-outlined-active': 'c8-flat-active',
 
+  // CHROME (Page-chrome / outlined neutral)
+  // Paints from layer / scope-light / scope-dark vars instead of scope-color,
+  // so it stays visually neutral even inside a scoped subtree (scope-primary, etc.).
+  // Use for secondary chrome buttons (Cancel, Select all, None) that should not
+  // compete with the primary CTA.
+  'c8-chrome': {
+    '': 'rounded-base border bg-transparent current-text-scope-dark-2 current-icon-scope-dark-2 current-border-grey-500 text-current border-current icon-current/80',
+    'dark:': 'current-text-scope-light-2 current-icon-scope-light-2',
+    'hover:': 'c8-chrome-hover',
+    'focus-visible:': 'c8-chrome-hover',
+    'data-[highlighted]:': 'c8-chrome-hover',
+    'active:': 'c8-chrome-active',
+    'data-[active]:': 'c8-chrome-active',
+    'data-[selected=true]:': 'c8-chrome-selected',
+    'aria-[selected=true]:': 'c8-chrome-selected',
+    'aria-[pressed=true]:': 'c8-chrome-selected',
+  },
+  'c8-chrome-hover': {
+    'not-([disabled]):': 'current-bg-scope-light-1 bg-current',
+    'dark:not-([disabled]):': 'current-bg-scope-dark-1',
+  },
+  'c8-chrome-active': {
+    'not-([disabled]):': 'current-bg-scope-light-2 bg-current',
+    'dark:not-([disabled]):': 'current-bg-scope-dark-2',
+  },
+  'c8-chrome-selected': {
+    '': 'current-bg-scope-light-1 bg-current current-text-scope-color-500 text-current current-icon-scope-color-500 icon-current/100',
+    'dark:': 'current-bg-scope-dark-1 current-text-scope-color-400 current-icon-scope-color-400',
+  },
+
   // LIGHT (Filled/Transparent)
   'c8-light': {
     '': 'current-bg-scope-color-500 rounded-base current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80',
