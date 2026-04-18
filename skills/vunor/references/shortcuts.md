@@ -36,10 +36,10 @@ defineShortcuts({
     '': 'current-bg-scope-color-500 text-white rounded-base',
     'dark:': {
       '': 'text-white/90',
-      'hover:': 'current-bg-scope-color-600',
-      // → "dark:text-white/90 dark:hover:current-bg-scope-color-600"
+      'hover:': 'current-bg-scope-color-400',
+      // → "dark:text-white/90 dark:hover:current-bg-scope-color-400"
     },
-    'hover:': 'current-bg-scope-color-400',
+    'hover:': 'current-bg-scope-color-600',
   },
 })
 ```
@@ -114,11 +114,11 @@ c8 also requires an active **scope** on the element or any ancestor. Without one
 
 | Class | Paints | Use for |
 |-------|--------|---------|
-| `c8-filled` | `bg: scope-color-500`, `text: white`, hover steps to `scope-color-400`, active to `scope-color-600` | Primary CTA |
-| `c8-flat` | `bg: transparent`, `text: current` (scoped), hover `bg: current/10` | Secondary / ghost action |
-| `c8-outlined` | `bg: transparent`, `border: current`, `text: current`, hover tinted bg | Outline CTA |
-| `c8-light` | `bg: current/10` (10% scope-500), `text: current`, hover `bg: current/20` | Soft info / positive |
-| `c8-chrome` | `bg: transparent`, `text: scope-dark-2` (chrome body text), `border: grey-500`, hover `bg: scope-light-1` (= layer-1), active `bg: scope-light-2` | Secondary chrome (Cancel, Select all, None) that **must stay neutral** even inside a scoped subtree |
+| `c8-filled` | `bg: scope-color-500`, `text: white`. Light mode hover → `scope-color-600` (darker), active → `scope-color-700`. Dark mode hover → `scope-color-400` (lighter), active → `scope-color-300`. | Primary CTA |
+| `c8-flat` | `bg: transparent`, `text: current` (scoped). Hover `bg: current/10`, active `bg: current/15`. | Secondary / ghost action |
+| `c8-outlined` | `bg: transparent`, `border: current`, `text: current`. Hover `bg: current/10`, active `bg: current/15`. | Outline CTA |
+| `c8-light` | `bg: current/10` (10% scope-500), `text: current`. Hover `bg: current/20`, active `bg: current/30`. | Soft info / positive |
+| `c8-chrome` | Composes `surface-0` (so bg / text / icon / border match a `surface-0` block exactly), hover `bg: scope-light-1`, active `bg: scope-light-2`. Stays visually neutral because `surface-0` uses `scope-light-0` / `scope-color-100` which are near-grey in every scope. | Secondary chrome (Cancel, Select all, None) that **must stay neutral** next to a scoped primary CTA |
 | `c8-flat-selected` | Selected emphasis on `c8-flat` — auto-applied when the element has `data-selected="true"` or `aria-pressed="true"` | Tabs, segmented controls, menu items, toggle buttons |
 
 Each variant additionally pre-wires:
@@ -277,7 +277,7 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 
 | Group | Shortcuts |
 |-------|----------|
-| `c8` | `c8-filled`, `c8-filled-hover`, `c8-filled-active`, `c8-flat`, `c8-flat-hover`, `c8-flat-active` *(disabled — see Gotchas)*, `c8-flat-selected`, `c8-outlined`, `c8-outlined-hover`, `c8-outlined-active`, `c8-light`, `c8-light-hover`, `c8-light-active`, `c8-chrome`, `c8-chrome-hover`, `c8-chrome-active`, `c8-chrome-selected` |
+| `c8` | `c8-filled`, `c8-filled-hover`, `c8-filled-active`, `c8-flat`, `c8-flat-hover`, `c8-flat-active`, `c8-flat-selected`, `c8-outlined`, `c8-outlined-hover`, `c8-outlined-active`, `c8-light`, `c8-light-hover`, `c8-light-active`, `c8-chrome`, `c8-chrome-hover`, `c8-chrome-active`, `c8-chrome-selected` |
 | `i8` | `i8`, `i8-input`, `i8-textarea`, `i8-input-wrapper`, `i8-ta-wrapper`, `i8-label`, `i8-label-wrapper`, `i8-stack-label`, `i8-hint`, `i8-counter`, `i8-hint-wrapper`, `i8-hint-wrapper-stack`, `i8-prepend`, `i8-append`, `i8-before`, `i8-after`, `i8-icon-wrap`, `i8-icon-clickable`, `i8-loading`, `i8-underline`, `segmented` |
 | Card | `card` |
 | Button | `btn`, `btn-square`, `btn-label`, `btn-icon` |
@@ -438,5 +438,5 @@ The `i8` wrapper must also carry `group/i8`. The focus / error / `data-has-value
 - The empty key `''` is the base. Every shortcut needs one or it generates nothing for the no-prefix state.
 - Merge concatenates. `'c8-filled': { '': 'rounded-full' }` *adds* `rounded-full` to the base, it doesn't replace what's there. To "remove" a class, change the underlying tokens (e.g. set `baseRadius`) or define a sibling shortcut you opt into.
 - The c8/i8 systems consume `--scope-color-*` and `--current-*`. Without an active `scope-*`, they fall back to the preflight's neutral defaults — usable but generic.
-- `c8-flat-active` is currently disabled (commented in source) because it conflicted with tabs. Use `c8-flat-selected` (driven by `data-selected`/`aria-pressed`) for active state.
+- `c8-*` follows the "press-darker" convention in light mode and inverts in dark mode: hovering pushes the button *away* from the page luminance (darker on white backgrounds, lighter on black backgrounds) so it stands out more. Active goes one step further in the same direction.
 - Adding a shortcut named `card` (or any built-in name) without going through `vunorShortcuts(overrides)` will collide with the default. Always pass overrides to `vunorShortcuts()`.

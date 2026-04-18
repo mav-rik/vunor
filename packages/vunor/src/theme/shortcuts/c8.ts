@@ -11,13 +11,16 @@ export const c8 = defineShortcuts({
     'active:': 'c8-filled-active',
     'data-[active]:': 'c8-filled-active',
   },
+  // Hover = one step darker in light mode / one step lighter in dark mode
+  //   (push the button *away* from the page luminance → more visible)
+  // Active = one step beyond hover
   'c8-filled-hover': {
-    'not-([disabled]):': 'current-bg-scope-color-400',
-    'dark:not-([disabled]):': 'current-bg-scope-color-600',
-  },
-  'c8-filled-active': {
     'not-([disabled]):': 'current-bg-scope-color-600',
     'dark:not-([disabled]):': 'current-bg-scope-color-400',
+  },
+  'c8-filled-active': {
+    'not-([disabled]):': 'current-bg-scope-color-700',
+    'dark:not-([disabled]):': 'current-bg-scope-color-300',
   },
 
   // FLAT (Transparent)
@@ -27,18 +30,18 @@ export const c8 = defineShortcuts({
     'hover:': 'c8-flat-hover',
     'focus-visible:': 'c8-flat-hover',
     'data-[highlighted]:': 'c8-flat-hover',
-    // 'active:': 'c8-flat-active',
-    // 'data-[active]:': 'c8-flat-active', // messes up with tabs
+    'active:': 'c8-flat-active',
+    'data-[active]:': 'c8-flat-active',
     'data-[selected=true]:': 'c8-flat-selected',
     'aria-[selected=true]:': 'c8-flat-selected',
     'aria-[pressed=true]:': 'c8-flat-selected',
   },
   'c8-flat-hover': {
-    'not-([disabled]):': 'bg-current/05',
+    'not-([disabled]):': 'bg-current/10',
   },
-  // 'c8-flat-active': {
-  //   'not-([disabled]):': 'bg-current/10', // messes up with tabs
-  // },
+  'c8-flat-active': {
+    'not-([disabled]):': 'bg-current/15',
+  },
   'c8-flat-selected': {
     '': 'c8-flat-hover current-text-scope-color-500 text-current current-icon-scope-color-500 icon-current/100',
     'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
@@ -58,13 +61,14 @@ export const c8 = defineShortcuts({
   'c8-outlined-active': 'c8-flat-active',
 
   // CHROME (Page-chrome / outlined neutral)
-  // Paints from layer / scope-light / scope-dark vars instead of scope-color,
-  // so it stays visually neutral even inside a scoped subtree (scope-primary, etc.).
-  // Use for secondary chrome buttons (Cancel, Select all, None) that should not
-  // compete with the primary CTA.
+  // Composes surface-0 for its base paint — the bg, text, icon, and border all
+  // match a surface-0 block exactly. The base surface uses scope-light-0 / dark-0
+  // for bg and scope-color-100 / 800 for border, which is nearly grey in every
+  // scope, so chrome buttons read as neutral even inside scoped subtrees
+  // (scope-primary, scope-error, etc.). Use for secondary chrome buttons
+  // (Cancel, Select all, None) that should not compete with the primary CTA.
   'c8-chrome': {
-    '': 'rounded-base border bg-transparent current-text-scope-dark-2 current-icon-scope-dark-2 current-border-grey-500 text-current border-current icon-current/80',
-    'dark:': 'current-text-scope-light-2 current-icon-scope-light-2',
+    '': 'surface-0 rounded-base border',
     'hover:': 'c8-chrome-hover',
     'focus-visible:': 'c8-chrome-hover',
     'data-[highlighted]:': 'c8-chrome-hover',
@@ -101,9 +105,9 @@ export const c8 = defineShortcuts({
     'aria-[pressed=true]:': 'c8-light-hover',
   },
   'c8-light-hover': {
-    'not-([disabled]):': 'bg-current/15',
+    'not-([disabled]):': 'bg-current/20',
   },
   'c8-light-active': {
-    'not-([disabled]):': 'bg-current/20',
+    'not-([disabled]):': 'bg-current/30',
   },
 })

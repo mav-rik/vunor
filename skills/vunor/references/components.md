@@ -122,11 +122,12 @@ Button with icon, loading, link, and active/pressed/selected states.
 Slots: `default` (overrides label), `icon-left`, `icon-right`.
 CSS classes: `btn`, `btn-round`, `btn-square`, `btn-icon`, `btn-label`.
 
-`<VuButton>` does **not** prescribe a c8 variant — pair it with `c8-filled`/`c8-flat`/`c8-outlined`/`c8-light` and a `scope-*`.
+`<VuButton>` does **not** prescribe a c8 variant — pair it with `c8-filled`/`c8-flat`/`c8-outlined`/`c8-light`/`c8-chrome` and a `scope-*`.
 
 ```html
 <VuButton class="scope-primary c8-filled" label="Save" icon="i-mdi-check" />
 <VuButton class="c8-flat" label="Cancel" />
+<VuButton class="c8-chrome" label="Cancel" />          <!-- neutral chrome action, stays neutral in any scope -->
 <VuButton class="scope-error c8-outlined btn-square btn-round" icon="i-mdi-close" />  <!-- icon-only round -->
 <VuButton class="c8-flat" label="Profile" :to="{ name: 'profile' }" />                <!-- router link -->
 <VuButton class="scope-primary c8-filled" label="Saving" :loading="busy" />
