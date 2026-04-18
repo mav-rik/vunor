@@ -315,6 +315,30 @@ Every scope publishes `--current-hl = --scope-color-500`. Use it for the brand-c
 </div>
 ```
 
+## Scope and portaled content
+
+Reka UI primitives (Dialog, Popover, Tooltip, Select, Combobox, Menu) **portal their content to `document.body`**, which means the portaled subtree is **outside** any scope you set on a nested app container.
+
+If you write `<div id="app" class="scope-primary">…</div>` and a `<VuDialog>` opens, the dialog renders next to `<div id="app">`, not inside it — so it inherits whatever scope sits on `<body>` / `<html>` instead of `scope-primary`. Since the preflight installs `scope-neutral` on `:root`, the dialog reads as neutral, not primary, and you'll see no brand color until you fix the scope placement.
+
+**Set `scope-*` on `<html>` or `<body>`, not on a nested app container.** That way portaled content (dialogs, popovers, tooltips, select dropdowns, menu popups) inherits the same scope as the rest of the page:
+
+```html
+<!-- ❌ scope-primary lives below <body> — portals miss it -->
+<body>
+  <div id="app" class="scope-primary">…</div>
+  <!-- DialogPortal renders here, with only scope-neutral from :root -->
+</body>
+
+<!-- ✅ scope-primary on <body> — every portal inherits it -->
+<body class="scope-primary">
+  <div id="app">…</div>
+  <!-- DialogPortal renders here, still inside scope-primary -->
+</body>
+```
+
+If you genuinely need different page chrome and portal scopes (rare), set the page-level scope on `<body>` and pass `class="scope-…"` directly on the portaled component (`<VuDialog class="scope-error">`) — the class will be forwarded to the portaled root.
+
 ## Gotchas
 
 - `scope-{name}` paints nothing on its own. If you set only `scope-primary` and see no color, you forgot the consumer (`layer-*`, `surface-*`, `c8-*`, `bg-current`, …).

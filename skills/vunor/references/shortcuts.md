@@ -104,42 +104,101 @@ Returns the object as-is, but with a typed signature (`TVunorShortcut`). Pure ty
 
 ## c8 — clickable styles
 
-Four variants for buttons and any clickable surface. All four play with the active scope's color:
+**`c8-*` is a color and state preset, not a button preset.** Each variant sets background, text, border-radius, and the hover / active / focus-visible / `[data-highlighted]` / `[data-active]` color transitions for an interactive surface in the active scope. It does **not** set `display`, `height`, `padding`, `gap`, `cursor`, or typography — that's the consumer's job.
 
-| Class | Look | Best for |
-|-------|------|----------|
-| `c8-filled` | Solid background, white text | Primary actions ("Save") |
-| `c8-flat` | Transparent bg, scoped text, faint hover | Secondary actions ("Cancel") |
-| `c8-outlined` | Border, scoped text, transparent fill | Tertiary or alternative actions |
-| `c8-light` | Tinted background (10% scope-500), scoped text | Soft positive/info actions |
+For a working button you either use `<VuButton>` — which bundles the layout via the `btn` shortcut — or compose c8 with structural utilities yourself (see [Minimum working button](#minimum-working-button) below).
 
-Each variant pre-wires:
+c8 also requires an active **scope** on the element or any ancestor. Without one, `--scope-color-*` and `--current-*` fall back to the preflight neutral defaults — usable but generic. To make a c8 button look "primary", put `scope-primary` on the button (or any ancestor); to flip it to destructive, switch the scope to `scope-error`. The button class never changes.
+
+### Variants
+
+| Class | Paints | Use for |
+|-------|--------|---------|
+| `c8-filled` | `bg: scope-color-500`, `text: white`, hover steps to `scope-color-400`, active to `scope-color-600` | Primary CTA |
+| `c8-flat` | `bg: transparent`, `text: current` (scoped), hover `bg: current/10` | Secondary / ghost action |
+| `c8-outlined` | `bg: transparent`, `border: current`, `text: current`, hover tinted bg | Outline CTA |
+| `c8-light` | `bg: current/10` (10% scope-500), `text: current`, hover `bg: current/20` | Soft info / positive |
+| `c8-flat-selected` | Selected emphasis on `c8-flat` — auto-applied when the element has `data-selected="true"` or `aria-pressed="true"` | Tabs, segmented controls, menu items, toggle buttons |
+
+Each variant additionally pre-wires:
 
 - `:hover`, `:focus-visible`, `[data-highlighted]` → light hover state
 - `:active`, `[data-active]` → pressed state
 - `disabled:` exclusions (so `not-([disabled]):hover` doesn't tint when disabled)
-- `[data-selected=true]` and `aria-[selected=true]` → selected emphasis (used by tabs, selects, menus)
 - `dark:` swaps for legibility
 
+`[data-highlighted]` and `[data-active]` are populated by **reka-ui primitives** (menu items, listbox/select items, combobox items) so c8 transitions react to keyboard navigation as well as mouse hover. On a plain `<button>`, only the `:hover` / `:focus-visible` / `:active` portions trigger; the `[data-…]` rules sit dormant. `c8-flat-selected` similarly needs a primitive that toggles `data-selected` (e.g. `<MenuItem>`); plain buttons can opt in manually with `aria-pressed="true"`.
+
+> **Note on tabs:** reka-ui's `<TabsTrigger>` uses `data-state="active"`, **not** `data-selected`. `c8-flat-selected` does **not** style tab triggers — the dedicated `tab` / `tabs-indicator` shortcuts (used by `<VuTabs>`) handle that. Use `c8-flat-selected` for menu items, segmented buttons, and toggle buttons.
+
+### Minimum working button
+
 ```html
-<button class="scope-primary c8-filled">Save</button>
-<button class="scope-error c8-flat">Cancel</button>
-<button class="scope-good c8-outlined">Confirm</button>
-<button class="scope-warn c8-light">Heads up</button>
+<!-- Text button -->
+<button class="scope-primary c8-filled
+               inline-flex items-center justify-center
+               h-fingertip-m px-$m gap-$xs
+               font-500 cursor-pointer">
+  Save
+</button>
+
+<!-- Icon-only square button -->
+<button class="c8-flat
+               inline-grid place-items-center
+               w-fingertip-m h-fingertip-m
+               cursor-pointer">
+  <VuIcon name="i--close" />
+</button>
+
+<!-- Icon + label -->
+<button class="scope-primary c8-filled
+               inline-flex items-center
+               h-fingertip-m px-$m gap-$xs
+               font-500 cursor-pointer">
+  <VuIcon name="i--save" /> Save
+</button>
 ```
 
-`c8-*` is **just CSS** — works on any element. `<VuButton>` adds the `btn` shortcut on top for layout (height, padding, icon slots, loading state) but **doesn't** prescribe a c8 variant; the consumer always picks one via class.
+`<VuButton>` ships these layout classes via its `btn` / `btn-square` / `btn-label` / `btn-icon` shortcuts, so on a `<VuButton>` you only have to pick the c8 variant:
 
 ```html
 <VuButton class="scope-primary c8-filled" label="Save" />
-<a href="#" class="c8-flat px-$m h-fingertip flex items-center">Link</a>
+<VuButton class="scope-error c8-flat" icon="i--trash" />
+<a href="#" class="c8-flat inline-flex items-center h-fingertip px-$m">Link</a>
 ```
-
-`c8-flat-selected` is the variant applied automatically when the element has `data-selected="true"` or `aria-pressed="true"`. It's how `c8-flat` tabs/menu items show their active state.
 
 ## i8 — input styles
 
-Three visual variants for form inputs (chosen via `<VuInput design="…">` or by adding the class):
+**`i8-*` is a set of cooperating shortcuts, not a single class.** Like c8, none of them set the actual `<input>` styling on their own — you compose a wrapper, the input, and any decoration sub-classes together. `<VuInput>` does this composition for you; if you build inputs by hand, you wire the parts yourself.
+
+i8 also requires an active **scope** for its color states (focus highlight, error state, hint colors). Without one, the preflight neutral defaults are used.
+
+### Wrapper vs. leaf classes
+
+Two roles to keep straight:
+
+- **Wrapper** — applied to the container that holds the input plus its label, icons, hint. `i8` is the wrapper.
+- **Leaf** — applied directly to the actual `<input>` / `<textarea>` / `<label>` / decoration node.
+
+| Class | Role | Element |
+|-------|------|---------|
+| `i8` | Wrapper | container `<div>` (`h-fingertip`, flex layout, icon scoping, focus-within & error coloring) |
+| `i8-flat` / `i8-filled` / `i8-round` | Wrapper variant | added next to `i8` to pick a visual style |
+| `i8-input` | Leaf | the `<input>` itself |
+| `i8-textarea` | Leaf | the `<textarea>` itself |
+| `i8-label` | Leaf | floating label that collapses on focus |
+| `i8-label-wrapper` | Wrapper-helper | positioning container for the label |
+| `i8-stack-label` | Modifier | switches label to above-input position |
+| `i8-hint` / `i8-counter` | Leaf | hint text / character counter under the input |
+| `i8-hint-wrapper` / `i8-hint-wrapper-stack` | Wrapper-helper | layout for hint + counter row |
+| `i8-prepend` / `i8-append` | Leaf | icons/text inside the border |
+| `i8-before` / `i8-after` | Leaf | icons/text outside the border |
+| `i8-underline` | Leaf | bottom underline used by `i8-flat` |
+| `i8-loading` | Leaf | inline loading indicator slot |
+| `i8-icon-wrap` / `i8-icon-clickable` | Leaf | icon container, clickable variant |
+| `segmented` | Modifier | joins adjacent inputs into one visual unit |
+
+### Three visual variants
 
 | Class | Look |
 |-------|------|
@@ -147,31 +206,40 @@ Three visual variants for form inputs (chosen via `<VuInput design="…">` or by
 | `i8-filled` | Background fill + thin border + soft outline on focus |
 | `i8-round` | Pill-shaped (`rounded-fingertip-half`) variant of filled |
 
-`i8` itself is the wrapper class applied by every input — it sets `h-fingertip`, flex layout, icon scoping, selection color, focus-within highlight, and error scoping (`group-[[data-error=true]]/i8`).
+Pick one and add it to the wrapper next to `i8`.
 
-Sub-shortcuts inside an input:
+### Minimum working input
 
-| Class | Role |
-|-------|------|
-| `i8-input` | The `<input>` element |
-| `i8-textarea` | The `<textarea>` element |
-| `i8-label` | Floating label (collapses on focus) |
-| `i8-label-wrapper` | Positioning container for the label |
-| `i8-hint` | Hint text under the input |
-| `i8-counter` | Character counter |
-| `i8-prepend` / `i8-append` | Inside-border icons/text |
-| `i8-before` / `i8-after` | Outside-border icons/text |
-| `i8-underline` | Bottom underline for `i8-flat` |
-| `i8-loading` | Inline loading indicator slot |
-| `i8-icon-wrap` / `i8-icon-clickable` | Icon container, clickable variant |
-| `segmented` | Joins adjacent inputs into one visual unit |
-| `i8-stack-label` | Above-input label position |
+```html
+<div class="i8 i8-filled group/i8">
+  <input class="i8-input" type="text" />
+</div>
+```
 
-These are styled to play together — adding `iconBefore`, `iconAppend`, `label`, `error`, `hint` on a `<VuInput>` automatically brings the right sub-classes into play.
+The wrapper carries `group/i8` because `i8-input`, `i8-label`, `i8-underline`, and the error rules use `group-[…]/i8:` selectors to react to focus, value presence, label presence, and `data-error` on the wrapper. Without `group/i8` the input renders, but focus highlight, error coloring, and floating-label transitions don't fire.
 
-### i8 low-level rules
+With label, hint, and a leading icon:
 
-`i8-border-*`, `i8-bg-*`, `i8-outline-*` are **rules** (not shortcuts) that set CSS variables consumed by `i8-apply-border` / `i8-apply-bg` / `i8-apply-outline`. They let you tune individual properties of an input without touching the whole shortcut.
+```html
+<div class="i8 i8-filled group/i8">
+  <span class="i8-prepend"><VuIcon name="i--search" /></span>
+  <div class="i8-label-wrapper">
+    <input class="i8-input" type="text" placeholder=" " />
+    <label class="i8-label">Search</label>
+  </div>
+  <div class="i8-hint-wrapper"><span class="i8-hint">Try "vunor"</span></div>
+</div>
+```
+
+`<VuInput iconBefore="i--search" label="Search" hint='Try "vunor"' />` produces the same composition automatically (and adds `group/i8` for you).
+
+### i8 low-level rules — the apply layer
+
+`i8-border-*`, `i8-bg-*`, `i8-outline-*` are **rules** (not shortcuts) that *set* CSS variables. `i8-apply-border` / `i8-apply-bg` / `i8-apply-outline` are the rules that *consume* those variables and emit actual `border`/`background`/`outline` CSS. The wrapper variants (`i8-filled`, `i8-flat`, `i8-round`) call the apply rules internally — that's how they paint.
+
+You can use them directly in two situations:
+
+**1. Tweak a wrapper without touching the shortcut.**
 
 ```html
 <div class="i8 i8-filled
@@ -182,6 +250,22 @@ These are styled to play together — adding `iconBefore`, `iconAppend`, `label`
             ">…</div>
 ```
 
+**2. Paint i8 colors directly onto a standalone `<input>` without the `.i8` wrapper.**
+
+When you don't want the extra wrapper `<div>` around every `<input>` (e.g. simple search box, inline rename field, custom layout), you can compose the apply rules straight onto the input:
+
+```html
+<input
+  class="i8-input
+         i8-bg-scope-light-1 i8-apply-bg
+         i8-border-scope-color-300 i8-apply-border
+         current-outline-hl i8-apply-outline
+         h-fingertip rounded-base px-$m"
+/>
+```
+
+The same pattern is used inside custom `i8-*` design variants (see [Pattern 5](#pattern-5--extend-i8-with-a-custom-design-variant)).
+
 Full rule reference in [rules.md](rules.md).
 
 ## Built-in shortcuts catalog
@@ -190,7 +274,7 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 
 | Group | Shortcuts |
 |-------|----------|
-| `c8` | `c8-filled`, `c8-filled-hover`, `c8-filled-active`, `c8-flat`, `c8-flat-hover`, `c8-flat-selected`, `c8-outlined`, `c8-outlined-hover`, `c8-outlined-active`, `c8-light`, `c8-light-hover`, `c8-light-active` |
+| `c8` | `c8-filled`, `c8-filled-hover`, `c8-filled-active`, `c8-flat`, `c8-flat-hover`, `c8-flat-active` *(disabled — see Gotchas)*, `c8-flat-selected`, `c8-outlined`, `c8-outlined-hover`, `c8-outlined-active`, `c8-light`, `c8-light-hover`, `c8-light-active` |
 | `i8` | `i8`, `i8-input`, `i8-textarea`, `i8-input-wrapper`, `i8-ta-wrapper`, `i8-label`, `i8-label-wrapper`, `i8-stack-label`, `i8-hint`, `i8-counter`, `i8-hint-wrapper`, `i8-hint-wrapper-stack`, `i8-prepend`, `i8-append`, `i8-before`, `i8-after`, `i8-icon-wrap`, `i8-icon-clickable`, `i8-loading`, `i8-underline`, `segmented` |
 | Card | `card` |
 | Button | `btn`, `btn-square`, `btn-label`, `btn-icon` |
@@ -315,6 +399,35 @@ That's the **idiom**: theme handles the mathematical scale (sizes, colors, radii
 | The same combination appears in 3+ places | Truly unique element |
 
 Don't paper over inline complexity with new shortcuts — only extract once you have repetition.
+
+## Debugging FAQ
+
+**"My c8 button is the wrong width or has no height."**
+c8 doesn't set layout. Compose `inline-flex items-center h-fingertip-m px-$m` (or use `<VuButton>`). Don't try to "undo" a width c8 never set — `w-auto` does nothing useful here.
+
+**"My c8 button has no padding / no gap between icon and label."**
+Same reason — c8 doesn't set padding or gap. Add `px-$m gap-$xs` yourself, or switch to `<VuButton>`.
+
+**"My c8 button has no color or only the neutral default."**
+There's no active scope. Add `scope-primary` (or whichever scope you need) on the button or any ancestor. The preflight installs `scope-neutral` on `:root`, so you'll never see "nothing", but for brand color you must opt in.
+
+**"My c8 hover works on a `<button>` but the `[data-highlighted]` style never fires."**
+`[data-highlighted]` and `[data-active]` are populated by **reka-ui primitives** (menu items, listbox items, combobox items). Plain `<button>` only triggers the `:hover` / `:focus-visible` / `:active` portions of c8 — that's normal.
+
+**"`c8-flat-selected` does nothing on my tabs."**
+Tabs use `data-state="active"`, not `data-selected`. `c8-flat-selected` is for menu items, segmented buttons, and toggle buttons. For tab styling, use the dedicated `tab` / `tabs-indicator` shortcuts (used by `<VuTabs>`).
+
+**"My standalone `<input>` has no border / background."**
+Either wrap it in `<div class="i8 i8-filled group/i8">…</div>`, or paint colors directly with `i8-bg-* i8-apply-bg i8-border-* i8-apply-border` — the wrapper variants don't apply through the input element on their own.
+
+**"My input doesn't show the focus highlight or error state."**
+The `i8` wrapper must also carry `group/i8`. The focus / error / `data-has-value` styles are written as `group-[…]/i8:` selectors and need a named group ancestor. `<VuInput>` adds it automatically; if you compose i8 by hand, add `class="i8 i8-filled group/i8"`.
+
+**"I applied `i8` to the `<input>` itself and nothing works right."**
+`i8` is a wrapper, not a leaf. Move it to a parent `<div>` (with `group/i8`) and put `i8-input` on the actual `<input>`.
+
+**"I added an override and now the original variant is gone."**
+`mergeVunorShortcuts` *concatenates* into existing variant strings, it doesn't replace. If a class disappeared, you most likely defined a **sibling shortcut** with the same name *outside* `vunorShortcuts(overrides)` — that collides with the default. Always go through `vunorShortcuts(overrides)`.
 
 ## Gotchas
 
