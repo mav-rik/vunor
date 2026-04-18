@@ -43,16 +43,30 @@ CSS CUSTOM PROPERTIES   --scope-color-500, --current-bg, --v-fingertip, --card-s
 
 ## Required foundation: scope
 
-`scope-{name}` declares which palette is active for a subtree. **Without an active scope, the color-aware classes have no values to render.** Vunor preflights install `scope-neutral` on `:root` automatically, so things work out of the box, but real apps almost always set their own scope on `<html>` or `<body>`:
+`scope-{name}` declares which palette is active for a subtree. **Without an active scope, the color-aware classes have no values to render.** Vunor preflights install `scope-neutral` on `:root` automatically, so things work out of the box and incidental UI (default borders, layer backgrounds, idle text/icons) reads as a calm neutral.
+
+**The recommended pattern is to keep `scope-neutral` as the page default and *only* opt into a stronger scope on accent elements:**
+
+- Brand-colored interactive elements (primary buttons, focused inputs, active tabs, brand banners) → `scope-primary` (or `scope-secondary` for an alternate accent).
+- State-bearing elements (error inputs, destructive buttons, validation messages) → `scope-error`. For warnings → `scope-warn`. For success → `scope-good`.
+
+That way the page chrome stays neutral and the eye is drawn to the elements that genuinely need attention.
 
 ```html
-<html class="scope-primary">
-  <body class="layer-0">             <!-- page background using primary palette -->
-    <main class="scope-error">       <!-- this subtree turns red -->
-      <button class="c8-filled">Delete</button>
-    </main>
-  </body>
-</html>
+<!-- Page-level scope is neutral (preflight default — no explicit class needed) -->
+<body class="layer-0">
+  <header>…</header>
+
+  <!-- Brand accent: only the button opts into primary -->
+  <button class="scope-primary c8-filled">Save</button>
+
+  <!-- State change: same input, different scope = different visual weight -->
+  <VuInput v-model="email" :error="emailError" />
+  <!-- VuInput auto-applies scope-error internally when :error is set -->
+
+  <!-- Destructive action: opt into error scope explicitly -->
+  <button class="scope-error c8-flat">Delete account</button>
+</body>
 ```
 
 Valid names: `primary`, `secondary`, `good`, `warn`, `error`, `grey`, `neutral`.
@@ -175,7 +189,8 @@ import { VunorVueResolver } from 'vunor/vite'   // unplugin-vue-components resol
 
 ## Ground rules
 
-- **Set a `scope-*` on a high ancestor** (`<html>` or app root). Without it, color classes resolve to grey neutral defaults from preflights.
+- **Manage color through `scope-*`, not hard-coded palette names.** The page chrome stays neutral by default (`scope-neutral` is preflight-installed on `:root`). Apply `scope-primary` (or `scope-secondary`) only on accent elements — primary buttons, focused inputs, brand banners. To reflect state, switch to `scope-error` for negatives/destructive actions, `scope-warn` for warnings, `scope-good` for success.
+- **Inside components, prefer scope-relative classes over fixed colors.** Reach for `bg-current`, `text-current`, `border-current`, `text-current-hl`, `bg-current/10`, or `bg-scope-color-500` — *not* `bg-primary-500`. That way the same component re-tints automatically when its parent scope changes (`<button class="c8-filled">` works in any scope; `<button class="bg-primary-500">` does not). Use specific palette colors (`bg-primary-500`, `text-error-700`) only when you genuinely need a scope-independent color.
 - **Don't write `<style>` blocks or scoped styles.** Compose UnoCSS utilities and Vunor shortcuts. To customize component appearance, override its shortcut via `vunorShortcuts(myOverrides)` — see [references/shortcuts.md](references/shortcuts.md).
 - **Layers and surfaces handle dark mode for you** — they read `--scope-light-*` in light mode and `--scope-dark-*` under `.dark`/`prefers-color-scheme: dark`. Don't add `dark:` prefixes to layer/surface utilities.
 - **Spacing tokens use a `$` prefix**: `p-$m`, `gap-$s`, `m-$l`. Plain `p-m` is a different (built-in UnoCSS) utility.

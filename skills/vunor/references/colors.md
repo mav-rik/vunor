@@ -49,6 +49,78 @@ You can nest scopes freely. Inner scope wins:
 
 `scope-{name}` only sets variables. It paints nothing on its own. Combine it with `bg-current`, `layer-*`, `surface-*`, `c8-*`, `i8-*`, etc.
 
+### The scope-driven idiom (most important rule of the system)
+
+**Manage color through scope changes; manage color application through `current-*` / `scope-*` indirection. Avoid hard-coding palette names (`primary-500`, `error-500`) on individual elements.**
+
+Why: every component (button, input, card, banner, badge, …) gets its color from whichever scope is active above it in the tree. Swap the scope on a wrapper, and the entire subtree re-tints with no other class changes. Hard-coded colors break that — a component that says `bg-primary-500` always shows blue, even inside a `scope-error` block where it should be red.
+
+The two halves of the idiom:
+
+1. **Set color via scope.** A component or subtree picks up its palette from the nearest `scope-{name}` ancestor.
+2. **Read color via `current-*` indirection or scope-relative classes.** Inside a component, paint with `bg-current`, `text-current`, `border-current`, `text-current-hl`, `bg-current/10`, or `bg-scope-color-500`, `border-scope-color-300`, etc. — never `bg-primary-500` directly.
+
+That single rule lets the same button, the same input, the same card render in primary, error, warn, good, secondary, neutral — without any of those classes appearing in the markup.
+
+```html
+<!-- Reusable: this badge works in ANY scope context -->
+<span class="surface-100 px-$xs rounded-base">{{ count }}</span>
+
+<!-- ...and now changes color depending on the parent scope -->
+<div class="scope-primary"><span class="surface-100 …">42</span></div>  <!-- blue -->
+<div class="scope-error">  <span class="surface-100 …">42</span></div>  <!-- red -->
+<div class="scope-good">   <span class="surface-100 …">42</span></div>  <!-- green -->
+```
+
+The same principle is why `c8-filled`, `i8-filled`, `layer-*`, `surface-*` work everywhere: their internals reference `--scope-color-*`, `--current-*`, `--current-hl` — not specific colors. The scope chooses; the component honors the choice.
+
+### When to apply each scope
+
+Vunor's preflight installs `scope-neutral` on `:root`, which means **the page chrome is neutral by default**: incidental borders, idle text, layer backgrounds, and unfocused inputs all read as a calm grey-blue. You usually don't want to override that.
+
+Apply a stronger scope **only** to the elements (or subtrees) that should stand out:
+
+| Use case | Scope |
+|----------|-------|
+| Brand-colored interactive accent (primary button, focused input, active tab, brand banner) | `scope-primary` |
+| Alternate accent (highlight chip, secondary CTA) | `scope-secondary` |
+| Validation error (errored input, destructive action button, error banner) | `scope-error` |
+| Warning (caution banner, warning button) | `scope-warn` |
+| Success (success banner, confirmation button) | `scope-good` |
+
+Form components do this transition for you: `<VuInput>` automatically adds `scope-error` when its `error` prop is truthy, so the underline, focus ring, label, and message all switch to red without you wiring it up.
+
+```html
+<!-- Page-level: neutral by default (preflight) -->
+<body class="layer-0">
+
+  <!-- Brand-accent button: opt into primary -->
+  <button class="scope-primary c8-filled">Save</button>
+
+  <!-- State change: opt into error / warn for emphasis -->
+  <button class="scope-error c8-flat">Delete</button>
+  <div class="scope-warn surface-100">Read carefully</div>
+
+  <!-- Idle elements: stay neutral, no extra class needed -->
+  <input class="i8 i8-filled" />     <!-- neutral border, neutral focus ring -->
+</body>
+```
+
+Avoid blanketing the entire page with a brand scope (`<html class="scope-primary">`) unless the brand color genuinely *is* the chrome — when everything is brand-colored, nothing reads as the accent.
+
+### Rule of thumb: which class to reach for
+
+| You want… | Use | Avoid |
+|-----------|-----|-------|
+| The scope's accent (highlight) color | `text-current-hl`, `border-current-hl`, `bg-current-hl` | `text-primary-500` |
+| The scope's body background / text / border | `bg-current`, `text-current`, `border-current` | `bg-primary-100` |
+| A specific shade from the active scope | `bg-scope-color-500`, `border-scope-color-300` | `bg-primary-500` |
+| A depth-aware background | `layer-1`, `bg-layer-1` | `bg-grey-100 dark:bg-grey-800` |
+| A colored block at a specific stop | `surface-100`, `surface-500`, `surface-900` | `bg-primary-100 text-primary-900 border-primary-200` |
+| **A specific, scope-independent color** (rare — brand-locked logo bg, raw chart fill) | `bg-primary-500`, `text-error-700` | — |
+
+When in doubt, prefer the indirected version. The exception (last row) exists, but if you find yourself reaching for it on regular UI, you're probably about to make the design less re-skinnable — consider whether changing the parent scope would do the same job.
+
 ## Layers — depth backgrounds
 
 `layer-0` through `layer-4` paint a full bundle: background, body text color, icon color, default border color. They are **dark-mode aware** automatically.
