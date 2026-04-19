@@ -7,7 +7,7 @@ export const checkboxShortcuts = defineShortcuts({
     'aria-[disabled=true]:': 'scope-grey opacity-50 cursor-not-allowed',
   },
   'checkbox': {
-    '': 'cursor-default shrink-0 select-none rounded-[0.28em] transition-all transition-duration-100 flex size-1.5em appearance-none items-center justify-center bg-current/0 border-current border-[0.16em] current-icon-white',
+    '': 'cursor-default shrink-0 select-none rounded-r0 transition-all transition-duration-100 flex size-1.5em appearance-none items-center justify-center bg-current/0 border-current border-[0.16em] current-icon-white',
     'group-active/cb:enabled:':
       'current-bg-scope-color-500 bg-current/20 current-icon-scope-color-500',
     // 'group-hover/cb:enabled:': 'border-current',

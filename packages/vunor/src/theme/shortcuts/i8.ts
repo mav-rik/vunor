@@ -11,7 +11,7 @@ export const i8 = defineShortcuts({
       '': 'border-b-width-[var(--i8-border-width,1px)]',
     },
     '[&.i8-filled]:': {
-      '': 'i8-apply-bg current-outline-hl i8-apply-border rounded-base i8-apply-border',
+      '': 'i8-apply-bg current-outline-hl i8-apply-border rounded-r1 i8-apply-border',
       'data-[active=true]:': 'current-border-hl outline i8-apply-outline',
       'focus-within:': 'current-border-hl outline i8-apply-outline',
     },

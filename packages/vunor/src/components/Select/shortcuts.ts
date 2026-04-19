@@ -2,7 +2,7 @@ import { defineShortcuts } from '../../theme/utils/define-sc'
 
 export const selectShortcuts = defineShortcuts({
   'select-content': {
-    '': 'min-w-[60px] rounded-base surface-0 bg-current overflow-hidden shadow-popup z-[100] current-border-grey-400 border-current/20 ',
+    '': 'min-w-[60px] rounded-r1 surface-0 bg-current overflow-hidden shadow-popup z-[100] current-border-grey-400 border-current/20 ',
     'data-[design=round]:': 'rounded-fingertip-half',
     '[&>div[data-reka-combobox-viewport]]:':
       'max-h-[var(--reka-popper-available-height)] [scrollbar-width:auto]',

@@ -56,11 +56,11 @@ const selected = reactive<Record<string, boolean>>({
       <div
         v-for="scope of scopes"
         :class="scope"
-        class="surface-0 p-$m mb-$xs rounded-base flex items-center gap-$m"
+        class="surface-0 p-$m mb-$xs rounded-r1 flex items-center gap-$m"
       >
         <span class="text-caption opacity-60 w-[8em] truncate">{{ scope }}</span>
         <button
-          class="c8-filled h-fingertip rounded flex items-center px-$m gap-$xs cursor-pointer select-none"
+          class="c8-filled h-fingertip rounded-r1 flex items-center px-$m gap-$xs cursor-pointer select-none"
         >
           Apply
         </button>

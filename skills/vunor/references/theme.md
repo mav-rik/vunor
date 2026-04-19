@@ -226,6 +226,56 @@ presetVunor({ baseRadius: '0' })       // square corners everywhere
 
 Used by `rounded-base` (the default for `c8-*`, `i8-filled`, cards).
 
+#### Single-knob radius — what bypasses it
+
+`baseRadius` is the design system's radius knob: change it once, every component reskins. This only works if **every rounded corner routes through `rounded-base`** (or a spacing-scaled token like `rounded-$s`, `rounded-$card-spacing`). Anything that hardcodes a literal value **bypasses the knob entirely**:
+
+```html
+<!-- ✗ frozen at 7px, ignores baseRadius -->
+<div class="rounded-[7px]">…</div>
+<div class="rounded-[var(--my-app-radius)]">…</div>  <!-- if --my-app-radius is a literal -->
+<style>.card { border-radius: 10px; }</style>
+```
+
+```html
+<!-- ✓ tracks baseRadius -->
+<div class="rounded-base">…</div>
+<div class="rounded-$s">…</div>              <!-- scales with spacing -->
+<div class="rounded-$card-spacing">…</div>   <!-- scales with card density -->
+```
+
+The same rule applies when you're **building a custom design system on top of vunor** (your own `defineShortcuts`, component library, or skinned app). Compose with `rounded-base` in your shortcuts instead of introducing a parallel radius variable — otherwise downstream consumers get two knobs to turn (yours and vunor's), and `baseRadius: '0'` doesn't make the UI flat.
+
+If you need more than one radius size in your design, reach first for the **`rounded-r0..r4`** ladder — it derives from `baseRadius` directly and honours the single-knob contract (every step collapses to `0` when `baseRadius: '0'`). See the next subsection. Use spacing-derived radii (`rounded-$xxs` … `rounded-$xxl`) only when you specifically want a spacing-tied corner that tracks `spacingFactor` instead of `baseRadius`. Avoid literal pixels unless the shape is intentionally fixed (pill, full circle).
+
+#### Radius ladder — `rounded-r0..r4`
+
+Five-step scale derived from `baseRadius`. Every step resolves to `0` when `baseRadius: '0'`, so the "flat everything" preset stays flat.
+
+| Token | Formula | At `baseRadius: 8px` | At `baseRadius: 0.618em` (default) | At `baseRadius: 0` | Typical use |
+|-------|---------|----------------------|------------------------------------|--------------------|-------------|
+| `rounded-r0` | `min(base, clamp(2px, base/2, 4px))` — always emitted in `px` | `4px` | `4px` | `0` | chips, checkboxes, tight indicator pills |
+| `rounded-r1` | `base × 1` (same as `rounded-base`) | `8px` | `0.618em` | `0` | buttons, inputs, default controls |
+| `rounded-r2` | `base × 1.5` | `12px` | `0.927em` | `0` | popovers, toasts, small containers |
+| `rounded-r3` | `base × 2` | `16px` | `1.236em` | `0` | dialogs, cards, emphasized surfaces |
+| `rounded-r4` | `base × 2.5` | `20px` | `1.545em` | `0` | hero surfaces, very-rounded panels |
+
+Notes:
+
+- **`r0` is always `px`.** Its whole purpose is an absolute floor (2px) and ceiling (4px), so it must not drift with the element's font-size. `rounded-r0` on a `text-h1` renders 4px; `rounded-r0` on a `text-caption` also renders 4px.
+- **`r1..r4` preserve the input unit.** If `baseRadius` is em, they're em (scales with element font-size, same as `rounded-base` has always done). If `baseRadius` is px, they're px.
+- **`rounded-base` and `rounded-r1` are equivalent** — both emit the `baseRadius` literal. Use whichever reads better in context; `r1` is the canonical form in the ladder.
+- **Don't mix with `rounded-[4px]`.** Hardcoded literals break the single-knob contract. Use `rounded-r0` for chip-sized corners and `rounded-r3` for dialog-sized corners.
+
+```html
+<VuCheckbox />                              <!-- rounded-r0 internally -->
+<button class="c8-filled h-fingertip">Save</button>  <!-- c8-filled = rounded-r1 -->
+<VuDialog class="rounded-r3">…</VuDialog>   <!-- dialog-sized radius -->
+<div class="rounded-r2">Popover content</div>
+```
+
+When building a custom design system on top of vunor, prefer the r-ladder over introducing parallel CSS variables — downstream consumers of your components get `baseRadius: '0' ⇒ flat UI` behaviour for free.
+
 ### `fingertip`
 
 Touch-target sizes consumed by `h-fingertip`, `min-w-fingertip`, `rounded-fingertip-half`, `lh-fingertip`, etc.

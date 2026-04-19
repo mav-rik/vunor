@@ -7,7 +7,7 @@ export const toastShortcuts = defineShortcuts({
     '': [
       'bg-current',
       'p-$m',
-      'rounded-$m',
+      'rounded-r2',
       'border',
       'grid',
       "[grid-template-areas:_'title_action'_'description_action']",

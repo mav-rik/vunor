@@ -4,7 +4,7 @@ import { defineShortcuts } from '../utils/define-sc'
 export const c8 = defineShortcuts({
   // FILLED
   'c8-filled': {
-    '': 'current-bg-scope-color-500 rounded-base current-text-white current-icon-white icon-current/100 bg-current  text-current',
+    '': 'current-bg-scope-color-500 rounded-r1 current-text-white current-icon-white icon-current/100 bg-current  text-current',
     'hover:': 'c8-filled-hover',
     'focus-visible:': 'c8-filled-hover',
     'data-[highlighted]:': 'c8-filled-hover',
@@ -25,7 +25,7 @@ export const c8 = defineShortcuts({
 
   // FLAT (Transparent)
   'c8-flat': {
-    '': 'current-bg-scope-color-500 rounded-base current-text-black current-icon-black bg-current/0 text-current/80 icon-current/50',
+    '': 'current-bg-scope-color-500 rounded-r1 current-text-black current-icon-black bg-current/0 text-current/80 icon-current/50',
     'dark:': 'current-text-white current-icon-white',
     'hover:': 'c8-flat-hover',
     'focus-visible:': 'c8-flat-hover',
@@ -49,7 +49,7 @@ export const c8 = defineShortcuts({
 
   // OUTLINED (Bordered)
   'c8-outlined': {
-    '': 'c8-flat border-scope-color-500 rounded-base border current-text-scope-color-500 current-icon-scope-color-500 icon-current/100',
+    '': 'c8-flat border-scope-color-500 rounded-r1 border current-text-scope-color-500 current-icon-scope-color-500 icon-current/100',
     'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
     'hover:': 'c8-outlined-hover',
     'focus-visible:': 'c8-outlined-hover',
@@ -68,7 +68,7 @@ export const c8 = defineShortcuts({
   // (scope-primary, scope-error, etc.). Use for secondary chrome buttons
   // (Cancel, Select all, None) that should not compete with the primary CTA.
   'c8-chrome': {
-    '': 'surface-0 rounded-base border',
+    '': 'surface-0 rounded-r1 border',
     'hover:': 'c8-chrome-hover',
     'focus-visible:': 'c8-chrome-hover',
     'data-[highlighted]:': 'c8-chrome-hover',
@@ -93,7 +93,7 @@ export const c8 = defineShortcuts({
 
   // LIGHT (Filled/Transparent)
   'c8-light': {
-    '': 'current-bg-scope-color-500 rounded-base current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80',
+    '': 'current-bg-scope-color-500 rounded-r1 current-text-scope-color-500 current-icon-scope-color-500 bg-current/10 text-current icon-current/80',
     'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
     'hover:': 'c8-light-hover',
     'focus-visible:': 'c8-light-hover',

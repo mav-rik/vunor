@@ -137,21 +137,31 @@ Variants:
 
 ## Border radius
 
-The `borderRadius` theme is a copy of the spacing scale plus `base`:
+The `borderRadius` theme is a copy of the spacing scale plus `base` and a `baseRadius`-derived ladder `r0..r4`:
 
 | Class | Source |
 |-------|--------|
-| `rounded-base` | `--baseRadius` (default `0.618em`) |
-| `rounded-$xxs` … `rounded-$xxl` | spacing tokens |
+| `rounded-r0` | minimum radius — `min(base, clamp(2px, base/2, 4px))`, always `px`; for chips, checkboxes, tight pills |
+| `rounded-r1` | `baseRadius` (alias for `rounded-base`); for buttons, inputs, default controls |
+| `rounded-r2` | `baseRadius × 1.5`; for popovers, toasts, small containers |
+| `rounded-r3` | `baseRadius × 2`; for dialogs, cards, emphasized surfaces |
+| `rounded-r4` | `baseRadius × 2.5`; for hero surfaces, very-rounded panels |
+| `rounded-base` | `--baseRadius` (default `0.618em`) — same as `rounded-r1` |
+| `rounded-$xxs` … `rounded-$xxl` | spacing tokens (tracks `spacingFactor`, not `baseRadius`) |
 | `rounded-fingertip-half` | half of active fingertip — perfect pill on `h-fingertip` |
 
+All `rounded-r*` steps collapse to `0` when `baseRadius: '0'`, preserving the "flat everything" single-knob contract.
+
 ```html
+<VuCheckbox />                                        <!-- rounded-r0 -->
+<button class="h-fingertip px-$m rounded-r1 c8-filled scope-primary">Save</button>
+<div class="rounded-r3 layer-0 p-$m">                 <!-- dialog-sized container -->
+  …
+</div>
 <button class="h-fingertip rounded-fingertip-half">pill</button>
-<div class="rounded-base">card-style radius</div>
-<div class="rounded-$s">small radius</div>
 ```
 
-Override `baseRadius` in `presetVunor({ baseRadius })` to reskin every component in one stroke (`c8-*`, `i8-filled`, cards default to `rounded-base`).
+Override `baseRadius` in `presetVunor({ baseRadius })` to reskin every component in one stroke — all `rounded-r*`, `rounded-base`, and internal `c8-*` / `i8-filled` / checkbox / toast / select radii track it. Cards are the exception: their corner radius is font-size-derived via `--card-spacing`, so cards remain harmonious with heading size regardless of `baseRadius`. See [theme.md](theme.md) for the full radius-ladder reference.
 
 ## Common patterns
 

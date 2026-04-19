@@ -1,5 +1,6 @@
 import { generatePalette } from './palitra'
 import { buildFontTheme } from './typography'
+import { computeRadiusScale } from './utils/radius-scale'
 import { round } from './utils/round'
 
 import type { TVunorPaletteOptions } from './palitra'
@@ -55,6 +56,7 @@ export const themeFactory = (
   const borderRadius = {
     ...spacing,
     base: opts.baseRadius,
+    ...computeRadiusScale(opts.baseRadius),
   }
 
   /**

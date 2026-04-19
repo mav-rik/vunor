@@ -69,7 +69,7 @@ function onBlur() {
   >
     <VuCardHeader class="mb-$s">Inputs</VuCardHeader>
 
-    <div class="layer-4 pa-$m rounded-$m backdrop-blur-md">
+    <div class="layer-4 pa-$m rounded-r2 backdrop-blur-md">
       <div class="flex gap-$m mt-$s items-center">
         <VuSelect :items="typeItems" v-model="type" label="Type" design="filled" :stack-label />
         <VuCheckbox label="Stack Label" v-model="stackLabel" />
@@ -131,7 +131,7 @@ function onBlur() {
 
     <h3>Groupped Inputs</h3>
 
-    <div class="layer-2 pa-$m rounded-$m backdrop-blur-md">
+    <div class="layer-2 pa-$m rounded-r2 backdrop-blur-md">
       <div class="flex gap-$m mt-$s items-center">
         <VuSelect :stack-label :items="typeItems" v-model="type" label="Type" design="filled" />
         <VuCheckbox label="Stack Label" v-model="stackLabel" />
