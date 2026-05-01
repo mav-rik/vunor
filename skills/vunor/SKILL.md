@@ -1,21 +1,12 @@
 ---
 name: vunor
 description: >-
-  Use this skill when working with Vunor — the Vue 3 + UnoCSS design system
-  and component library. Covers presetVunor, vunorShortcuts, defineShortcuts,
-  mergeVunorShortcuts, VunorVueResolver, Nuxt module, and Vu-prefixed
-  components (VuButton, VuInput, VuSelect, VuCombobox, VuCheckbox,
-  VuRadioGroup, VuSlider, VuDatePicker, VuCard, VuDialog, VuTabs, VuMenu,
-  VuAppLayout, VuIcon). Plus Vunor UnoCSS rules and semantic classes —
-  scopes (primary, secondary, good, warn, error, grey, neutral), layer-0..4
-  depth backgrounds, surface-0..900 colored blocks, current-* color system,
-  c8 clickable styles (filled, flat, outlined, light, chrome), i8 input styles
-  (flat, filled, round), card / card-dense, fingertip touch targets,
-  $xxs..$xxl spacing tokens, text-h1..text-caption typography, text-mt/mb-*
-  margin compensation. Plus palette tuning (lightest, darkest, layersDepth,
-  flatness, vivid, saturate, mainPalette, layerPalette, surfaces) and
-  shortcut-override patterns. Imports: vunor, vunor/theme, vunor/utils,
-  vunor/vite, vunor/nuxt.
+  Use when working with Vunor, the Vue 3 + UnoCSS design system and component
+  library. Covers presetVunor, vunorShortcuts/defineShortcuts/mergeVunorShortcuts,
+  VunorVueResolver, Nuxt module, Vu-prefixed components, semantic UnoCSS classes
+  (scope-*, layer-*, surface-*, current-*, c8-*, i8-*, card, fingertip, spacing,
+  typography), palette/theme tuning, and shortcut override patterns. Imports: vunor,
+  vunor/theme, vunor/utils, vunor/vite, vunor/nuxt.
 ---
 
 # Vunor
