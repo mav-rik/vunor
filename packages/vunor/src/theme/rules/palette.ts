@@ -43,29 +43,68 @@ function getCssTarget(key: TCssColorTarget) {
 const SCOPE_SHADES = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900']
 const SCOPE_LAYERS = ['0', '1', '2', '3', '4']
 
+// Slots tracked in --current-{slot} CSS vars. Ordered longest-first so regex
+// alternation picks the most specific match (e.g. text-muted before text).
+// Both rules below derive their accepted token set from this list — adding a
+// new slot only needs an edit here.
+const CURRENT_SLOTS = [
+  'text-muted',
+  'icon-muted',
+  'text-hover',
+  'bg-hover',
+  'border-hover',
+  'text',
+  'bg',
+  'icon',
+  'border',
+  'outline',
+  'caret',
+  'hl',
+] as const
+type TCurrentSlot = (typeof CURRENT_SLOTS)[number]
+const slotAlt = CURRENT_SLOTS.join('|')
+// Rule 2 also accepts `-muted`/`-hover` shorthands that resolve against the
+// paint target (e.g. `text-current-muted` → -text-muted).
+const sourceAlt = [...CURRENT_SLOTS, 'muted', 'hover'].map(s => `-${s}`).join('|')
+const currentSlotRe = new RegExp(`^current-(${slotAlt})-(.+)$`)
+const currentPaintRe = new RegExp(
+  `^(text|bg|icon|border|outline|caret|fill|shadow|ring)-current(${sourceAlt})?(\\/\\d{1,3})?$`
+)
+
 export function getScopeCssVars(
   c: string,
   theme: Theme & TVunorTheme
 ): Record<string, string> | undefined {
   const col = theme.colors[c] as string | undefined
-  if (!col) {return undefined}
+  if (!col) {
+    return undefined
+  }
   const vars: Record<string, string> = { '--scope-color': colorToRgbWithOpacity(col) }
   for (const shade of SCOPE_SHADES) {
     vars[`--scope-color-${shade}`] = colorToRgbWithOpacity(theme.colors[`${c}-${shade}`]) || ''
   }
   for (const layer of SCOPE_LAYERS) {
-    vars[`--scope-light-${layer}`] = colorToRgbWithOpacity(theme.colors[`${c}-light-${layer}`]) || ''
+    vars[`--scope-light-${layer}`] =
+      colorToRgbWithOpacity(theme.colors[`${c}-light-${layer}`]) || ''
     vars[`--scope-dark-${layer}`] = colorToRgbWithOpacity(theme.colors[`${c}-dark-${layer}`]) || ''
   }
   vars['--current-hl'] = colorToRgbWithOpacity(theme.colors[`${c}-500`]) || ''
+  // Tone-axis fallbacks: layer-X / surface-X override these per-layer; values
+  // here are the "no scope chosen" baseline used by preflight neutral.
+  const greyMuted = colorToRgbWithOpacity(theme.colors[`grey-500`]) || ''
+  vars['--current-text-muted'] = greyMuted
+  vars['--current-icon-muted'] = greyMuted
+  vars['--current-text-hover'] = colorToRgbWithOpacity(theme.colors[`${c}-dark-0`]) || ''
+  vars['--current-bg-hover'] = colorToRgbWithOpacity(theme.colors[`${c}-light-1`]) || ''
+  vars['--current-border-hover'] = colorToRgbWithOpacity(theme.colors[`${c}-light-3`]) || ''
   return vars
 }
 
 export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
   [
-    /^current-(text|bg|icon|border|outline|caret|hl)-(.+)$/,
+    currentSlotRe,
     (match: RegExpMatchArray, { theme }: { theme: Theme & TVunorTheme }) => {
-      const t = match[1] as 'text' | 'bg' | 'icon'
+      const t = match[1] as TCurrentSlot
       const c = match[2]
       if (c.startsWith('scope-')) {
         return {
@@ -77,30 +116,42 @@ export const paletteRules: Array<Rule<Theme & TVunorTheme>> = [
           [`--current-${t}`]: `var(--current-hl)`,
         }
       }
-      const col = (theme.colors[c] as string | { DEFAULT?: string } | undefined) || c
-      if (col) {
-        return {
-          // @ts-expect-error
-          [`--current-${t}`]: colorToRgbWithOpacity(col.DEFAULT || col),
-        }
+      const themeCol = theme.colors[c] as string | { DEFAULT?: string } | undefined
+      const colStr = typeof themeCol === 'string' ? themeCol : themeCol?.DEFAULT
+      if (!colStr) {
+        return undefined
       }
-      return undefined
+      try {
+        return {
+          [`--current-${t}`]: colorToRgbWithOpacity(colStr),
+        }
+      } catch {
+        return undefined
+      }
     },
   ],
   [
-    /^(text|bg|icon|border|outline|caret|fill|shadow|ring)-current(-text|-bg|-icon|-border|-outline|-caret|-hl)?(\/\d{1,3})?$/,
+    currentPaintRe,
     (match: RegExpMatchArray, { theme: _theme }: { theme: Theme & TVunorTheme }) => {
       const target = match[1] as TCssColorTarget
-      const source = match[2] || `-${target}`
+      let source = match[2] || `-${target}`
+      // `-muted` / `-hover` (no second segment) → resolve against own target
+      if (source === '-muted' || source === '-hover') {
+        source = `-${target}${source}`
+      }
       const opacityVar = getOpacityVar(target)
       const cssVar = getCssTarget(target)
       const o = match[3]
       const opacity = o ? Number(o.slice(1)) / 100 : 1
       const opacityVal = opacity === 1 ? `var(${opacityVar})` : opacity
       if (target === 'icon') {
+        // icons are painted via --current-icon — for -hl/-muted/-hover slots,
+        // re-point --current-icon at the requested slot so `icon-current/N`
+        // (the actual paint utility) reads from it.
+        const indirect = ['-hl', '-icon-muted', '-icon-hover'].includes(source)
         return {
           [opacityVar]: opacity,
-          '--current-icon': source === '-hl' ? `var(--current${source})` : undefined,
+          '--current-icon': indirect ? `var(--current${source})` : undefined,
         }
       }
       if (['shadow', 'ring'].includes(target) && source === '-border') {

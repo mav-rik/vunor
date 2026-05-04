@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type { TSelectItems } from '../components/Select/types'
 import { ref } from 'vue'
 
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
-import VuSelectBase from '../components/Select/SelectBase.vue'
-import VuSelect from '../components/Select/Select.vue'
 import VuInput from '../components/Input/Input.vue'
+import VuSelect from '../components/Select/Select.vue'
+import VuSelectBase from '../components/Select/SelectBase.vue'
+
+import type { TSelectItems } from '../components/Select/types'
 
 const designs = ['flat', 'filled', 'round'] as const
 const items: TSelectItems = {

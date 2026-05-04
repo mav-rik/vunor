@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch } from 'vue'
+
+import { generatePalette } from '../../theme/palitra'
+import { colorToRgbWithOpacity } from '../../theme/rules/palette'
 import { VuButton } from '../Button'
 import { VuCard, VuCardHeader, VuCardInner } from '../Card'
-import type { TVunorPaletteColor, TVunorPaletteOptions } from '../../theme'
 import VuCheckbox from '../Checkbox/Checkbox.vue'
 import VuSlider from '../Slider/Slider.vue'
 import VuTabs from '../Tabs/Tabs.vue'
-import { generatePalette } from '../../theme/palitra'
-import { color } from '@prostojs/palitra'
 
-function colorToRgbWithOpacity(c: string) {
-  const [r, g, b] = color(c).rgba()
-  return `${r} ${g} ${b}`
-}
+import type { TVunorPaletteColor, TVunorPaletteOptions } from '../../theme'
 
 function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
@@ -97,7 +94,9 @@ function cleanup() {
 }
 
 function buildOpts(): TVunorPaletteOptions {
-  if (!main.value || !layer.value || !misc.value) {return {}}
+  if (!main.value || !layer.value || !misc.value) {
+    return {}
+  }
 
   const m = main.value
   const l = layer.value
@@ -167,7 +166,9 @@ const apply = debounce(() => {
 
   for (const c of COLOR_NAMES) {
     const col = result[c]
-    if (!col) {continue}
+    if (!col) {
+      continue
+    }
     newS.textContent += `.scope-${c} {\n`
     for (const s of SUFFIXES) {
       const v = result[`${c}-${s}`]
@@ -185,7 +186,9 @@ const apply = debounce(() => {
 
     for (const s of SUFFIXES) {
       const v = result[`${c}-${s}`]
-      if (!v) {continue}
+      if (!v) {
+        continue
+      }
       const rgb = colorToRgbWithOpacity(v)
       newS.textContent += `.text-${c}-${s}{color:rgb(${rgb} / var(--un-text-opacity))}\n`
       newS.textContent += `.bg-${c}-${s}{background-color:rgb(${rgb} / var(--un-bg-opacity))}\n`
@@ -254,15 +257,22 @@ function buildColor(name: string, val: TVunorPaletteColor, p: TPalette): TColorS
 }
 
 function reset() {
-  if (!document?.head) {return}
+  if (!document?.head) {
+    return
+  }
   cleanup()
   const styleEl = document.head.querySelector('style[data-vite-dev-id="\\/__uno.css"]')
   const s = styleEl?.textContent
-  if (!s) {return}
-  const base64 = /__vunor_palette_options\s\{background-image:\surl\("data:image\/gif;base64,([^"]+)/.exec(
-    s
-  )?.[1]
-  if (!base64) {return}
+  if (!s) {
+    return
+  }
+  const base64 =
+    /__vunor_palette_options\s\{background-image:\surl\("data:image\/gif;base64,([^"]+)/.exec(
+      s
+    )?.[1]
+  if (!base64) {
+    return
+  }
 
   const paletteOpts = JSON.parse(atob(base64)) as TPalette
   misc.value = buildMisc(paletteOpts)
@@ -282,7 +292,9 @@ onMounted(reset)
 watch(
   misc,
   m => {
-    if (!m || !main.value || !layer.value) {return}
+    if (!m || !main.value || !layer.value) {
+      return
+    }
     main.value.lumDark = [m.darkest[0] + m.layersDepth[0] + 0.02]
     main.value.lumLight = [m.lightest[0]]
     main.value.flatness = [m.flatness[0]]
@@ -399,11 +411,7 @@ function fmt(v?: number) {
       <VuCardInner class="layer-0 flex-grow overflow-auto pt-$l">
         <!-- COLORS TAB -->
         <div v-if="tab === 'colors'">
-          <div
-            v-for="c of colors"
-            :key="c.name"
-            class="border-b border-grey-500/30 pb-$xs mb-$xs"
-          >
+          <div v-for="c of colors" :key="c.name" class="border-b border-grey-500/30 pb-$xs mb-$xs">
             <div class="flex items-center gap-$xs mb-$xs">
               <input
                 type="color"

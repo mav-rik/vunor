@@ -7,12 +7,13 @@ import {
   DialogTitle,
   DialogClose,
 } from 'reka-ui'
-import VuCard from '../Card/Card.vue'
-import VuCardHeader from '../Card/CardHeader.vue'
-import VuButton from '../Button/Button.vue'
-import VuIcon from '../Icon/Icon.vue'
 import { type ComponentInstance, nextTick, ref, onMounted, computed, watch } from 'vue'
 import { mergeCssClasses, type TVueCssClass } from 'vunor/utils'
+
+import VuButton from '../Button/Button.vue'
+import VuCard from '../Card/Card.vue'
+import VuCardHeader from '../Card/CardHeader.vue'
+import VuIcon from '../Icon/Icon.vue'
 
 interface TFooterButton {
   label: string

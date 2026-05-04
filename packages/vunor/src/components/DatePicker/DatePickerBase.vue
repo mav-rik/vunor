@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { DatePickerRoot, type DatePickerRootProps, DatePickerTrigger } from 'reka-ui'
-import VuIcon from '../Icon/Icon.vue'
-import type VuInputBase from '../Input/InputBase.vue'
-import VuDatePickerPopup from './DatePickerPopup.vue'
-import VuDatePickerInner from './DatePickerInner.vue'
 import { type ComponentPublicInstance, computed, ref, watch, nextTick } from 'vue'
+
+import VuIcon from '../Icon/Icon.vue'
 import { type TInputProps, useInputProps } from '../Input/utils'
+import VuDatePickerInner from './DatePickerInner.vue'
+import VuDatePickerPopup from './DatePickerPopup.vue'
+
+import type VuInputBase from '../Input/InputBase.vue'
 import type { DateValue } from '@internationalized/date'
 import type { TVueCssClass } from 'vunor/utils'
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CheckboxRoot, CheckboxIndicator } from 'reka-ui'
+
 import VuIcon from '../Icon/Icon.vue'
 
 const modelValue = defineModel<boolean | undefined | 'indeterminate'>()

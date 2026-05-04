@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { reactive } from 'vue'
+
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
-import { reactive } from 'vue'
 
 const scopes = [
   'scope-grey',
@@ -45,13 +46,11 @@ const selected = reactive<Record<string, boolean>>({
       </div>
     </div>
     <div class="mb-$xl">
-      <h4 class="text-mb-$m">
-        <code>c8-chrome</code> stays neutral inside any scope
-      </h4>
+      <h4 class="text-mb-$m"><code>c8-chrome</code> stays neutral inside any scope</h4>
       <p class="text-body-s text-current/70 mb-$m">
-        Each row below is wrapped in a different scope. <code>c8-filled</code> follows the scope
-        (it changes color). <code>c8-chrome</code> ignores it — secondary chrome buttons remain
-        neutral and don't compete with the scoped CTA.
+        Each row below is wrapped in a different scope. <code>c8-filled</code> follows the scope (it
+        changes color). <code>c8-chrome</code> ignores it — secondary chrome buttons remain neutral
+        and don't compete with the scoped CTA.
       </p>
       <div
         v-for="scope of scopes"

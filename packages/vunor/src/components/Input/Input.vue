@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useInputPi, useInputBaseProps } from 'vunor'
-import type { TInputProps, TInputEmits } from './utils'
-import VuInputBase from './InputBase.vue'
+
 import VuIcon from '../Icon/Icon.vue'
 import VuLabel from '../Label/Label.vue'
+import VuInputBase from './InputBase.vue'
+
+import type { TInputProps, TInputEmits } from './utils'
 
 withDefaults(defineProps<TInputProps>(), {
   groupTemplate: 'repeat(1, 1fr)',

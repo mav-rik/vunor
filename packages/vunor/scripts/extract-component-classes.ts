@@ -1,9 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { createGenerator } from 'unocss'
 import vue from '@vitejs/plugin-vue'
 import { scan } from 'rolldown/experimental'
+import { createGenerator } from 'unocss'
 
 import { shortcuts as sc } from '../src/components/shortcuts'
 import { presetVunor } from '../src/theme/preset-vunor'
@@ -32,12 +32,18 @@ const componentEntries: Record<string, string> = {}
 
 const knownTsExports = new Set(['.', './package.json', './theme', './utils', './vite', './nuxt'])
 for (const exportPath of Object.keys(pkgJson.exports as Record<string, unknown>)) {
-  if (knownTsExports.has(exportPath)) {continue}
+  if (knownTsExports.has(exportPath)) {
+    continue
+  }
   const match = exportPath.match(/^\.\/(\w+)$/)
-  if (!match) {continue}
+  if (!match) {
+    continue
+  }
   const name = match[1]
   const found = findVueFile(path.join(PKG_ROOT, 'src', 'components'), `${name}.vue`)
-  if (found) {componentEntries[name] = found}
+  if (found) {
+    componentEntries[name] = found
+  }
 }
 
 function findVueFile(dir: string, filename: string): string | undefined {
@@ -46,7 +52,9 @@ function findVueFile(dir: string, filename: string): string | undefined {
     const fullPath = path.join(dir, file.name)
     if (file.isDirectory()) {
       const found = findVueFile(fullPath, filename)
-      if (found) {return found}
+      if (found) {
+        return found
+      }
     } else if (file.name === filename) {
       return fullPath
     }
@@ -64,7 +72,8 @@ function stripQueryParams(id: string): string {
   return idx >= 0 ? id.slice(0, idx) : id
 }
 
-const ASSET_RE = /\.(css|scss|less|styl|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot|mp[34]|webm|ogg|pdf)(\?.*)?$/
+const ASSET_RE =
+  /\.(css|scss|less|styl|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot|mp[34]|webm|ogg|pdf)(\?.*)?$/
 
 const cleanup = await scan({
   input: Object.fromEntries(
@@ -97,7 +106,7 @@ const cleanup = await scan({
   resolve: {
     alias: {
       'vunor/utils': path.resolve(PKG_ROOT, 'src/utils'),
-      vunor: path.resolve(PKG_ROOT, 'src/vunor'),
+      'vunor': path.resolve(PKG_ROOT, 'src/vunor'),
     },
   },
   plugins: [
@@ -113,10 +122,7 @@ const cleanup = await scan({
     {
       name: 'collect-module-graph',
       moduleParsed(info) {
-        moduleGraph.set(info.id, [
-          ...info.importedIds,
-          ...info.dynamicallyImportedIds,
-        ])
+        moduleGraph.set(info.id, [...info.importedIds, ...info.dynamicallyImportedIds])
 
         if (info.isEntry) {
           const cleanPath = stripQueryParams(info.id)
@@ -144,7 +150,9 @@ function collectVueFiles(entryId: string): Set<string> {
 
   while (queue.length > 0) {
     const id = queue.pop() as string
-    if (visited.has(id)) {continue}
+    if (visited.has(id)) {
+      continue
+    }
     visited.add(id)
 
     const cleanId = stripQueryParams(id)
@@ -175,7 +183,7 @@ const componentClassMap: Record<string, string[]> = {}
 
 for (const [name, entryId] of entryIdMap) {
   const vueFiles = collectVueFiles(entryId)
-  const allCode = [...vueFiles].map((f) => fs.readFileSync(f, 'utf8')).join('\n')
+  const allCode = [...vueFiles].map(f => fs.readFileSync(f, 'utf8')).join('\n')
   const { matched } = await uno.generate(allCode, { preflights: false })
   componentClassMap[name] = [...matched].toSorted()
 }

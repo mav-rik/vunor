@@ -2,7 +2,7 @@ import { defineShortcuts } from '../utils/define-sc'
 
 export const i8 = defineShortcuts({
   'i8': {
-    '': 'h-fingertip min-w-3em flex items-center select-none relative icon-current content-box',
+    '': 'h-fingertip min-w-3em flex items-center select-none relative icon-current content-box disabled-soft',
     'data-[type=textarea]:': 'min-h-fingertip h-auto items-start',
     'data-[active=true]:': 'icon-current-hl',
     'focus-within:': 'icon-current-hl',
@@ -21,11 +21,23 @@ export const i8 = defineShortcuts({
       'data-[active=true]:': 'current-border-hl outline i8-apply-outline',
       'focus-within:': 'current-border-hl outline i8-apply-outline',
     },
-    'aria-[disabled=true]:': 'opacity-50 cursor-not-allowed',
     // error
     'group-[[data-error=true]]/i8:': {
       '': 'current-border-error-500 current-outline-error-500 border-opacity-100 border-current',
     },
+  },
+
+  // Standalone leaf-class for unwrapped <input>s. Bundles border + bg +
+  // outline + focus highlight + placeholder color so consumers can write
+  // `i8-bare h-fingertip-m px-$m` instead of re-deriving the recipe.
+  // Padding/height/radius stay external because they vary by callsite.
+  'i8-bare': {
+    '':
+      'i8-apply-bg i8-apply-border current-outline-hl rounded-r1 outline-none ' +
+      'text-current placeholder:text-current/50 disabled-soft',
+    'hover:': 'border-current-hover',
+    'focus:': 'current-border-hl outline i8-apply-outline',
+    'data-[error=true]:': 'current-border-error-500 current-outline-error-500 border-current',
   },
 
   'i8-loading': {

@@ -5,8 +5,9 @@ description: >-
   library. Covers presetVunor, vunorShortcuts/defineShortcuts/mergeVunorShortcuts,
   VunorVueResolver, Nuxt module, Vu-prefixed components, semantic UnoCSS classes
   (scope-*, layer-*, surface-*, current-*, c8-*, i8-*, card, fingertip, spacing,
-  typography), palette/theme tuning, and shortcut override patterns. Imports: vunor,
-  vunor/theme, vunor/utils, vunor/vite, vunor/nuxt.
+  typography), public composition primitives (btn, menu-item, popup-card, i8-bare,
+  disabled-soft), palette/theme tuning, and shortcut override patterns. Imports:
+  vunor, vunor/theme, vunor/utils, vunor/vite, vunor/nuxt.
 ---
 
 # Vunor
@@ -164,13 +165,30 @@ import { VunorVueResolver } from 'vunor/vite'   // unplugin-vue-components resol
 </div>
 <div class="bg-scope-color-500/50 text-scope-light-1">…</div>
 
+<!-- tone slots (set automatically by layer-X / surface-X) -->
+<span class="text-current">primary</span>
+<span class="text-current-muted">secondary / placeholder weight</span>
+<span class="text-current-hl">accent (scope-color-500)</span>
+<button class="border-current hover:border-current-hover hover:bg-current-hover">hover-step</button>
+
 <!-- clickable styles -->
 <button class="c8-filled | c8-flat | c8-outlined | c8-light | c8-chrome">…</button>
 <!-- c8-chrome stays neutral inside any scope (use for Cancel / Select all / None
      buttons sitting next to a scoped primary CTA) -->
+<!-- c8-flat-selected fires on data-selected | aria-selected | aria-pressed | data-on -->
 
 <!-- input styles -->
 <div class="i8 i8-filled | i8-flat | i8-round">…</div>
+
+<!-- public composition primitives (compose on hand-rolled elements) -->
+<button class="scope-primary c8-filled btn">Save</button>           <!-- layout glue for clickables -->
+<button class="c8-flat btn btn-square"><span class="i--x btn-icon"/></button>
+<input  class="i8-bare h-fingertip-m px-$m" />                       <!-- standalone input, no .i8 wrapper -->
+<div    class="popup-card w-[14em]">                                 <!-- popover surface chrome -->
+  <button class="menu-item">Row</button>
+</div>
+<button class="disabled-soft" aria-disabled="true">…</button>        <!-- canonical visual disabled -->
+
 
 <!-- card -->
 <VuCard level="h3" rounded dense>…</VuCard>

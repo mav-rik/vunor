@@ -1,6 +1,9 @@
 import { shortcuts as sc } from './components/shortcuts'
+import { btn } from './theme/shortcuts/btn'
 import { c8 } from './theme/shortcuts/c8'
+import { disabledSoft, popupCard } from './theme/shortcuts/extras'
 import { i8 } from './theme/shortcuts/i8'
+import { menu } from './theme/shortcuts/menu'
 import { mergeVunorShortcuts, toUnoShortcut } from './theme/utils/shortcut-obj'
 
 import type { TVunorShortcut } from './theme/utils/define-sc'
@@ -21,7 +24,7 @@ export { mergeVunorShortcuts, toUnoShortcut } from './theme/utils/shortcut-obj'
 /**
  * Array of raw vunor shortcuts (not merged)
  */
-export const rawVunorShortcuts = [i8, c8, ...sc]
+export const rawVunorShortcuts = [i8, c8, btn, menu, popupCard, disabledSoft, ...sc]
 
 /**
  * Vunor shortcuts (merged version of rawVunorShortcuts)

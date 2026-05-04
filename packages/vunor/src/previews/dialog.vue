@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
+import VuButton from '../components/Button/Button.vue'
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
-import VuButton from '../components/Button/Button.vue'
 import VuDialog from '../components/Dialog/Dialog.vue'
 import VuInput from '../components/Input/Input.vue'
-import { ref } from 'vue'
 const basicDialog = ref(false)
 const scrollDialog = ref(false)
 const noFooterDialog = ref(false)

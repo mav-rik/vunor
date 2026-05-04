@@ -7,10 +7,12 @@ import {
   ToastTitle,
   ToastViewport,
 } from 'reka-ui'
-import type { ToastProviderProps } from 'reka-ui'
 import { type TToastInternal, useAppToasts } from 'vunor'
-import type { TVueCssClass } from 'vunor/utils'
+
 import VuButton from '../Button/Button.vue'
+
+import type { ToastProviderProps } from 'reka-ui'
+import type { TVueCssClass } from 'vunor/utils'
 
 const { toasts, close } = useAppToasts()
 

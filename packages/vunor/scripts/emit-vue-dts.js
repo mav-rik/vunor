@@ -7,9 +7,10 @@
  * 4. Writes bundled declarations to dist/{Name}.d.mts
  * 5. Cleans up the temporary directory
  */
+
+import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
-import { execSync } from 'node:child_process'
 
 const __dirname = import.meta.dirname
 const root = path.resolve(__dirname, '..')
@@ -20,7 +21,7 @@ const dtsTmpDir = path.join(distDir, 'dts-tmp')
 console.log('Running vue-tsc to emit Vue component declarations...')
 try {
   execSync('npx vue-tsc -p tsconfig.dts.json', { cwd: root, stdio: 'pipe' })
-} catch  {
+} catch {
   // vue-tsc may exit with errors (e.g. type mismatches) but still emit declarations
   if (!fs.existsSync(dtsTmpDir)) {
     console.error('vue-tsc failed and no output was generated')
@@ -39,9 +40,13 @@ const resolvedCache = new Map()
 let copied = 0
 
 for (const exportPath of Object.keys(pkgJson.exports)) {
-  if (knownTsExports.has(exportPath)) {continue}
+  if (knownTsExports.has(exportPath)) {
+    continue
+  }
   const match = exportPath.match(/^\.\/(\w+)$/)
-  if (!match) {continue}
+  if (!match) {
+    continue
+  }
 
   const name = match[1]
 
@@ -107,7 +112,9 @@ function bundleLocalImports(content, baseDir) {
     return ''
   })
 
-  if (inlinedTypes.length === 0) {return content}
+  if (inlinedTypes.length === 0) {
+    return content
+  }
 
   return `${inlinedTypes.join('\n')}\n${result}`
 }
@@ -119,7 +126,9 @@ function bundleLocalImports(content, baseDir) {
  * - Removes local relative imports within the helper
  */
 function readAndProcessHelper(filePath) {
-  if (resolvedCache.has(filePath)) {return resolvedCache.get(filePath)}
+  if (resolvedCache.has(filePath)) {
+    return resolvedCache.get(filePath)
+  }
 
   const content = fs.readFileSync(filePath, 'utf8')
 
@@ -139,13 +148,17 @@ function readAndProcessHelper(filePath) {
 }
 
 function findFile(dir, filename) {
-  if (!fs.existsSync(dir)) {return undefined}
+  if (!fs.existsSync(dir)) {
+    return undefined
+  }
   const entries = fs.readdirSync(dir, { withFileTypes: true })
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name)
     if (entry.isDirectory()) {
       const found = findFile(fullPath, filename)
-      if (found) {return found}
+      if (found) {
+        return found
+      }
     } else if (entry.name === filename) {
       return fullPath
     }

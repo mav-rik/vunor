@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 
+import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'rolldown'
 import { dts } from 'rolldown-plugin-dts'
-import vue from '@vitejs/plugin-vue'
 
 const __dirname = import.meta.dirname
 
@@ -15,7 +15,9 @@ const vueEntries: Record<string, string> = {}
 
 const knownTsExports = new Set(['.', './package.json', './theme', './utils', './vite', './nuxt'])
 for (const exportPath of Object.keys(pkgJson.exports as Record<string, unknown>)) {
-  if (knownTsExports.has(exportPath)) {continue}
+  if (knownTsExports.has(exportPath)) {
+    continue
+  }
   const match = exportPath.match(/^\.\/(\w+)$/)
   if (match) {
     const name = match[1]
@@ -32,7 +34,9 @@ function findVueFile(dir: string, filename: string): string | undefined {
     const fullPath = path.join(dir, file.name)
     if (file.isDirectory()) {
       const found = findVueFile(fullPath, filename)
-      if (found) {return found}
+      if (found) {
+        return found
+      }
     } else if (file.name === filename) {
       return fullPath
     }
@@ -88,7 +92,7 @@ const sharedExternal = [
 const sharedResolve = {
   alias: {
     'vunor/utils': path.resolve(__dirname, 'src/utils'),
-    vunor: path.resolve(__dirname, 'src/vunor'),
+    'vunor': path.resolve(__dirname, 'src/vunor'),
   },
 }
 
@@ -140,7 +144,9 @@ const vueConfig = defineConfig({
     {
       name: 'externalize-sibling-components',
       resolveId(source, importer) {
-        if (!importer || !source.endsWith('.vue')) {return null}
+        if (!importer || !source.endsWith('.vue')) {
+          return null
+        }
         const importerClean = importer.split('?')[0]
         const resolved = path.resolve(path.dirname(importerClean), source)
         const externalPath = vueExternalMap.get(resolved)

@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
+import VuButton from '../components/Button/Button.vue'
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
-import VuButton from '../components/Button/Button.vue'
-import VuPopover from '../components/Popover/Popover.vue'
 import VuOverflowContainer from '../components/OverflowContainer/OverflowContainer.vue'
-import { ref } from 'vue'
+import VuPopover from '../components/Popover/Popover.vue'
 const designs = ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat'] as const
 
 const maxVisibleArray = ref([5])

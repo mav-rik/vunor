@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
+import VuButton from '../components/Button/Button.vue'
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
 import VuCheckbox from '../components/Checkbox/Checkbox.vue'
-import VuButton from '../components/Button/Button.vue'
-import { ref } from 'vue'
 
 const designs = ['c8-filled', 'c8-outlined', 'c8-light', 'c8-flat', 'c8-chrome'] as const
 const scopes = ['scope-primary', 'scope-neutral', 'scope-error'] as const

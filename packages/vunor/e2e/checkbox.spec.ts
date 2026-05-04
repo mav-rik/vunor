@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+
 import { navigateTo } from './utils'
 
 test.describe('Checkbox Component', () => {
@@ -14,7 +15,10 @@ test.describe('Checkbox Component', () => {
 
   test('toggle checkbox changes state', async ({ page }) => {
     // The scope-secondary checkbox (second in the list) starts unchecked
-    const checkbox = page.locator('label.checkbox-root').filter({ hasText: 'Checkbox (scope-secondary)' }).first()
+    const checkbox = page
+      .locator('label.checkbox-root')
+      .filter({ hasText: 'Checkbox (scope-secondary)' })
+      .first()
     const button = checkbox.locator('button.checkbox')
 
     await expect(button).toHaveAttribute('data-state', 'unchecked')
@@ -36,7 +40,10 @@ test.describe('Checkbox Component', () => {
   })
 
   test('disabled checkbox cannot be toggled', async ({ page }) => {
-    const disabledLabel = page.locator('label.checkbox-root').filter({ hasText: /^Checkbox Disabled$/ }).first()
+    const disabledLabel = page
+      .locator('label.checkbox-root')
+      .filter({ hasText: /^Checkbox Disabled$/ })
+      .first()
     const button = disabledLabel.locator('button.checkbox')
 
     const stateBefore = (await button.getAttribute('data-state')) ?? ''
@@ -51,7 +58,10 @@ test.describe('Checkbox Component', () => {
   })
 
   test('required checkbox has required attribute', async ({ page }) => {
-    const requiredLabel = page.locator('label.checkbox-root').filter({ hasText: 'Checkbox 1 (required)' }).first()
+    const requiredLabel = page
+      .locator('label.checkbox-root')
+      .filter({ hasText: 'Checkbox 1 (required)' })
+      .first()
     const button = requiredLabel.locator('button.checkbox')
     await expect(button).toHaveAttribute('aria-required', 'true')
   })

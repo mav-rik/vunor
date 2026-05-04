@@ -1,6 +1,7 @@
 import { defu } from 'defu'
 import { presetWind } from 'unocss'
 
+import { componentClasses } from './generated/component-classes'
 import { getPaletteShortcuts } from './palitra'
 import { fontsPreflights } from './preflights'
 import { rules } from './rules'
@@ -14,8 +15,6 @@ import type { TVunorUnoPresetOpts } from './types'
 import type { Theme } from '@unocss/preset-mini'
 import type { Extractor, Preset, PresetFactory, StaticShortcut } from 'unocss'
 
-import { componentClasses } from './generated/component-classes'
-
 function createVunorExtractor(): Extractor {
   return {
     name: 'vunor-component-classes',
@@ -26,18 +25,24 @@ function createVunorExtractor(): Extractor {
       // Match direct imports: import X from 'vunor/Button'
       for (const [, name] of code.matchAll(/['"]vunor\/(\w+)['"]/g)) {
         if (componentClasses[name]) {
-          for (const cls of componentClasses[name]) {matched.add(cls)}
+          for (const cls of componentClasses[name]) {
+            matched.add(cls)
+          }
         }
       }
 
       // Match template tags: <VuButton, <VuInput, etc.
       for (const [, name] of code.matchAll(/<Vu(\w+)/g)) {
         if (componentClasses[name]) {
-          for (const cls of componentClasses[name]) {matched.add(cls)}
+          for (const cls of componentClasses[name]) {
+            matched.add(cls)
+          }
         }
       }
 
-      if (matched.size > 0) {return matched}
+      if (matched.size > 0) {
+        return matched
+      }
     },
   }
 }
@@ -151,12 +156,11 @@ export const presetVunor: PresetFactory<
   wind.rules.push(...rules)
   const paletteShortcuts = getPaletteShortcuts() as StaticShortcut[]
   const theme = themeFactory(opts)
-  wind.preflights.push({
-    getCSS: () =>
-      `__vunor_palette_options {background-image: url("data:image/gif;base64,${Buffer.from(
-        JSON.stringify({ ...theme.paletteOpts, surfaces: undefined })
-      ).toString('base64')}")}`,
-  })
+  const paletteOptsBase64 = Buffer.from(
+    JSON.stringify({ ...theme.paletteOpts, surfaces: undefined })
+  ).toString('base64')
+  const paletteOptsCss = `__vunor_palette_options {background-image: url("data:image/gif;base64,${paletteOptsBase64}")}`
+  wind.preflights.push({ getCSS: () => paletteOptsCss })
   return {
     ...wind,
     name: 'vunor',

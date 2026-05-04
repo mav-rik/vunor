@@ -38,10 +38,7 @@ export default defineConfig({
     __vue_files__: JSON.stringify(vueFiles, null, '  '),
   },
 
-  plugins: [
-    UnoCSS(),
-    vue(),
-  ],
+  plugins: [UnoCSS(), vue()],
   test: {
     exclude: ['e2e/**', 'node_modules/**'],
   },

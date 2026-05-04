@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+
 import { navigateTo } from './utils'
 
 test.describe('Input Component', () => {

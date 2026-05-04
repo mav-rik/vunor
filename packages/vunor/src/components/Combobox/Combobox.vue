@@ -1,15 +1,5 @@
 <script setup lang="ts" generic="T extends TComboboxItem = TComboboxItem">
-import type { TComboboxProps, TComboboxItem } from './types'
-import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/utils'
 import { createReusableTemplate } from '@vueuse/core'
-import { useInputBaseProps, useInputProps } from 'vunor'
-import { watch, ref, computed, nextTick } from 'vue'
-
-import VuCheckbox from '../Checkbox/Checkbox.vue'
-import VuInputBase from '../Input/InputBase.vue'
-import VuInput from '../Input/Input.vue'
-import VuIcon from '../Icon/Icon.vue'
-
 import {
   ComboboxRoot,
   ComboboxContent,
@@ -27,6 +17,16 @@ import {
   PopoverPortal,
   PopoverContent,
 } from 'reka-ui'
+import { watch, ref, computed, nextTick } from 'vue'
+import { useInputBaseProps, useInputProps } from 'vunor'
+
+import VuCheckbox from '../Checkbox/Checkbox.vue'
+import VuIcon from '../Icon/Icon.vue'
+import VuInput from '../Input/Input.vue'
+import VuInputBase from '../Input/InputBase.vue'
+
+import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/utils'
+import type { TComboboxProps, TComboboxItem } from './types'
 
 const [DefineContentTemplate, UseContentTemplate] = createReusableTemplate()
 const [DefineRootTemplate, UseRootTemplate] = createReusableTemplate()
@@ -353,7 +353,12 @@ function onEnter(event: KeyboardEvent) {
           :data-expanded="usePopover ? undefined : modelOpen"
         >
           <template v-slot="slotProps">
-            <ComboboxInput as-child v-model="searchTerm" :display-value="() => displayValue" class="i8-input">
+            <ComboboxInput
+              as-child
+              v-model="searchTerm"
+              :display-value="() => displayValue"
+              class="i8-input"
+            >
               <input
                 class="i8-input"
                 ref="input"

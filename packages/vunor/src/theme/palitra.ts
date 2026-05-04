@@ -502,17 +502,29 @@ export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
     [
       /^layer-([0-4])$/,
       ([, a], { theme }) => {
+        // bg uses `bg` side; fg uses the opposite for contrast.
+        // hover-step: bg moves one layer further; border lands on -3.
+        const sideTemplate = (bg: 'light' | 'dark', n: number) => {
+          const fg = bg === 'light' ? 'dark' : 'light'
+          const hover = Math.min(n + 1, 4)
+          return (
+            `current-bg-scope-${bg}-${n} current-text-scope-${fg}-0 current-icon-scope-${fg}-0 ` +
+            `current-text-muted-scope-${fg}-2 current-icon-muted-scope-${fg}-2 ` +
+            `current-bg-hover-scope-${bg}-${hover} current-border-hover-scope-${bg}-3 current-text-hover-scope-${fg}-0`
+          )
+        }
         const d = layerN(Number(a), theme.reverseDarkLayers)
         const l = layerN(Number(a), theme.reverseLightLayers)
+        const dark = sideTemplate('dark', d)
         return toUnoShortcut({
-          '': `current-bg-scope-light-${l} current-text-scope-dark-2 current-icon-scope-dark-2 current-border-grey-500 bg-current text-current`,
-          'dark:': `current-bg-scope-dark-${d} current-text-scope-light-2 current-icon-scope-light-2`,
-          '[&.dark]:': `current-bg-scope-dark-${d} current-text-scope-light-2 current-icon-scope-light-2`,
+          '': `${sideTemplate('light', l)} current-border-grey-500 bg-current text-current`,
+          'dark:': dark,
+          '[&.dark]:': dark,
         })
       },
     ],
     [
-      /^(bg|text|current-text|current-bg|current-icon|current-border|current-outline|current-caret|current-hl|i8-bg|i8-border|i8-outline)-layer-([0-4])$/,
+      /^(current-text-muted|current-icon-muted|current-text-hover|current-bg-hover|current-border-hover|bg|text|current-text|current-bg|current-icon|current-border|current-outline|current-caret|current-hl|i8-bg|i8-border|i8-outline)-layer-([0-4])$/,
       ([, target, a], { theme }) => {
         const d = layerN(Number(a), theme.reverseDarkLayers)
         const l = layerN(Number(a), theme.reverseLightLayers)

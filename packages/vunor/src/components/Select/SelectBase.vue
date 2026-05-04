@@ -1,5 +1,4 @@
 <script setup lang="ts" generic="T extends TSelectItem">
-import type { TSelectBaseProps, TSelectItem } from './types'
 import {
   SelectRoot,
   SelectTrigger,
@@ -15,10 +14,11 @@ import {
   SelectItemText,
   SelectValue,
 } from 'reka-ui'
+import { computed } from 'vue'
 
 import VuIcon from '../Icon/Icon.vue'
 
-import { computed } from 'vue'
+import type { TSelectBaseProps, TSelectItem } from './types'
 
 const props = defineProps<TSelectBaseProps<T>>()
 

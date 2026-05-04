@@ -3,32 +3,33 @@ import { useDark } from '@vueuse/core'
 import { ref, computed } from 'vue'
 
 import VuAppLayout from './components/AppLayout/AppLayout.vue'
+import VuAppToasts from './components/AppToasts/AppToasts.vue'
+import VuButton from './components/Button/Button.vue'
 import VuDevTools from './components/DevTools/DevTools.vue'
 import VuIcon from './components/Icon/Icon.vue'
 import VuMenu from './components/Menu/Menu.vue'
-import VuButton from './components/Button/Button.vue'
-
 import PreviewAlerts from './previews/alerts.vue'
 import PreviewButtons from './previews/buttons.vue'
-import PreviewDialog from './previews/dialog.vue'
-import PreviewOverflowButtons from './previews/overflowbuttons.vue'
+import PreviewCalendar from './previews/calendar.vue'
 import PreviewCards from './previews/cards.vue'
 import PreviewCheckboxes from './previews/checkboxes.vue'
+import PreviewClickable from './previews/clickable.vue'
 import PreviewComboboxes from './previews/comboboxes.vue'
+import PreviewDialog from './previews/dialog.vue'
+import PreviewInputable from './previews/inputable.vue'
+import PreviewInputs from './previews/inputs.vue'
+import PreviewLayers from './previews/layers.vue'
+import PreviewOverflowButtons from './previews/overflowbuttons.vue'
+import PreviewPagination from './previews/pagination.vue'
+import PreviewPrimitives from './previews/primitives.vue'
 import PreviewRadiobuttons from './previews/radiobuttons.vue'
 import PreviewSelects from './previews/selects.vue'
 import PreviewSliders from './previews/sliders.vue'
 import PreviewSurfaces from './previews/surfaces.vue'
-import PreviewLayers from './previews/layers.vue'
-import PreviewClickable from './previews/clickable.vue'
-import PreviewInputable from './previews/inputable.vue'
-import PreviewTypography from './previews/typography.vue'
-import PreviewTest from './previews/test.vue'
 import PreviewTabs from './previews/tabs.vue'
-import PreviewInputs from './previews/inputs.vue'
-import PreviewPagination from './previews/pagination.vue'
-import PreviewCalendar from './previews/calendar.vue'
-import VuAppToasts from './components/AppToasts/AppToasts.vue'
+import PreviewTest from './previews/test.vue'
+import PreviewTokens from './previews/tokens.vue'
+import PreviewTypography from './previews/typography.vue'
 
 const menu2 = [
   { group: 'Styles', label: 'Clickable (c8)', value: 'Clickable', icon: 'i--click' },
@@ -36,6 +37,8 @@ const menu2 = [
   { group: 'Styles', label: 'Layers', value: 'Layers', icon: 'i--layers' },
   { group: 'Styles', label: 'Surfaces', value: 'Surfaces', icon: 'i--surfaces' },
   { group: 'Styles', label: 'Typography', value: 'Typography', icon: 'i--typography' },
+  { group: 'Styles', label: 'Tokens', value: 'Tokens', icon: 'i--surfaces' },
+  { group: 'Styles', label: 'Primitives', value: 'Primitives', icon: 'i--button' },
   // { group: 'Components', label: 'Alerts', value: 'Alerts', icon: 'i--alert' },
   { group: 'Components', label: 'Buttons', value: 'Buttons', icon: 'i--button' },
   { group: 'Components', label: 'Dialog', value: 'Dialog', icon: 'i--dialog' },
@@ -79,6 +82,8 @@ const pages = {
   Inputs: PreviewInputs,
   Pagination: PreviewPagination,
   Tabs: PreviewTabs,
+  Tokens: PreviewTokens,
+  Primitives: PreviewPrimitives,
 }
 
 const selected = ref<keyof typeof pages>('Testing')

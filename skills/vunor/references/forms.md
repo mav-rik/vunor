@@ -83,6 +83,17 @@ For a custom input renderer (e.g. masked input), use the `input` slot:
 </VuInput>
 ```
 
+### `i8-bare` — standalone `<input>` without a wrapper
+
+For inline rename fields, search boxes, or any case where the `i8` wrapper `<div>` is overhead, use the public `i8-bare` shortcut. It bundles border + bg + outline + focus highlight + placeholder color + `data-error` reaction — height/padding/radius stay external.
+
+```html
+<input class="i8-bare h-fingertip-s px-$m" placeholder="search…" />
+<input class="scope-primary i8-bare h-fingertip-m px-$m rounded-fingertip-half" />
+```
+
+See [shortcuts.md](shortcuts.md) for the full recipe and how it composes the underlying apply-rules.
+
 ## `<VuSelect>`
 
 Dropdown built on Reka UI Select. Portals popup to `<body>`. Typically wrapped inside `<VuInput>` for the label/error/design surround.

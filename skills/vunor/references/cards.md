@@ -252,6 +252,20 @@ presetVunor({ cardSpacingFactor: { regular: 1, dense: 0.5 } })
 
 `shadow-popup` is a built-in Vunor shortcut for floating-card shadow.
 
+### `popup-card` — surface chrome for hand-rolled popovers
+
+When you need a floating surface but don't want the `<VuCard>` machinery (no header/footer/spacing logic), use the public `popup-card` shortcut. It bundles `surface-0 + bg-current + rounded-r2 + overflow-hidden + shadow-popup + z-[100] + border` so any popover/menu/listbox picks up the same surface look as `<VuSelect>`'s dropdown.
+
+```html
+<div class="popup-card w-[14em] py-$xs">
+  <button class="menu-item">Save</button>
+  <button class="menu-item">Duplicate</button>
+  <button class="menu-item">Delete</button>
+</div>
+```
+
+`popup-card` is the symmetric partner of `dialog-card` — `dialog-card` is positioning-focused (centered modal), `popup-card` is surface-focused (chrome only). Add `min-w-` / `max-w-` per use.
+
 ## Gotchas
 
 - The `card` shortcut uses `data-*` attributes set by `<VuCard>`. Putting `class="card"` on a plain `<div>` does nothing unless you also wire `data-rounded`, `data-dense`, `data-level` yourself.

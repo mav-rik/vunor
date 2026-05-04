@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Primitive } from 'reka-ui'
-import VuLoadingIndicator from '../Loading/LoadingIndicator.vue'
+
 import VuIcon from '../Icon/Icon.vue'
+import VuLoadingIndicator from '../Loading/LoadingIndicator.vue'
 
 withDefaults(
   defineProps<{

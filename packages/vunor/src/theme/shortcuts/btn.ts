@@ -1,6 +1,8 @@
-import { defineShortcuts } from '../../theme/utils/define-sc'
+import { defineShortcuts } from '../utils/define-sc'
 
-export const buttonShortcuts = defineShortcuts({
+// Public layout primitives for hand-rolled clickables. Pair with c8-* for
+// color/state and a scope-* for theming. <VuButton> bundles these for you.
+export const btn = defineShortcuts({
   'btn': {
     '': 'h-fingertip flex items-center justify-center px-$m gap-$xs select-none fw-bold tracking-wide relative',
     '[&.btn-round]:': 'px-fingertip-half rounded-fingertip-half',

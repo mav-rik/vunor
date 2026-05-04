@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import VuMenuItem from './MenuItem.vue'
-import VuInput from '../Input/Input.vue'
-
 import {
   ComboboxRoot,
   ComboboxInput,
@@ -11,8 +8,10 @@ import {
   ComboboxLabel,
   ComboboxItem,
 } from 'reka-ui'
-
 import { computed } from 'vue'
+
+import VuInput from '../Input/Input.vue'
+import VuMenuItem from './MenuItem.vue'
 
 type AcceptableValue = string | number | bigint | Record<string, unknown> | null
 interface TItem {

@@ -4,8 +4,8 @@ import { ref } from 'vue'
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
 import VuCheckbox from '../components/Checkbox/Checkbox.vue'
-import VuInputBase from '../components/Input/InputBase.vue'
 import VuInput from '../components/Input/Input.vue'
+import VuInputBase from '../components/Input/InputBase.vue'
 import VuSelect from '../components/Select/Select.vue'
 
 const states3 = [{ design: 'flat' }, { design: 'filled' }, { design: 'round' }] as const

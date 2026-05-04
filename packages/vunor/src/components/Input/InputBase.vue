@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useInputPi, useInputDataAttrs, useHtmlInputAttrs } from 'vunor'
-import type { TInputBaseProps, TInputBaseEmits } from './utils'
 import { Primitive } from 'reka-ui'
 import { ref, computed } from 'vue'
+import { useInputPi, useInputDataAttrs, useHtmlInputAttrs } from 'vunor'
 
-import VuLoadingIndicator from '../Loading/LoadingIndicator.vue'
 import VuIcon from '../Icon/Icon.vue'
+import VuLoadingIndicator from '../Loading/LoadingIndicator.vue'
+
+import type { TInputBaseProps, TInputBaseEmits } from './utils'
 
 const props = withDefaults(defineProps<TInputBaseProps>(), {
   design: 'flat',

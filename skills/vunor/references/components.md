@@ -120,7 +120,7 @@ Button with icon, loading, link, and active/pressed/selected states.
 | `asLink` | boolean | `false` | Render as `<a>` instead of `<button>` |
 
 Slots: `default` (overrides label), `icon-left`, `icon-right`.
-CSS classes: `btn`, `btn-round`, `btn-square`, `btn-icon`, `btn-label`.
+CSS classes: `btn`, `btn-round`, `btn-square`, `btn-icon`, `btn-label`. **All four are public-composable** as of vunor 0.2 — use them on plain `<button>`/`<a>` elements when you don't need the full `<VuButton>` component.
 
 `<VuButton>` does **not** prescribe a c8 variant — pair it with `c8-filled`/`c8-flat`/`c8-outlined`/`c8-light`/`c8-chrome` and a `scope-*`.
 
@@ -156,6 +156,8 @@ Slots: `empty`, `item`.
 ### `<VuMenuItem>`
 
 Single menu row used internally by `<VuMenu>`. Reuse it when building custom menus that need consistent visuals.
+
+The underlying `menu-item` (and `menu-root`) shortcuts are **public-composable** as of vunor 0.2 — apply them to any reka-ui menu-shaped element (e.g. `<MenuItem>`, `<ListboxItem>`, plain `<button>` in a popover) without going through `<VuMenuItem>`.
 
 ### `<VuPagination>`
 

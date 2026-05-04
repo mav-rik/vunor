@@ -106,7 +106,7 @@ Returns the object as-is, but with a typed signature (`TVunorShortcut`). Pure ty
 
 **`c8-*` is a color and state preset, not a button preset.** Each variant sets background, text, border-radius, and the hover / active / focus-visible / `[data-highlighted]` / `[data-active]` color transitions for an interactive surface in the active scope. It does **not** set `display`, `height`, `padding`, `gap`, `cursor`, or typography — that's the consumer's job.
 
-For a working button you either use `<VuButton>` — which bundles the layout via the `btn` shortcut — or compose c8 with structural utilities yourself (see [Minimum working button](#minimum-working-button) below).
+For a working button, either use `<VuButton>` (which composes `btn` for you) or pair `c8-*` with the public `btn` shortcut on a hand-rolled `<button>` / `<a>` / `<router-link>` (see [Minimum working button](#minimum-working-button) below).
 
 c8 also requires an active **scope** on the element or any ancestor. Without one, `--scope-color-*` and `--current-*` fall back to the preflight neutral defaults — usable but generic. To make a c8 button look "primary", put `scope-primary` on the button (or any ancestor); to flip it to destructive, switch the scope to `scope-error`. The button class never changes.
 
@@ -119,7 +119,7 @@ c8 also requires an active **scope** on the element or any ancestor. Without one
 | `c8-outlined` | `bg: transparent`, `border: current`, `text: current`. Hover `bg: current/10`, active `bg: current/15`. | Outline CTA |
 | `c8-light` | `bg: current/10` (10% scope-500), `text: current`. Hover `bg: current/20`, active `bg: current/30`. | Soft info / positive |
 | `c8-chrome` | Composes `surface-0` (so bg / text / icon / border match a `surface-0` block exactly), hover `bg: scope-light-1`, active `bg: scope-light-2`. Stays visually neutral because `surface-0` uses `scope-light-0` / `scope-color-100` which are near-grey in every scope. | Secondary chrome (Cancel, Select all, None) that **must stay neutral** next to a scoped primary CTA |
-| `c8-flat-selected` | Selected emphasis on `c8-flat` — auto-applied when the element has `data-selected="true"` or `aria-pressed="true"` | Tabs, segmented controls, menu items, toggle buttons |
+| `c8-flat-selected` | Selected emphasis on `c8-flat` — auto-applied when the element has `data-selected="true"`, `aria-selected="true"`, `aria-pressed="true"`, or `data-on="true"` | Tabs, segmented controls, menu items, toggle buttons |
 
 Each variant additionally pre-wires:
 
@@ -136,39 +136,35 @@ Each variant additionally pre-wires:
 
 ### Minimum working button
 
+`btn`, `btn-square`, `btn-icon`, `btn-label` are **public layout primitives** as of vunor 0.2 — compose them on any hand-rolled clickable. Pair with one `c8-*` for color/state and a `scope-*` for theming.
+
 ```html
 <!-- Text button -->
-<button class="scope-primary c8-filled
-               inline-flex items-center justify-center
-               h-fingertip-m px-$m gap-$xs
-               font-500 cursor-pointer">
-  Save
-</button>
+<button class="scope-primary c8-filled btn cursor-pointer">Save</button>
 
 <!-- Icon-only square button -->
-<button class="c8-flat
-               inline-grid place-items-center
-               w-fingertip-m h-fingertip-m
-               cursor-pointer">
-  <VuIcon name="i--close" />
+<button class="c8-flat btn btn-square cursor-pointer">
+  <VuIcon name="i--close" class="btn-icon" />
 </button>
 
 <!-- Icon + label -->
-<button class="scope-primary c8-filled
-               inline-flex items-center
-               h-fingertip-m px-$m gap-$xs
-               font-500 cursor-pointer">
-  <VuIcon name="i--save" /> Save
+<button class="scope-primary c8-filled btn cursor-pointer">
+  <VuIcon name="i--save" class="btn-icon btn-icon-left" />
+  <span class="btn-label">Save</span>
 </button>
+
+<!-- Link styled as flat button -->
+<a href="#" class="c8-flat btn">Link</a>
 ```
 
-`<VuButton>` ships these layout classes via its `btn` / `btn-square` / `btn-label` / `btn-icon` shortcuts, so on a `<VuButton>` you only have to pick the c8 variant:
+`<VuButton>` is a thin wrapper that bundles these classes for you so you only have to pick the c8 variant:
 
 ```html
 <VuButton class="scope-primary c8-filled" label="Save" />
 <VuButton class="scope-error c8-flat" icon="i--trash" />
-<a href="#" class="c8-flat inline-flex items-center h-fingertip px-$m">Link</a>
 ```
+
+> **Pre-0.2 boilerplate** — before `btn` was public, the same button required the inline layout glue `inline-flex items-center justify-center h-fingertip-m px-$m gap-$xs font-500 cursor-pointer`. Replace with `btn` after upgrading.
 
 ## i8 — input styles
 
@@ -255,7 +251,17 @@ You can use them directly in two situations:
 
 **2. Paint i8 colors directly onto a standalone `<input>` without the `.i8` wrapper.**
 
-When you don't want the extra wrapper `<div>` around every `<input>` (e.g. simple search box, inline rename field, custom layout), you can compose the apply rules straight onto the input:
+When you don't want the extra wrapper `<div>` around every `<input>` (e.g. simple search box, inline rename field, custom layout), use the public **`i8-bare`** shortcut. It bundles border + bg + outline + focus highlight + placeholder color + `data-error` reaction. Padding, height, and radius stay external.
+
+```html
+<input class="i8-bare h-fingertip-m px-$m" placeholder="search…" />
+
+<input class="scope-primary i8-bare h-fingertip-s px-$m rounded-fingertip-half" />
+
+<input class="i8-bare h-fingertip-m px-$m" data-error="true" placeholder="errored" />
+```
+
+For the rare case `i8-bare`'s defaults don't fit, the underlying apply-rules are still available — compose them yourself like the wrapper does:
 
 ```html
 <input
@@ -267,7 +273,7 @@ When you don't want the extra wrapper `<div>` around every `<input>` (e.g. simpl
 />
 ```
 
-The same pattern is used inside custom `i8-*` design variants (see [Pattern 5](#pattern-5--extend-i8-with-a-custom-design-variant)).
+The same low-level recipe powers `i8-bare` itself and any custom `i8-*` design variants (see [Pattern 5](#pattern-5--extend-i8-with-a-custom-design-variant)).
 
 Full rule reference in [rules.md](rules.md).
 
@@ -277,23 +283,32 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 
 | Group | Shortcuts |
 |-------|----------|
+| **Public primitives** *(compose on hand-rolled elements)* | `btn`, `btn-square`, `btn-label`, `btn-icon`, `menu-root`, `menu-item`, `popup-card`, `i8-bare`, `disabled-soft` |
 | `c8` | `c8-filled`, `c8-filled-hover`, `c8-filled-active`, `c8-flat`, `c8-flat-hover`, `c8-flat-active`, `c8-flat-selected`, `c8-outlined`, `c8-outlined-hover`, `c8-outlined-active`, `c8-light`, `c8-light-hover`, `c8-light-active`, `c8-chrome`, `c8-chrome-hover`, `c8-chrome-active`, `c8-chrome-selected` |
 | `i8` | `i8`, `i8-input`, `i8-textarea`, `i8-input-wrapper`, `i8-ta-wrapper`, `i8-label`, `i8-label-wrapper`, `i8-stack-label`, `i8-hint`, `i8-counter`, `i8-hint-wrapper`, `i8-hint-wrapper-stack`, `i8-prepend`, `i8-append`, `i8-before`, `i8-after`, `i8-icon-wrap`, `i8-icon-clickable`, `i8-loading`, `i8-underline`, `segmented` |
 | Card | `card` |
-| Button | `btn`, `btn-square`, `btn-label`, `btn-icon` |
 | Checkbox | `checkbox-root`, `checkbox`, `checkbox-indicator`, `checkbox-icon`, `checkbox-label` |
 | RadioGroup | `rb-container`, `rb-label`, `rb-root`, `rb-row`, `rb-item-wrapper`, `rb-item`, `rb-item-indicator`, `rb-item-label` |
 | Select | `select-content`, `select-item`, `select-grp-label`, `select-separator`, `select-prepend`, `select-append`, `select-loading` |
 | Combobox | `combobox-content`, `combobox-item`, `combobox-empty`, `combobox-grp-label` |
 | Slider | `slider`, `slider-track`, `slider-range`, `slider-thumb`, `slider-label` |
 | Tabs | `tabs-indicator`, `tab` |
-| Menu | `menu-root`, `menu-item` |
 | Dialog | `dialog-overlay`, `dialog-card`, `dialog-header`, `dialog-title`, `dialog-close`, `dialog-footer` |
 | Calendar | `calendar-root`, `calendar-header`, `calendar-month-grid`, `calendar-grid-row`, `calendar-cell` |
 | Loading | `loading-indicator`, `loading-indicator-wrapper`, `inner-loading`, `loading-indicator-ring` |
 | Toast | `toast-root`, `toasts-viewport` |
 | Progress | `progress-bar` |
 | Misc | `shadow-popup` |
+
+**Public primitives** are layout/surface/state shortcuts you can compose on any hand-rolled element. Components like `<VuButton>`/`<VuMenu>`/`<VuInput>` use them internally — but you don't need the component to use the primitive.
+
+| Primitive | Use for |
+|-----------|---------|
+| `btn`, `btn-square`, `btn-icon`, `btn-label` | Layout glue for clickables — pair with `c8-*` for color and `scope-*` for theming. |
+| `menu-root`, `menu-item` | Reka-ui-shaped menu rows — composes `c8-flat` for hover/highlighted/selected states. |
+| `popup-card` | Surface chrome for hand-rolled popovers / listboxes — partner of `dialog-card`. |
+| `i8-bare` | Standalone `<input>` styling without the `i8` wrapper `<div>`. |
+| `disabled-soft` | Visually disabled treatment (opacity-40 + not-allowed) on `disabled`, `aria-disabled`, `data-disabled`. |
 
 ## Override patterns
 

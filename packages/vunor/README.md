@@ -39,15 +39,15 @@ All values are emitted as CSS custom properties, ready for use in any CSS-based 
 
 ### Semantic Colors
 
-| Name | Default | Purpose |
-|------|---------|---------|
-| `primary` | `#004eaf` | Main brand color |
-| `secondary` | `#edd812` | Accent / highlight |
-| `good` | `#7bc76a` | Success / positive |
-| `warn` | `#ef9421` | Warning |
-| `error` | `#bf5a5f` | Error / negative |
-| `grey` | `#858892` | Neutral greys |
-| `neutral` | `#5da0c5` | Alternative neutral |
+| Name        | Default   | Purpose             |
+| ----------- | --------- | ------------------- |
+| `primary`   | `#004eaf` | Main brand color    |
+| `secondary` | `#edd812` | Accent / highlight  |
+| `good`      | `#7bc76a` | Success / positive  |
+| `warn`      | `#ef9421` | Warning             |
+| `error`     | `#bf5a5f` | Error / negative    |
+| `grey`      | `#858892` | Neutral greys       |
+| `neutral`   | `#5da0c5` | Alternative neutral |
 
 ### Per-Color Fine-Tuning
 
@@ -98,18 +98,18 @@ All dimensions in Vunor derive from the golden ratio (`k = 1.618`).
 
 Font sizes, line heights, and letter spacing are computed from powers of `k`:
 
-| Name | Size | Weight | Bold | Line Height |
-|------|------|--------|------|-------------|
-| `h1` | k^3.5 | 400 | 700 | k^0.5 |
-| `h2` | k^2.5 | 400 | 700 | k^0.5 |
-| `h3` | k^2 | 400 | 700 | k^0.5 |
-| `h4` | k^1 | 400 | 600 | k^0.5 |
-| `h5` | k^0.5 | 400 | 600 | k^0.5 |
-| `h6` | k^0.25 | 600 | 700 | k^0.5 |
-| `body` | 1 | 400 | 600 | k^0.75 |
-| `body-s` | k^-0.5 | 400 | 600 | k^1 |
-| `label` | k^-0.25 | 500 | 700 | k^0.5 |
-| `caption` | k^-0.5 | 400 | 600 | k^0.5 |
+| Name      | Size    | Weight | Bold | Line Height |
+| --------- | ------- | ------ | ---- | ----------- |
+| `h1`      | k^3.5   | 400    | 700  | k^0.5       |
+| `h2`      | k^2.5   | 400    | 700  | k^0.5       |
+| `h3`      | k^2     | 400    | 700  | k^0.5       |
+| `h4`      | k^1     | 400    | 600  | k^0.5       |
+| `h5`      | k^0.5   | 400    | 600  | k^0.5       |
+| `h6`      | k^0.25  | 600    | 700  | k^0.5       |
+| `body`    | 1       | 400    | 600  | k^0.75      |
+| `body-s`  | k^-0.5  | 400    | 600  | k^1         |
+| `label`   | k^-0.25 | 500    | 700  | k^0.5       |
+| `caption` | k^-0.5  | 400    | 600  | k^0.5       |
 
 Applied as UnoCSS utilities: `text-h1`, `text-body`, `text-label`, etc. Each sets `--font-size`, `--font-bold`, `--font-corrected` (actual rendered glyph height), line-height, letter-spacing, and top/bottom trim correction CSS vars.
 
@@ -127,15 +127,15 @@ typography: {
 
 Spacing tokens follow the same golden-ratio progression:
 
-| Token | Scale | ~Value |
-|-------|-------|--------|
+| Token  | Scale | ~Value |
+| ------ | ----- | ------ |
 | `$xxs` | 1/k^3 | 0.24em |
-| `$xs` | 1/k^2 | 0.38em |
-| `$s` | 1/k | 0.62em |
-| `$m` | 1 | 1em |
-| `$l` | k | 1.62em |
-| `$xl` | k^2 | 2.62em |
-| `$xxl` | k^3 | 4.24em |
+| `$xs`  | 1/k^2 | 0.38em |
+| `$s`   | 1/k   | 0.62em |
+| `$m`   | 1     | 1em    |
+| `$l`   | k     | 1.62em |
+| `$xl`  | k^2   | 2.62em |
+| `$xxl` | k^3   | 4.24em |
 
 Used as `p-$m`, `m-$l`, `gap-$s`, etc. Text-aware margin utilities (`text-mt-$m`, `text-mb-$s`) compensate for line-height to maintain optically correct spacing.
 
@@ -160,11 +160,11 @@ import { defineShortcuts } from 'vunor/theme'
 
 const shortcuts = defineShortcuts({
   // 'btn' is the shortcut name (used as a CSS class)
-  'btn': {
-    '': 'h-fingertip flex items-center',     // base classes (no prefix)
-    'hover:': 'bg-current/05',               // → "hover:bg-current/05"
-    'dark:': 'text-white',                   // → "dark:text-white"
-    '[&.btn-round]:': 'rounded-full',        // → "[&.btn-round]:rounded-full"
+  btn: {
+    '': 'h-fingertip flex items-center', // base classes (no prefix)
+    'hover:': 'bg-current/05', // → "hover:bg-current/05"
+    'dark:': 'text-white', // → "dark:text-white"
+    '[&.btn-round]:': 'rounded-full', // → "[&.btn-round]:rounded-full"
   },
 })
 ```
@@ -206,10 +206,10 @@ import { vunorShortcuts, defineShortcuts } from 'vunor/theme'
 
 const myOverrides = defineShortcuts({
   'c8-filled': {
-    '': 'rounded-full',      // only overrides base classes
+    '': 'rounded-full', // only overrides base classes
   },
   'i8-flat': {
-    '': 'border-b-2',        // only overrides base classes
+    '': 'border-b-2', // only overrides base classes
   },
 })
 
@@ -262,9 +262,7 @@ Surfaces apply specific palette stops as background + text + icon:
 Fine-grained color control via CSS custom properties:
 
 ```html
-<div class="current-bg-primary-500 bg-current text-current">
-  Colored via CSS vars
-</div>
+<div class="current-bg-primary-500 bg-current text-current">Colored via CSS vars</div>
 ```
 
 - `scope-{color}` sets `--scope-color-*` vars for a palette
@@ -275,12 +273,12 @@ Fine-grained color control via CSS custom properties:
 
 Button and clickable element design variants:
 
-| Class | Description |
-|-------|-------------|
-| `c8-filled` | Solid background, white text |
-| `c8-flat` | Transparent background, colored text |
+| Class         | Description                             |
+| ------------- | --------------------------------------- |
+| `c8-filled`   | Solid background, white text            |
+| `c8-flat`     | Transparent background, colored text    |
 | `c8-outlined` | Border + colored text, transparent fill |
-| `c8-light` | Light tinted background, colored text |
+| `c8-light`    | Light tinted background, colored text   |
 
 Each includes hover, active, focus, and disabled states. Apply on any element alongside `scope-{color}`:
 
@@ -293,11 +291,11 @@ Each includes hover, active, focus, and disabled states. Apply on any element al
 
 Input field design variants:
 
-| Class | Description |
-|-------|-------------|
-| `i8-flat` | Bottom border only (minimal) |
-| `i8-filled` | Full border with background |
-| `i8-round` | Pill-shaped (fully rounded) |
+| Class       | Description                  |
+| ----------- | ---------------------------- |
+| `i8-flat`   | Bottom border only (minimal) |
+| `i8-filled` | Full border with background  |
+| `i8-round`  | Pill-shaped (fully rounded)  |
 
 Common sub-shortcuts: `i8-input`, `i8-label` (floating label), `i8-hint`, `i8-prepend` / `i8-append`, `i8-before` / `i8-after`.
 
@@ -333,7 +331,7 @@ export default defineConfig({
       spacingFactor: 1.618,
 
       // -- Global border radius --
-      baseRadius: '0.5em',       // default: 0.618em (1/golden-ratio)
+      baseRadius: '0.5em', // default: 0.618em (1/golden-ratio)
 
       // -- Typography overrides --
       typography: {
@@ -448,54 +446,54 @@ The components are consumers of the theme system described above -- they use `c8
 
 ### Layout
 
-| Component | Description |
-|-----------|-------------|
-| `VuAppLayout` | App shell with header, sidebar, footer slots |
-| `VuCard` | Card container with typography-driven spacing |
-| `VuCardHeader` | Card header with title and actions |
-| `VuCardInner` | Nested card section |
-| `VuTabs` | Tabbed content panels |
-| `VuDialog` | Modal dialog with overlay |
-| `VuPopover` | Floating popover anchored to a trigger |
+| Component      | Description                                   |
+| -------------- | --------------------------------------------- |
+| `VuAppLayout`  | App shell with header, sidebar, footer slots  |
+| `VuCard`       | Card container with typography-driven spacing |
+| `VuCardHeader` | Card header with title and actions            |
+| `VuCardInner`  | Nested card section                           |
+| `VuTabs`       | Tabbed content panels                         |
+| `VuDialog`     | Modal dialog with overlay                     |
+| `VuPopover`    | Floating popover anchored to a trigger        |
 
 ### Form Inputs
 
-| Component | Description |
-|-----------|-------------|
-| `VuInput` | Text / textarea input with floating label |
-| `VuSelect` | Dropdown select |
-| `VuCombobox` | Searchable dropdown with filtering |
-| `VuCheckbox` | Checkbox with indeterminate state |
-| `VuRadioGroup` | Radio button group |
-| `VuSlider` | Range slider |
-| `VuDatePicker` | Date picker with calendar popup |
-| `VuLabel` | Form label |
+| Component      | Description                               |
+| -------------- | ----------------------------------------- |
+| `VuInput`      | Text / textarea input with floating label |
+| `VuSelect`     | Dropdown select                           |
+| `VuCombobox`   | Searchable dropdown with filtering        |
+| `VuCheckbox`   | Checkbox with indeterminate state         |
+| `VuRadioGroup` | Radio button group                        |
+| `VuSlider`     | Range slider                              |
+| `VuDatePicker` | Date picker with calendar popup           |
+| `VuLabel`      | Form label                                |
 
 ### Actions
 
-| Component | Description |
-|-----------|-------------|
-| `VuButton` | Button with icon, loading, and link support |
-| `VuMenu` | Navigation / command menu |
-| `VuMenuItem` | Menu item |
-| `VuPagination` | Page navigation |
+| Component      | Description                                 |
+| -------------- | ------------------------------------------- |
+| `VuButton`     | Button with icon, loading, and link support |
+| `VuMenu`       | Navigation / command menu                   |
+| `VuMenuItem`   | Menu item                                   |
+| `VuPagination` | Page navigation                             |
 
 ### Feedback
 
-| Component | Description |
-|-----------|-------------|
-| `VuAppToasts` | Toast notification container |
-| `VuProgressBar` | Progress bar |
-| `VuLoadingIndicator` | Circular loading spinner |
-| `VuInnerLoading` | Overlay loading within a container |
+| Component            | Description                        |
+| -------------------- | ---------------------------------- |
+| `VuAppToasts`        | Toast notification container       |
+| `VuProgressBar`      | Progress bar                       |
+| `VuLoadingIndicator` | Circular loading spinner           |
+| `VuInnerLoading`     | Overlay loading within a container |
 
 ### Utility
 
-| Component | Description |
-|-----------|-------------|
-| `VuIcon` | Icon display (integrates with UnoCSS icons) |
-| `VuOverflowContainer` | Handles content overflow |
-| `VuCalendar` | Standalone calendar grid |
+| Component             | Description                                 |
+| --------------------- | ------------------------------------------- |
+| `VuIcon`              | Icon display (integrates with UnoCSS icons) |
+| `VuOverflowContainer` | Handles content overflow                    |
+| `VuCalendar`          | Standalone calendar grid                    |
 
 ## Package Exports
 

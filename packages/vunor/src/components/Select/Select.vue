@@ -1,12 +1,14 @@
 <script setup lang="ts" generic="T extends TSelectItem">
-import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/utils'
-import { useInputBaseProps, useInputProps } from 'vunor'
-import type { TSelectBaseProps, TSelectItem } from './types'
-import VuSelectBase from './SelectBase.vue'
 import { SelectTrigger, SelectValue } from 'reka-ui'
-import VuInputBase from '../Input/InputBase.vue'
-import VuInput from '../Input/Input.vue'
 import { computed } from 'vue'
+import { useInputBaseProps, useInputProps } from 'vunor'
+
+import VuInput from '../Input/Input.vue'
+import VuInputBase from '../Input/InputBase.vue'
+import VuSelectBase from './SelectBase.vue'
+
+import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/utils'
+import type { TSelectBaseProps, TSelectItem } from './types'
 
 type Props = Omit<TInputProps & TInputBaseProps, 'active'> & TSelectBaseProps<T>
 

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import type { PopoverContentProps } from 'reka-ui'
 import { PopoverRoot, PopoverTrigger, PopoverPortal, PopoverContent } from 'reka-ui'
-import VuButton from '../Button/Button.vue'
 import { computed } from 'vue'
+
+import VuButton from '../Button/Button.vue'
+
+import type { PopoverContentProps } from 'reka-ui'
 
 const props = defineProps<
   PopoverContentProps & {

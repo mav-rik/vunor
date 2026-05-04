@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import type { TComboboxItems } from '../components/Combobox/types'
+import { ref } from 'vue'
+
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
 import VuCheckbox from '../components/Checkbox/Checkbox.vue'
 import VuCombobox from '../components/Combobox/Combobox.vue'
-import VuOverflowContainer from '../components/OverflowContainer/OverflowContainer.vue'
 import VuInput from '../components/Input/Input.vue'
-import { ref } from 'vue'
+import VuOverflowContainer from '../components/OverflowContainer/OverflowContainer.vue'
+
+import type { TComboboxItems } from '../components/Combobox/types'
 const designs = ['flat', 'filled', 'round'] as const
 const states = [
   {

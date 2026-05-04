@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import VuDatePicker from '../components/DatePicker/DatePicker.vue'
-import VuDatePickerBase from '../components/DatePicker/DatePickerBase.vue'
-import VuCard from '../components/Card/Card.vue'
-import VuCardHeader from '../components/Card/CardHeader.vue'
-import VuCalendar from '../components/Calendar/Calendar.vue'
-import VuInput from '../components/Input/Input.vue'
+import { CalendarDate } from '@internationalized/date'
 import { ref, type Ref } from 'vue'
 
-import { CalendarDate } from '@internationalized/date'
+import VuCalendar from '../components/Calendar/Calendar.vue'
+import VuCard from '../components/Card/Card.vue'
+import VuCardHeader from '../components/Card/CardHeader.vue'
+import VuDatePicker from '../components/DatePicker/DatePicker.vue'
+import VuDatePickerBase from '../components/DatePicker/DatePickerBase.vue'
+import VuInput from '../components/Input/Input.vue'
 
 const date = new CalendarDate(2022, 9, 1)
 

@@ -48,10 +48,10 @@ A preflight installs `scope-neutral` on `:root` so the variables exist by defaul
 ### `current-{target}-{source}` — set the current-color variable
 
 ```
-/^current-(text|bg|icon|border|outline|caret|hl)-(.+)$/
+/^current-(text-muted|icon-muted|text-hover|bg-hover|border-hover|text|bg|icon|border|outline|caret|hl)-(.+)$/
 ```
 
-Sets `--current-{target}` to a color reference. Targets: `text`, `bg`, `icon`, `border`, `outline`, `caret`, `hl` (highlight).
+Sets `--current-{target}` to a color reference. Targets: `text`, `bg`, `icon`, `border`, `outline`, `caret`, `hl` (highlight), plus the **tone-axis siblings** `text-muted`, `icon-muted`, `text-hover`, `bg-hover`, `border-hover` (set automatically by `layer-X` — see [colors.md](colors.md#tone-slots)).
 
 Source resolution rules:
 
@@ -70,16 +70,19 @@ Source resolution rules:
 ### `(target)-current(-source)?(/opacity)?` — apply the current-color variable
 
 ```
-/^(text|bg|icon|border|outline|caret|fill|shadow|ring)-current(-text|-bg|-icon|-border|-outline|-caret|-hl)?(\/\d{1,3})?$/
+/^(text|bg|icon|border|outline|caret|fill|shadow|ring)-current(-text-hover|-bg-hover|-border-hover|-text-muted|-icon-muted|-text|-bg|-icon|-border|-outline|-caret|-hl|-muted|-hover)?(\/\d{1,3})?$/
 ```
 
-Reads a `--current-*` variable and renders to a CSS property.
+Reads a `--current-*` variable and renders to a CSS property. The `-muted` and `-hover` shorthands resolve against the same target (`text-current-muted` → `--current-text-muted`; `border-current-hover` → `--current-border-hover`).
 
 ```html
 <div class="bg-current">         <!-- background-color: rgb(var(--current-bg) / var(--un-bg-opacity)) -->
 <div class="bg-current/50">      <!-- 50% opacity, ignoring the var -->
 <div class="text-current-hl">    <!-- color from --current-hl instead of --current-text -->
+<div class="text-current-muted"> <!-- secondary/placeholder text weight -->
 <div class="border-current">     <!-- border-color from --current-border -->
+<div class="hover:border-current-hover">  <!-- one-step-darker hover border -->
+<div class="hover:bg-current-hover">      <!-- one-step-darker hover bg -->
 <div class="shadow-current-border">  <!-- --un-shadow-color from --current-border -->
 <div class="ring-current-border">    <!-- --un-ring-color from --current-border -->
 ```
@@ -258,22 +261,33 @@ These are registered as **dynamic shortcuts** by the preset, but functionally fe
 
 ### `layer-{0-4}`
 
-Full background + text + icon + border bundle. Auto-adapts to dark mode. Honors `theme.reverseDarkLayers` and `theme.reverseLightLayers`.
+Full background + text + icon + border bundle, plus the muted/hover tone slots ([colors.md#tone-slots](colors.md#tone-slots)). Auto-adapts to dark mode. Honors `theme.reverseDarkLayers` and `theme.reverseLightLayers`.
 
 Expands to (light mode example with `n=2`):
 ```
-current-bg-scope-light-2 current-text-scope-dark-2 current-icon-scope-dark-2 current-border-grey-500 bg-current text-current
-dark:current-bg-scope-dark-2 dark:current-text-scope-light-2 dark:current-icon-scope-light-2
-[&.dark]:current-bg-scope-dark-2 [&.dark]:current-text-scope-light-2 [&.dark]:current-icon-scope-light-2
+current-bg-scope-light-2
+current-text-scope-dark-0   current-text-muted-scope-dark-2   current-text-hover-scope-dark-0
+current-icon-scope-dark-0   current-icon-muted-scope-dark-2
+current-border-grey-500     current-border-hover-scope-light-3
+current-bg-hover-scope-light-3
+bg-current text-current
+
+dark:current-bg-scope-dark-2
+dark:current-text-scope-light-0   dark:current-text-muted-scope-light-2   dark:current-text-hover-scope-light-0
+dark:current-icon-scope-light-0   dark:current-icon-muted-scope-light-2
+dark:current-border-hover-scope-dark-3
+dark:current-bg-hover-scope-dark-3
 ```
+
+(The `[&.dark]:` clauses mirror the `dark:` ones for explicit class-based dark mode.)
 
 ### `(target)-layer-{0-4}`
 
 ```
-/^(bg|text|current-text|current-bg|current-icon|current-border|current-outline|current-caret|current-hl|i8-bg|i8-border|i8-outline)-layer-([0-4])$/
+/^(current-text-muted|current-icon-muted|current-text-hover|current-bg-hover|current-border-hover|bg|text|current-text|current-bg|current-icon|current-border|current-outline|current-caret|current-hl|i8-bg|i8-border|i8-outline)-layer-([0-4])$/
 ```
 
-Single-property layer painting. Same dark-aware semantics as `layer-{0-4}` but only one target.
+Single-property layer painting. Same dark-aware semantics as `layer-{0-4}` but only one target. Targets include the tone-axis siblings so you can paint just the muted/hover slot of a specific layer.
 
 ```html
 <div class="bg-layer-1 text-layer-2 border-layer-3">…</div>

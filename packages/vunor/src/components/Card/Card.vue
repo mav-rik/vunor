@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useCardPI } from 'vunor'
 import { Primitive } from 'reka-ui'
 import { computed } from 'vue'
+import { useCardPI } from 'vunor'
 
 const props = withDefaults(
   defineProps<{

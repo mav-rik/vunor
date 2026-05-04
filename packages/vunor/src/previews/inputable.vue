@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { reactive } from 'vue'
+
 import VuCard from '../components/Card/Card.vue'
 import VuCardHeader from '../components/Card/CardHeader.vue'
-import { reactive } from 'vue'
 
 const scopes = [
   'scope-grey',

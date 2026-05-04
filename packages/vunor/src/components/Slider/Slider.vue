@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import type { SliderRootEmits, SliderRootProps } from 'reka-ui'
-import VuLabel from '../Label/Label.vue'
 import { SliderRoot, SliderTrack, SliderRange, SliderThumb, useForwardPropsEmits } from 'reka-ui'
 import { computed } from 'vue'
+
+import VuLabel from '../Label/Label.vue'
+
+import type { SliderRootEmits, SliderRootProps } from 'reka-ui'
 
 type TClass = string | Record<string, boolean>
 

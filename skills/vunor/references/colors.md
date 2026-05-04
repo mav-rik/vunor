@@ -203,7 +203,7 @@ The pattern is two-step:
 </div>
 ```
 
-Targets: `text`, `bg`, `icon`, `border`, `outline`, `caret`, `hl` (highlight).
+Targets: `text`, `bg`, `icon`, `border`, `outline`, `caret`, `hl` (highlight), plus the **tone-axis siblings** `text-muted`, `icon-muted`, `text-hover`, `bg-hover`, `border-hover`.
 
 ### Sources for `current-{target}-{source}`
 
@@ -213,6 +213,8 @@ Targets: `text`, `bg`, `icon`, `border`, `outline`, `caret`, `hl` (highlight).
 | `current-bg-primary-500` | reads the static `primary-500` color from theme |
 | `current-text-hl` | aliases `--current-text` to `--current-hl` (the scope's 500) |
 | `current-bg-scope-light-2` | reads `--scope-light-2` |
+| `current-text-muted-scope-dark-2` | sets the muted/secondary text slot (set automatically by `layer-X`) |
+| `current-border-hover-scope-light-3` | sets the one-step-darker hover border (set by `layer-X`) |
 
 ### Apply variants
 
@@ -224,6 +226,10 @@ Targets: `text`, `bg`, `icon`, `border`, `outline`, `caret`, `hl` (highlight).
 | `icon-current` | sets icon opacity; pair with `icon-color` for color |
 | `bg-current/50` | applies at 50% opacity instead of the var-controlled opacity |
 | `bg-current-hl` | uses `--current-hl` instead of `--current-bg` |
+| `text-current-muted` | uses `--current-text-muted` — the secondary/placeholder text weight |
+| `text-current-hover` | uses `--current-text-hover` — the hover-step text token |
+| `bg-current-hover` | uses `--current-bg-hover` — one-shade-darker bg for hover |
+| `border-current-hover` | uses `--current-border-hover` — one-shade-darker border for hover (replaces the dual-token `hover:border-scope-light-3 dark:hover:border-scope-dark-3` literal) |
 | `shadow-current-border` | drives `--un-shadow-color` from `--current-border` |
 | `ring-current-border` | same for ring color |
 
@@ -259,16 +265,31 @@ Vunor doesn't ship a dark-mode toggle — that's UnoCSS's `dark:` variant + your
 
 - The `c8-*` and `i8-*` shortcut systems already include `dark:` rules. Don't add your own unless overriding intentionally.
 
-## Accent / highlight color
+## Tone slots
 
-Every scope publishes `--current-hl = --scope-color-500`. Use it for the brand-color accent within a subtree without committing to a specific shade name:
+Every scope (and `layer-X` inside it) publishes a small set of tone slots so you can paint the right semantic role without re-deriving shade math:
+
+| Slot | Purpose | Example utility |
+|------|---------|----------------|
+| `--current-text` | Primary text weight (was `scope-dark-2` pre-0.2 — now `scope-dark-0`). | `text-current` |
+| `--current-text-muted` | Secondary / placeholder text — what `text-current` used to paint. | `text-current-muted` |
+| `--current-text-hover` | Hover-step text. | `hover:text-current-hover` |
+| `--current-hl` | Accent / brand-color shade — `--scope-color-500`. | `text-current-hl`, `border-current-hl` |
+| `--current-bg` | Layer / surface background. | `bg-current` |
+| `--current-bg-hover` | Hover-step background — one shade darker (light) / lighter (dark). | `hover:bg-current-hover` |
+| `--current-border` | Default border. | `border-current` |
+| `--current-border-hover` | Hover-step border. | `hover:border-current-hover` |
 
 ```html
-<div class="scope-primary">
-  <span class="text-current-hl">primary 500 text</span>
-  <span class="border-current-hl">primary 500 border</span>
+<div class="layer-0">
+  <span class="text-current">primary text</span>
+  <span class="text-current-muted">secondary text</span>
+  <span class="text-current-hl">accent text</span>
+  <button class="border-current hover:border-current-hover">hover steps the border one shade darker</button>
 </div>
 ```
+
+> **Breaking change in vunor 0.2:** `--current-text` inside `layer-X` now defaults to **primary** weight (`scope-dark-0`), not muted (`scope-dark-2`). If you relied on the old muted default, switch the affected sites to `text-current-muted`.
 
 `text-mt-…`, focus rings on inputs, the active tabs indicator, and selected-state text in `c8-flat-selected` all use `--current-hl`.
 

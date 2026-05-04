@@ -67,7 +67,9 @@ ${renderDefaultScope(theme)}}
 
 function renderDefaultScope(theme: TVunorTheme & Theme): string {
   const vars = getScopeCssVars('neutral', theme)
-  if (!vars) {return ''}
+  if (!vars) {
+    return ''
+  }
   return `${Object.entries(vars)
     .map(([k, v]) => `  ${k}: ${v};`)
     .join('\n')}\n`
