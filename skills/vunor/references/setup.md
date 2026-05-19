@@ -9,6 +9,23 @@ pnpm add vunor
 # peer deps (auto-installed): vue ^3.5, unocss ^66, reka-ui ^2
 ```
 
+> **SSR: pin a single Vue version workspace-wide.** Vunor depends on `reka-ui`, which in turn declares `vue ^3.5` as a peer. pnpm is happy to satisfy that with a Vue minor different from the one your consumer app pins — and the two copies produce different VNode proxies. Under SSR (`createSSRApp`) the mismatch surfaces as a cryptic proxy crash like `'set' on proxy: trap returned falsish for property 'style'` — the message never names Vue, so the diagnosis is the slow part. Pin once in your root `package.json`:
+>
+> ```json
+> {
+>   "pnpm": {
+>     "overrides": {
+>       "vue": "$vue",
+>       "@vue/runtime-core": "$vue",
+>       "@vue/runtime-dom": "$vue",
+>       "@vue/shared": "$vue"
+>     }
+>   }
+> }
+> ```
+>
+> (`$vue` resolves to whatever the consumer pins in `dependencies`.) SPA builds often tolerate the dual-copy state because VNodes don't cross a serialization boundary, but reactivity can still break across instances — pin once regardless of SPA vs SSR.
+
 ## Vue 3 + Vite
 
 Three files. Each does one job:
