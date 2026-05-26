@@ -5,18 +5,16 @@ import vue from '@vitejs/plugin-vue'
 import { scan } from 'rolldown/experimental'
 import { createGenerator } from 'unocss'
 
-import { shortcuts as sc } from '../src/components/shortcuts'
 import { presetVunor } from '../src/theme/preset-vunor'
-import { c8 } from '../src/theme/shortcuts/c8'
-import { i8 } from '../src/theme/shortcuts/i8'
+import { rawVunorShortcuts } from '../src/theme/shortcuts/raw'
 import { mergeVunorShortcuts, toUnoShortcut } from '../src/theme/utils/shortcut-obj'
 
 import type { TVunorShortcut } from '../src/theme/utils/define-sc'
 
-// Replicate vunorShortcuts() locally to avoid importing theme.ts
-// (theme.ts imports the generated file which doesn't exist yet)
+// Inlined to avoid importing src/theme.ts, which re-exports the generated
+// component-classes file this script produces.
 function vunorShortcuts() {
-  const merged = mergeVunorShortcuts([i8, c8, ...sc])
+  const merged = mergeVunorShortcuts(rawVunorShortcuts)
   for (const [key, val] of Object.entries(merged)) {
     merged[key] = typeof val === 'string' ? val : toUnoShortcut(val as TVunorShortcut)
   }
