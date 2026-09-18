@@ -136,7 +136,7 @@ Each variant additionally pre-wires:
 
 ### Minimum working button
 
-`btn`, `btn-square`, `btn-icon`, `btn-label` are **public layout primitives** as of vunor 0.2 — compose them on any hand-rolled clickable. Pair with one `c8-*` for color/state and a `scope-*` for theming.
+`btn`, `btn-round`, `btn-square`, `btn-icon`, `btn-label` are **public layout primitives** as of vunor 0.2 — compose them on any hand-rolled clickable. Pair with one `c8-*` for color/state and a `scope-*` for theming.
 
 ```html
 <!-- Text button -->
@@ -163,6 +163,20 @@ Each variant additionally pre-wires:
 <VuButton class="scope-primary c8-filled" label="Save" />
 <VuButton class="scope-error c8-flat" icon="i--trash" />
 ```
+
+#### Aliasing `btn` into your own shortcut
+
+`btn-round` and `btn-square` carry their own geometry, so you can fold them into a shortcut of your own and still get the right shape:
+
+```ts
+defineShortcuts({ 'my-icon-btn': 'scope-neutral c8-chrome btn btn-square' })
+```
+
+Write the modifier *after* `btn` — within one shortcut the later utility wins.
+
+The `btn-label` / `btn-icon` rules that hide the label and enlarge the icon inside a square button are a separate mechanism: they key off `group/btn` plus a literal `btn-square` on the ancestor, so they stay component-path only (`<VuButton>` wires them for you).
+
+> Before 0.2.2 this geometry lived only in `btn`'s `[&.btn-round]:` / `[&.btn-square]:` variants, which match `.btn.btn-round` / `.btn.btn-square` — selectors that only exist when both names are literal classes on the element. An alias compiles to a single selector of its own, so the shape was silently lost and the button rendered as a plain full-width text button.
 
 > **Pre-0.2 boilerplate** — before `btn` was public, the same button required the inline layout glue `inline-flex items-center justify-center h-fingertip-m px-$m gap-$xs font-500 cursor-pointer`. Replace with `btn` after upgrading.
 
@@ -283,7 +297,7 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 
 | Group | Shortcuts |
 |-------|----------|
-| **Public primitives** *(compose on hand-rolled elements)* | `btn`, `btn-square`, `btn-label`, `btn-icon`, `menu-root`, `menu-item`, `popup-card`, `i8-bare`, `disabled-soft` |
+| **Public primitives** *(compose on hand-rolled elements)* | `btn`, `btn-round`, `btn-square`, `btn-label`, `btn-icon`, `menu-root`, `menu-item`, `popup-card`, `i8-bare`, `disabled-soft` |
 | `c8` | `c8-filled`, `c8-filled-hover`, `c8-filled-active`, `c8-flat`, `c8-flat-hover`, `c8-flat-active`, `c8-flat-selected`, `c8-outlined`, `c8-outlined-hover`, `c8-outlined-active`, `c8-light`, `c8-light-hover`, `c8-light-active`, `c8-chrome`, `c8-chrome-hover`, `c8-chrome-active`, `c8-chrome-selected` |
 | `i8` | `i8`, `i8-input`, `i8-textarea`, `i8-input-wrapper`, `i8-ta-wrapper`, `i8-label`, `i8-label-wrapper`, `i8-stack-label`, `i8-hint`, `i8-counter`, `i8-hint-wrapper`, `i8-hint-wrapper-stack`, `i8-prepend`, `i8-append`, `i8-before`, `i8-after`, `i8-icon-wrap`, `i8-icon-clickable`, `i8-loading`, `i8-underline`, `segmented` |
 | Card | `card` |
@@ -304,7 +318,7 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 
 | Primitive | Use for |
 |-----------|---------|
-| `btn`, `btn-square`, `btn-icon`, `btn-label` | Layout glue for clickables — pair with `c8-*` for color and `scope-*` for theming. |
+| `btn`, `btn-round`, `btn-square`, `btn-icon`, `btn-label` | Layout glue for clickables — pair with `c8-*` for color and `scope-*` for theming. |
 | `menu-root`, `menu-item` | Reka-ui-shaped menu rows — composes `c8-flat` for hover/highlighted/selected states. |
 | `popup-card` | Surface chrome for hand-rolled popovers / listboxes — partner of `dialog-card`. |
 | `i8-bare` | Standalone `<input>` styling without the `i8` wrapper `<div>`. |

@@ -15,6 +15,7 @@ describe('rawVunorShortcuts', () => {
   it.each([
     // Public composition primitives (skills/vunor/references/shortcuts.md)
     'btn',
+    'btn-round',
     'btn-square',
     'btn-label',
     'btn-icon',
