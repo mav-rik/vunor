@@ -8,11 +8,12 @@ import type { Locator, Page } from '@playwright/test'
  * Computed-style regression gate for the `btn` shortcut family
  * (src/theme/shortcuts/btn.ts).
  *
- * Today the modifier geometry is emitted as descendant-combinator selectors
- * (`.group\/btn.btn-square .btn-label { display: none }`). Any refactor that
- * re-expresses the same behaviour through inherited custom properties must keep
- * every rendered value below identical — a CSS-text diff cannot show that, a
- * computed style can.
+ * The label/icon rules used to be descendant-combinator selectors
+ * (`.group\/btn.btn-square .btn-label { display: none }`). In 0.3.0 they became
+ * inherited custom properties (`--btn-label-display`, `--btn-icon-fs`,
+ * `--btn-icon-pull`) set by the modifier and read by the child. Every number
+ * here was pinned against the old form and still holds for the new one — which
+ * a CSS-text diff could not have shown, and a computed style can.
  *
  * Numbers are the values observed in chromium against the `Buttons` preview at
  * root font-size 16px, where `--v-fingertip` is `3em` (= 48px) and
@@ -25,6 +26,7 @@ const BTN = {
   square: 'main button.btn.btn-square:not(.btn-round)',
   round: 'main button.btn.btn-round:not(.btn-square)',
   roundWithIcon: 'main button.btn.btn-round:not(.btn-square):has(.btn-icon-left)',
+  roundWithIconRight: 'main button.btn.btn-round:not(.btn-square):has(.btn-icon-right)',
   roundSquare: 'main button.btn.btn-round.btn-square',
 } as const
 
@@ -115,6 +117,14 @@ test.describe('btn geometry', () => {
     await expect(icon).toHaveCSS('margin-right', '0px')
   })
 
+  test('btn-round: right icon is pulled by -0.5em', async ({ page }) => {
+    const icon = btn(page, 'roundWithIconRight').locator('.btn-icon-right').first()
+    // mirror of the left-icon case: -0.5em of the icon's own 1.25em (20px)
+    await expect(icon).toHaveCSS('font-size', '20px')
+    await expect(icon).toHaveCSS('margin-right', '-10px')
+    await expect(icon).toHaveCSS('margin-left', '0px')
+  })
+
   test('btn-round + btn-square: zero padding and zero icon margins', async ({ page }) => {
     const el = btn(page, 'roundSquare')
     await expect(el).toBeVisible()
@@ -129,5 +139,38 @@ test.describe('btn geometry', () => {
     await expect(icon).toHaveCSS('margin-right', '0px')
     await expect(icon).toHaveCSS('font-size', '24px')
     await expect(el.locator('.btn-label')).toHaveCSS('display', 'none')
+  })
+})
+
+/**
+ * The `Primitives` preview hand-rolls its buttons: `class="btn btn-square"` with
+ * no `group/btn`. The descendant-combinator rules could never reach those icons
+ * (measured before the refactor: square icon 20px, round left icon margin 0) —
+ * the documented markup for a hand-rolled square button silently did nothing.
+ * An inherited custom property does not need the marker on a `group/btn`
+ * ancestor, so this is the documented behaviour finally working. These two
+ * tests fail on the pre-refactor code by design.
+ */
+test.describe('btn geometry — hand-rolled buttons without group/btn', () => {
+  test.beforeEach(async ({ page }) => {
+    await navigateTo(page, 'Primitives')
+  })
+
+  test('btn-square enlarges its icon with no group/btn on the button', async ({ page }) => {
+    const el = page.locator('main button.btn.btn-square').first()
+    await expect(el).toBeVisible()
+    // premise of the test: nothing here marks the button as a group
+    await expect(el).not.toHaveClass(/group\/btn/)
+    await expect(el.locator('.btn-icon').first()).toHaveCSS('font-size', '24px')
+  })
+
+  test('btn-round pulls its left icon with no group/btn on the button', async ({ page }) => {
+    const el = page.locator('main button.btn.btn-round').first()
+    await expect(el).toBeVisible()
+    await expect(el).not.toHaveClass(/group\/btn/)
+
+    const icon = el.locator('.btn-icon-left').first()
+    await expect(icon).toHaveCSS('font-size', '20px')
+    await expect(icon).toHaveCSS('margin-left', '-10px')
   })
 })

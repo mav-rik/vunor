@@ -124,6 +124,14 @@ const dense = ref(false)
           label="c8-filled w-md"
           icon="i--config"
         ></VuButton>
+        <VuButton
+          :loading
+          :disabled
+          class="c8-filled btn-round"
+          label="icon right"
+          icon="i--config"
+          icon-side="right"
+        ></VuButton>
       </div>
     </div>
 

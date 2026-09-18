@@ -22,6 +22,12 @@ withDefaults(
 </script>
 
 <template>
+  <!--
+    `group/btn` is no longer read by any vunor rule: since 0.3.0 the label and
+    icon take their cue from inherited custom properties instead of
+    `group-[.btn-square]/btn:` descendant rules. It stays because it is public
+    surface that consumer-authored `group-*/btn:` rules may still key on.
+  -->
   <Primitive
     class="btn group/btn"
     :as
