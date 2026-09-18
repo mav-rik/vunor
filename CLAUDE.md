@@ -23,10 +23,10 @@ pnpm fmt              # oxfmt (format all files)
 pnpm fmt:check        # oxfmt --check (CI check)
 ```
 
-Tests (vitest, no `test` script defined — run directly):
+Tests (`pnpm test` runs vitest **and** playwright — run vitest directly for the unit half):
 
 ```bash
-pnpm exec vitest run                                    # Run all tests
+pnpm exec vitest run                                    # Run all unit tests
 pnpm exec vitest run src/theme/utils/shortcut-obj.spec.ts  # Run a single test file
 pnpm exec vitest                                        # Watch mode
 ```
