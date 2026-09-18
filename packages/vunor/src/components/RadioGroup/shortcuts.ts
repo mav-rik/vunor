@@ -7,10 +7,16 @@ export const radioShortcuts = defineShortcuts({
   'rb-label': {
     '': 'text-label text-grey-400',
   },
+  // Direction travels as a variable rather than as `[&.rb-row]:` / `not-[.rb-row]:`
+  // rules keyed on the literal class. Those compiled to `.rb-root:not(.rb-row)`,
+  // which an alias (`my-row: 'rb-root rb-row'`) could not escape: the alias
+  // carries no `rb-row` class, so the `:not()` matched it and won on specificity
+  // (0,2,0 over 0,1,0) — the row group came out as a column.
   'rb-root': {
-    '': 'flex gap-x-$l gap-y-$m',
-    '[&.rb-row]:': 'flex-wrap',
-    'not-[.rb-row]:': 'flex-col',
+    '': 'flex [flex-direction:var(--rb-dir,column)] gap-x-$l gap-y-$m',
+  },
+  'rb-row': {
+    '': '[--rb-dir:row] flex-wrap',
   },
   'rb-item-wrapper': {
     '': 'flex',
