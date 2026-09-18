@@ -174,11 +174,24 @@ defineShortcuts({ 'my-icon-btn': 'scope-neutral c8-chrome btn btn-square' })
 
 Write the modifier *after* `btn` — within one shortcut the later utility wins.
 
-The `btn-label` / `btn-icon` rules that hide the label and enlarge the icon inside a square button are a separate mechanism: they key off `group/btn` plus a literal `btn-square` on the ancestor, so they stay component-path only (`<VuButton>` wires them for you).
+What a modifier has to say to the label and icon *children* travels as an inherited custom property, so it survives aliasing too, and works on a hand-rolled button that has no `group/btn`:
 
-> Before 0.2.2 this geometry lived only in `btn`'s `[&.btn-round]:` / `[&.btn-square]:` variants, which match `.btn.btn-round` / `.btn.btn-square` — selectors that only exist when both names are literal classes on the element. An alias compiles to a single selector of its own, so the shape was silently lost and the button rendered as a plain full-width text button.
+| variable | fallback | set by |
+|----------|----------|--------|
+| `--btn-label-display` | `revert` | `btn-square` → `none` |
+| `--btn-icon-fs` | `1.25em` | `btn-square` → `1.5em` |
+| `--btn-icon-ml` / `--btn-icon-mr` | `0` | `btn-round` → `-0.5em`; `btn-square` → `0` |
 
-> **Pre-0.2 boilerplate** — before `btn` was public, the same button required the inline layout glue `inline-flex items-center justify-center h-fingertip-m px-$m gap-$xs font-500 cursor-pointer`. Replace with `btn` after upgrading.
+`btn-label`, `btn-icon`, `btn-icon-left` and `btn-icon-right` each read their variable, so you can override one from anywhere in the tree:
+
+```html
+<!-- a square button that keeps its label anyway -->
+<button class="btn btn-square [--btn-label-display:block] w-auto px-$m">…</button>
+```
+
+> **Upgrading.** Both halves of this composition used to be keyed on literal class names, so neither survived an alias, and the label/icon half additionally required `group/btn` on the button — which the hand-rolled examples on this page never had, so outside `<VuButton>` the label never hid and the icon never enlarged. 0.2.2 moved the geometry into the modifier bodies; 0.3.0 moved the label/icon rules onto the variables above. If you overrode `btn-label`'s or `btn-icon`'s `group-[.btn-*]/btn:` variant keys through `mergeVunorShortcuts`, move those overrides to the variables.
+>
+> Before 0.2, `btn` was not public and the same button needed the inline layout glue `inline-flex items-center justify-center h-fingertip-m px-$m gap-$xs font-500 cursor-pointer`. Replace with `btn`.
 
 ## i8 — input styles
 
@@ -453,7 +466,20 @@ Tabs use `data-state="active"`, not `data-selected`. `c8-flat-selected` is for m
 Either wrap it in `<div class="i8 i8-filled group/i8">…</div>`, or paint colors directly with `i8-bg-* i8-apply-bg i8-border-* i8-apply-border` — the wrapper variants don't apply through the input element on their own.
 
 **"My input doesn't show the focus highlight or error state."**
-The `i8` wrapper must also carry `group/i8`. The focus / error / `data-has-value` styles are written as `group-[…]/i8:` selectors and need a named group ancestor. `<VuInput>` adds it automatically; if you compose i8 by hand, add `class="i8 i8-filled group/i8"`.
+The `i8` wrapper must also carry `group/i8`. The focus / error / `data-has-value` styles are written as `group-[…]/i8:` selectors keyed on *data attributes* and need a named group ancestor. `<VuInput>` adds it automatically; if you compose i8 by hand, add `class="i8 i8-filled group/i8"`.
+
+Padding and underline visibility no longer need it: since 0.3.0 the wrapper signals those to its children through inherited custom properties, which cross the DOM without a named group.
+
+| variable | fallback | set by |
+|----------|----------|--------|
+| `--i8-pl` / `--i8-pr` | `0` | `i8-filled` → `$m`; `i8-round` → `fingertip-half` |
+| `--i8-hint-px` | `0` | `i8-filled` → `$m`; `i8-round` → `fingertip-half` |
+| `--i8-underline-display` | `revert` | `i8-filled` → `none` |
+
+**"I aliased `i8 i8-filled` into one shortcut and the paddings work but the box is missing."**
+`<VuInput>` puts the marker on an outer wrapper that has no `i8` and that *encloses the hint row*, so if the marker itself carried the background/border/radius that box would be drawn around the input **and** its hint. The box therefore stays on `i8`'s `[&.i8-filled]:` variant, which only matches when both names are literal classes on one element. Aliasing carries the signalling, not the look — write `class="i8 i8-filled"` for the look.
+
+For the same reason `i8-flat` has no body at all (its only declaration *is* the border), and the `segmented` + `i8-round` positional overrides stay literal-class-only: they need two marker names on one element, which no single shortcut body can express.
 
 **"I applied `i8` to the `<input>` itself and nothing works right."**
 `i8` is a wrapper, not a leaf. Move it to a parent `<div>` (with `group/i8`) and put `i8-input` on the actual `<input>`.

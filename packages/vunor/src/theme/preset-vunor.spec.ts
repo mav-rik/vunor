@@ -31,29 +31,56 @@ async function parse(
   return utils
 }
 
-/** Effective declarations for one selector — later declarations win, as in the browser. */
-function declarations(utils: TParsedToken, selector: string): Record<string, string> {
+function parseBody(body: string): Record<string, string> {
   const out: Record<string, string> = {}
-  for (const util of utils) {
-    if (util[1] !== selector) {
-      continue
-    }
-    for (const decl of (util[2] || '').split(';')) {
-      const colon = decl.indexOf(':')
-      if (colon > 0) {
-        out[decl.slice(0, colon).trim()] = decl.slice(colon + 1).trim()
-      }
+  for (const decl of body.split(';')) {
+    const colon = decl.indexOf(':')
+    if (colon > 0) {
+      out[decl.slice(0, colon).trim()] = decl.slice(colon + 1).trim()
     }
   }
   return out
 }
 
+/** Effective declarations for one selector — later declarations win, as in the browser. */
+function declarations(utils: TParsedToken, selector: string): Record<string, string> {
+  const out: Record<string, string> = {}
+  for (const util of utils) {
+    if (util[1] === selector) {
+      Object.assign(out, parseBody(util[2] || ''))
+    }
+  }
+  return out
+}
+
+/**
+ * Every selector that declares `prop`, in source order. Asserting only the
+ * selector you expect to win misses a competing rule on a different selector
+ * that out-specifies it — which is exactly how a broken `rb-row` fix passed.
+ */
+function selectorsSetting(utils: TParsedToken, prop: string): string[] {
+  const out: string[] = []
+  for (const util of utils) {
+    const selector = util[1]
+    if (selector && prop in parseBody(util[2] || '') && !out.includes(selector)) {
+      out.push(selector)
+    }
+  }
+  return out
+}
+
+// Geometry the modifier applies to itself, plus what it says to its label/icon
+// children. Both helpers run against the literal-class selector AND the alias
+// selector, so the child-facing variables are covered on both paths.
 function expectSquare(utils: TParsedToken, selector: string) {
   expect(declarations(utils, selector)).toMatchObject({
     'width': 'var(--v-fingertip)',
     'height': 'var(--v-fingertip)',
     'padding-left': '0',
     'padding-right': '0',
+    '--btn-label-display': 'none',
+    '--btn-icon-fs': '1.5em',
+    '--btn-icon-pull': '0',
   })
 }
 
@@ -62,6 +89,7 @@ function expectRound(utils: TParsedToken, selector: string) {
     'border-radius': 'var(--v-fingertip-half)',
     'padding-left': 'var(--v-fingertip-half)',
     'padding-right': 'var(--v-fingertip-half)',
+    '--btn-icon-pull': '-0.5em',
   })
 }
 
@@ -120,5 +148,132 @@ describe('btn modifier geometry', () => {
   it('applies round geometry to a consumer alias shortcut', async () => {
     const utils = await parse('x-round-btn', undefined, { 'x-round-btn': 'btn btn-round' })
     expectRound(utils, '.x-round-btn')
+  })
+
+  // What a modifier says to its label/icon children travels as an inherited
+  // custom property instead of a `group-[.btn-*]/btn:` descendant rule, so the
+  // signal survives both the alias (no literal `.btn-square` for a descendant
+  // selector to key on) and a hand-rolled button with no `group/btn`.
+  it('reads the modifier variables from the label and icon shortcuts', async () => {
+    expect(declarations(await parse('btn-label'), '.btn-label')).toMatchObject({
+      // `revert` — an unset variable leaves the element on its UA display
+      display: 'var(--btn-label-display,revert)',
+    })
+    expect(declarations(await parse('btn-icon'), '.btn-icon')).toMatchObject({
+      'font-size': 'var(--btn-icon-fs,1.25em)',
+    })
+    expect(declarations(await parse('btn-icon-left'), '.btn-icon-left')).toMatchObject({
+      'margin-left': 'var(--btn-icon-pull,0)',
+    })
+    expect(declarations(await parse('btn-icon-right'), '.btn-icon-right')).toMatchObject({
+      'margin-right': 'var(--btn-icon-pull,0)',
+    })
+  })
+
+  // An element wearing both modifiers must resolve square. The two bodies carry
+  // equal specificity, so without this compound selector the outcome would rest
+  // on the order UnoCSS happens to emit them in.
+  it('resolves round+square to the square values by specificity', async () => {
+    expect(declarations(await parse('btn'), '.btn.btn-round.btn-square')).toMatchObject({
+      'padding-left': '0',
+      '--btn-icon-pull': '0',
+    })
+  })
+})
+
+describe('i8 wrapper signalling', () => {
+  // The i8 markers tell the input, label wrapper, hint row and underline how to
+  // pad and whether to show. That signal used to be a `group-[.i8-filled]/i8:`
+  // descendant rule keyed on the wrapper's literal class name, so it was lost
+  // whenever a consumer aliased the names into one shortcut of their own.
+  it('sets the child-facing variables on a consumer alias shortcut', async () => {
+    const utils = await parse('x-input', undefined, { 'x-input': 'i8 i8-filled' })
+    expect(declarations(utils, '.x-input')).toMatchObject({
+      '--i8-pl': '1em',
+      '--i8-pr': '1em',
+      '--i8-hint-px': '1em',
+      '--i8-underline-display': 'none',
+    })
+  })
+
+  it('reads the variables from the child shortcuts', async () => {
+    expect(
+      declarations(await parse('i8-input'), '.i8-input:not([data-has-prepend=true])')
+    ).toMatchObject({ 'padding-left': 'var(--i8-pl,0)' })
+    expect(
+      declarations(await parse('i8-input'), '.i8-input:not([data-has-append=true])')
+    ).toMatchObject({ 'padding-right': 'var(--i8-pr,0)' })
+    expect(declarations(await parse('i8-hint-wrapper'), '.i8-hint-wrapper')).toMatchObject({
+      'padding-left': 'var(--i8-hint-px,0)',
+    })
+    expect(declarations(await parse('i8-underline'), '.i8-underline')).toMatchObject({
+      display: 'var(--i8-underline-display,revert)',
+    })
+  })
+
+  // The box (background, border, radius) deliberately stays on the
+  // `[&.i8-*]:` variants and is NOT in the marker bodies: <VuInput> puts the
+  // marker on an outer wrapper that has no `.i8` and encloses the hint row, so
+  // a marker body carrying the box would paint a box around input AND hint.
+  it('keeps the box off a bare marker so the outer wrapper stays unpainted', async () => {
+    const utils = await parse('i8')
+    expect(declarations(utils, '.i8.i8-filled')['border-radius']).toBeDefined()
+    expect(declarations(utils, '.i8-filled')['border-radius']).toBeUndefined()
+  })
+
+  // Positional overrides need `segmented` AND `i8-round` on one element, which
+  // no single body can express — they stay on the wrapper, where the higher
+  // specificity (0,4,0) beats the marker's own (0,1,0) regardless of order.
+  it('lets the segmented override win over the plain round padding', async () => {
+    const utils = await parse('i8')
+    expect(declarations(utils, '.i8.segmented.i8-round:not(:first-child)')).toMatchObject({
+      '--i8-pl': '1em',
+    })
+  })
+})
+
+describe('rb-root direction', () => {
+  // `rb-row` was read only by `rb-root`'s `[&.rb-row]:` / `not-[.rb-row]:`
+  // rules. Under an alias the `:not()` MATCHED — and at (0,2,0) it outranked the
+  // alias's own (0,1,0) — so a row group came out as a column: actively wrong,
+  // not merely unstyled. Asserting the winning selector alone is not enough
+  // here, because the rule that caused the bug lived on a DIFFERENT selector;
+  // this pins that no other selector sets flex-direction at all.
+  it('resolves an aliased rb-row to a wrapping row', async () => {
+    const utils = await parse('x-row', undefined, { 'x-row': 'rb-root rb-row' })
+    expect(declarations(utils, '.x-row')).toMatchObject({
+      'flex-direction': 'var(--rb-dir,column)',
+      '--rb-dir': 'row',
+      'flex-wrap': 'wrap',
+    })
+    expect(selectorsSetting(utils, 'flex-direction')).toEqual(['.x-row'])
+  })
+
+  it('leaves a plain rb-root as a column', async () => {
+    const utils = await parse('rb-root')
+    expect(declarations(utils, '.rb-root')['flex-direction']).toBe('var(--rb-dir,column)')
+    expect(declarations(utils, '.rb-root')['--rb-dir']).toBeUndefined()
+    expect(selectorsSetting(utils, 'flex-direction')).toEqual(['.rb-root'])
+  })
+})
+
+describe('card heading typography', () => {
+  // `card-{level}` projects the level's prop bag into `--card-heading-*` field
+  // by field, so anything it does not name never reaches `text-card-header`.
+  // A level's `font` is forwarded; arbitrary `css` cannot be (no fixed keys).
+  it('forwards a level font through to text-card-header', async () => {
+    const opts = { typography: { h3: { font: 'Display Serif' } } }
+    expect(declarations(await parse('card-h3', opts), '.card-h3')).toMatchObject({
+      '--card-heading-font': 'Display Serif',
+    })
+    expect(declarations(await parse('text-card-header', opts), '.text-card-header')).toMatchObject({
+      'font-family': 'var(--card-heading-font, inherit)',
+    })
+  })
+
+  it('falls back to inherit for a level with no font', async () => {
+    expect(declarations(await parse('card-h3'), '.card-h3')).toMatchObject({
+      '--card-heading-font': 'inherit',
+    })
   })
 })

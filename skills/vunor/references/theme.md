@@ -349,7 +349,9 @@ Each entry generates a `text-{name}` UnoCSS utility plus a spacing token of the 
 
 `font` is emitted as a `font-family` declaration on that utility, and every `css` entry is merged into it. `css` is applied last, so it wins over both the computed declarations and `font`.
 
-> Before 0.2.2 `font` and `css` were silently dropped.
+A level's `font` also reaches `text-card-header` when that level is selected with `card-{level}` — it travels as `--card-heading-font`. Arbitrary `css` does **not**: the `card-*` rule projects the level's declarations into `--card-heading-*` variables field by field, so only the properties it names can cross.
+
+> Before 0.2.2 `font` and `css` were silently dropped. Before 0.3.0 `font` reached `text-{level}` but not `text-card-header`.
 
 ## Layers (per-mode reverse)
 
