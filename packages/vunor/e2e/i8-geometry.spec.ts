@@ -8,11 +8,13 @@ import type { Locator, Page } from '@playwright/test'
  * Computed-style regression gate for the `i8` shortcut family
  * (src/theme/shortcuts/i8.ts).
  *
- * The padding/visibility rules are currently emitted as descendant-combinator
- * selectors driven by the `group/i8` wrapper (`.group\/i8.i8-filled
- * .i8-input:not([data-has-prepend=true]) { padding-left: … }`). A refactor onto
- * inherited custom properties must render identically — hence computed styles,
- * not CSS text.
+ * The padding/visibility rules used to be descendant-combinator selectors
+ * driven by the `group/i8` wrapper (`.group\/i8.i8-filled
+ * .i8-input:not([data-has-prepend=true]) { padding-left: … }`). In 0.3.0 they
+ * became inherited custom properties (`--i8-pl`, `--i8-pr`, `--i8-hint-px`,
+ * `--i8-underline-display`) set by the marker and read by the child. Every
+ * number here was pinned against the old form and still holds for the new one —
+ * which is the point of asserting computed styles rather than CSS text.
  *
  * Numbers are the values observed in chromium at root font-size 16px, where
  * `$m` is 16px, `--v-fingertip` is `3em` (= 48px) and `--v-fingertip-half` is
@@ -124,6 +126,46 @@ test.describe('i8 geometry — single inputs', () => {
     await expect(hintWrapper).toHaveCSS('padding-right', '0px')
     await expect(underline).toHaveCSS('display', 'block')
     await expect(underline).toHaveCSS('height', '2px')
+  })
+
+  /**
+   * <VuInput> puts the design marker on its outer wrapper too — that wrapper has
+   * no `.i8`, and it encloses the hint row. The markers therefore signal only;
+   * giving them a body that paints (background / border / radius) draws a second
+   * box around input + hint. Pinned so a later "give every marker its own body"
+   * pass cannot land that silently.
+   */
+  test('the <VuInput> outer wrapper carries the marker but none of the box', async ({ page }) => {
+    for (const design of ['flat', 'filled', 'round'] as const) {
+      const { outer } = parts(page, design)
+      await expect(outer).not.toHaveClass(/(^|\s)i8(\s|$)/)
+      await expect(outer).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+      await expect(outer).toHaveCSS('border-top-width', '0px')
+      await expect(outer).toHaveCSS('border-right-width', '0px')
+      await expect(outer).toHaveCSS('border-bottom-width', '0px')
+      await expect(outer).toHaveCSS('border-left-width', '0px')
+      await expect(outer).toHaveCSS('border-top-left-radius', '0px')
+    }
+  })
+
+  test('i8-textarea: horizontal padding tracks the wrapper design', async ({ page }) => {
+    // the controls panel's first select is "Type"
+    await page.locator('main [role="combobox"]').first().click()
+    await page
+      .locator('.select-content div[role="option"]', { hasText: 'textarea' })
+      .first()
+      .click()
+    await expect(page.locator('main textarea.i8-textarea').first()).toBeVisible()
+
+    const textarea = (design: keyof typeof DESIGN) =>
+      stateRow(page, 1).locator(`.i8${DESIGN[design]} textarea.i8-textarea`)
+
+    await expect(textarea('flat')).toHaveCSS('padding-left', '0px')
+    await expect(textarea('flat')).toHaveCSS('padding-right', '0px')
+    await expect(textarea('filled')).toHaveCSS('padding-left', '16px')
+    await expect(textarea('filled')).toHaveCSS('padding-right', '16px')
+    await expect(textarea('round')).toHaveCSS('padding-left', '24px')
+    await expect(textarea('round')).toHaveCSS('padding-right', '24px')
   })
 
   test('i8-label: floats to 0.7em when the group has a placeholder', async ({ page }) => {
