@@ -6,7 +6,9 @@ export interface TVunorUnoPresetOpts {
     regular: number
     dense: number
   }
-  typography?: Record<TTypographyNames, TTypography | undefined>
+  // Partial: overriding one level is the documented usage, and defu merges
+  // defaultTypography underneath, so the other levels need not be restated.
+  typography?: Partial<Record<TTypographyNames, TTypography>>
   layers?: {
     reverseDark?: boolean
     reverseLight?: boolean

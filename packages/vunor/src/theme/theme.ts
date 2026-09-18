@@ -82,19 +82,15 @@ export const themeFactory = (
     ],
   }
   for (const [name, val] of Object.entries(opts.typography)) {
-    if (val?.size) {
-      const ft = buildFontTheme(
-        val.size || 1,
-        val.weight || 400,
-        val.boldWeight || 700,
-        val.height || 1,
-        val.spacing || 0,
-        val.actualHeightFactor || opts.actualFontHeightFactor,
-        val.actualHeightTopBottomRatio || opts.actualFontHeightTopBottomRatio
-      )
-      fontSize[name] = ft.theme
-      spacing[name] = `${ft.size}em`
+    if (!val) {
+      continue
     }
+    const ft = buildFontTheme(val, {
+      actualHeightFactor: opts.actualFontHeightFactor,
+      actualHeightTopBottomRatio: opts.actualFontHeightTopBottomRatio,
+    })
+    fontSize[name] = ft.theme
+    spacing[name] = `${ft.size}em`
   }
 
   const palette = generatePalette(opts.palette)

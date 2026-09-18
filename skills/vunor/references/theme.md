@@ -335,6 +335,8 @@ typography: {
     spacing: -0.025,                 // letter-spacing em
     actualHeightFactor: 0.78,        // optional per-level font-metrics override
     actualHeightTopBottomRatio: 0.5,
+    font: 'Inter, sans-serif',       // font-family for this level
+    css: { 'font-variant-numeric': 'tabular-nums' },  // extra declarations, merged last
   },
   body:  { height: 1.75 },
   label: { weight: 600 },
@@ -344,6 +346,10 @@ typography: {
 Names: `h1, h2, h3, h4, h5, h6, subheading, body-l, body, body-s, callout, label, caption, overline`.
 
 Each entry generates a `text-{name}` UnoCSS utility plus a spacing token of the same name. See [typography.md](typography.md) for the full table and defaults.
+
+`font` is emitted as a `font-family` declaration on that utility, and every `css` entry is merged into it. `css` is applied last, so it wins over both the computed declarations and `font`.
+
+> Before 0.2.2 `font` and `css` were silently dropped.
 
 ## Layers (per-mode reverse)
 

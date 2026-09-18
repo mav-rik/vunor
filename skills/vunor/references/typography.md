@@ -46,7 +46,7 @@ Apply as UnoCSS classes: `text-h1`, `text-body`, `text-caption`, etc.
 
 There's also `text-card-header` — a virtual level that reads `--card-heading-*` variables set by `card-{level}` (see [cards.md](cards.md)).
 
-Override per-level via `presetVunor({ typography: { h1: { size: 4, weight: 300 } } })`. See [theme.md](theme.md).
+Override per-level via `presetVunor({ typography: { h1: { size: 4, weight: 300 } } })`. Each level also accepts `font` and `css` — see [theme.md](theme.md).
 
 ## Spacing tokens
 

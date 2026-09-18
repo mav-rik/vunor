@@ -36,15 +36,27 @@ export const defaultTypography: Record<TTypographyNames, TTypography> = {
   'overline': /*    */ font(400, 600, k(-0.5), /*  */ k(0.5), 0.0618),
 }
 
+/**
+ * Builds the UnoCSS `fontSize` theme entry for one typography level.
+ *
+ * Takes the whole {@link TTypography} rather than its numeric fields: this
+ * function owns the shape of the emitted tuple, so fields that carry no
+ * geometry (`font`, `css`) reach the output instead of being dropped at a call
+ * site that can only forward numbers.
+ */
 export function buildFontTheme(
-  size: number,
-  w: number,
-  wBold: number,
-  lh: number,
-  ls: number,
-  actualFontHeightFactor = 1,
-  actualFontHeightTopBottomRatio = 0.5
+  t: TTypography,
+  defaults: { actualHeightFactor: number; actualHeightTopBottomRatio: number }
 ) {
+  const size = t.size || 1
+  const w = t.weight || 400
+  const wBold = t.boldWeight || 700
+  const lh = t.height || 1
+  const ls = t.spacing || 0
+  const actualFontHeightFactor = t.actualHeightFactor || defaults.actualHeightFactor
+  const actualFontHeightTopBottomRatio =
+    t.actualHeightTopBottomRatio || defaults.actualHeightTopBottomRatio
+
   const correctedSize = size * actualFontHeightFactor // actual font height
   const h = lh * size // actual line-height
   const m = (h - correctedSize) / size // the margin from real text border to line-height
@@ -72,6 +84,8 @@ export function buildFontTheme(
         // margins are compensationg font-height + extra font glyphs spacing
         // 'margin-top': `${-mt}em`,
         // 'margin-bottom': `${-mb}em`,
+        ...(t.font && { 'font-family': t.font }),
+        ...t.css, // spread last: an explicit declaration wins over `font` and the computed props
       },
       //   actualFontHeightFactor,
     ] as unknown as [string, Record<string, string>],
