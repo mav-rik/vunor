@@ -78,6 +78,7 @@ export const themeFactory = (
         'font-weight': 'var(--card-heading-weight)',
         'line-height': 'var(--card-heading-lh)',
         'letter-spacing': 'var(--card-heading-ls)',
+        'font-family': 'var(--card-heading-font, inherit)',
       },
     ],
   }

@@ -66,6 +66,10 @@ export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
           '--card-heading-ls': props['letter-spacing'],
           '--card-heading-bc': props['--font-bc'],
           '--card-heading-tc': props['--font-tc'],
+          // A level's `font` reaches `text-card-header` only through here: this
+          // rule projects the prop bag field by field, so anything not named is
+          // dropped. `inherit` keeps the pre-0.3.0 behaviour when unset.
+          '--card-heading-font': props['font-family'] || 'inherit',
           'padding': 'var(--card-spacing)',
         }
       }
