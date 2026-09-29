@@ -277,3 +277,111 @@ describe('card heading typography', () => {
     })
   })
 })
+
+// One definition of "disabled" (src/theme/utils/disabled.ts) behind both the
+// gate on interaction states and the disabled paint. Spelled out here rather
+// than imported, so the tests pin the compiled selector.
+const DISABLED = ':disabled,[disabled],[aria-disabled=true],[data-disabled]'
+const WHEN_ENABLED = `:not(${DISABLED})`
+const WHEN_DISABLED = `:is(${DISABLED})`
+const C8_VARIANTS = ['c8-filled', 'c8-flat', 'c8-outlined', 'c8-light', 'c8-chrome']
+
+describe('disabled gate', () => {
+  // The c8 gate used to be `not-([disabled]):`, which compiles to
+  // `:not(disabled)` — a type selector that matches every element — so no
+  // disabled element was ever excluded.
+  const INTERACTION = /:hover|:active|\[data-highlighted\]|\[data-active\]/
+
+  /** Selectors the token compiles to that pass `keep`. */
+  async function selectors(token: string, keep: (selector: string) => boolean) {
+    const utils = await parse(token)
+    return utils.map(util => util[1] ?? '').filter(selector => keep(selector))
+  }
+
+  async function expectInteractionGated(token: string, minRules: number) {
+    const interaction = await selectors(token, s => INTERACTION.test(s))
+    expect(interaction.length).toBeGreaterThanOrEqual(minRules)
+    for (const selector of interaction) {
+      expect(selector).toContain(WHEN_ENABLED)
+    }
+  }
+
+  // hover, [data-highlighted], :active, [data-active]
+  it.each(C8_VARIANTS)('%s gates every hover and press rule on not-disabled', async token => {
+    await expectInteractionGated(token, 4)
+  })
+
+  // An aria-disabled element stays focusable and the wash is c8's only focus
+  // indicator, so :focus-visible must keep painting it.
+  it.each(C8_VARIANTS)('%s leaves :focus-visible ungated', async token => {
+    const focus = await selectors(token, s => s.includes(':focus-visible'))
+    expect(focus.length).toBeGreaterThan(0)
+    for (const selector of focus) {
+      expect(selector).not.toContain(WHEN_ENABLED)
+    }
+  })
+
+  it('keeps the selected state painted on a disabled element', async () => {
+    const selected = await selectors('c8-flat', s => s.includes('[aria-selected=true]'))
+    expect(selected.length).toBeGreaterThan(0)
+    for (const selector of selected) {
+      expect(selector).not.toContain(WHEN_ENABLED)
+    }
+  })
+
+  it.each(['menu-item', 'i8-bare', 'calendar-cell', 'slider-thumb', 'rb-item', 'checkbox'])(
+    '%s gates its hover and press rules the same way',
+    async token => {
+      await expectInteractionGated(token, 1)
+    }
+  )
+
+  // disabled-soft's side of the same list is covered by the literal-class block below
+  it('paints btn on the shared selector list', async () => {
+    const btn = await parse('btn')
+    expect(declarations(btn, `.btn:where(:not(.disabled-soft))${WHEN_DISABLED}`)).toMatchObject({
+      opacity: '0.8',
+      cursor: 'not-allowed',
+    })
+  })
+})
+
+describe('disabled-soft as a literal class', () => {
+  // `-` is a variant separator, so without the preset's literal variant the
+  // token reads as `disabled-` + `soft` and compiles to nothing.
+  const PAINT = { opacity: '0.4', cursor: 'not-allowed' }
+
+  it('compiles the bare class', async () => {
+    const utils = await parse('disabled-soft')
+    expect(declarations(utils, `.disabled-soft${WHEN_DISABLED}`)).toMatchObject(PAINT)
+  })
+
+  it('compiles behind leading variants', async () => {
+    const utils = await parse('md:disabled-soft')
+    expect(declarations(utils, `.md\\:disabled-soft${WHEN_DISABLED}`)).toMatchObject(PAINT)
+  })
+
+  it('still expands inside a consumer shortcut', async () => {
+    const utils = await parse('x-row', undefined, { 'x-row': 'flex disabled-soft' })
+    expect(declarations(utils, `.x-row${WHEN_DISABLED}`)).toMatchObject(PAINT)
+  })
+
+  it('carries consumer overrides of disabled-soft', async () => {
+    const utils = await parse('disabled-soft', undefined, { 'disabled-soft': 'underline' })
+    expect(declarations(utils, '.disabled-soft')['text-decoration-line']).toBe('underline')
+  })
+
+  it.each([
+    ['disabled:opacity-50', '.disabled\\:opacity-50:disabled'],
+    ['disabled-opacity-50', '.disabled-opacity-50:disabled'],
+    ['disabled-bg-red-500', '.disabled-bg-red-500:disabled'],
+  ])('leaves %s to the disabled variant', async (token, selector) => {
+    const utils = await parse(token)
+    expect(utils.map(util => util[1])).toEqual([selector])
+  })
+
+  it('stands aside when vunorShortcuts() is not registered', async () => {
+    const uno = await createGenerator({ presets: [presetVunor()] })
+    expect(await uno.parseToken('disabled-soft')).toBeUndefined()
+  })
+})

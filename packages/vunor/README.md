@@ -280,7 +280,7 @@ Button and clickable element design variants:
 | `c8-outlined` | Border + colored text, transparent fill |
 | `c8-light`    | Light tinted background, colored text   |
 
-Each includes hover, active, focus, and disabled states. Apply on any element alongside `scope-{color}`:
+Each includes hover, active, and focus states. Hover and press do not paint on a disabled element: `disabled`, `aria-disabled="true"` or `data-disabled` (the same definition the `disabled-soft` shortcut uses to fade a disabled element). Keyboard focus still paints, so an `aria-disabled` control stays visibly focusable. Apply on any element alongside `scope-{color}`:
 
 ```html
 <button class="scope-primary c8-filled">Save</button>

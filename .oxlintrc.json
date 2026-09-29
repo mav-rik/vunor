@@ -215,6 +215,12 @@
   },
   "overrides": [
     {
+      "files": ["*.vue"],
+      "rules": {
+        "typescript/consistent-type-imports": "off"
+      }
+    },
+    {
       "files": [
         "*.vue",
         "*.config.ts",
@@ -233,6 +239,8 @@
   ],
   "ignorePatterns": [
     "dist/**",
+    "**/test-results/**",
+    "**/playwright-report/**",
     ".env",
     "auto-imports.d.ts",
     "components.d.ts",

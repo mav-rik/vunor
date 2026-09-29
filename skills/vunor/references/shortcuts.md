@@ -125,8 +125,18 @@ Each variant additionally pre-wires:
 
 - `:hover`, `:focus-visible`, `[data-highlighted]` → light hover state
 - `:active`, `[data-active]` → pressed state
-- `disabled:` exclusions (so `not-([disabled]):hover` doesn't tint when disabled)
+- a disabled gate: `:hover`, `[data-highlighted]`, `:active` and `[data-active]` do not paint on a disabled element
 - `dark:` swaps for legibility
+
+**What counts as disabled.** One definition, shared by the c8 gate, `disabled-soft` and `btn`: `:disabled`, `[disabled]`, `[aria-disabled="true"]`, or `[data-disabled]` (any attribute value). Mark a hand-rolled clickable with any one of them — `aria-disabled="true"` is the pattern for a control that stays focusable.
+
+| # | Rule |
+|---|------|
+| 1 | `:focus-visible` is **not** gated. An `aria-disabled` element can still take focus, and the hover wash is the only focus indicator c8 draws, so keyboard focus still paints it. Native `disabled` elements can't take focus, so they never show it. |
+| 2 | Selected states (`data-selected`, `aria-selected`, `aria-pressed`, `data-on`) are **not** gated: a selected item that is also disabled keeps looking selected. |
+| 3 | `c8-*-hover` / `c8-*-active` are plain paint with no gate of their own. Composing one yourself (`'x': 'hover:c8-flat-hover'`) gets no disabled exclusion — compose the whole `c8-*` family instead. |
+| 4 | Don't pin `--current-bg` or `bg-current/*` under `aria-disabled:hover:` to cancel the wash. The gate already covers `aria-disabled`, so the pin is dead weight. |
+| 5 | Up to vunor 0.3.0 the gate compiled to a selector that matched everything, so even native `disabled` c8 elements tinted on hover. |
 
 `[data-highlighted]` and `[data-active]` are populated by **reka-ui primitives** (menu items, listbox/select items, combobox items) so c8 transitions react to keyboard navigation as well as mouse hover. On a plain `<button>`, only the `:hover` / `:focus-visible` / `:active` portions trigger; the `[data-…]` rules sit dormant. `c8-flat-selected` similarly needs a primitive that toggles `data-selected` (e.g. `<MenuItem>`); plain buttons can opt in manually with `aria-pressed="true"`.
 
@@ -335,7 +345,7 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 | `menu-root`, `menu-item` | Reka-ui-shaped menu rows — composes `c8-flat` for hover/highlighted/selected states. |
 | `popup-card` | Surface chrome for hand-rolled popovers / listboxes — partner of `dialog-card`. |
 | `i8-bare` | Standalone `<input>` styling without the `i8` wrapper `<div>`. |
-| `disabled-soft` | Visually disabled treatment (opacity-40 + not-allowed) on `disabled`, `aria-disabled`, `data-disabled`. |
+| `disabled-soft` | Visually disabled treatment (opacity-40 + not-allowed) on the [shared disabled definition](#c8--clickable-styles). Works as a literal class and inside a shortcut body. On an element that also has the `btn` class, it replaces `btn`'s opacity-80. In an alias shortcut that composes both (`'x': 'btn disabled-soft'`), whichever comes last in the body wins. Requires `vunorShortcuts()` in `shortcuts` (vunor ≤ 0.3.0: the literal class emitted no CSS; only composing it in a shortcut worked). |
 
 ## Override patterns
 

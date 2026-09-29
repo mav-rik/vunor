@@ -1,4 +1,5 @@
 import { defineShortcuts } from '../utils/define-sc'
+import { whenDisabled } from '../utils/disabled'
 
 // Each modifier's geometry is declared once and applied from two directions:
 // the `[&.x]:` variants inside `btn` (they compile to `.btn.btn-x`, which needs
@@ -34,7 +35,11 @@ export const btn = defineShortcuts({
     '[&.btn-round]:': btnRound,
     '[&.btn-square]:': btnSquare,
     '[&.btn-round.btn-square]:': 'px-0 [--btn-icon-pull:0]',
-    'disabled:': 'opacity-80 cursor-not-allowed',
+    // `disabled-soft` on the same element asks for the softer paint, so btn's
+    // own steps aside. `:where()` keeps this rule at 0,2,0, so a consumer's
+    // `disabled:opacity-*` utility still overrides it. Literal-class only: in an
+    // alias (`'x': 'btn disabled-soft'`) whichever comes last in the body wins.
+    [`${whenDisabled}[&:where(:not(.disabled-soft))]:`]: 'opacity-80 cursor-not-allowed',
     '[&>span]:data-[loading]:': 'opacity-0 pointer-events-none',
     '[&>div:not(.loading-indicator-wrapper)]:data-[loading]:': 'opacity-0 pointer-events-none',
     '[&>.loading-indicator-wrapper]:':

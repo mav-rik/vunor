@@ -1,4 +1,5 @@
 import { defineShortcuts } from '../../theme/utils/define-sc'
+import { whenDisabled, whenEnabled } from '../../theme/utils/disabled'
 
 export const checkboxShortcuts = defineShortcuts({
   'checkbox-root': {
@@ -8,10 +9,10 @@ export const checkboxShortcuts = defineShortcuts({
   },
   'checkbox': {
     '': 'cursor-default shrink-0 select-none rounded-r0 transition-all transition-duration-100 flex size-1.5em appearance-none items-center justify-center bg-current/0 border-current border-[0.16em] current-icon-white',
-    'group-active/cb:enabled:':
+    [`group-active/cb:${whenEnabled}`]:
       'current-bg-scope-color-500 bg-current/20 current-icon-scope-color-500',
     // 'group-hover/cb:enabled:': 'border-current',
-    'disabled:': 'cursor-not-allowed border-1px',
+    [whenDisabled]: 'cursor-not-allowed border-1px',
     'group-[[data-error=true]]/cb:enabled:': 'current-border-error-500 border-current',
     'data-[state=unchecked]': 'current-border-grey-500 border-current/40',
   },

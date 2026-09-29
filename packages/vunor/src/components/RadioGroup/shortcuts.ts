@@ -1,4 +1,5 @@
 import { defineShortcuts } from '../../theme/utils/define-sc'
+import { whenEnabled } from '../../theme/utils/disabled'
 
 export const radioShortcuts = defineShortcuts({
   'rb-container': {
@@ -26,7 +27,7 @@ export const radioShortcuts = defineShortcuts({
     "data-[state=checked]:not-[[data-error='true']]:":
       'current-border-scope-color-500 border-current',
     'data-[state=checked]:': 'bg-current',
-    'active:enabled:': 'bg-current/20',
+    [`${whenEnabled}active:`]: 'bg-current/20',
     'aria-[disabled=true]:': 'scope-grey',
     'data-[error=true]:': 'current-border-error-500 current-bg-error-500',
   },

@@ -187,7 +187,8 @@ import { VunorVueResolver } from 'vunor/vite'   // unplugin-vue-components resol
 <div    class="popup-card w-[14em]">                                 <!-- popover surface chrome -->
   <button class="menu-item">Row</button>
 </div>
-<button class="disabled-soft" aria-disabled="true">…</button>        <!-- canonical visual disabled -->
+<button class="c8-flat btn" aria-disabled="true">…</button>         <!-- no hover/press wash; btn paints it disabled -->
+<a class="disabled-soft" aria-disabled="true">…</a>                  <!-- canonical visual disabled (opacity-40) -->
 
 
 <!-- card -->

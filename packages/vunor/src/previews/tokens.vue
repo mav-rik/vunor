@@ -15,6 +15,8 @@ const scopes = [
 ]
 const layers = ['layer-0', 'layer-1', 'layer-2', 'layer-3', 'layer-4']
 
+const c8Variants = ['c8-filled', 'c8-flat', 'c8-outlined', 'c8-light', 'c8-chrome']
+
 const toggleOn = ref(false)
 const toggleSelect = ref(false)
 </script>
@@ -88,6 +90,45 @@ const toggleSelect = ref(false)
         <a class="disabled-soft inline-flex items-center px-$m py-$xs rounded-r1" data-disabled>
           data-disabled link
         </a>
+      </div>
+    </div>
+
+    <div class="mb-$xl">
+      <h3 class="text-mb-$m">c8 hover / press wash is off on a disabled element</h3>
+      <p class="text-body-s text-current-muted mb-$m">
+        Hover or press each button: only the enabled one reacts. Keyboard focus
+        (<code>:focus-visible</code>) still paints the wash on the
+        <code>aria-disabled</code> one, which stays focusable.
+      </p>
+      <div
+        v-for="variant of c8Variants"
+        :key="variant"
+        class="c8-gate-row layer-0 px-$m py-$s flex gap-$m items-center"
+        :data-variant="variant"
+      >
+        <span class="text-caption text-current-muted w-[8em]">{{ variant }}</span>
+        <button :class="variant" class="scope-primary btn" data-state-kind="enabled">
+          enabled
+        </button>
+        <button :class="variant" class="scope-primary btn" data-state-kind="disabled" disabled>
+          disabled
+        </button>
+        <button
+          :class="variant"
+          class="scope-primary btn"
+          data-state-kind="aria-disabled"
+          aria-disabled="true"
+        >
+          aria-disabled
+        </button>
+        <button
+          :class="variant"
+          class="scope-primary btn"
+          data-state-kind="data-disabled"
+          data-disabled
+        >
+          data-disabled
+        </button>
       </div>
     </div>
 

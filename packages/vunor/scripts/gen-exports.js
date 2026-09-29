@@ -15,7 +15,8 @@ async function readPackageJson() {
 
 // Function to write to package.json
 async function writePackageJson(data) {
-  const jsonString = JSON.stringify(data, null, 2)
+  // trailing newline: oxfmt (fmt:check) and npm both expect one
+  const jsonString = `${JSON.stringify(data, null, 2)}\n`
   await fs.promises.writeFile(packageJsonPath, jsonString, 'utf8')
 }
 

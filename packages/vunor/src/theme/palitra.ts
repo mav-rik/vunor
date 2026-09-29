@@ -497,22 +497,23 @@ function multiplySaturation<T extends object>(colors: T, m = 0.5): Record<keyof 
 
 const layerN = (n: number, reverse?: boolean) => (reverse ? 4 - n : n)
 
+// Current-* slots for one side of a `layer-N`: bg uses the `bg` side, fg the
+// opposite for contrast. hover-step: bg moves one layer further; border lands on -3.
+const sideTemplate = (bg: 'light' | 'dark', n: number) => {
+  const fg = bg === 'light' ? 'dark' : 'light'
+  const hover = Math.min(n + 1, 4)
+  return (
+    `current-bg-scope-${bg}-${n} current-text-scope-${fg}-0 current-icon-scope-${fg}-0 ` +
+    `current-text-muted-scope-${fg}-2 current-icon-muted-scope-${fg}-2 ` +
+    `current-bg-hover-scope-${bg}-${hover} current-border-hover-scope-${bg}-3 current-text-hover-scope-${fg}-0`
+  )
+}
+
 export function getPaletteShortcuts(): UserShortcuts<TVunorTheme> {
   return [
     [
       /^layer-([0-4])$/,
       ([, a], { theme }) => {
-        // bg uses `bg` side; fg uses the opposite for contrast.
-        // hover-step: bg moves one layer further; border lands on -3.
-        const sideTemplate = (bg: 'light' | 'dark', n: number) => {
-          const fg = bg === 'light' ? 'dark' : 'light'
-          const hover = Math.min(n + 1, 4)
-          return (
-            `current-bg-scope-${bg}-${n} current-text-scope-${fg}-0 current-icon-scope-${fg}-0 ` +
-            `current-text-muted-scope-${fg}-2 current-icon-muted-scope-${fg}-2 ` +
-            `current-bg-hover-scope-${bg}-${hover} current-border-hover-scope-${bg}-3 current-text-hover-scope-${fg}-0`
-          )
-        }
         const d = layerN(Number(a), theme.reverseDarkLayers)
         const l = layerN(Number(a), theme.reverseLightLayers)
         const dark = sideTemplate('dark', d)

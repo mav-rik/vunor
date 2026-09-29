@@ -25,6 +25,9 @@
   "experimentalSortPackageJson": true,
   "ignorePatterns": [
     "dist/**",
-    ".env"
+    ".env",
+    "**/test-results/**",
+    "**/playwright-report/**",
+    "**/blob-report/**"
   ]
 }

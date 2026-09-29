@@ -1,4 +1,5 @@
 import { defineShortcuts } from '../utils/define-sc'
+import { whenEnabled } from '../utils/disabled'
 
 // `$m` and `fingertip-half` as literals: an arbitrary-property value is not run
 // through the theme, so these mirror `theme.spacing` (`$m` is a fixed `1em`,
@@ -91,7 +92,7 @@ export const i8 = defineShortcuts({
     '':
       'i8-apply-bg i8-apply-border current-outline-hl rounded-r1 outline-none ' +
       'text-current placeholder:text-current/50 disabled-soft',
-    'hover:': 'border-current-hover',
+    [`${whenEnabled}hover:`]: 'border-current-hover',
     'focus:': 'current-border-hl outline i8-apply-outline',
     'data-[error=true]:': 'current-border-error-500 current-outline-error-500 border-current',
   },

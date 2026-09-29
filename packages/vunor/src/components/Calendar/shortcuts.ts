@@ -1,4 +1,5 @@
 import { defineShortcuts } from '../../theme/utils/define-sc'
+import { whenEnabled } from '../../theme/utils/disabled'
 
 export const calendarShortcuts = defineShortcuts({
   'calendar-root': 'inline-block',
@@ -16,7 +17,7 @@ export const calendarShortcuts = defineShortcuts({
     'before:': 'absolute bottom-[0.6em] w-[1.5em] h-[2px] bg-scope-color-500/75 block',
     '[&[data-today]::before]:': "content-['']",
     '[&[data-today][data-selected]::before]:': 'bg-white',
-    'hover:': {
+    [`${whenEnabled}hover:`]: {
       '': 'bg-scope-color-200',
       'dark:': 'bg-scope-color-700',
     },

@@ -13,7 +13,7 @@ import type { TVunorPaletteOptions } from './palitra'
 import type { TVunorTheme } from './theme'
 import type { TVunorUnoPresetOpts } from './types'
 import type { Theme } from '@unocss/preset-mini'
-import type { Extractor, Preset, PresetFactory, StaticShortcut } from 'unocss'
+import type { Extractor, Preset, PresetFactory, StaticShortcut, Variant } from 'unocss'
 
 function createVunorExtractor(): Extractor {
   return {
@@ -140,6 +140,31 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
   },
 }
 
+// `disabled-soft` as a literal class. UnoCSS matches variants before it looks
+// up shortcuts, and `-` is a variant separator, so on its own the token reads
+// as the `disabled-` variant plus a `soft` utility and emits nothing. (Inside
+// a shortcut body it already worked: shortcut expansion tries the name first.)
+//
+// This variant runs before every other one and claims only a token that is
+// exactly `disabled-soft` once any leading variants are stripped (`md:`,
+// `dark:`, `!`…). It swaps in a private name whose shortcut points back at
+// `disabled-soft`, which then expands through the consumer's shortcuts, so
+// overrides passed to `vunorShortcuts()` still apply. The selector is built from
+// the raw token, so the class stays `.disabled-soft`. `disabled:…` and
+// `disabled-<utility>` never equal `disabled-soft` and are left to the
+// `disabled` variant as before. Without a `disabled-soft` shortcut registered
+// (no `vunorShortcuts()`) it stands aside, so nothing changes there either.
+const DISABLED_SOFT = 'disabled-soft'
+const DISABLED_SOFT_LITERAL = '__vunor-disabled-soft'
+const disabledSoftLiteral: Variant<TVunorTheme> = {
+  name: 'vunor:disabled-soft-literal',
+  order: -1000,
+  match: (matcher, { generator }) =>
+    matcher === DISABLED_SOFT && generator.config.shortcuts.some(sc => sc[0] === DISABLED_SOFT)
+      ? { matcher: DISABLED_SOFT_LITERAL }
+      : undefined,
+}
+
 export const presetVunor: PresetFactory<
   TVunorTheme,
   TVunorUnoPresetOpts & { palette?: TVunorPaletteOptions }
@@ -165,7 +190,8 @@ export const presetVunor: PresetFactory<
     ...wind,
     name: 'vunor',
     theme: defu(theme.theme, wind.theme) as TVunorTheme,
-    shortcuts: paletteShortcuts,
+    variants: [disabledSoftLiteral, ...(wind.variants ?? [])],
+    shortcuts: [...paletteShortcuts, [DISABLED_SOFT_LITERAL, DISABLED_SOFT]],
     extractors: [createVunorExtractor()],
     layers: {
       preflights: 0,

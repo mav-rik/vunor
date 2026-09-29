@@ -7,7 +7,8 @@ async function readPackageJson(filePath) {
 }
 
 async function writePackageJson(filePath, content) {
-  const data = JSON.stringify(content, null, 2)
+  // trailing newline: oxfmt (fmt:check) and npm both expect one
+  const data = `${JSON.stringify(content, null, 2)}\n`
   await fs.writeFile(filePath, data, 'utf8')
 }
 

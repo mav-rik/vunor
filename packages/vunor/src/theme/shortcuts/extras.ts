@@ -1,4 +1,5 @@
 import { defineShortcuts } from '../utils/define-sc'
+import { whenDisabled } from '../utils/disabled'
 
 // Public surface primitive — popover/menu/listbox content chrome. Symmetric
 // partner of dialog-card. Consumers add min-w-/max-w- per use.
@@ -12,14 +13,12 @@ export const popupCard = defineShortcuts({
   },
 })
 
-// Canonical "visually disabled" treatment. Auto-fires on disabled,
-// aria-disabled and data-disabled. Compose on non-btn clickables, links,
-// and list rows. <VuButton> already paints opacity-80 via `btn`.
-const disabledPaint = 'opacity-40 cursor-not-allowed'
+// Canonical "visually disabled" treatment. Auto-fires on the shared disabled
+// definition (utils/disabled.ts) that also switches off the c8 hover/press washes.
+// Compose on non-btn clickables, links, and list rows. <VuButton> already
+// paints opacity-80 via `btn`.
 export const disabledSoft = defineShortcuts({
   'disabled-soft': {
-    'disabled:': disabledPaint,
-    'aria-[disabled=true]:': disabledPaint,
-    'data-[disabled]:': disabledPaint,
+    [whenDisabled]: 'opacity-40 cursor-not-allowed',
   },
 })
