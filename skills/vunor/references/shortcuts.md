@@ -345,7 +345,7 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 | `menu-root`, `menu-item` | Reka-ui-shaped menu rows — composes `c8-flat` for hover/highlighted/selected states. |
 | `popup-card` | Surface chrome for hand-rolled popovers / listboxes — partner of `dialog-card`. |
 | `i8-bare` | Standalone `<input>` styling without the `i8` wrapper `<div>`. |
-| `disabled-soft` | Visually disabled treatment (opacity-40 + not-allowed) on the [shared disabled definition](#c8--clickable-styles). Works as a literal class and inside a shortcut body. On an element that also has the `btn` class, it replaces `btn`'s opacity-80. In an alias shortcut that composes both (`'x': 'btn disabled-soft'`), whichever comes last in the body wins. Requires `vunorShortcuts()` in `shortcuts` (vunor ≤ 0.3.0: the literal class emitted no CSS; only composing it in a shortcut worked). |
+| `disabled-soft` | Visually disabled treatment (opacity-40 + not-allowed) on the [shared disabled definition](#c8--clickable-styles). Works as a literal class and inside a shortcut body. It replaces `btn`'s opacity-80 whether both are literal classes on the element or composed in one alias shortcut (`'x': 'btn disabled-soft'`, either order): `btn`'s disabled opacity is a zero-specificity default, so `disabled-soft` or a `disabled:opacity-*` utility always wins (vunor ≤ 0.3.1: inside an alias `btn`'s 0.8 won in either order). Requires `vunorShortcuts()` in `shortcuts` (vunor ≤ 0.3.0: the literal class emitted no CSS; only composing it in a shortcut worked). |
 
 ## Override patterns
 

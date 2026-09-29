@@ -8,11 +8,18 @@
 //                         the Reka UI primitives use it)
 //   [data-disabled]       Reka UI's state attribute (slider thumbs carry only this one)
 //
-// Paint that marks an element as disabled (`disabled-soft`, `btn`) goes under
+// Paint that marks an element as disabled (`disabled-soft`) goes under
 // `whenDisabled`. Interaction states that must not react on a disabled element
 // (hover and press washes) go under `whenEnabled`. Both wrap the same selector
 // list in a single `:is()` / `:not()`, so either one adds 0,1,0 to the
 // specificity whichever attribute matched.
+//
+// A disabled paint that is only a fallback, one that any explicit disabled rule
+// should replace (btn's opacity-80), goes under `whenDisabledDefault`. It wraps
+// the list in `:where()`, which adds nothing, so `.btn:where(…)` stays at 0,1,0
+// and loses to `disabled-soft` (0,2,0) and to a consumer's `disabled:opacity-*`
+// (0,2,0) whatever the order. Order is what an alias shortcut cannot promise:
+// `'x': 'btn disabled-soft'` puts both rules on `.x` and UnoCSS picks their order.
 //
 // They are arbitrary-selector variants (`[&:not(…)]:`) rather than UnoCSS's
 // `not-[…]:` / `is-[…]:`: those read their bracket greedily, so a later
@@ -22,6 +29,12 @@ const disabledSelectors = ':disabled,[disabled],[aria-disabled=true],[data-disab
 
 /** Variant prefix that matches while the element is disabled. */
 export const whenDisabled = `[&:is(${disabledSelectors})]:`
+
+/**
+ * Variant prefix for a default disabled paint: matches while the element is
+ * disabled and adds no specificity, so any other disabled rule overrides it.
+ */
+export const whenDisabledDefault = `[&:where(${disabledSelectors})]:`
 
 /** Variant prefix that matches only while the element is not disabled. */
 export const whenEnabled = `[&:not(${disabledSelectors})]:`

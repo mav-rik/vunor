@@ -287,6 +287,8 @@ Each includes hover, active, and focus states. Hover and press do not paint on a
 <button class="scope-error c8-flat">Cancel</button>
 ```
 
+The `btn` layout primitive fades a disabled element to opacity 0.8. That is a default: `disabled-soft` (0.4) or a `disabled:opacity-*` utility replaces it, whether written on the element or composed with `btn` in your own shortcut (`'my-btn': 'btn disabled-soft'`).
+
 ### Inputable Styles (`i8`)
 
 Input field design variants:

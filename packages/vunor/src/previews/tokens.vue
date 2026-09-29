@@ -94,6 +94,40 @@ const toggleSelect = ref(false)
     </div>
 
     <div class="mb-$xl">
+      <h3 class="text-mb-$m">btn's disabled opacity yields to explicit disabled rules</h3>
+      <p class="text-body-s text-current-muted mb-$m">
+        All disabled. <code>btn</code> fades to 0.8 by default; <code>disabled-soft</code> (0.4) and
+        <code>disabled:opacity-*</code> replace it, as literal classes or composed in an alias.
+      </p>
+      <div class="btn-disabled-row layer-0 px-$m py-$s flex flex-wrap gap-$m items-center">
+        <button class="scope-primary btn c8-flat" data-case="plain" disabled>btn</button>
+        <button class="scope-primary btn c8-flat disabled-soft" data-case="literal-soft" disabled>
+          btn disabled-soft
+        </button>
+        <button class="scope-primary preview-btn-soft-after" data-case="alias-soft-after" disabled>
+          alias: btn … disabled-soft
+        </button>
+        <button
+          class="scope-primary preview-btn-soft-before"
+          data-case="alias-soft-before"
+          disabled
+        >
+          alias: disabled-soft btn …
+        </button>
+        <button
+          class="scope-primary btn c8-flat disabled:opacity-50"
+          data-case="consumer-opacity"
+          disabled
+        >
+          btn disabled:opacity-50
+        </button>
+        <button class="scope-primary btn c8-flat cursor-pointer" data-case="cursor" disabled>
+          btn cursor-pointer
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-$xl">
       <h3 class="text-mb-$m">c8 hover / press wash is off on a disabled element</h3>
       <p class="text-body-s text-current-muted mb-$m">
         Hover or press each button: only the enabled one reacts. Keyboard focus

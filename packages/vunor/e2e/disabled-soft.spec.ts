@@ -6,7 +6,8 @@ import { navigateTo, restAndHover } from './utils'
  * `disabled-soft` written as a literal class, not composed inside a shortcut.
  * UnoCSS reads the bare token as the `disabled-` variant plus `soft` unless the
  * preset's literal variant claims it (src/theme/preset-vunor.ts), in which case
- * the class used to render with no CSS at all.
+ * the class used to render with no CSS at all. Also covers how it and a
+ * consumer's `disabled:opacity-*` override btn's default disabled opacity.
  */
 
 test.describe('disabled-soft literal class', () => {
@@ -41,5 +42,31 @@ test.describe('disabled-soft literal class', () => {
     expect(prevBg.hover).toBe(prevBg.rest)
     const nextBg = await restAndHover(page, next)
     expect(nextBg.hover).not.toBe(nextBg.rest)
+  })
+
+  // btn's opacity-80 is a zero-specificity default (src/theme/shortcuts/btn.ts),
+  // so any explicit disabled opacity replaces it — also inside an alias, where
+  // both rules land on the alias class and UnoCSS, not the body, picks the order.
+  for (const [kind, opacity] of [
+    ['plain', '0.8'],
+    ['literal-soft', '0.4'],
+    ['alias-soft-after', '0.4'],
+    ['alias-soft-before', '0.4'],
+    ['consumer-opacity', '0.5'],
+  ] as const) {
+    test(`btn disabled paint, ${kind}: opacity ${opacity}`, async ({ page }) => {
+      await navigateTo(page, 'Tokens')
+      const el = page.locator(`main .btn-disabled-row button[data-case="${kind}"]`)
+      await expect(el).toBeDisabled()
+      await expect(el).toHaveCSS('opacity', opacity)
+      await expect(el).toHaveCSS('cursor', 'not-allowed')
+    })
+  }
+
+  test('btn cursor-pointer still shows not-allowed once disabled', async ({ page }) => {
+    await navigateTo(page, 'Tokens')
+    const el = page.locator('main .btn-disabled-row button[data-case="cursor"]')
+    await expect(el).toHaveCSS('cursor', 'not-allowed')
+    await expect(el).toHaveCSS('opacity', '0.8')
   })
 })

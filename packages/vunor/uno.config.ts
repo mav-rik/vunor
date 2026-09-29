@@ -10,6 +10,9 @@ import type { TVunorTheme } from './src/theme/theme'
 import type { PresetOrFactory } from 'unocss'
 const sc = vunorShortcuts({
   // 'c8-filled': 'current-bg-scope-color',
+  // Consumer aliases composing btn with disabled-soft, in both orders (Tokens preview, e2e)
+  'preview-btn-soft-after': 'btn c8-flat disabled-soft',
+  'preview-btn-soft-before': 'disabled-soft btn c8-flat',
 })
 
 export default defineConfig({

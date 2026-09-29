@@ -1,5 +1,5 @@
 import { defineShortcuts } from '../utils/define-sc'
-import { whenDisabled } from '../utils/disabled'
+import { whenDisabled, whenDisabledDefault } from '../utils/disabled'
 
 // Each modifier's geometry is declared once and applied from two directions:
 // the `[&.x]:` variants inside `btn` (they compile to `.btn.btn-x`, which needs
@@ -35,11 +35,12 @@ export const btn = defineShortcuts({
     '[&.btn-round]:': btnRound,
     '[&.btn-square]:': btnSquare,
     '[&.btn-round.btn-square]:': 'px-0 [--btn-icon-pull:0]',
-    // `disabled-soft` on the same element asks for the softer paint, so btn's
-    // own steps aside. `:where()` keeps this rule at 0,2,0, so a consumer's
-    // `disabled:opacity-*` utility still overrides it. Literal-class only: in an
-    // alias (`'x': 'btn disabled-soft'`) whichever comes last in the body wins.
-    [`${whenDisabled}[&:where(:not(.disabled-soft))]:`]: 'opacity-80 cursor-not-allowed',
+    // opacity-80 is a fallback: at 0,1,0 it yields to `disabled-soft` and to a
+    // consumer's `disabled:opacity-*`, on the element or composed in an alias.
+    [whenDisabledDefault]: 'opacity-80',
+    // The cursor stays at 0,2,0 so the documented `btn cursor-pointer` still
+    // shows not-allowed once disabled. `disabled-soft` sets the same cursor.
+    [whenDisabled]: 'cursor-not-allowed',
     '[&>span]:data-[loading]:': 'opacity-0 pointer-events-none',
     '[&>div:not(.loading-indicator-wrapper)]:data-[loading]:': 'opacity-0 pointer-events-none',
     '[&>.loading-indicator-wrapper]:':

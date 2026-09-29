@@ -284,6 +284,7 @@ describe('card heading typography', () => {
 const DISABLED = ':disabled,[disabled],[aria-disabled=true],[data-disabled]'
 const WHEN_ENABLED = `:not(${DISABLED})`
 const WHEN_DISABLED = `:is(${DISABLED})`
+const WHEN_DISABLED_DEFAULT = `:where(${DISABLED})`
 const C8_VARIANTS = ['c8-filled', 'c8-flat', 'c8-outlined', 'c8-light', 'c8-chrome']
 
 describe('disabled gate', () => {
@@ -339,10 +340,37 @@ describe('disabled gate', () => {
   // disabled-soft's side of the same list is covered by the literal-class block below
   it('paints btn on the shared selector list', async () => {
     const btn = await parse('btn')
-    expect(declarations(btn, `.btn:where(:not(.disabled-soft))${WHEN_DISABLED}`)).toMatchObject({
-      opacity: '0.8',
-      cursor: 'not-allowed',
-    })
+    expect(declarations(btn, `.btn${WHEN_DISABLED_DEFAULT}`)).toEqual({ opacity: '0.8' })
+    expect(declarations(btn, `.btn${WHEN_DISABLED}`)).toEqual({ cursor: 'not-allowed' })
+  })
+})
+
+// btn's opacity-80 sits under `:where()` (0,1,0), so any explicit disabled
+// opacity (0,2,0) replaces it whatever order UnoCSS emits the rules in. The
+// order is what an alias cannot promise: both bodies land on the alias class.
+describe('btn disabled opacity is a default', () => {
+  it('only opacity rule on btn is the zero-specificity one', async () => {
+    const btn = await parse('btn')
+    const disabled = selectorsSetting(btn, 'opacity').filter(s => !s.includes('loading'))
+    expect(disabled).toEqual([`.btn${WHEN_DISABLED_DEFAULT}`])
+  })
+
+  it.each([
+    ['btn disabled-soft', '0.4'],
+    ['disabled-soft btn', '0.4'],
+    ['btn disabled:opacity-50', '0.5'],
+    ['btn btn-square c8-flat disabled-soft', '0.4'],
+  ])("alias 'x': '%s' outranks btn's default", async (body, opacity) => {
+    const utils = await parse('x', undefined, { x: body })
+    expect(declarations(utils, `.x${WHEN_DISABLED_DEFAULT}`)).toEqual({ opacity: '0.8' })
+    const explicit = selectorsSetting(utils, 'opacity').filter(
+      s => s !== `.x${WHEN_DISABLED_DEFAULT}` && !s.includes('loading')
+    )
+    expect(explicit).toHaveLength(1)
+    const [selector = ''] = explicit
+    // `:is(…)` or `:disabled` on top of the class: 0,2,0 against the default's 0,1,0
+    expect(selector).toMatch(/^\.x(:is\(|:disabled$)/)
+    expect(declarations(utils, selector).opacity).toBe(opacity)
   })
 })
 
