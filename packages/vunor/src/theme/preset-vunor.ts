@@ -12,8 +12,8 @@ import { round } from './utils/round'
 import type { TVunorPaletteOptions } from './palitra'
 import type { TVunorTheme } from './theme'
 import type { TVunorUnoPresetOpts } from './types'
-import type { Theme } from '@unocss/preset-mini'
 import type { Extractor, Preset, PresetFactory, StaticShortcut, Variant } from 'unocss'
+import type { Theme } from 'unocss/preset-mini'
 
 function createVunorExtractor(): Extractor {
   return {

@@ -151,11 +151,11 @@ Searchable dropdown with optional multi-select and grouping. Inherits all `VuInp
 | `modelValue` | string \| string[] | — | v-model |
 | `items` | `Array<string \| T> \| Record<string, Array>` | — | Options or grouped record |
 | `searchTerm` | string | — | v-model for search input text |
-| `multiple` | boolean | `false` | Multi-select mode |
+| `multiple` | boolean | `false` | Multi-select mode: the model is an array; the clear icon sets it to `[]` |
 | `checkboxItems` | boolean | `false` | Show checkboxes in multi-select |
-| `modelOpen` | boolean | — | v-model for popup open state |
+| `open` / `defaultOpen` | boolean | — | `v-model:open`: whether the popup is open. With `multiple` it is the popover the user opens with the field (the option list inside it is always open), so one click on the field emits one `update:open` |
 | `dropdownIcon` | string | `'i--chevron-down'` | Toggle icon |
-| `resetSearchTermOnBlur` | boolean | — | Clear search on blur |
+| `resetSearchTermOnBlur` | boolean | `false` | Clear the typed search text on blur (Reka's default is `true`; vunor keeps the text, so a `v-model:search-term` server search is not cleared) |
 | `popupClass` | string | — | Class on the popup |
 | `popupRound` | boolean | — | Round popup corners |
 | `align` | string | — | Popup alignment |

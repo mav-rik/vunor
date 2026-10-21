@@ -1,30 +1,50 @@
-<script setup lang="ts" generic="T extends TSelectItem">
-import { SelectTrigger, SelectValue } from 'reka-ui'
+<script setup lang="ts" generic="T extends TSelectItem, M extends boolean = false">
+import { SelectRoot, SelectTrigger, SelectValue } from 'reka-ui'
 import { computed } from 'vue'
 import { useInputBaseProps, useInputProps } from 'vunor'
 
+import { useForwardToRoot } from '../forward-root'
 import VuInput from '../Input/Input.vue'
 import VuInputBase from '../Input/InputBase.vue'
 import VuSelectBase from './SelectBase.vue'
 
 import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/utils'
-import type { TSelectBaseProps, TSelectItem } from './types'
+import type { TSelectBaseProps, TSelectItem, TSelectModel } from './types'
 
-type Props = Omit<TInputProps & TInputBaseProps, 'active'> & TSelectBaseProps<T>
+type Props = Omit<TInputProps & TInputBaseProps, 'active'> & TSelectBaseProps<T, M>
+
+// The rendered root is the trigger shell inside VuSelectBase's slot (SelectRoot renders
+// no element), so `class` and fallthrough attrs are bound to it explicitly.
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<Props>(), {
+  // forwarded booleans: absent stays undefined (see forward-root.ts)
+  defaultOpen: undefined,
+  multiple: undefined,
   sideOffset: 2,
 })
 defineEmits<TInputEmits>()
 
+const inputProps = useInputProps()
+const inputBaseProps = useInputBaseProps()
 const forwardProps = computed(() => {
   if (props.groupItem) {
-    return useInputBaseProps()?.value
+    // VuInputBase has no `click` event: pass the listener on as a native one
+    return { ...inputBaseProps?.value, onClick: props.onClick }
   }
-  return useInputProps()?.value
+  return inputProps?.value
 })
 
-const modelValue = defineModel<string>()
+const modelValue = defineModel<TSelectModel<M>>()
+const open = defineModel<boolean>('open', { default: undefined })
+
+// SelectRoot props declared on this component (name, by, dir, multiple, ...), for VuSelectBase
+const rootProps = useForwardToRoot(SelectRoot, props, undefined, [
+  'modelValue',
+  'open',
+  'disabled',
+  'required',
+])
 
 function onFocus(event: FocusEvent) {
   ;(event.target as HTMLDivElement | undefined)?.querySelector?.('input')?.focus()
@@ -33,7 +53,9 @@ function onFocus(event: FocusEvent) {
 
 <template>
   <VuSelectBase
+    v-bind="rootProps"
     v-model="modelValue"
+    v-model:open="open"
     :disabled-values
     :popup-class
     :popup-round
@@ -44,7 +66,6 @@ function onFocus(event: FocusEvent) {
     :required
     :disabled
     :placeholder
-    :defaultValue
     :popupPosition
     :side
     :sideOffset
@@ -52,7 +73,7 @@ function onFocus(event: FocusEvent) {
     :updatePositionStrategy
     v-slot="s"
   >
-    <SelectTrigger as-child v-if="groupItem">
+    <SelectTrigger as-child v-if="groupItem" v-bind="$attrs" :class>
       <!-- prettier-ignore-attribute v-model -->
       <VuInputBase
         class="cursor-pointer select-none"
@@ -74,7 +95,8 @@ function onFocus(event: FocusEvent) {
     <VuInput
       v-else
       class="select-none"
-      v-bind="forwardProps"
+      :class
+      v-bind="{ ...$attrs, ...forwardProps }"
       :icon-append="typeof iconAppend === 'string' ? iconAppend : s.icon"
       :model-value="(s.displayItem?.label || s.displayItem?.value) as string"
       :active="s.open"

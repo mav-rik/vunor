@@ -7,12 +7,26 @@ import {
   DialogTitle,
   DialogClose,
 } from 'reka-ui'
-import { type ComponentInstance, nextTick, ref, onMounted, computed, watch } from 'vue'
+import {
+  type ComponentInstance,
+  callWithAsyncErrorHandling,
+  camelize,
+  computed,
+  ErrorCodes,
+  getCurrentInstance,
+  nextTick,
+  onMounted,
+  ref,
+  toHandlerKey,
+  useAttrs,
+  watch,
+} from 'vue'
 import { mergeCssClasses, type TVueCssClass } from 'vunor/utils'
 
 import VuButton from '../Button/Button.vue'
 import VuCard from '../Card/Card.vue'
 import VuCardHeader from '../Card/CardHeader.vue'
+import { useForwardToRoot, useModelState } from '../forward-root'
 import VuIcon from '../Icon/Icon.vue'
 
 interface TFooterButton {
@@ -22,12 +36,18 @@ interface TFooterButton {
   closeDialog?: boolean
 }
 
-const open = defineModel<boolean>('open')
+// DialogRoot renders no element of its own: fallthrough attrs go to the dialog card.
+defineOptions({ inheritAttrs: false })
+
+const open = defineModel<boolean>('open', { default: undefined })
 const internalOpen = ref(false)
 const props = withDefaults(
   defineProps<{
     defaultOpen?: boolean
+    /** Styles the overlay as a modal backdrop. The dialog itself is always modal. */
     modal?: boolean
+    /** Forwarded to Reka `DialogContent`. */
+    disableOutsidePointerEvents?: boolean
     rounded?: boolean
     title?: string
     focusFirstSelector?: string
@@ -56,15 +76,71 @@ const props = withDefaults(
     onCloseAutoFocus?: ((event: Event) => void) | undefined
   }>(),
   {
+    // forwarded booleans: absent stays undefined (see forward-root.ts)
+    disableOutsidePointerEvents: undefined,
     level: 'h4',
     focusFirstSelector: 'input',
     contentClass: 'px-$card-spacing py-$m flex-grow-1 overflow-auto',
   }
 )
+// the dialog's open state: the bound model, else default-open (DialogRoot itself is driven
+// by `internalOpen`, which follows this with a delay for the closing animation)
+const isOpen = useModelState(open, DialogRoot, 'defaultOpen', props)
+
+// DialogContent props declared on this component (disableOutsidePointerEvents)
+const contentProps = useForwardToRoot(DialogContent, props, undefined, [
+  'forceMount',
+  'asChild',
+  'as',
+])
+
 const emit = defineEmits<{
   (e: 'footer-click', button: string, event: MouseEvent): void
-  <T extends string>(e: `footer-click-${T}`, event: MouseEvent): void
 }>()
+
+/*
+ * `footer-click-<label>` (`@footer-click-ok`): one event per footer button, named after its
+ * label, so no `emits` option can declare it (Vue's `emit` would warn in development and
+ * leave the listener in `$attrs`). The listener is called the way Vue's `emit` calls it:
+ * `onX` or its camelCase form, then `onXOnce` once per dialog.
+ */
+const instance = getCurrentInstance()
+const firedOnce = new Set<string>()
+function emitFooterLabel(event: string, ...args: unknown[]) {
+  const listeners = (instance?.vnode.props ?? {}) as Record<string, unknown>
+  let handlerName = toHandlerKey(event)
+  let handler = listeners[handlerName]
+  if (!handler) {
+    handlerName = toHandlerKey(camelize(event))
+    handler = listeners[handlerName]
+  }
+  const call = (fn: unknown) =>
+    callWithAsyncErrorHandling(
+      fn as (...a: unknown[]) => unknown,
+      instance,
+      ErrorCodes.COMPONENT_EVENT_HANDLER,
+      args
+    )
+  if (handler) {
+    call(handler)
+  }
+  const onceHandler = listeners[`${handlerName}Once`]
+  if (onceHandler && !firedOnce.has(handlerName)) {
+    firedOnce.add(handlerName)
+    call(onceHandler)
+  }
+}
+// those listeners belong to the dialog, not to the card element `$attrs` is bound to
+const FOOTER_LISTENER = /^on(FooterClick|Footer-click-)/
+const attrs = useAttrs()
+// read on render ($attrs is not reactive, so no computed)
+function cardAttrs() {
+  const keys = Object.keys(attrs)
+  if (!keys.some(key => FOOTER_LISTENER.test(key))) {
+    return attrs
+  }
+  return Object.fromEntries(keys.filter(key => !FOOTER_LISTENER.test(key)).map(k => [k, attrs[k]]))
+}
 
 async function applyFocusFirstSelector() {
   await nextTick()
@@ -101,14 +177,14 @@ const _footerButtons = computed<TFooterButton[]>(() => {
 const root = ref<ComponentInstance<typeof VuCard>>()
 
 function emitFooterClick(btn: string, event: MouseEvent) {
-  emit<typeof btn>(`footer-click-${btn.toLowerCase().replace(/\s*/g, '')}`, event)
-  emit(`footer-click`, btn, event)
+  emitFooterLabel(`footer-click-${btn.toLowerCase().replace(/\s*/g, '')}`, event)
+  emit('footer-click', btn, event)
 }
 
 const closing = ref(false)
 
-watch([open], () => {
-  if (open.value) {
+watch(isOpen, () => {
+  if (isOpen.value) {
     internalOpen.value = true
     closing.value = false
     applyFocusFirstSelector()
@@ -121,11 +197,11 @@ watch([open], () => {
 })
 
 function onUpdateOpen(newValue: boolean) {
-  open.value = newValue
+  isOpen.value = newValue
 }
 
 onMounted(() => {
-  internalOpen.value = !!open.value
+  internalOpen.value = isOpen.value
   applyFocusFirstSelector()
 })
 </script>
@@ -138,6 +214,7 @@ onMounted(() => {
         :data-closing="closing ? '' : undefined"
       />
       <DialogContent
+        v-bind="contentProps"
         as-child
         :onEscapeKeyDown
         :onPointerDownOutside
@@ -146,13 +223,19 @@ onMounted(() => {
         :onOpenAutoFocus
         :onCloseAutoFocus
       >
+        <!-- VuDialog renders no DialogDescription: drop Reka's dangling aria-describedby
+             unless the consumer passes one -->
         <VuCard
+          v-bind="{
+            ...(closing ? { 'data-closing': '' } : {}),
+            ...cardAttrs(),
+            'aria-describedby': $attrs['aria-describedby'],
+          }"
           ref="root"
           :level
           no-padding
           :rounded
           class="dialog-card"
-          :data-closing="closing ? '' : undefined"
           :class="props.class"
         >
           <DialogTitle as-child v-if="title || $slots.header || $slots.title">

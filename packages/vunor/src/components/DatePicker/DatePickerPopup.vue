@@ -18,16 +18,41 @@ import {
 
 import VuButton from '../Button/Button.vue'
 import VuCard from '../Card/Card.vue'
+import { useForwardToRoot } from '../forward-root'
 
+import type { DatePickerContentEmits, DatePickerContentProps } from 'reka-ui'
 import type { TVueCssClass } from 'vunor/utils'
 
-const props = defineProps<{
-  popupRounded?: boolean
-  popupClass?: TVueCssClass
-}>()
+// Fallthrough attrs are bound explicitly to the card (DatePickerContent is as-child).
+defineOptions({ inheritAttrs: false })
+
+const props = withDefaults(
+  defineProps<
+    Omit<DatePickerContentProps, 'as' | 'asChild'> & {
+      popupRounded?: boolean
+      popupClass?: TVueCssClass
+    }
+  >(),
+  {
+    // forwarded booleans: absent stays undefined (see forward-root.ts)
+    forceMount: undefined,
+    sideFlip: undefined,
+    alignFlip: undefined,
+    avoidCollisions: undefined,
+    hideShiftedArrow: undefined,
+    hideWhenDetached: undefined,
+    disableUpdateOnLayoutShift: undefined,
+    prioritizePosition: undefined,
+    disableOutsidePointerEvents: undefined,
+  }
+)
+const emit = defineEmits<DatePickerContentEmits>()
+
+// DatePickerContent props/emits declared on this component (side, align, escapeKeyDown, ...)
+const contentProps = useForwardToRoot(DatePickerContent, props, emit, ['as', 'asChild'])
 </script>
 <template>
-  <DatePickerContent as-child>
+  <DatePickerContent v-bind="contentProps" as-child>
     <VuCard
       level="body"
       class="date-picker-root"

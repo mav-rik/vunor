@@ -2,55 +2,77 @@
 import { DatePickerRoot, type DatePickerRootProps, DatePickerTrigger } from 'reka-ui'
 import { type ComponentPublicInstance, computed, ref, watch, nextTick } from 'vue'
 
+import { claimToggle, useForwardToRoot, useModelState, useRootBinding } from '../forward-root'
 import VuIcon from '../Icon/Icon.vue'
+import VuInputBase from '../Input/InputBase.vue'
 import { type TInputProps, useInputProps } from '../Input/utils'
 import VuDatePickerInner from './DatePickerInner.vue'
 import VuDatePickerPopup from './DatePickerPopup.vue'
 
-import type VuInputBase from '../Input/InputBase.vue'
 import type { DateValue } from '@internationalized/date'
 import type { TVueCssClass } from 'vunor/utils'
 
-const props = defineProps<
-  DatePickerRootProps & {
-    popupRounded?: boolean
-    popupClass?: TVueCssClass
-    openOnClick?: boolean
-  } & TInputProps
->()
-const open = defineModel<boolean>('open')
-const modelValue = defineModel<DateValue>()
+const props = withDefaults(
+  defineProps<
+    // `placeholder` is the input placeholder text (TInputProps), not Reka's placeholder date
+    Omit<DatePickerRootProps, 'placeholder'> & {
+      popupRounded?: boolean
+      popupClass?: TVueCssClass
+      openOnClick?: boolean
+    } & TInputProps
+  >(),
+  {
+    // forwarded booleans: absent stays undefined (see forward-root.ts)
+    hideTimeZone: undefined,
+    disabled: undefined,
+    readonly: undefined,
+    required: undefined,
+    defaultOpen: undefined,
+    modal: undefined,
+    pagedNavigation: undefined,
+    fixedWeeks: undefined,
+    preventDeselect: undefined,
+    closeOnSelect: undefined,
+  }
+)
+// DatePickerRoot renders no element of its own: fallthrough attrs go to the input shell.
+defineOptions({ inheritAttrs: false })
 
-const datePickerRootProps = computed(() => {
-  return {
-    isDateDisabled: props.isDateDisabled,
-    pagedNavigation: props.pagedNavigation,
-    weekStartsOn: props.weekStartsOn,
-    weekdayFormat: props.weekdayFormat,
-    fixedWeeks: props.fixedWeeks,
-    numberOfMonths: props.numberOfMonths,
-    preventDeselect: props.preventDeselect,
-    defaultValue: props.defaultValue,
-    defaultPlaceholder: props.defaultPlaceholder,
-    placeholder: props.placeholder,
-    modelValue: props.modelValue,
-    hourCycle: props.hourCycle,
-    granularity: props.granularity,
-    hideTimeZone: props.hideTimeZone,
-    maxValue: props.maxValue,
-    minValue: props.minValue,
-    locale: props.locale,
-    disabled: props.disabled,
-    readonly: props.readonly,
-    isDateUnavailable: props.isDateUnavailable,
-    required: props.required,
-    id: props.id,
-    dir: props.dir,
-    defaultOpen: props.defaultOpen,
-    modal: props.modal,
-  } as DatePickerRootProps
-})
+const open = defineModel<boolean>('open', { default: undefined })
+const modelValue = defineModel<DateValue>()
+const emit = defineEmits<{
+  (e: 'keydown-enter'): void
+  (e: 'update:placeholder', date: DateValue): void
+}>()
+
+// DatePickerRoot props declared on this component. `placeholder` is excluded: on vunor
+// inputs it is the placeholder text; set the initially shown month with `defaultPlaceholder`.
+const rootProps = useForwardToRoot(DatePickerRoot, props, emit, [
+  'modelValue',
+  'open',
+  'placeholder',
+  'update:modelValue',
+  'update:open',
+])
 const inputProps = useInputProps()
+// what the shell, the popup and the click handlers see: equals DatePickerRoot's open state
+const isOpen = useModelState(open, DatePickerRoot, 'defaultOpen', props)
+
+const rootOpen = useRootBinding(open, isOpen)
+
+// The default append icon is Reka's DatePickerTrigger (`data-vu-trigger`), which toggles the
+// root itself; claimToggle leaves its clicks to it, so only custom append content (calling
+// `emitClick`) opens the picker here.
+function onAppendClick(event: MouseEvent) {
+  if (claimToggle(event)) {
+    isOpen.value = true
+  }
+}
+
+// the trigger icon is a focusable div: Enter / Space activate it like a click
+function activateTrigger(event: KeyboardEvent) {
+  ;(event.currentTarget as HTMLElement | null)?.click()
+}
 
 const popupProps = computed(() => {
   return {
@@ -61,7 +83,9 @@ const popupProps = computed(() => {
 
 function onClick($event: MouseEvent) {
   if (props.openOnClick) {
-    open.value = true
+    if (claimToggle($event)) {
+      isOpen.value = true
+    }
   } else {
     // if not open on click, then the input should be focused when clicking
     const focusableElement = ($event.target as HTMLElement)?.querySelector(
@@ -91,29 +115,26 @@ watch([modelValue], () => {
  * @param {DateValue} [newValue] - The new date value
  */
 async function onUpdate(newValue?: DateValue) {
-  if (!newValue && !open.value) {
+  if (!newValue && !isOpen.value) {
     await nextTick()
     inputBase.value?.$el.querySelector('[tabindex="0"]')?.focus()
   }
 }
-const emit = defineEmits<{
-  (e: 'keydown-enter'): void
-}>()
 </script>
 <template>
   <DatePickerRoot
-    v-bind="datePickerRootProps"
-    v-model:open="open"
+    v-bind="rootProps"
+    :open="rootOpen"
+    @update:open="(value: boolean) => (open = value)"
     v-model="modelValue"
     @update:model-value="onUpdate"
   >
     <VuInputBase
-      v-bind="inputProps"
+      v-bind="{ 'data-has-value': '', ...$attrs, ...inputProps }"
       ref="inputBase"
-      data-has-value
-      :active="open"
+      :active="isOpen"
       icon-append="i--calendar"
-      @append-click="open = true"
+      @append-click="onAppendClick"
     >
       <template v-slot="slotProps">
         <VuDatePickerInner
@@ -128,13 +149,21 @@ const emit = defineEmits<{
       <template v-slot:append="{ iconAppend, emitClick }">
         <slot name="append" :iconAppend="iconAppend" :emitClick="emitClick">
           <DatePickerTrigger as-child>
-            <div class="i8-icon-wrap" @click="emitClick" tabindex="0">
+            <div
+              class="i8-icon-wrap"
+              data-vu-trigger
+              role="button"
+              tabindex="0"
+              aria-label="Open calendar"
+              @click="emitClick"
+              @keydown.enter.space.prevent="activateTrigger"
+            >
               <VuIcon :name="iconAppend!" />
             </div>
           </DatePickerTrigger>
         </slot>
       </template>
     </VuInputBase>
-    <VuDatePickerPopup v-bind="popupProps" v-if="open" />
+    <VuDatePickerPopup v-bind="popupProps" v-if="isOpen" />
   </DatePickerRoot>
 </template>

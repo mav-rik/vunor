@@ -1,11 +1,16 @@
 import fs from 'fs'
 import path from 'path'
 
-import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'rolldown'
 import { dts } from 'rolldown-plugin-dts'
 
 const __dirname = import.meta.dirname
+
+// Compile .vue files with Vue's production compiler build. @vue/compiler-core picks its
+// dev or prod build from NODE_ENV when first loaded, and plugin-vue loads `vue` (which
+// pulls the compiler in) on import, hence the dynamic import after setting it.
+process.env.NODE_ENV = 'production'
+const { default: vue } = await import('@vitejs/plugin-vue')
 
 const componentsDir = path.join(__dirname, 'src', 'components')
 
@@ -54,6 +59,9 @@ for (const [name, filePath] of Object.entries(vueEntries)) {
 const ASSET_RE =
   /\.(css|scss|less|styl|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot|mp[34]|webm|ogg|pdf)(\?.*)?$/
 
+// Query-less id so no other plugin (e.g. plugin-vue's style transform) picks it up
+const EMPTY_ASSET_ID = '\0vunor:empty-asset'
+
 const sharedExternal = [
   'vue',
   'vue-router',
@@ -61,11 +69,8 @@ const sharedExternal = [
   'path',
   'fs',
   '@prostojs/palitra',
-  '@unocss/preset-mini',
-  '@vueuse/core',
-  'unplugin-vue-components',
   'defu',
-  'unocss',
+  /^unocss(\/.*)?$/,
   'util',
   'os',
   'node:process',
@@ -110,8 +115,12 @@ const tsConfig = defineConfig({
     format: 'esm',
     entryFileNames: '[name].mjs',
   },
-  define: {
-    __vue_files__: JSON.stringify(vueFiles),
+  // rolldown reads build-time constants from `transform.define` (a top-level `define` is
+  // ignored and leaves the identifier unresolved in dist)
+  transform: {
+    define: {
+      __vue_files__: JSON.stringify(vueFiles),
+    },
   },
   external: sharedExternal,
   resolve: sharedResolve,
@@ -134,10 +143,18 @@ const vueConfig = defineConfig({
   resolve: sharedResolve,
   plugins: [
     {
+      // SFC <style> blocks and asset imports are not shipped (vunor styles via UnoCSS).
+      // Resolve them to an empty side-effect-free module so the import disappears
+      // from dist instead of leaking an unresolvable `\0stub:<abs path>` import.
       name: 'stub-assets',
       resolveId(source) {
         if (ASSET_RE.test(source)) {
-          return { id: `\0stub:${source}`, external: true }
+          return { id: EMPTY_ASSET_ID, moduleSideEffects: false }
+        }
+      },
+      load(id) {
+        if (id === EMPTY_ASSET_ID) {
+          return ''
         }
       },
     },
@@ -155,7 +172,11 @@ const vueConfig = defineConfig({
         }
       },
     },
-    vue(),
+    // Production SFC compilation. `comments: false` is explicit because comment
+    // retention follows the NODE_ENV the compiler was loaded under, not `isProduction`.
+    // A template comment next to the root element turns the root into a Fragment, and
+    // the production Vue runtime then drops fallthrough attrs (class, @click, aria-*).
+    vue({ isProduction: true, template: { compilerOptions: { comments: false } } }),
   ],
 })
 

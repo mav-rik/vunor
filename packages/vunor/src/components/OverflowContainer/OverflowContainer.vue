@@ -64,10 +64,16 @@ async function fit(i?: number) {
     await nextTick()
 
     const rootWidth = root.value.$el.getBoundingClientRect().width
+    if (rootWidth === 0) {
+      // not laid out (hidden, detached, or no layout engine): nothing to measure; without
+      // this guard every width ">= 0" fails and the loop never ends
+      busy = false
+      return
+    }
 
     let itFits = false
     let additional = 1
-    while (!itFits) {
+    while (!itFits && hiddenCount.value < props.items.length) {
       itFits = true
       const children = root.value.$el.children
       const firstLeft = children[0]?.getBoundingClientRect().left
@@ -76,8 +82,10 @@ async function fit(i?: number) {
         const w = left + width - firstLeft
         if (w >= rootWidth) {
           itFits = false
-          hiddenCount.value =
+          hiddenCount.value = Math.min(
+            props.items.length,
             props.items.length - (j + 1) + (hiddenCount.value > 0 ? additional : 1)
+          )
           if (additional === 1) {
             additional = 2
           }

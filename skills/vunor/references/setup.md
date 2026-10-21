@@ -5,11 +5,19 @@ Installation, project wiring for Vue 3 + Vite and Nuxt 3, package exports, and `
 ## Install
 
 ```bash
-pnpm add vunor
-# peer deps (auto-installed): vue ^3.5, unocss ^66, reka-ui ^2
+pnpm add vunor vue unocss reka-ui
 ```
 
-> **SSR: pin a single Vue version workspace-wide.** Vunor depends on `reka-ui`, which in turn declares `vue ^3.5` as a peer. pnpm is happy to satisfy that with a Vue minor different from the one your consumer app pins — and the two copies produce different VNode proxies. Under SSR (`createSSRApp`) the mismatch surfaces as a cryptic proxy crash like `'set' on proxy: trap returned falsish for property 'style'` — the message never names Vue, so the diagnosis is the slow part. Pin once in your root `package.json`:
+| Peer dependency             | Range     | Required                                   |
+| --------------------------- | --------- | ------------------------------------------ |
+| `vue`                       | `^3.5.0`  | yes                                        |
+| `unocss`                    | `^66.2.1` | yes                                        |
+| `reka-ui`                   | `^2.8.0`  | yes                                        |
+| `@nuxt/kit`, `@nuxt/schema` | `>=3`     | only for `vunor/nuxt` (Nuxt provides them) |
+
+The app provides the peers, so it has one copy of each (npm and pnpm install missing peers automatically). `vue-router` is not a dependency: `<VuButton :to>` renders through the `RouterLink` the app registers with `app.use(router)`.
+
+> **SSR: pin a single Vue version workspace-wide.** Vunor and `reka-ui` declare `vue` as a peer. pnpm is happy to satisfy a peer with a Vue minor different from the one your consumer app pins — and the two copies produce different VNode proxies. Under SSR (`createSSRApp`) the mismatch surfaces as a cryptic proxy crash like `'set' on proxy: trap returned falsish for property 'style'` — the message never names Vue, so the diagnosis is the slow part. Pin once in your root `package.json`:
 >
 > ```json
 > {

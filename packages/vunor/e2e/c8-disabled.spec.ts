@@ -1,5 +1,4 @@
-import { test, expect } from '@playwright/test'
-
+import { test, expect } from './test'
 import { bg, navigateTo, restAndHover } from './utils'
 
 import type { Page } from '@playwright/test'

@@ -5,7 +5,7 @@ import { round } from './utils/round'
 
 import type { TVunorPaletteOptions } from './palitra'
 import type { TTypographyNames, TVunorUnoPresetOpts } from './types'
-import type { Theme } from '@unocss/preset-mini'
+import type { Theme } from 'unocss/preset-mini'
 
 export const themeFactory = (
   opts: Required<TVunorUnoPresetOpts> & { palette?: TVunorPaletteOptions }

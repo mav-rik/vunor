@@ -33,7 +33,7 @@ const items2 = [
       >
         <div class="flex gap-$xs items-center">
           <span>{{ label }}</span>
-          <VuIcon :name="icon" class="current-icon-grey-400" />
+          <VuIcon v-if="icon" :name="icon" class="current-icon-grey-400" />
         </div>
       </VuRadioGroup>
       <VuRadioGroup
@@ -48,7 +48,7 @@ const items2 = [
       >
         <div class="flex gap-$xs items-center">
           <span>{{ label }}</span>
-          <VuIcon :name="icon" class="current-icon-grey-400" />
+          <VuIcon v-if="icon" :name="icon" class="current-icon-grey-400" />
         </div>
       </VuRadioGroup>
       <VuRadioGroup
@@ -63,7 +63,7 @@ const items2 = [
       >
         <div class="flex gap-$xs items-center">
           <span>{{ label }}</span>
-          <VuIcon :name="icon" class="current-icon-grey-400" />
+          <VuIcon v-if="icon" :name="icon" class="current-icon-grey-400" />
         </div>
       </VuRadioGroup>
       <VuRadioGroup

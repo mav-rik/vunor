@@ -1,8 +1,8 @@
 import { color } from '@prostojs/palitra'
 
 import type { TVunorTheme } from '../theme'
-import type { Theme } from '@unocss/preset-mini'
 import type { Rule } from 'unocss'
+import type { Theme } from 'unocss/preset-mini'
 
 export function colorToRgbWithOpacity(c: string) {
   const [r, g, b, _a] = color(c).rgba()

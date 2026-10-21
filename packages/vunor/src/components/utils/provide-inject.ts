@@ -12,7 +12,8 @@ export const useProvideInject = <PA extends unknown[], IA extends unknown[], PR,
       return tr
     },
     inject: (...args: IA) => {
-      const _inject = inject<(...args: IA) => INJ>(key)
+      // optional: a component may be used outside its provider (no dev warning then)
+      const _inject = inject<((...args: IA) => INJ) | null>(key, null)
       if (_inject) {
         return _inject(...args)
       }

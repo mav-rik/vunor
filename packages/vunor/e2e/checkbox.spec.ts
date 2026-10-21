@@ -1,5 +1,4 @@
-import { test, expect } from '@playwright/test'
-
+import { test, expect } from './test'
 import { navigateTo } from './utils'
 
 test.describe('Checkbox Component', () => {

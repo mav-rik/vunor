@@ -2,8 +2,8 @@ import { getScopeCssVars } from './rules/palette'
 import { unitBy } from './utils/unit-by'
 
 import type { TVunorTheme } from './theme'
-import type { Theme } from '@unocss/preset-mini'
 import type { Preflight } from 'unocss'
+import type { Theme } from 'unocss/preset-mini'
 
 export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
   getCSS: ({ theme }) =>

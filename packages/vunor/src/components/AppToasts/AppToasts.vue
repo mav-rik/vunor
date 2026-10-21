@@ -10,9 +10,14 @@ import {
 import { type TToastInternal, useAppToasts } from 'vunor'
 
 import VuButton from '../Button/Button.vue'
+import { useForwardToRoot } from '../forward-root'
 
 import type { ToastProviderProps } from 'reka-ui'
 import type { TVueCssClass } from 'vunor/utils'
+
+// ToastProvider renders no element of its own: fallthrough attrs go to the viewport
+// (where `class` goes as well).
+defineOptions({ inheritAttrs: false })
 
 const { toasts, close } = useAppToasts()
 
@@ -20,12 +25,19 @@ const props = withDefaults(
   defineProps<
     ToastProviderProps & {
       class?: TVueCssClass
+      /** Keys that focus the toast viewport (Reka `ToastViewport`), default F8 */
+      hotkey?: string[]
     }
   >(),
   {
+    // forwarded booleans: absent stays undefined (see forward-root.ts)
+    disableSwipe: undefined,
     swipeDirection: 'left',
   }
 )
+
+// ToastProvider props declared on this component
+const providerProps = useForwardToRoot(ToastProvider, props)
 
 const defaultActions = (toast: TToastInternal): Required<TToastInternal>['actions'] => [
   {
@@ -38,7 +50,7 @@ const defaultActions = (toast: TToastInternal): Required<TToastInternal>['action
 </script>
 
 <template>
-  <ToastProvider v-bind="props" :class="undefined">
+  <ToastProvider v-bind="providerProps">
     <!-- prettier-ignore-attribute class -->
     <ToastRoot
       v-for="toast of toasts"
@@ -72,6 +84,11 @@ const defaultActions = (toast: TToastInternal): Required<TToastInternal>['action
         <VuButton @click="action.action()" class="c8-flat text-body-s" :label="action.text" />
       </ToastAction>
     </ToastRoot>
-    <ToastViewport :class="props.class" class="toasts-viewport" />
+    <ToastViewport
+      v-bind="$attrs"
+      :hotkey="props.hotkey"
+      :class="props.class"
+      class="toasts-viewport"
+    />
   </ToastProvider>
 </template>

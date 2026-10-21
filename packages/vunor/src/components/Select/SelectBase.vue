@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends TSelectItem">
+<script setup lang="ts" generic="T extends TSelectItem, M extends boolean = false">
 import {
   SelectRoot,
   SelectTrigger,
@@ -16,14 +16,32 @@ import {
 } from 'reka-ui'
 import { computed } from 'vue'
 
+import { claimToggle, useForwardToRoot, useModelState, useRootBinding } from '../forward-root'
 import VuIcon from '../Icon/Icon.vue'
 
-import type { TSelectBaseProps, TSelectItem } from './types'
+import type { TSelectBaseProps, TSelectItem, TSelectModel } from './types'
 
-const props = defineProps<TSelectBaseProps<T>>()
+// SelectRoot renders no element of its own: fallthrough attrs go to the default
+// trigger (a custom default slot receives the trigger role instead).
+defineOptions({ inheritAttrs: false })
 
-const open = defineModel<boolean>('open')
-const modelValue = defineModel<string>()
+const props = withDefaults(defineProps<TSelectBaseProps<T, M>>(), {
+  // forwarded booleans: absent stays undefined (see forward-root.ts)
+  defaultOpen: undefined,
+  multiple: undefined,
+  disabled: undefined,
+  required: undefined,
+})
+
+const open = defineModel<boolean>('open', { default: undefined })
+const modelValue = defineModel<TSelectModel<M>>()
+
+// SelectRoot props (name, by, dir, multiple, ...) declared on this component
+const rootProps = useForwardToRoot(SelectRoot, props, undefined, ['modelValue', 'open'])
+// what the slot and openPopup() see: equals SelectRoot's state (also when uncontrolled)
+const isOpen = useModelState(open, SelectRoot, 'defaultOpen', props)
+const value = useModelState(modelValue, SelectRoot, 'defaultValue', props)
+const rootOpen = useRootBinding(open, isOpen)
 
 const groups = computed(() => {
   if (Array.isArray(props.items)) {
@@ -63,13 +81,23 @@ function isItemDisabled(val: string | null | undefined) {
   return props.disabledValues?.includes(val)
 }
 
-function openPopup() {
-  if (!props.disabled) {
-    open.value = !open.value
+function openPopup(event?: Event) {
+  if (claimToggle(event) && !props.disabled) {
+    isOpen.value = !isOpen.value
   }
 }
 
-const displayItem = computed(() => flatItems.value.get(modelValue.value))
+const displayItem = computed<T | undefined>(() => {
+  const current = value.value
+  if (!Array.isArray(current)) {
+    return flatItems.value.get(current)
+  }
+  if (current.length === 0) {
+    return undefined
+  }
+  const label = current.map(v => flatItems.value.get(v)?.label ?? v).join(', ')
+  return { value: current.join(', '), label } as T
+})
 
 function getSearchValue(item: T) {
   return item.search || item.label?.replace(/[^\p{L}\p{N}\p{P}\p{M}\p{Zs}]/gu, '').trim()
@@ -77,16 +105,20 @@ function getSearchValue(item: T) {
 </script>
 
 <template>
-  <!-- prettier-ignore-attribute default-value -->
   <SelectRoot
+    v-bind="rootProps"
     v-model="modelValue"
-    v-model:open="open"
-    :disabled
-    :required
-    :default-value="defaultValue as string"
+    :open="rootOpen"
+    @update:open="(value: boolean) => (open = value)"
   >
-    <slot :displayItem="displayItem" :value="modelValue" :openPopup :open :icon="'i--chevron-down'">
-      <SelectTrigger :class>
+    <slot
+      :displayItem="displayItem"
+      :value="value"
+      :openPopup
+      :open="isOpen"
+      :icon="'i--chevron-down'"
+    >
+      <SelectTrigger v-bind="$attrs" :class>
         <VuIcon
           v-if="!!displayItem?.icon"
           :name="displayItem.icon"

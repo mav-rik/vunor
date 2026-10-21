@@ -57,7 +57,7 @@ Modal dialog built on Reka UI Dialog. Portals to `<body>`.
 | `footerButtons` | — | `Array<string \| { id, label, class? }>` for built-in footer |
 | `focusFirstSelector` | `'input'` | CSS selector for initial focus |
 
-Emits: `footer-click`, `footer-click-{id}`, `update:open`.
+Emits: `footer-click` (label, event), `footer-click-<label>` (event; the label lower-cased with spaces removed, e.g. `Save Draft` → `footer-click-savedraft`), `update:open`.
 Slots: `header`, `title`, `default`, `footer`.
 CSS classes: `dialog-overlay`, `dialog-card`, `dialog-header`, `dialog-title`, `dialog-close`, `dialog-footer`.
 
@@ -114,9 +114,9 @@ Button with icon, loading, link, and active/pressed/selected states.
 | `loading` | boolean | `false` | Show loading spinner, disable pointer |
 | `disabled` | boolean | `false` | Disabled |
 | `active` | boolean | `false` | Sets `data-active` (used by tabs/segmented) |
-| `pressed` | boolean | — | Sets `aria-pressed` (toggle button) |
-| `selected` | boolean | — | Sets `aria-selected` (selectable item) |
-| `to` | RouteLocationRaw | — | Renders as `<router-link>` (Vue Router) |
+| `pressed` | boolean | — | Sets `aria-pressed` (toggle button); nothing when not passed |
+| `selected` | boolean | — | Sets `data-selected` (styled like a selected item by `c8-*`), plus `aria-selected` when the button has a role that allows it (`option`, `tab`, `gridcell`, `row`, `columnheader`, `rowheader`, `treeitem`); nothing when not passed |
+| `to` | RouteLocationRaw | — | Renders as `<router-link>`, using the `RouterLink` your app registers with `app.use(router)` (vunor does not import `vue-router`). Without a router, a string (or `{ path }`) renders `<a href>` (no client-side navigation) and warns in dev. |
 | `asLink` | boolean | `false` | Render as `<a>` instead of `<button>` |
 
 Slots: `default` (overrides label), `icon-left`, `icon-right`.
@@ -293,7 +293,13 @@ Renders one of two slots after a configurable delay. Useful for "show loading af
 
 - Reka UI uses ARIA + data attributes for state, not the HTML attributes you might reach for. Use `[aria-disabled="true"]`, `[data-state="checked"]`, `[data-active]` in custom selectors.
 - Dialog/Popover/Select popups portal to `<body>`. They inherit the `:root` scope (preflight installs `scope-neutral`). To paint them with a different palette, set the popup's `popupClass` / class to include `scope-…`.
-- `<VuButton>` with `to` renders as a router link. The element is `<a>`, not `<button>`. Use `aria-pressed`/`aria-selected` for state on the link.
+- A disabled or loading `<VuButton>` link (`to`, `as-link`) drops its `href` and renders `role="link" aria-disabled="true" tabindex="0"`: it stays focusable but cannot be followed.
+- Slot props and styling that reflect a popup's state (`isOpen`, `open`, `openPopup()`, `data-active`) follow the Reka root also when you only pass `default-open` (or `default-value`).
+- `<VuButton>` with `to` renders as a router link. The element is `<a>`, not `<button>`; the active link gets `data-selected="true"` and, when exactly active, `aria-current="page"`.
+- State attributes vunor computes (`data-active`, `aria-pressed`, `data-selected`, `aria-selected`, `aria-current`, `data-has-value`, `data-error`, …) never replace the same attribute you pass, or one a Reka as-child parent injects (`<Toggle as-child><VuButton/></Toggle>`, `<TabsTrigger as-child>`): yours wins, and a state with no value renders nothing.
+- Attributes you put on a component (`class`, `style`, `@click`, `aria-*`, `data-*`, `id`) land on its root element. Components whose Reka root renders no element forward them instead: `<VuDialog>` to the dialog card, `<VuPopover>` to the trigger, `<VuSelect>` / `<VuSelectBase>` / `<VuDatePickerBase>` to the input/trigger shell, `<VuAppToasts>` to the toast viewport. Exceptions for `id`: on `<VuCheckbox>` it goes to the checkbox control (for `<label for>`); on `<VuDatePicker>` / `<VuDatePickerBase>` it is Reka's `id` (the date field); a popover trigger (`<VuPopover>`, multiple `<VuCombobox groupItem>`) keeps Reka's own id, which links it to the popup.
+- Props and events of the wrapped Reka component pass through: `<VuSelect name="country" multiple dir="rtl" v-model:open>` reaches `SelectRoot` (so `name` submits with the form), `<VuPopover v-model:open modal default-open>` reaches `PopoverRoot`, `<VuCombobox name by open-on-focus @highlight>` reaches `ComboboxRoot`, `@update:placeholder` works on `<VuCalendar>` / `<VuDatePicker>`. Popups: `<VuPopover>` forwards every `PopoverContent` prop and event (collision handling `avoidCollisions` / `sideFlip` / `alignFlip` / `hideShiftedArrow` defaults to `false`; pass it to opt in); the `<VuSelect>`, `<VuCombobox>` and date picker popups are configured only through vunor's popup props (`popupPosition`, `side`, `sideOffset`, `sticky`, `updatePositionStrategy`, `popupClass`, plus `align` on `<VuCombobox>`); other Reka content props are not exposed; `<VuAppToasts hotkey>` reaches the toast viewport. Deliberate exceptions: `as` / `asChild` where vunor renders the element itself; `placeholder` on `<VuDatePicker>` is the input text (use `default-placeholder` for the shown month); `<VuDialog modal>` only styles the overlay (the dialog is always modal); `<VuMenu>` is always open.
+- `@click` on `<VuInput>`, `<VuSelect>`, `<VuCombobox>` and `<VuDatePicker>` is the component's own `click` event: it fires when the field is clicked, in every mode (also `groupItem`).
 - `<VuAppToasts>` must be mounted exactly once and outside conditional renders — Reka UI manages portal singleton state.
 - `<VuInnerLoading>` uses `absolute` positioning; the parent must be `relative` (or have an explicit stacking context) for it to overlay correctly.
 - `<VuMenu>` is built on `ComboboxRoot` and renders its own `[role="listbox"]`. When writing tests, scope sidebar selectors to `nav` / `aside` to avoid matching popups elsewhere.

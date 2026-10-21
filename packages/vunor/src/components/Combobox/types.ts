@@ -30,4 +30,18 @@ export interface TComboboxProps<T extends TComboboxItem> {
   multiple?: boolean
   checkboxItems?: boolean
   dropdownIcon?: string
+  /* Forwarded to Reka `ComboboxRoot` */
+  /** Initial open state when `v-model:open` is not used. */
+  defaultOpen?: boolean
+  resetSearchTermOnBlur?: boolean
+  resetSearchTermOnSelect?: boolean
+  openOnFocus?: boolean
+  openOnClick?: boolean
+  ignoreFilter?: boolean
+  resetModelValueOnClear?: boolean
+  highlightOnHover?: boolean
+  by?: string | ((a: unknown, b: unknown) => boolean)
+  dir?: 'ltr' | 'rtl'
+  /** Form field name: the value is submitted with the enclosing `<form>`. */
+  name?: string
 }

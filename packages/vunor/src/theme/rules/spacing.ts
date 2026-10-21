@@ -1,8 +1,8 @@
 import { unitBy } from '../utils/unit-by'
 
 import type { TVunorTheme } from '../theme'
-import type { Theme } from '@unocss/preset-mini'
 import type { Rule } from 'unocss'
+import type { Theme } from 'unocss/preset-mini'
 
 export const spacingRules: Array<Rule<Theme & TVunorTheme>> = [
   [

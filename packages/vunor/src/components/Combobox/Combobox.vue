@@ -1,5 +1,4 @@
 <script setup lang="ts" generic="T extends TComboboxItem = TComboboxItem">
-import { createReusableTemplate } from '@vueuse/core'
 import {
   ComboboxRoot,
   ComboboxContent,
@@ -21,9 +20,11 @@ import { watch, ref, computed, nextTick } from 'vue'
 import { useInputBaseProps, useInputProps } from 'vunor'
 
 import VuCheckbox from '../Checkbox/Checkbox.vue'
+import { claimToggle, useForwardToRoot, useModelState, useRootBinding } from '../forward-root'
 import VuIcon from '../Icon/Icon.vue'
 import VuInput from '../Input/Input.vue'
 import VuInputBase from '../Input/InputBase.vue'
+import { createReusableTemplate } from './reusable-template'
 
 import type { TInputProps, TInputBaseProps, TInputEmits } from '../Input/utils'
 import type { TComboboxProps, TComboboxItem } from './types'
@@ -33,15 +34,31 @@ const [DefineRootTemplate, UseRootTemplate] = createReusableTemplate()
 const [DefineInputBaseTemplate, UseInputBaseTemplate] = createReusableTemplate()
 const [DefineItemsTemplate, UseItemsTemplate] = createReusableTemplate()
 
+// The template renders several roots (the reusable-template definitions plus one of
+// the readonly / multiple / single branches), so fallthrough attrs are bound
+// explicitly to the outermost element of whichever branch renders.
+defineOptions({ inheritAttrs: false })
+// Template note: ComboboxRoot gets its wrapper classes only when it renders its own
+// element. As-child (multiple / groupItem), it merges class into its first child (the
+// sticky search header or the trigger shell), where they do not belong.
+
 const props = withDefaults(
   defineProps<
     Omit<TInputProps & TInputBaseProps, 'active'> &
       TComboboxProps<T> & {
         align?: 'start' | 'center' | 'end'
-        resetSearchTermOnBlur?: boolean
       }
   >(),
   {
+    // forwarded booleans: absent stays undefined (see forward-root.ts)
+    // vunor keeps the typed text on blur (Reka clears it by default)
+    resetSearchTermOnBlur: false,
+    resetSearchTermOnSelect: undefined,
+    openOnFocus: undefined,
+    openOnClick: undefined,
+    ignoreFilter: undefined,
+    resetModelValueOnClear: undefined,
+    highlightOnHover: undefined,
     sideOffset: 2,
     popupPosition: 'popper',
     dropdownIcon: 'i--chevron-down',
@@ -50,22 +67,53 @@ const props = withDefaults(
 const emit = defineEmits<
   TInputEmits & {
     (e: 'enter', event: KeyboardEvent): void
+    (e: 'highlight', payload: unknown): void
   }
 >()
 
+// ComboboxRoot props/emits declared on this component (name, by, dir, highlight, ...)
+const rootProps = useForwardToRoot(ComboboxRoot, props, emit, [
+  'open',
+  'modelValue',
+  'defaultOpen',
+  'multiple',
+  'disabled',
+  'required',
+  'asChild',
+  'as',
+  'update:open',
+  'update:modelValue',
+])
+
+const inputProps = useInputProps()
+const shellProps = useInputBaseProps()
 const forwardProps = computed(() => {
   if (props.groupItem) {
-    return useInputBaseProps()?.value
+    // VuInputBase has no `click` event: pass the listener on as a native one
+    return { ...shellProps?.value, onClick: props.onClick }
   }
-  return useInputProps()?.value
-})
-const shellProps = computed(() => {
-  return useInputBaseProps()?.value
+  return inputProps?.value
 })
 
-const modelOpen = defineModel<boolean>('open')
+// `open`: the popup the user opens. With `multiple` that is the popover around the list
+// (the list itself is always open inside it), otherwise ComboboxRoot's own popup.
+const modelOpen = defineModel<boolean>('open', { default: undefined })
 const modelValue = defineModel<string | string[]>()
 const searchTerm = defineModel<string>('searchTerm')
+// what the shell, the labels and openPopup() see: equals the open state of the popup root
+// (ComboboxRoot, or PopoverRoot with `multiple`) and ComboboxRoot's value (the roots stay
+// bound to the raw models, so they are uncontrolled until those are set)
+const isOpen = useModelState(modelOpen, ComboboxRoot, 'defaultOpen', props)
+const value = useModelState(modelValue, ComboboxRoot, 'defaultValue', props)
+const rootOpen = useRootBinding(modelOpen, isOpen)
+
+// with `multiple` the list is always open inside the popover: ComboboxRoot's own close
+// request (Escape in the search field) closes the popover
+function onComboboxRootOpen(next: boolean) {
+  if (!usePopover.value || !next) {
+    modelOpen.value = next
+  }
+}
 
 const groups = computed(() => {
   if (Array.isArray(props.items)) {
@@ -110,18 +158,16 @@ const flatItemsMap = computed(() => {
 })
 
 function isItemSelected(v?: string | null) {
-  return Array.isArray(modelValue.value)
-    ? modelValue.value.includes(v as string)
-    : modelValue.value === v
+  return Array.isArray(value.value) ? value.value.includes(v as string) : value.value === v
 }
 
 const selectedItems = computed<T[]>(() => {
-  if (modelValue.value && Array.isArray(modelValue.value)) {
-    return modelValue.value
+  if (value.value && Array.isArray(value.value)) {
+    return value.value
       .map(v => flatItemsMap.value.get(v))
       .filter((item): item is T => item !== undefined)
   } else {
-    const item = flatItemsMap.value.get(modelValue.value)
+    const item = flatItemsMap.value.get(value.value)
     if (item) {
       return [item] as T[]
     }
@@ -130,7 +176,7 @@ const selectedItems = computed<T[]>(() => {
 })
 
 const selectedLabels = computed<string>(() => {
-  if (!modelValue.value && (modelValue.value as unknown as number) !== 0) {
+  if (!value.value && (value.value as unknown as number) !== 0) {
     return ''
   }
   return selectedItems.value
@@ -143,23 +189,32 @@ function isItemDisabled(val: string | null | undefined) {
   return props.disabledValues?.includes(val)
 }
 
-const displayValue = computed(() => flatItemsMap.value.get(modelValue.value as string)?.label || '')
+const displayValue = computed(() => flatItemsMap.value.get(value.value as string)?.label || '')
 
 const input = computed(
   () => inputTemplate.value?.$el?.querySelector?.('input') as HTMLInputElement | undefined
 )
 
-async function openPopup() {
+async function openPopup(event?: Event) {
+  // the chevron's appendClick and the shell's click are one gesture: toggle once
+  if (!claimToggle(event)) {
+    return
+  }
   if (!props.readonly && !props.disabled && !usePopover.value) {
-    modelOpen.value = !modelOpen.value
+    // with `openOnClick` / `openOnFocus` Reka's input opens the popup itself: a click on
+    // the input only opens it (toggling would close what Reka just opened)
+    const onInput =
+      (props.openOnClick || props.openOnFocus) &&
+      !!event?.target &&
+      !!input.value?.contains(event.target as Node)
+    isOpen.value = onInput ? true : !isOpen.value
     await nextTick()
-    if (input.value) {
-      const el = input.value
-      if (el) {
-        const valueLength = el.value.length
-        el.focus()
-        el.setSelectionRange(valueLength, valueLength)
-      }
+    // with `openOnFocus`, focusing the input after a close would reopen the popup
+    const el = input.value
+    if (el && (isOpen.value || !props.openOnFocus)) {
+      const valueLength = el.value.length
+      el.focus()
+      el.setSelectionRange(valueLength, valueLength)
     }
   }
 }
@@ -180,14 +235,6 @@ function handleHomeEnd(event: KeyboardEvent) {
 }
 
 const usePopover = computed(() => props.multiple)
-if (usePopover.value) {
-  modelOpen.value = true
-}
-watch([usePopover], () => {
-  if (usePopover.value) {
-    modelOpen.value = true
-  }
-})
 
 const sideOffsetHack = ref(false)
 const _sideOffset = computed<number>(() => (sideOffsetHack.value ? -1 : props.sideOffset))
@@ -211,6 +258,7 @@ const popoverProps = computed(() => ({
   side: props.side,
   sideOffset: _sideOffset.value,
   updatePositionStrategy: props.updatePositionStrategy,
+  sticky: props.sticky,
   bodyLock: props.bodyLock,
   align: props.align,
 }))
@@ -227,17 +275,6 @@ const popoverContentProps = computed(() => {
   }
   return {}
 })
-const popupOpen = ref(false)
-watch(popupOpen, () => {
-  if (popupOpen.value) {
-    modelOpen.value = true
-  }
-})
-watch(modelOpen, () => {
-  if (usePopover.value) {
-    popupOpen.value = !!modelOpen.value
-  }
-})
 const inputTemplate = ref<{ $el: HTMLDivElement }>()
 async function focusOnInput() {
   await nextTick()
@@ -246,7 +283,8 @@ async function focusOnInput() {
   })
 }
 async function clearValue() {
-  modelValue.value = undefined
+  // an empty selection (undefined would make an uncontrolled root keep its own value)
+  modelValue.value = Array.isArray(value.value) ? [] : undefined
   await nextTick()
   input.value?.focus()
 }
@@ -262,10 +300,8 @@ function onKeydown(event: KeyboardEvent) {
   if (props.disabled || props.readonly) {
     return
   }
-  if (['Enter', 'Space'].includes(event.code)) {
-    popupOpen.value = true
-  } else if (/Key[a-zA-Z0-9]/.test(event.code)) {
-    popupOpen.value = true
+  if (['Enter', 'Space'].includes(event.code) || /Key[a-zA-Z0-9]/.test(event.code)) {
+    isOpen.value = true
   }
 }
 function onEnter(event: KeyboardEvent) {
@@ -274,9 +310,56 @@ function onEnter(event: KeyboardEvent) {
 </script>
 
 <template>
-  <!-- reusabe templates start -->
+  <!-- reusable templates start -->
+  <DefineInputBaseTemplate>
+    <VuInputBase
+      v-bind="groupItem && !usePopover ? forwardProps : shellProps"
+      @click="openPopup"
+      :active="isOpen"
+      :model-value="usePopover ? undefined : (value as string)"
+      :type="usePopover ? 'text' : shellProps?.type"
+      :label="usePopover ? '' : shellProps?.label"
+      :placeholder="usePopover ? 'Search' : shellProps?.placeholder"
+      :design="usePopover ? 'filled' : shellProps?.design"
+      :icon-append="usePopover ? undefined : dropdownIcon"
+      :icon-prepend="usePopover ? 'i--search' : shellProps?.iconPrepend"
+      :class="usePopover ? 'i8-border-none i8-outline-none' : 'i8-combobox'"
+      :no-underline="usePopover"
+      :data-expanded="usePopover ? undefined : isOpen"
+    >
+      <template v-slot="slotProps">
+        <ComboboxInput
+          as-child
+          v-model="searchTerm"
+          :display-value="() => displayValue"
+          class="i8-input"
+        >
+          <input
+            class="i8-input"
+            v-bind="slotProps"
+            @focus="slotProps.onFocus"
+            @blur="slotProps.onBlur"
+            @keydown.home.end.capture="handleHomeEnd"
+            @keydown.enter.capture="onEnter"
+          />
+        </ComboboxInput>
+      </template>
+
+      <template #prepend v-if="!usePopover && !!$slots.prepend">
+        <slot name="prepend"></slot>
+      </template>
+
+      <template #append v-if="!usePopover && !!$slots.append">
+        <slot name="append"></slot>
+      </template>
+    </VuInputBase>
+  </DefineInputBaseTemplate>
+
   <DefineContentTemplate>
-    <ComboboxContent v-bind="comboboxContentProps" :position="usePopover ? 'inline' : 'popper'">
+    <ComboboxContent
+      v-bind="comboboxContentProps"
+      :position="usePopover ? 'inline' : popupPosition"
+    >
       <ComboboxViewport class="">
         <ComboboxEmpty class="select-grp-label">
           <slot name="empty">
@@ -321,66 +404,19 @@ function onEnter(event: KeyboardEvent) {
     </ComboboxContent>
   </DefineContentTemplate>
 
-  <DefineRootTemplate v-slot="templateProps">
+  <DefineRootTemplate>
     <ComboboxRoot
-      :class="templateProps.class"
-      class="relative w-full h-full"
+      v-bind="rootProps"
+      :class="usePopover || groupItem ? undefined : 'relative w-full h-full'"
       v-model="modelValue"
-      :reset-search-term-on-blur
-      :default-open="usePopover"
-      v-model:open="modelOpen"
+      :default-open="usePopover || defaultOpen"
+      :open="usePopover ? true : rootOpen"
+      @update:open="onComboboxRootOpen"
       :disabled
       :required
       :multiple
       :as-child="usePopover || groupItem"
     >
-      <DefineInputBaseTemplate>
-        <!-- prettier-ignore-attribute v-model -->
-        <VuInputBase
-          @click="openPopup"
-          :active="modelOpen"
-          v-model="(modelValue as string)"
-          v-bind="shellProps"
-          :type="usePopover ? 'text' : shellProps?.type"
-          :label="usePopover ? '' : shellProps?.label"
-          :placeholder="usePopover ? 'Search' : shellProps?.placeholder"
-          :design="usePopover ? 'filled' : shellProps?.design"
-          :icon-append="usePopover ? undefined : dropdownIcon"
-          :icon-prepend="usePopover ? 'i--search' : shellProps?.iconPrepend"
-          :class="usePopover ? 'i8-border-none i8-outline-none' : 'i8-combobox'"
-          @append-click="openPopup"
-          :no-underline="usePopover"
-          :data-expanded="usePopover ? undefined : modelOpen"
-        >
-          <template v-slot="slotProps">
-            <ComboboxInput
-              as-child
-              v-model="searchTerm"
-              :display-value="() => displayValue"
-              class="i8-input"
-            >
-              <input
-                class="i8-input"
-                ref="input"
-                v-bind="slotProps"
-                @focus="slotProps.onFocus"
-                @blur="slotProps.onBlur"
-                @keydown.home.end.capture="handleHomeEnd"
-                @keydown.enter.capture="onEnter"
-              />
-            </ComboboxInput>
-          </template>
-
-          <template #prepend v-if="!usePopover && !!$slots.prepend">
-            <slot name="prepend"></slot>
-          </template>
-
-          <template #append v-if="!usePopover && !!$slots.append">
-            <slot name="append"></slot>
-          </template>
-        </VuInputBase>
-      </DefineInputBaseTemplate>
-
       <div v-if="usePopover" class="sticky top-0 z-1 bg-current/100 border-b-1px">
         <UseInputBaseTemplate ref="inputTemplate" />
       </div>
@@ -389,20 +425,19 @@ function onEnter(event: KeyboardEvent) {
       </ComboboxAnchor>
 
       <UseContentTemplate v-if="usePopover" />
-      <ComboboxPortal v-else as-child>
+      <ComboboxPortal v-else>
         <UseContentTemplate />
       </ComboboxPortal>
     </ComboboxRoot>
   </DefineRootTemplate>
 
-  <!-- reusabe templates end -->
+  <!-- reusable templates end -->
 
   <template v-if="readonly || disabled">
-    <!-- prettier-ignore-attribute v-model -->
     <VuInputBase
       v-if="groupItem"
-      v-bind="shellProps"
-      v-model="(modelValue as string)"
+      v-bind="{ ...$attrs, ...forwardProps }"
+      :model-value="value as string"
       :class
       :icon-append="props.iconAppend || dropdownIcon"
     >
@@ -414,11 +449,10 @@ function onEnter(event: KeyboardEvent) {
         <slot name="append"></slot>
       </template>
     </VuInputBase>
-    <!-- prettier-ignore-attribute v-model -->
     <VuInput
       v-else
-      v-bind="forwardProps"
-      v-model="(modelValue as string)"
+      v-bind="{ ...$attrs, ...forwardProps }"
+      :model-value="value as string"
       :class
       :icon-append="props.iconAppend || dropdownIcon"
     >
@@ -439,7 +473,12 @@ function onEnter(event: KeyboardEvent) {
   </template>
 
   <template v-else-if="usePopover">
-    <PopoverRoot v-model:open="popupOpen" modal>
+    <PopoverRoot
+      :default-open="defaultOpen"
+      :open="rootOpen"
+      @update:open="(value: boolean) => (modelOpen = value)"
+      modal
+    >
       <DefineItemsTemplate v-slot="{ inputAttrs }">
         <slot name="selected-items" :items="selectedItems" :input-attrs>
           <div class="i8-input combobox-multi-input" v-bind="inputAttrs">
@@ -450,7 +489,13 @@ function onEnter(event: KeyboardEvent) {
         </slot>
       </DefineItemsTemplate>
 
-      <PopoverTrigger v-if="groupItem" as-child :data-expanded="popupOpen" class="i8-combobox">
+      <PopoverTrigger
+        v-if="groupItem"
+        v-bind="{ 'data-expanded': isOpen, ...$attrs }"
+        as-child
+        data-vu-trigger
+        class="i8-combobox"
+      >
         <VuInputBase
           class="combobox-embedded-input"
           tabindex="0"
@@ -461,9 +506,8 @@ function onEnter(event: KeyboardEvent) {
           :model-value="selectedLabels"
           readonly
           :icon-append="dropdownIcon"
-          @append-click="popupOpen = !popupOpen"
           :class
-          :active="popupOpen || focused"
+          :active="isOpen || focused"
         >
           <template v-slot="inputAttrs">
             <UseItemsTemplate :input-attrs="inputAttrs" />
@@ -479,15 +523,14 @@ function onEnter(event: KeyboardEvent) {
       </PopoverTrigger>
       <VuInput
         v-else
-        v-bind="forwardProps"
+        v-bind="{ 'data-expanded': isOpen, ...$attrs, ...forwardProps }"
         :model-value="selectedLabels"
         :class
-        :active="popupOpen"
-        :data-expanded="popupOpen"
+        :active="isOpen"
         class="i8-combobox"
       >
         <template v-slot="slotProps">
-          <PopoverTrigger as-child>
+          <PopoverTrigger as-child data-vu-trigger>
             <VuInputBase
               class="combobox-embedded-input"
               tabindex="0"
@@ -497,9 +540,8 @@ function onEnter(event: KeyboardEvent) {
               v-bind="slotProps"
               readonly
               :icon-append="dropdownIcon"
-              @append-click="popupOpen = !popupOpen"
               :model-value="selectedLabels"
-              :active="popupOpen || focused"
+              :active="isOpen || focused"
             >
               <template v-slot="inputAttrs">
                 <UseItemsTemplate :input-attrs="inputAttrs" />
@@ -550,10 +592,15 @@ function onEnter(event: KeyboardEvent) {
   </template>
 
   <template v-else>
-    <UseRootTemplate v-if="groupItem" :class />
+    <UseRootTemplate v-if="groupItem" v-bind="$attrs" :class />
 
-    <!-- prettier-ignore-attribute v-model -->
-    <VuInput v-else v-bind="forwardProps" v-model="(modelValue as string)" :class>
+    <VuInput
+      v-else
+      v-bind="{ ...$attrs, ...forwardProps }"
+      :model-value="value as string"
+      :active="isOpen"
+      :class
+    >
       <UseRootTemplate />
     </VuInput>
   </template>

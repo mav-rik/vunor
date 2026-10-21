@@ -2,19 +2,41 @@
 import { useId, RadioGroupRoot, RadioGroupItem, RadioGroupIndicator } from 'reka-ui'
 import { computed } from 'vue'
 
-const props = defineProps<{
-  items: Array<string | T>
-  defaultValue?: string
-  label?: string
-  labelVisible?: boolean
-  row?: boolean
-  disabledValues?: string[]
-  disabled?: boolean
-  class?: string | Record<string, boolean>
-  error?: string | boolean
-  verticalMiddle?: boolean
-  reverse?: boolean
-}>()
+import { useForwardToRoot } from '../forward-root'
+
+import type { RadioGroupRootProps } from 'reka-ui'
+
+const props = withDefaults(
+  defineProps<
+    Pick<RadioGroupRootProps, 'orientation' | 'dir' | 'loop' | 'name' | 'required'> & {
+      items: Array<string | T>
+      defaultValue?: string
+      label?: string
+      labelVisible?: boolean
+      row?: boolean
+      disabledValues?: string[]
+      disabled?: boolean
+      class?: string | Record<string, boolean>
+      error?: string | boolean
+      verticalMiddle?: boolean
+      reverse?: boolean
+    }
+  >(),
+  {
+    // forwarded booleans: absent stays undefined (see forward-root.ts)
+    loop: undefined,
+    required: undefined,
+  }
+)
+
+// RadioGroupRoot props declared on this component; the wrapper div takes fallthrough attrs
+const rootProps = useForwardToRoot(RadioGroupRoot, props, undefined, [
+  'modelValue',
+  'defaultValue',
+  'disabled',
+  'asChild',
+  'as',
+])
 
 const _items = computed<T[]>(() => {
   return props.items.map(item =>
@@ -34,6 +56,7 @@ function isDisabled(val: string) {
   <div class="rb-container" :class>
     <label v-if="!!label && labelVisible" class="rb-label">{{ label }}</label>
     <RadioGroupRoot
+      v-bind="rootProps"
       v-model="modelValue"
       class="rb-root"
       :class="{ 'rb-row': row }"

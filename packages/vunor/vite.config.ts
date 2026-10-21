@@ -40,7 +40,8 @@ export default defineConfig({
 
   plugins: [UnoCSS(), vue()],
   test: {
-    exclude: ['e2e/**', 'node_modules/**'],
+    // test-dist/ checks the built package: `pnpm test:dist` (runs after `pnpm build`)
+    exclude: ['e2e/**', 'test-dist/**', 'node_modules/**'],
   },
 
   resolve: {

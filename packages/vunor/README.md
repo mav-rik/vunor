@@ -379,8 +379,13 @@ export default defineConfig({
 ### Vue 3 + Vite
 
 ```bash
-pnpm add vunor
+pnpm add vunor vue unocss reka-ui
 ```
+
+`vue`, `unocss` and `reka-ui` are peer dependencies: your app provides them, so it has a
+single copy of each (two copies of Vue or Reka break reactivity and SSR). npm and pnpm
+install missing peers automatically, but listing them pins the versions you use.
+`vue-router` is optional: `<VuButton :to>` uses the `RouterLink` your app registers.
 
 **vite.config.ts**
 

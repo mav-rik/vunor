@@ -174,20 +174,18 @@
     "gen-exports": "node scripts/gen-exports.js",
     "extract-classes": "tsx scripts/extract-component-classes.ts",
     "emit-vue-dts": "node scripts/emit-vue-dts.js",
-    "build": "pnpm gen-exports && pnpm extract-classes && rolldown -c && pnpm emit-vue-dts",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "pnpm clean && pnpm gen-exports && pnpm extract-classes && rolldown -c && pnpm emit-vue-dts && pnpm test:dist",
     "pub": "npm publish --access public",
     "type-check": "vue-tsc --build --force",
     "test": "vitest run && playwright test",
+    "test:dist": "vitest run --config vitest.dist.config.ts",
     "test:e2e": "playwright test"
   },
   "dependencies": {
     "@internationalized/date": "^3.12.1",
     "@prostojs/palitra": "^0.0.4",
-    "@unocss/preset-mini": "^66.6.8",
-    "defu": "^6.1.7",
-    "reka-ui": "^2.9.6",
-    "unocss": "^66.6.8",
-    "vue": "^3.5.32"
+    "defu": "^6.1.7"
   },
   "devDependencies": {
     "@iconify/utils": "^3.1.0",
@@ -196,23 +194,40 @@
     "@playwright/test": "^1.59.1",
     "@types/node": "^25.6.0",
     "@unocss/preset-icons": "^66.6.8",
-    "@unocss/preset-mini": "^66.6.0",
     "@unocss/preset-wind": "^66.6.8",
     "@unocss/reset": "^66.6.8",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/tsconfig": "^0.9.1",
     "@vueuse/core": "^14.2.1",
+    "happy-dom": "^21.0.4",
+    "reka-ui": "^2.9.6",
     "rolldown": "1.0.0-rc.16",
     "rolldown-plugin-dts": "^0.23.2",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
-    "unocss": "^66.6.0",
+    "unocss": "^66.6.8",
     "unocss-preset-scrollbar": "^4.0.0",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^32.0.0",
     "vite": "^8.0.8",
     "vitest": "^4.1.4",
+    "vue": "^3.5.32",
     "vue-router": "^5.0.4",
     "vue-tsc": "^3.2.6"
+  },
+  "peerDependencies": {
+    "@nuxt/kit": ">=3.0.0",
+    "@nuxt/schema": ">=3.0.0",
+    "reka-ui": "^2.8.0",
+    "unocss": "^66.2.1",
+    "vue": "^3.5.0"
+  },
+  "peerDependenciesMeta": {
+    "@nuxt/kit": {
+      "optional": true
+    },
+    "@nuxt/schema": {
+      "optional": true
+    }
   }
 }

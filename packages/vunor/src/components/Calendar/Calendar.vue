@@ -16,16 +16,42 @@ import {
 
 import VuButton from '../Button/Button.vue'
 import VuCard from '../Card/Card.vue'
+import { useForwardToRoot } from '../forward-root'
 
 import type { DateValue } from '@internationalized/date'
 import type { CalendarRootProps } from 'reka-ui'
 
-const props = defineProps<CalendarRootProps>()
+// CalendarRoot (as-child) renders a Fragment (card + live region), so fallthrough
+// attrs are bound explicitly to the card.
+defineOptions({ inheritAttrs: false })
+
+const props = withDefaults(defineProps<Omit<CalendarRootProps, 'as' | 'asChild'>>(), {
+  // forwarded booleans: absent stays undefined (see forward-root.ts)
+  pagedNavigation: undefined,
+  preventDeselect: undefined,
+  fixedWeeks: undefined,
+  disabled: undefined,
+  readonly: undefined,
+  initialFocus: undefined,
+  multiple: undefined,
+  disableDaysOutsideCurrentView: undefined,
+})
 const modelValue = defineModel<DateValue | DateValue[]>()
+const emit = defineEmits<{
+  (e: 'update:placeholder', date: DateValue): void
+}>()
+
+// CalendarRoot props/emits declared on this component (as-child is layout-controlled)
+const rootProps = useForwardToRoot(CalendarRoot, props, emit, [
+  'modelValue',
+  'as',
+  'asChild',
+  'update:modelValue',
+])
 </script>
 
 <template>
-  <CalendarRoot v-bind="props" v-slot="{ weekDays, grid }" as-child v-model="modelValue">
+  <CalendarRoot v-bind="rootProps" v-slot="{ weekDays, grid }" as-child v-model="modelValue">
     <VuCard level="body" class="calendar-root" v-bind="$attrs">
       <CalendarHeader class="calendar-header">
         <CalendarPrev as-child>
