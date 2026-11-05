@@ -1,6 +1,6 @@
 # Theme configuration — Vunor
 
-Every knob `presetVunor()` accepts: palette tuning (vividness, saturation, flatness, layersDepth, lightest/darkest, mainPalette, layerPalette, surfaces), `baseRadius`, `fingertip`, `cardSpacingFactor`, `spacingFactor`, `actualFontHeightFactor`, `typography`, `layers`, `animation`.
+Every knob `presetVunor()` accepts: palette tuning (vividness, saturation, flatness, layersDepth, lightest/darkest, mainPalette, layerPalette, surfaces), `baseRadius`, `fingertip`, `cardSpacingFactor`, `spacingFactor`, `actualFontHeightFactor`, `typography`, `layers`, `animation`, `baseStyles`.
 
 For applying these knobs to your code (which classes consume which variables), see [colors.md](colors.md), [typography.md](typography.md), and [cards.md](cards.md).
 
@@ -35,6 +35,9 @@ presetVunor({
 
   // ----- animation -----
   animation: { durations, keyframes },
+
+  // ----- page-level element styles -----
+  baseStyles,
 })
 ```
 
@@ -363,6 +366,33 @@ layers: {
 ```
 
 Switching either to `true` flips the order. Common pattern: the *outer* surface should always be the most extreme (lightest in light mode, darkest in dark mode), so the defaults are usually correct.
+
+## Base styles (`baseStyles`)
+
+Besides classes, the preset styles a few page-level elements:
+
+| Rule | What it sets |
+|------|--------------|
+| `body` | the `body` typography level: font-size, weight, line-height, letter-spacing, and the level's `font` (font-family) and `css` declarations |
+| `figcaption` | the `caption` level (same properties) |
+| `h1` … `h6` | the matching level (same properties), so a bare `<h2>` reads like `text-h2` |
+| `::-webkit-scrollbar*` | thin rounded scrollbars, light and dark |
+
+`baseStyles` defaults to `true`. Set it to `false` when the app styles its own page and wants vunor only for shortcuts, semantic classes and the theme:
+
+```ts
+presetVunor({ baseStyles: false })
+```
+
+With `false`, those element rules are not emitted. Every shortcut, semantic class and utility compiles to the same CSS, and the variables they read stay: the `:root` theme variables (the default `scope-neutral` palette, `--v-fingertip`, the default border color) and, on `body`, the body level's typography variables (`--font-size`, `--font-bold`, `--font-corrected`, `--font-tc`, `--font-bc`) in a rule that sets nothing else.
+
+What changes is what the element rules did:
+
+- `body`, headings, `figcaption` and scrollbars take the app's (or the browser's) styles, and text without a `text-*` class (also inside components) inherits the app's body font.
+- Typography you set through the preset only reaches elements through classes: with `typography: { body: { font: 'Inter' } }`, the page no longer uses Inter unless the app sets it (or an element has `text-body`). The same goes for a level's `css`.
+- A bare `<h1>` … `<h6>` or `<figcaption>` gets the body level's variables and the app's line-height, so `text-mt-*` / `text-mb-*` and `font-$bold` on it use body metrics. Where exact spacing matters, add the class (`text-body`, `text-h2`, …).
+
+> Added in 0.4.1.
 
 ## Animation
 

@@ -21,6 +21,14 @@ export interface TVunorUnoPresetOpts {
     xl?: string
   }
   baseRadius?: string
+  /**
+   * Page-level element styles: the body, figcaption and h1–h6 typography rules
+   * (size, weight, line-height, letter-spacing, plus a level's `font` and `css`
+   * from `typography`) and scrollbar styling. Default `true`. Set `false` when
+   * the app styles its own page; theme variables, shortcuts and classes are
+   * unaffected.
+   */
+  baseStyles?: boolean
   animation?: {
     durations?: Record<string, string>
     animation?: Record<string, string>

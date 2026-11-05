@@ -1,5 +1,5 @@
 import { createGenerator } from 'unocss'
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 
 import { vunorShortcuts } from '../theme'
 import { presetVunor } from './preset-vunor'
@@ -14,16 +14,17 @@ import type { StringifiedUtil } from 'unocss'
 
 type TParsedToken = Array<StringifiedUtil<TVunorTheme>>
 
+function generator(opts?: TVunorUnoPresetOpts, custom?: Record<string, string>) {
+  return createGenerator({ presets: [presetVunor(opts)], shortcuts: [vunorShortcuts(custom)] })
+}
+
 /** Compiles a single class name (shortcuts and variants resolved). */
 async function parse(
   token: string,
   opts?: TVunorUnoPresetOpts,
   custom?: Record<string, string>
 ): Promise<TParsedToken> {
-  const uno = await createGenerator({
-    presets: [presetVunor(opts)],
-    shortcuts: [vunorShortcuts(custom)],
-  })
+  const uno = await generator(opts, custom)
   const utils = await uno.parseToken(token)
   if (!utils) {
     throw new Error(`"${token}" compiled to nothing`)
@@ -411,5 +412,116 @@ describe('disabled-soft as a literal class', () => {
   it('stands aside when vunorShortcuts() is not registered', async () => {
     const uno = await createGenerator({ presets: [presetVunor()] })
     expect(await uno.parseToken('disabled-soft')).toBeUndefined()
+  })
+})
+
+async function generateCss(
+  classes: string[],
+  opts?: TVunorUnoPresetOpts,
+  preflights = true
+): Promise<string> {
+  const uno = await generator(opts)
+  const result = await uno.generate(classes, { preflights })
+  return result.css
+}
+
+/** Selectors of top-level rules, e.g. `body`, `:root`, `.dark ::-webkit-scrollbar`. */
+function ruleSelectors(css: string): string[] {
+  return [...css.matchAll(/(?:^|[}\n])\s*([^{}\n]+?)\s*\{/g)].map(m => m[1].trim())
+}
+
+/** Declarations of the top-level rule `selector { … }` in generated CSS. */
+function declarationsOf(css: string, selector: string): Record<string, string> {
+  const at = css.indexOf(`\n${selector} {`)
+  expect(at, `${selector} rule`).toBeGreaterThanOrEqual(0)
+  const start = css.indexOf('{', at) + 1
+  return parseBody(css.slice(start, css.indexOf('}', start)))
+}
+
+// `baseStyles: false` drops vunor's page-level element styles (body/heading
+// fonts, scrollbars) for apps that bring their own, and keeps everything a
+// class reads: the `:root` theme variables and, on `body`, the body font
+// variables that font-aware utilities (`text-mt-*`, `font-$bold`) fall back to.
+describe('baseStyles option', () => {
+  const ELEMENT_RULES = ['body', 'figcaption', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+  const SCROLLBAR = /::-webkit-scrollbar/
+  const FONT_VARS = ['--font-bold', '--font-size', '--font-corrected', '--font-bc', '--font-tc']
+  const TYPOGRAPHY: TVunorUnoPresetOpts['typography'] = {
+    body: { font: 'Inter', css: { 'font-feature-settings': '"tnum"' } },
+    h2: { font: 'Serif Display' },
+  }
+  let on: string
+  let off: string
+  beforeAll(async () => {
+    on = await generateCss([])
+    off = await generateCss([], { baseStyles: false })
+  })
+
+  it('emits the page-level element styles by default', async () => {
+    const selectors = ruleSelectors(on)
+    expect(selectors).toEqual(expect.arrayContaining([...ELEMENT_RULES, ':root']))
+    expect(selectors.filter(s => SCROLLBAR.test(s))).toHaveLength(7)
+    expect(await generateCss([], { baseStyles: true })).toBe(on)
+  })
+
+  it('baseStyles: false keeps only the variable blocks: :root as is, body font variables', () => {
+    // no element rule, no scrollbar: what is left is the variable blocks
+    // (unocss's own, `:root`, `body`) and the palette-options sentinel
+    expect(ruleSelectors(off)).toEqual([
+      '*,::before,::after',
+      '::backdrop',
+      ':root',
+      'body',
+      '__vunor_palette_options',
+    ])
+    expect(declarationsOf(off, ':root')).toEqual(declarationsOf(on, ':root'))
+    expect(declarationsOf(off, ':root')).toHaveProperty('--scope-color-500')
+    // `body` is the default body rule minus everything that is not a variable
+    const bodyOn = declarationsOf(on, 'body')
+    for (const prop of ['font-size', 'font-weight', 'line-height', 'letter-spacing']) {
+      expect(bodyOn).toHaveProperty(prop)
+    }
+    const bodyVars = Object.entries(bodyOn).filter(([k]) => k.startsWith('--'))
+    expect(declarationsOf(off, 'body')).toEqual(Object.fromEntries(bodyVars))
+    expect(bodyVars.map(([k]) => k).toSorted()).toEqual(FONT_VARS.toSorted())
+  })
+
+  it("baseStyles: false also drops a level's font and css from the element rules", async () => {
+    const withFonts = await generateCss([], { typography: TYPOGRAPHY })
+    expect(declarationsOf(withFonts, 'body')).toMatchObject({
+      'font-family': 'Inter',
+      'font-feature-settings': '"tnum"',
+    })
+    expect(declarationsOf(withFonts, 'h2')).toMatchObject({ 'font-family': 'Serif Display' })
+    const withoutFonts = await generateCss([], { typography: TYPOGRAPHY, baseStyles: false })
+    expect(withoutFonts).not.toContain('Inter')
+    expect(withoutFonts).not.toContain('tnum')
+    expect(withoutFonts).not.toContain('Serif Display')
+  })
+
+  it('baseStyles: false leaves shortcut and class output unchanged', async () => {
+    const sample = [
+      'scope-primary',
+      'layer-2',
+      'c8-filled',
+      'btn',
+      'card-h2',
+      'text-h2',
+      'text-body',
+      'text-mt-$m',
+      'font-$bold',
+      'disabled-soft',
+    ]
+    const classesOn = await generateCss(sample, { typography: TYPOGRAPHY }, false)
+    const classesOff = await generateCss(
+      sample,
+      { typography: TYPOGRAPHY, baseStyles: false },
+      false
+    )
+    expect(classesOn).toContain('.btn')
+    // the classes carry a level's font
+    expect(classesOn).toContain('font-family:Inter')
+    expect(classesOn).toContain('font-family:Serif Display')
+    expect(classesOff).toBe(classesOn)
   })
 })

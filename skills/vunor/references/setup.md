@@ -162,6 +162,11 @@ presetVunor({
   // Animation durations + keyframes (used by Dialog, Toasts, ProgressBar, …)
   animation: { durations: { /*…*/ }, keyframes: { /*…*/ } },
 
+  // Page-level element styles: body / figcaption / h1–h6 typography (incl. a
+  // level's `font` / `css`) and scrollbars. false = classes and theme only —
+  // see theme.md
+  baseStyles: true,
+
   // Palette generation — see references/theme.md
   palette: {
     colors: { primary: '…', secondary: '…', good: '…', warn: '…',

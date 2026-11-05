@@ -521,6 +521,11 @@ function emitPayload(rootName, event) {
   return { probe: event }
 }
 
+// Reka's Calendar labels itself with today's month ("Event Date, October 2026")
+const THIS_MONTH = new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric' }).format(
+  new Date()
+)
+
 /** Stable, date-independent rendering of a prop value for the defaults snapshot */
 function serialize(value) {
   if (value === undefined) {
@@ -540,7 +545,7 @@ function serialize(value) {
   }
   try {
     // generated ids (reka-…-v-12, v-3) depend on mount order: compare their shape
-    return JSON.stringify(value)?.replaceAll(/v-\d+/g, 'v-#')
+    return JSON.stringify(value)?.replaceAll(/v-\d+/g, 'v-#').replaceAll(THIS_MONTH, '<month>')
   } catch {
     return Object.prototype.toString.call(value)
   }

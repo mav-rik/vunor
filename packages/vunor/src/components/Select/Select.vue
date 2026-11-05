@@ -52,8 +52,10 @@ function onFocus(event: FocusEvent) {
 </script>
 
 <template>
+  <!-- `multiple` is also in rootProps; bound here too so VuSelectBase infers M from it -->
   <VuSelectBase
     v-bind="rootProps"
+    :multiple
     v-model="modelValue"
     v-model:open="open"
     :disabled-values

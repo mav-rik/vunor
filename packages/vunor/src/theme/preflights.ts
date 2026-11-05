@@ -5,29 +5,31 @@ import type { TVunorTheme } from './theme'
 import type { Preflight } from 'unocss'
 import type { Theme } from 'unocss/preset-mini'
 
-export const fontsPreflights: Preflight<TVunorTheme & Theme> = {
-  getCSS: ({ theme }) =>
-    `${
-      renderFontCss('body', theme.fontSize.body) +
-      // renderFontCss('label', theme.fontSize.label) +
-      renderFontCss('figcaption', theme.fontSize.caption) +
-      renderFontCss('h1', theme.fontSize.h1) +
-      renderFontCss('h2', theme.fontSize.h2) +
-      renderFontCss('h3', theme.fontSize.h3) +
-      renderFontCss('h4', theme.fontSize.h4) +
-      renderFontCss('h5', theme.fontSize.h5) +
-      renderFontCss('h6', theme.fontSize.h6)
-    }
-:root {
-  --un-border-opacity: 0.25;
-  --un-default-border-color: rgb(150 150 150 / var(--un-border-opacity));
-  --scope-black: 0 0 0;
-  --scope-white: 255 255 255;
-  --scope-hl: var(--scope-color-500);
-  --v-fingertip: ${theme.spacing['fingertip-m'] || '3em'};
-  --v-fingertip-half: ${unitBy(theme.spacing['fingertip-m'] || '3em', 0.5)};
-${renderDefaultScope(theme)}}
+/**
+ * `:root` theme variables always; page-level element styles only with `baseStyles`.
+ * Off, `body` keeps the body level's `--font-*` variables for `text-mt-*` / `font-$bold`.
+ */
+export function vunorPreflights(baseStyles: boolean): Preflight<TVunorTheme & Theme> {
+  return {
+    getCSS: ({ theme }) =>
+      baseStyles
+        ? renderBaseStyles(theme)
+        : renderRootVars(theme) + renderFontVarsCss('body', theme.fontSize.body),
+  }
+}
 
+function renderBaseStyles(theme: TVunorTheme & Theme): string {
+  return `${
+    renderFontCss('body', theme.fontSize.body) +
+    renderFontCss('figcaption', theme.fontSize.caption) +
+    renderFontCss('h1', theme.fontSize.h1) +
+    renderFontCss('h2', theme.fontSize.h2) +
+    renderFontCss('h3', theme.fontSize.h3) +
+    renderFontCss('h4', theme.fontSize.h4) +
+    renderFontCss('h5', theme.fontSize.h5) +
+    renderFontCss('h6', theme.fontSize.h6)
+  }
+${renderRootVars(theme)}
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -62,8 +64,23 @@ ${renderDefaultScope(theme)}}
 .dark ::-webkit-scrollbar-thumb:hover {
     background-color: rgba(255,255,255,0.3);
 }
-`,
+`
 }
+
+function renderRootVars(theme: TVunorTheme & Theme): string {
+  return `:root {
+  --un-border-opacity: 0.25;
+  --un-default-border-color: rgb(150 150 150 / var(--un-border-opacity));
+  --scope-black: 0 0 0;
+  --scope-white: 255 255 255;
+  --scope-hl: var(--scope-color-500);
+  --v-fingertip: ${theme.spacing['fingertip-m'] || '3em'};
+  --v-fingertip-half: ${unitBy(theme.spacing['fingertip-m'] || '3em', 0.5)};
+${renderDefaultScope(theme)}}
+`
+}
+
+type TFont = TVunorTheme['fontSize'][keyof TVunorTheme['fontSize']]
 
 function renderDefaultScope(theme: TVunorTheme & Theme): string {
   const vars = getScopeCssVars('neutral', theme)
@@ -75,11 +92,16 @@ function renderDefaultScope(theme: TVunorTheme & Theme): string {
     .join('\n')}\n`
 }
 
-function renderFontCss(
-  selector: string,
-  font: TVunorTheme['fontSize'][keyof TVunorTheme['fontSize']]
-): string {
+function renderFontCss(selector: string, font: TFont): string {
   return `${selector} { font-size: ${font[0]}; ${Object.entries(font[1])
     .map(e => `${e[0]}: ${e[1]};`)
+    .join(' ')} }\n`
+}
+
+/** Only a level's `--font-*` variables: a rule that styles nothing. */
+function renderFontVarsCss(selector: string, font: TFont): string {
+  return `${selector} { ${Object.entries(font[1])
+    .filter(([k]) => k.startsWith('--'))
+    .map(([k, v]) => `${k}: ${v};`)
     .join(' ')} }\n`
 }

@@ -3,7 +3,7 @@ import { presetWind } from 'unocss'
 
 import { componentClasses } from './generated/component-classes'
 import { getPaletteShortcuts } from './palitra'
-import { fontsPreflights } from './preflights'
+import { vunorPreflights } from './preflights'
 import { rules } from './rules'
 import { themeFactory } from './theme'
 import { defaultTypography } from './typography'
@@ -72,6 +72,7 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
     xl: `4em`,
   },
   baseRadius: `${round(1 / 1.618, 3)}em`,
+  baseStyles: true,
   animation: {
     durations: {
       'slide-down-and-fade': '.15s',
@@ -174,7 +175,7 @@ export const presetVunor: PresetFactory<
   if (!wind.preflights) {
     wind.preflights = []
   }
-  wind.preflights.push(fontsPreflights)
+  wind.preflights.push(vunorPreflights(opts.baseStyles))
   if (!wind.rules) {
     wind.rules = []
   }

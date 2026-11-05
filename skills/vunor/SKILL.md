@@ -108,7 +108,7 @@ Load only the reference file you need. Each file is self-contained.
 |------|--------------|
 | [references/setup.md](references/setup.md) | Installing Vunor, configuring Vite or Nuxt, listing package exports |
 | [references/colors.md](references/colors.md) | Using `scope-*`, `layer-*`, `surface-*`, `current-*`, `bg-current`; understanding light/dark behavior |
-| [references/theme.md](references/theme.md) | Tuning palette (vividness, saturation, flatness, layersDepth, lightest/darkest), defining custom surfaces, configuring fingertip, baseRadius, typography, animations |
+| [references/theme.md](references/theme.md) | Tuning palette (vividness, saturation, flatness, layersDepth, lightest/darkest), defining custom surfaces, configuring fingertip, baseRadius, typography, animations; turning off page-level base styles (`baseStyles: false`) |
 | [references/typography.md](references/typography.md) | Choosing typography utilities, using golden-ratio spacing tokens, applying `text-mt-*` / `text-mb-*` margin correction, sizing touch targets with `fingertip-*` |
 | [references/cards.md](references/cards.md) | Building cards: `<VuCard>`, `card` shortcut, `card-{level}` rule, `--card-spacing`, density, rounded corners, header levels |
 | [references/shortcuts.md](references/shortcuts.md) | Customizing or overriding component styles, understanding c8 (clickable) and i8 (input) systems, using `defineShortcuts` / `mergeVunorShortcuts` / `vunorShortcuts` |

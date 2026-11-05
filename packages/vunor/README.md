@@ -366,6 +366,12 @@ export default defineConfig({
         reverseDark: false,
         reverseLight: false,
       },
+
+      // -- Page-level element styles --
+      // body / figcaption / h1–h6 typography (including a level's `font` and
+      // `css` above) and scrollbars. Set false to use only the classes and
+      // theme: variables stay, element rules go.
+      baseStyles: true,
     }),
   ],
   shortcuts: [vunorShortcuts()],
