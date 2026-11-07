@@ -34,7 +34,7 @@ pnpm exec vitest                                        # Watch mode
 Root-level release workflow:
 
 ```bash
-pnpm release    # test → version bump → sync → build → git push → publish
+pnpm release    # test → version bump → sync → build → release commit + tag → git push --follow-tags → publish
 ```
 
 ## Architecture

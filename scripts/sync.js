@@ -36,4 +36,5 @@ async function updateSubmoduleVersions() {
 
 updateSubmoduleVersions().catch(error => {
   console.error('Error updating submodule versions:', error)
+  process.exitCode = 1
 })

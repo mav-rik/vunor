@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.1
+
+### Added
+
+- `presetVunor({ baseStyles })`, default `true`. Set it to `false` when the app styles its own page: the page-level element rules go (the body, figcaption and h1–h6 typography, including a level's `font` and `css` from `typography`, and the scrollbar styling). The theme variables on `:root` and the body `--font-*` variables stay, as do all shortcuts and classes.
+
+### Fixed
+
+- `VuSelect`'s `v-model` type now follows `multiple`: an array with `multiple`, a single value without it. Before, the type did not follow `multiple`.
+
 ## 0.4.0
 
 ### Breaking
