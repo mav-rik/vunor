@@ -1,5 +1,5 @@
 import { defineShortcuts } from '../utils/define-sc'
-import { whenDisabled } from '../utils/disabled'
+import { whenDisabled, whenEnabled } from '../utils/disabled'
 
 // Public surface primitive — popover/menu/listbox content chrome. Symmetric
 // partner of dialog-card. Consumers add min-w-/max-w- per use.
@@ -20,5 +20,15 @@ export const popupCard = defineShortcuts({
 export const disabledSoft = defineShortcuts({
   'disabled-soft': {
     [whenDisabled]: 'opacity-40 cursor-not-allowed',
+  },
+})
+
+// Press feedback for any clickable. Only `:active`: `data-active` means "current"
+// (selected tab, pressed toggle) and must not stay shrunk. Uses `scale`, not
+// `transform`, so it stacks with translate/rotate utilities.
+export const press = defineShortcuts({
+  press: {
+    '': '[-webkit-tap-highlight-color:transparent]',
+    [`${whenEnabled}active:`]: '[scale:var(--press-scale,0.97)]',
   },
 })

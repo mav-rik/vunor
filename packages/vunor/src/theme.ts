@@ -14,6 +14,8 @@ export { presetVunor } from './theme/preset-vunor'
 export type { TVunorTheme } from './theme/theme'
 export type { TVunorShortcut } from './theme/utils/define-sc'
 export { defineShortcuts } from './theme/utils/define-sc'
+export { whenDisabled, whenEnabled } from './theme/utils/disabled'
+export { whenCanHover, whenHover, whenHoverIdle } from './theme/utils/hover'
 export { rawVunorShortcuts } from './theme/shortcuts/raw'
 export { mergeVunorShortcuts, toUnoShortcut } from './theme/utils/shortcut-obj'
 

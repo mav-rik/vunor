@@ -24,6 +24,7 @@ describe('rawVunorShortcuts', () => {
     'popup-card',
     'shadow-popup',
     'disabled-soft',
+    'press',
     'i8-bare',
     // Core c8 (clickable) family
     'c8-filled',

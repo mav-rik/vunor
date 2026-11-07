@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- `press` shortcut: press feedback for any clickable. An enabled element shrinks to `scale: var(--press-scale, 0.97)` while it is `:active`, on touch and mouse. It ignores `data-active`, which Reka UI and vunor use for "current" (selected tab, pressed toggle, open popover trigger). It uses the `scale` property, so it stacks with translate/rotate utilities, sets no transition (add `transition-[scale]` to ease it) and clears the iOS tap highlight.
+- `whenHover`, `whenHoverIdle` and `whenCanHover` from `vunor/theme`: variant-prefix keys for your own shortcuts that apply hover only on devices whose primary input can hover. Use `whenHoverIdle` when the shortcut also paints `active:`.
+- `whenEnabled` and `whenDisabled` from `vunor/theme`: the variant-prefix keys for vunor's shared disabled definition, needed to override c8 states (see below).
+
+### Changed
+
+- Hover paint is applied only on devices whose primary input can hover (`@media (hover: hover)`): the `c8-*` families, `i8-bare`, `i8-icon-clickable`, `calendar-cell`, `slider-thumb`, `combobox-c8-icon` and `dialog-close`. A tap on a touch screen no longer leaves a hover wash stuck on. Press (`:active`), `:focus-visible` and `[data-highlighted]` are not gated. While the mouse presses, the press paint still wins. Other differences on a device that can hover:
+  - **Overrides of a c8 hover must move.** An override written as `'c8-x': { [whenEnabled]: { 'hover:': '…' } }` now compiles to a separate, less specific rule and loses. Write `'c8-x': { [whenEnabled]: { [whenHoverIdle]: '…' } }`; it merges into vunor's rule and wins.
+  - In dark mode, pressing a `calendar-cell` shows the 15% press tint; it used to keep the solid 700 hover fill.
+- `c8-filled` now rests on `scope-color-600` and goes to 700 on hover and 800 on press, in light and dark mode. On 500 its white text measured 3.4–4.1:1 against the default palette, below WCAG AA, and the lighter dark-mode hover and press fills (400, 300) measured 2.1–3.0:1. White text now reaches at least 4.5:1 on every fill for every default palette colour (lowest: `good-600`, 4.62:1). Filled buttons are one shade darker, and in dark mode hover and press darken instead of lightening. In dark mode the button also gets a 1px inset rim in `scope-color-500` (a `ring-inset` box-shadow that composes with `shadow-*`): 600–800 sit at 1.7–3.6:1 against the dark layers, the rim at 3.05:1 or more against every one. The selected `VuCalendar` day (which uses `c8-filled`) changes the same way. With a tuned palette, check your 600 shades: `mainPalette.preserveInputColor: true` with `good: '#22c55e'` gives `good-600` only 4.18:1.
+- Not changed: the checkbox and radio fills, the slider thumb and range and the tab indicator stay on `scope-color-500`. They carry no text; their marks (the white check and radio dot) and fills reach the 3:1 non-text contrast at 500 (3.4:1 or more against white, 3.05:1 or more against the dark layers).
+
 ## 0.4.1
 
 ### Added

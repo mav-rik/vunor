@@ -54,6 +54,11 @@ import {
   vunorShortcuts,         // produce the final Record<string,string> for unocss config
   rawVunorShortcuts,      // [i8, c8, ...componentShortcuts] — pre-merge
   mergedVunorShortcuts,   // result of mergeVunorShortcuts(rawVunorShortcuts)
+  whenEnabled,            // variant-prefix key: not disabled (the shared disabled definition)
+  whenDisabled,           // variant-prefix key: disabled
+  whenHover,              // variant-prefix key: hover only where the primary input can hover
+  whenHoverIdle,          // same, and stands aside while :active (use next to an active: paint)
+  whenCanHover,           // bare (hover: hover) media prefix, for custom hover selectors
 } from 'vunor/theme'
 ```
 
@@ -102,6 +107,40 @@ toUnoShortcut({
 
 Returns the object as-is, but with a typed signature (`TVunorShortcut`). Pure type-safety helper.
 
+### Breakpoint keys
+
+A breakpoint is a variant prefix like any other: write the key **with the colon** (`'md:'`, `'lg:'`, `'lt-md:'`). It nests both ways and can wrap other shortcuts.
+
+```ts
+defineShortcuts({
+  'my-panel': {
+    '': 'flex flex-col gap-$s',
+    'md:': { '': 'flex-row gap-$m', 'dark:': 'bg-black' }, // → md:flex-row md:gap-$m md:dark:bg-black
+  },
+  'my-action': { '': 'c8-flat btn', 'md:': 'btn-square' }, // md:btn-square
+})
+```
+
+There is no `{ base, md }` spelling: `''` is the base, `'md:'` the breakpoint. A key without the colon (`'md'`) glues onto each class (`mdflex-row`) and emits nothing.
+
+### Hover keys (touch-safe)
+
+| # | Rule |
+|---|------|
+| 1 | Every hover rule vunor ships sits in `@media (hover: hover)` (the *primary* input can hover; `any-hover` is deliberately not used, it brings sticky hover back on hybrid devices): on a touch screen a tap does not leave a hover wash stuck on. Press (`:active`, `[data-active]`), `:focus-visible` and `[data-highlighted]` are not gated. |
+| 2 | In your own shortcuts use `[whenHover]` instead of `'hover:'` to get the same gating. In a literal class, write `[@media(hover:hover)]:hover:bg-x`. |
+| 3 | When the same shortcut also paints `active:`, use `[whenHoverIdle]`. The gated block is emitted after the plain rules, so a gated `hover:` would beat the `active:` paint while the mouse presses; `whenHoverIdle` stops matching while pressed. |
+| 4 | To override a c8 hover colour, write vunor's own key path: `'c8-filled': { [whenEnabled]: { [whenHoverIdle]: '…' } }`. It merges into vunor's rule and wins. Any other shape compiles to a separate, less specific rule and **loses**, including the vunor 0.4.1 shape `{ [whenEnabled]: { 'hover:': '…' } }` and a bare `[whenHoverIdle]` key. |
+
+```ts
+import { defineShortcuts, whenHover, whenHoverIdle } from 'vunor/theme'
+
+defineShortcuts({
+  'my-row': { '': 'p-$s', [whenHover]: 'bg-current/05' },
+  'my-tile': { [whenHoverIdle]: 'bg-current/10', 'active:': 'bg-current/20' },
+})
+```
+
 ## c8 — clickable styles
 
 **`c8-*` is a color and state preset, not a button preset.** Each variant sets background, text, border-radius, and the hover / active / focus-visible / `[data-highlighted]` / `[data-active]` color transitions for an interactive surface in the active scope. It does **not** set `display`, `height`, `padding`, `gap`, `cursor`, or typography — that's the consumer's job.
@@ -114,7 +153,7 @@ c8 also requires an active **scope** on the element or any ancestor. Without one
 
 | Class | Paints | Use for |
 |-------|--------|---------|
-| `c8-filled` | `bg: scope-color-500`, `text: white`. Light mode hover → `scope-color-600` (darker), active → `scope-color-700`. Dark mode hover → `scope-color-400` (lighter), active → `scope-color-300`. | Primary CTA |
+| `c8-filled` | `bg: scope-color-600`, `text: white`. Hover → `scope-color-700`, active → `scope-color-800`, in light and dark mode; dark mode adds a 1px inset rim in `scope-color-500`. With the default palette white text reaches WCAG AA (4.5:1) on all three fills for every palette colour. | Primary CTA |
 | `c8-flat` | `bg: transparent`, `text: current` (scoped). Hover `bg: current/10`, active `bg: current/15`. | Secondary / ghost action |
 | `c8-outlined` | `bg: transparent`, `border: current`, `text: current`. Hover `bg: current/10`, active `bg: current/15`. | Outline CTA |
 | `c8-light` | `bg: current/10` (10% scope-500), `text: current`. Hover `bg: current/20`, active `bg: current/30`. | Soft info / positive |
@@ -123,7 +162,7 @@ c8 also requires an active **scope** on the element or any ancestor. Without one
 
 Each variant additionally pre-wires:
 
-- `:hover`, `:focus-visible`, `[data-highlighted]` → light hover state
+- `:hover`, `:focus-visible`, `[data-highlighted]` → light hover state (`:hover` only where the primary input can hover, see [Hover keys](#hover-keys-touch-safe))
 - `:active`, `[data-active]` → pressed state
 - a disabled gate: `:hover`, `[data-highlighted]`, `:active` and `[data-active]` do not paint on a disabled element
 - `dark:` swaps for legibility
@@ -137,6 +176,7 @@ Each variant additionally pre-wires:
 | 3 | `c8-*-hover` / `c8-*-active` are plain paint with no gate of their own. Composing one yourself (`'x': 'hover:c8-flat-hover'`) gets no disabled exclusion — compose the whole `c8-*` family instead. |
 | 4 | Don't pin `--current-bg` or `bg-current/*` under `aria-disabled:hover:` to cancel the wash. The gate already covers `aria-disabled`, so the pin is dead weight. |
 | 5 | Up to vunor 0.3.0 the gate compiled to a selector that matched everything, so even native `disabled` c8 elements tinted on hover. |
+| 6 | The dark-mode rim is a `ring-inset` box-shadow, so it composes with `shadow-*`. With a palette you tuned yourself, check white against your colours' 600–800 (e.g. `preserveInputColor: true` + `good: '#22c55e'` → `good-600` 4.18:1). Up to vunor 0.4.1 `c8-filled` rested on 500 and lightened on dark-mode hover/press. |
 
 `[data-highlighted]` and `[data-active]` are populated by **reka-ui primitives** (menu items, listbox/select items, combobox items) so c8 transitions react to keyboard navigation as well as mouse hover. On a plain `<button>`, only the `:hover` / `:focus-visible` / `:active` portions trigger; the `[data-…]` rules sit dormant. `c8-flat-selected` similarly needs a primitive that toggles `data-selected` (e.g. `<MenuItem>`); plain buttons can opt in manually with `aria-pressed="true"`.
 
@@ -320,7 +360,7 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 
 | Group | Shortcuts |
 |-------|----------|
-| **Public primitives** *(compose on hand-rolled elements)* | `btn`, `btn-round`, `btn-square`, `btn-label`, `btn-icon`, `menu-root`, `menu-item`, `popup-card`, `i8-bare`, `disabled-soft` |
+| **Public primitives** *(compose on hand-rolled elements)* | `btn`, `btn-round`, `btn-square`, `btn-label`, `btn-icon`, `menu-root`, `menu-item`, `popup-card`, `i8-bare`, `disabled-soft`, `press` |
 | `c8` | `c8-filled`, `c8-filled-hover`, `c8-filled-active`, `c8-flat`, `c8-flat-hover`, `c8-flat-active`, `c8-flat-selected`, `c8-outlined`, `c8-outlined-hover`, `c8-outlined-active`, `c8-light`, `c8-light-hover`, `c8-light-active`, `c8-chrome`, `c8-chrome-hover`, `c8-chrome-active`, `c8-chrome-selected` |
 | `i8` | `i8`, `i8-input`, `i8-textarea`, `i8-input-wrapper`, `i8-ta-wrapper`, `i8-label`, `i8-label-wrapper`, `i8-stack-label`, `i8-hint`, `i8-counter`, `i8-hint-wrapper`, `i8-hint-wrapper-stack`, `i8-prepend`, `i8-append`, `i8-before`, `i8-after`, `i8-icon-wrap`, `i8-icon-clickable`, `i8-loading`, `i8-underline`, `segmented` |
 | Card | `card` |
@@ -345,6 +385,7 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 | `menu-root`, `menu-item` | Reka-ui-shaped menu rows — composes `c8-flat` for hover/highlighted/selected states. |
 | `popup-card` | Surface chrome for hand-rolled popovers / listboxes — partner of `dialog-card`. |
 | `i8-bare` | Standalone `<input>` styling without the `i8` wrapper `<div>`. |
+| `press` | Press feedback for any clickable (list rows, tiles, cards, buttons): an enabled element shrinks to `scale: var(--press-scale, 0.97)` while `:active`, on touch and mouse. Ignores `data-active` on purpose: Reka UI and vunor use it for "current" (selected tab, pressed toggle, checked radio, open popover trigger), so a scale there would stick. Uses the `scale` property, so it stacks with translate/rotate utilities. Sets no transition (add `transition-[scale]`) and clears the iOS tap highlight. |
 | `disabled-soft` | Visually disabled treatment (opacity-40 + not-allowed) on the [shared disabled definition](#c8--clickable-styles). Works as a literal class and inside a shortcut body. It replaces `btn`'s opacity-80 whether both are literal classes on the element or composed in one alias shortcut (`'x': 'btn disabled-soft'`, either order): `btn`'s disabled opacity is a zero-specificity default, so `disabled-soft` or a `disabled:opacity-*` utility always wins (vunor ≤ 0.3.1: inside an alias `btn`'s 0.8 won in either order). Requires `vunorShortcuts()` in `shortcuts` (vunor ≤ 0.3.0: the literal class emitted no CSS; only composing it in a shortcut worked). |
 
 ## Override patterns
@@ -503,5 +544,5 @@ For the same reason `i8-flat` has no body at all (its only declaration *is* the 
 - The empty key `''` is the base. Every shortcut needs one or it generates nothing for the no-prefix state.
 - Merge concatenates. `'c8-filled': { '': 'rounded-full' }` *adds* `rounded-full` to the base, it doesn't replace what's there. To "remove" a class, change the underlying tokens (e.g. set `baseRadius`) or define a sibling shortcut you opt into.
 - The c8/i8 systems consume `--scope-color-*` and `--current-*`. Without an active `scope-*`, they fall back to the preflight's neutral defaults — usable but generic.
-- `c8-*` follows the "press-darker" convention in light mode and inverts in dark mode: hovering pushes the button *away* from the page luminance (darker on white backgrounds, lighter on black backgrounds) so it stands out more. Active goes one step further in the same direction.
+- `c8-filled` goes one shade darker on hover and another on press, in both modes, so its white text stays above 4.5:1. The other c8 variants step a `current/*` opacity (flat, outlined, light) or a layer shade (chrome).
 - Adding a shortcut named `card` (or any built-in name) without going through `vunorShortcuts(overrides)` will collide with the default. Always pass overrides to `vunorShortcuts()`.

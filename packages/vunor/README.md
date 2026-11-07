@@ -177,6 +177,30 @@ h-fingertip flex items-center hover:bg-current/05 dark:text-white [&.btn-round]:
 
 Wherever you use `class="btn"`, UnoCSS applies all those classes. The nesting is purely for readability and mergeability.
 
+### Breakpoints and Hover
+
+Breakpoints are variant prefixes like any other, so a breakpoint key works at any depth:
+
+```ts
+defineShortcuts({
+  'my-panel': {
+    '': 'flex flex-col gap-$s',
+    'md:': { '': 'flex-row gap-$m', 'dark:': 'bg-black' }, // → "md:flex-row md:gap-$m md:dark:bg-black"
+  },
+})
+```
+
+Vunor's own shortcuts paint hover only on devices whose primary input can hover. Use the same prefixes in yours:
+
+```ts
+import { defineShortcuts, whenHover, whenHoverIdle } from 'vunor/theme'
+
+defineShortcuts({
+  'my-row': { '': 'p-$s', [whenHover]: 'bg-current/05' }, // @media (hover: hover) { .my-row:hover }
+  'my-tile': { [whenHoverIdle]: 'bg-current/10', 'active:': 'bg-current/20' }, // hover stands aside while pressed
+})
+```
+
 ### Compound Variants
 
 Nesting can go deeper for compound variants:
@@ -275,17 +299,33 @@ Button and clickable element design variants:
 
 | Class         | Description                             |
 | ------------- | --------------------------------------- |
-| `c8-filled`   | Solid background, white text            |
+| `c8-filled`   | Solid background, white text (WCAG AA)  |
 | `c8-flat`     | Transparent background, colored text    |
 | `c8-outlined` | Border + colored text, transparent fill |
 | `c8-light`    | Light tinted background, colored text   |
 
-Each includes hover, active, and focus states. Hover and press do not paint on a disabled element: `disabled`, `aria-disabled="true"` or `data-disabled` (the same definition the `disabled-soft` shortcut uses to fade a disabled element). Keyboard focus still paints, so an `aria-disabled` control stays visibly focusable. Apply on any element alongside `scope-{color}`:
+Each includes hover, active, and focus states. Hover paints only on devices whose primary input can hover (`@media (hover: hover)`), so a tap on a touch screen does not leave it stuck on; press (`:active`) paints everywhere. Hover and press do not paint on a disabled element: `disabled`, `aria-disabled="true"` or `data-disabled` (the same definition the `disabled-soft` shortcut uses to fade a disabled element). Keyboard focus still paints, so an `aria-disabled` control stays visibly focusable. Apply on any element alongside `scope-{color}`:
 
 ```html
 <button class="scope-primary c8-filled">Save</button>
 <button class="scope-error c8-flat">Cancel</button>
 ```
+
+`c8-filled` rests on shade 600 and goes to 700 on hover and 800 on press, in light and dark mode. With the default palette white text reaches WCAG AA (4.5:1) on all three fills for every palette colour. In dark mode a 1px inset rim in shade 500 keeps the button's edge at 3:1 or more against every dark layer. If you tune the palette, check your colours' 600 shades: with `mainPalette.preserveInputColor: true` and `good: '#22c55e'`, for example, `good-600` gives white text only 4.18:1.
+
+To change a c8 hover colour, override the same key vunor uses, so your class merges into vunor's rule and wins:
+
+```ts
+import { defineShortcuts, vunorShortcuts, whenEnabled, whenHoverIdle } from 'vunor/theme'
+
+vunorShortcuts(
+  defineShortcuts({
+    'c8-filled': { [whenEnabled]: { [whenHoverIdle]: 'current-bg-scope-color-900' } },
+  })
+)
+```
+
+For press feedback on any clickable, add `press`: it shrinks an enabled element slightly while it is `:active` (`[--press-scale:0.9]` changes the amount; add `transition-[scale]` to ease it). It ignores `data-active`, which Reka UI and vunor use for "current" (selected tab, pressed toggle, open popover trigger).
 
 The `btn` layout primitive fades a disabled element to opacity 0.8. That is a default: `disabled-soft` (0.4) or a `disabled:opacity-*` utility replaces it, whether written on the element or composed with `btn` in your own shortcut (`'my-btn': 'btn disabled-soft'`).
 

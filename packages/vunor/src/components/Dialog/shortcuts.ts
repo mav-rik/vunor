@@ -1,4 +1,5 @@
 import { defineShortcuts } from '../../theme/utils/define-sc'
+import { whenHover } from '../../theme/utils/hover'
 
 export const dialogShortcuts = defineShortcuts({
   'dialog-overlay': {
@@ -11,7 +12,9 @@ export const dialogShortcuts = defineShortcuts({
   },
   'dialog-header': 'flex-shrink-0 border-b pb-$m px-$card-spacing pt-$card-spacing',
   'dialog-title': 'text-mb-0',
-  'dialog-close':
-    'absolute right-$card-spacing top-$card-spacing hover:bg-grey-500/10 rounded p-$xxs',
+  'dialog-close': {
+    '': 'absolute right-$card-spacing top-$card-spacing rounded p-$xxs',
+    [whenHover]: 'bg-grey-500/10',
+  },
   'dialog-footer': 'flex-shrink-0 flex gap-$s justify-end border-t px-$card-spacing py-$m',
 })

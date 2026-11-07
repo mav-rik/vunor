@@ -1,5 +1,6 @@
 import { defineShortcuts } from '../utils/define-sc'
 import { whenEnabled } from '../utils/disabled'
+import { whenHoverIdle } from '../utils/hover'
 
 // c8 - clickable
 //
@@ -12,29 +13,27 @@ import { whenEnabled } from '../utils/disabled'
 //   with `aria-disabled` can still take focus, and the hover wash is the only
 //   focus indicator c8 ships, so gating it would leave focus invisible. A
 //   selected item that is also disabled keeps showing that it is selected.
+//
+// Hover is also gated on `@media (hover: hover)` (utils/hover.ts), so a tap on a
+// touch screen does not leave the wash stuck on. Press (`:active`) is not, so
+// touch still gets feedback.
 export const c8 = defineShortcuts({
   // FILLED
   'c8-filled': {
-    '': 'current-bg-scope-color-500 rounded-r1 current-text-white current-icon-white icon-current/100 bg-current  text-current',
+    '': 'current-bg-scope-color-600 rounded-r1 current-text-white current-icon-white icon-current/100 bg-current  text-current',
+    // the inset rim keeps the edge at 3:1+ against dark layers (600-800 are too close)
+    'dark:': 'ring-1 ring-inset [--un-ring-color:rgb(var(--scope-color-500))]',
     'focus-visible:': 'c8-filled-hover',
     [whenEnabled]: {
-      'hover:': 'c8-filled-hover',
+      [whenHoverIdle]: 'c8-filled-hover',
       'data-[highlighted]:': 'c8-filled-hover',
       'active:': 'c8-filled-active',
       'data-[active]:': 'c8-filled-active',
     },
   },
-  // Hover = one step darker in light mode / one step lighter in dark mode
-  //   (push the button *away* from the page luminance → more visible)
-  // Active = one step beyond hover
-  'c8-filled-hover': {
-    '': 'current-bg-scope-color-600',
-    'dark:': 'current-bg-scope-color-400',
-  },
-  'c8-filled-active': {
-    '': 'current-bg-scope-color-700',
-    'dark:': 'current-bg-scope-color-300',
-  },
+  // White text needs 4.5:1, hence 600 / 700 / 800 in both modes. preset-vunor.spec.ts checks it.
+  'c8-filled-hover': 'current-bg-scope-color-700',
+  'c8-filled-active': 'current-bg-scope-color-800',
 
   // FLAT (Transparent)
   'c8-flat': {
@@ -42,7 +41,7 @@ export const c8 = defineShortcuts({
     'dark:': 'current-text-white current-icon-white',
     'focus-visible:': 'c8-flat-hover',
     [whenEnabled]: {
-      'hover:': 'c8-flat-hover',
+      [whenHoverIdle]: 'c8-flat-hover',
       'data-[highlighted]:': 'c8-flat-hover',
       'active:': 'c8-flat-active',
       'data-[active]:': 'c8-flat-active',
@@ -65,7 +64,7 @@ export const c8 = defineShortcuts({
     'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
     'focus-visible:': 'c8-outlined-hover',
     [whenEnabled]: {
-      'hover:': 'c8-outlined-hover',
+      [whenHoverIdle]: 'c8-outlined-hover',
       'data-[highlighted]:': 'c8-outlined-hover',
       'active:': 'c8-outlined-active',
       'data-[active]:': 'c8-outlined-active',
@@ -85,7 +84,7 @@ export const c8 = defineShortcuts({
     '': 'surface-0 rounded-r1 border',
     'focus-visible:': 'c8-chrome-hover',
     [whenEnabled]: {
-      'hover:': 'c8-chrome-hover',
+      [whenHoverIdle]: 'c8-chrome-hover',
       'data-[highlighted]:': 'c8-chrome-hover',
       'active:': 'c8-chrome-active',
       'data-[active]:': 'c8-chrome-active',
@@ -114,7 +113,7 @@ export const c8 = defineShortcuts({
     'dark:': 'current-text-scope-color-400 current-icon-scope-color-400',
     'focus-visible:': 'c8-light-hover',
     [whenEnabled]: {
-      'hover:': 'c8-light-hover',
+      [whenHoverIdle]: 'c8-light-hover',
       'data-[highlighted]:': 'c8-light-hover',
       'active:': 'c8-light-active',
       'data-[active]:': 'c8-light-active',

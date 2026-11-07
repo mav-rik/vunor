@@ -1,8 +1,12 @@
+import { color } from '@prostojs/palitra'
 import { createGenerator } from 'unocss'
 import { beforeAll, describe, expect, it } from 'vitest'
 
 import { vunorShortcuts } from '../theme'
 import { presetVunor } from './preset-vunor'
+import { whenEnabled } from './utils/disabled'
+import { whenHover, whenHoverIdle } from './utils/hover'
+import { toUnoShortcut } from './utils/shortcut-obj'
 
 import type { TVunorTheme } from './theme'
 import type { TVunorUnoPresetOpts } from './types'
@@ -523,5 +527,197 @@ describe('baseStyles option', () => {
     expect(classesOn).toContain('font-family:Inter')
     expect(classesOn).toContain('font-family:Serif Display')
     expect(classesOff).toBe(classesOn)
+  })
+})
+
+// c8-filled paints white text on a scope-color fill. Every fill it can show
+// (rest, hover, focus, press, light and dark) must reach WCAG AA (4.5:1)
+// against that text for every default palette colour. In dark mode the fills
+// sit close to the page, so the button's edge (an inset rim) must reach the
+// non-text 3:1 against every dark layer. The shades are read from the compiled
+// CSS, so a shade change in c8.ts is checked automatically.
+describe('c8-filled contrast', () => {
+  const PALETTE = ['primary', 'secondary', 'grey', 'neutral', 'good', 'warn', 'error']
+
+  function luminance(css: string): number {
+    const [r, g, b] = color(css)
+      .rgba()
+      .slice(0, 3)
+      .map(v => v / 255)
+      .map(v => (v <= 0.040_45 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+  }
+  function contrast(a: string, b: string): number {
+    const [hi, lo] = [luminance(a), luminance(b)].toSorted((x, y) => y - x)
+    return (hi + 0.05) / (lo + 0.05)
+  }
+
+  // the surfaces a dark-mode button sits on: its own scope's dark layers and
+  // the page scopes it is most often placed on
+  const PAGE_SCOPES = ['primary', 'grey', 'neutral']
+  const DARK_LAYERS = [0, 1, 2, 3, 4]
+
+  let shades: string[]
+  let rim: string | undefined
+  let utils: TParsedToken
+  let colors: Record<string, string>
+  beforeAll(async () => {
+    const uno = await generator()
+    colors = uno.config.theme.colors as Record<string, string>
+    utils = ((await uno.parseToken('c8-filled')) ?? []) as TParsedToken
+    const found = new Set<string>()
+    for (const util of utils) {
+      const bg = parseBody(util[2] || '')['--current-bg']
+      const m = bg && /^var\(--scope-color-(\d+)\)$/.exec(bg)
+      if (m) {
+        found.add(m[1])
+      }
+    }
+    shades = [...found].toSorted()
+    const darkRing = parseBody(
+      utils?.find(u => u[1]?.startsWith('.dark ') && !u[1].includes(':'))?.[2] || ''
+    )['--un-ring-color']
+    rim = darkRing && /--scope-color-(\d+)/.exec(darkRing)?.[1]
+  })
+
+  it('compiles to the expected rest, hover and press shades', () => {
+    expect(shades).toEqual(['600', '700', '800'])
+  })
+
+  it('keeps the text white in both modes', async () => {
+    expect(selectorsSetting(utils, '--current-text')).toEqual(['.c8-filled'])
+    expect(declarations(utils, '.c8-filled')['--current-text']).toBe('255 255 255')
+  })
+
+  it.each(PALETTE)('%s: white text reaches 4.5:1 on every c8-filled fill', name => {
+    for (const shade of shades) {
+      const fill = colors[`${name}-${shade}`]
+      expect(fill, `${name}-${shade}`).toBeTruthy()
+      expect(contrast('#ffffff', fill), `${name}-${shade}`).toBeGreaterThanOrEqual(4.5)
+    }
+  })
+
+  it('draws a 1px inset rim in dark mode only', async () => {
+    expect(rim).toBe('500')
+    expect(selectorsSetting(utils, '--un-ring-width')).toEqual(['.dark $$ .c8-filled'])
+    expect(declarations(utils, '.c8-filled')).not.toHaveProperty('box-shadow')
+  })
+
+  it.each(PALETTE)('%s: the dark-mode rim reaches 3:1 against every dark layer', name => {
+    for (const scope of new Set([name, ...PAGE_SCOPES])) {
+      for (const layer of DARK_LAYERS) {
+        const page = colors[`${scope}-dark-${layer}`]
+        expect(
+          contrast(colors[`${name}-${rim}`], page),
+          `${name}-${rim} on ${scope}-dark-${layer}`
+        ).toBeGreaterThanOrEqual(3)
+      }
+    }
+  })
+})
+
+// Hover only paints on devices whose primary input can hover, so a tap on a
+// touch screen does not leave a wash stuck on. Press is not gated.
+describe('hover gating', () => {
+  const HOVER_MEDIA = '@media(hover:hover)'
+  const HOVER_IDLE = ':hover:not(:active)'
+
+  it('puts every :hover rule of every vunor shortcut under (hover: hover)', async () => {
+    const uno = await generator()
+    const names = Object.keys(vunorShortcuts())
+    let hoverRules = 0
+    for (const name of names) {
+      for (const util of (await uno.parseToken(name)) ?? []) {
+        if (util[1]?.includes(':hover')) {
+          hoverRules++
+          expect(util[3], `${name}: ${util[1]}`).toBe(HOVER_MEDIA)
+        }
+      }
+    }
+    expect(hoverRules).toBeGreaterThan(10)
+  })
+
+  // The gated block is emitted after the plain rules, so a hover that sat
+  // before `:active` now comes after it. Standing aside while pressed keeps
+  // the press paint winning on a mouse.
+  it.each([...C8_VARIANTS, 'calendar-cell'])(
+    '%s: hover stands aside while pressed; press stays ungated',
+    async token => {
+      const utils = await parse(token)
+      const hover = utils.filter(u => u[1]?.includes(':hover'))
+      expect(hover.length).toBeGreaterThan(0)
+      for (const util of hover) {
+        expect(util[1]).toContain(HOVER_IDLE)
+      }
+      const press = utils.filter(u => u[1]?.includes(':active') && !u[1].includes(':hover'))
+      expect(press.length).toBeGreaterThan(0)
+      for (const util of press) {
+        expect(util[3]).toBeUndefined()
+      }
+    }
+  )
+
+  it('keeps the c8 hover paint for hover-capable devices', async () => {
+    const utils = await parse('c8-flat')
+    const hover = utils.find(u => u[1] === `.c8-flat${HOVER_IDLE}${WHEN_ENABLED}`)
+    expect(hover?.[3]).toBe(HOVER_MEDIA)
+    expect(parseBody(hover?.[2] || '')).toMatchObject({ '--un-bg-opacity': '0.1' })
+  })
+
+  // The documented override path merges into vunor's own rule, so the
+  // consumer's paint lands later in the same declaration block and wins.
+  it('lets a consumer override of the c8 hover win', async () => {
+    const utils = await parse('c8-filled', undefined, {
+      'c8-filled': toUnoShortcut({
+        [whenEnabled]: { [whenHoverIdle]: 'current-bg-scope-color-900' },
+      }),
+    })
+    const hover = utils.filter(u => u[1] === `.c8-filled${HOVER_IDLE}${WHEN_ENABLED}`)
+    expect(hover.map(u => u[3])).toEqual([HOVER_MEDIA])
+    expect(declarations(hover, hover[0][1] as string)['--current-bg']).toBe(
+      'var(--scope-color-900)'
+    )
+  })
+
+  it('gates a consumer shortcut through the exported prefixes', async () => {
+    const utils = await parse('my-row', undefined, {
+      'my-row': toUnoShortcut({ '': 'p-2', [whenHover]: 'bg-red-500' }),
+    } as Record<string, string>)
+    const hover = utils.find(u => u[1] === '.my-row:hover')
+    expect(hover?.[3]).toBe(HOVER_MEDIA)
+  })
+})
+
+describe('press', () => {
+  // Reka UI and vunor use data-active for "current" (selected tab, pressed
+  // toggle, open popover trigger): a press scale there would stay on, so only
+  // `:active` may carry the scale.
+  it('scales an enabled element while pressed, with no media gate', async () => {
+    const utils = await parse('press')
+    expect(declarations(utils, '.press')).toEqual({ '-webkit-tap-highlight-color': 'transparent' })
+    const util = utils.find(u => u[1] === `.press:active${WHEN_ENABLED}`)
+    expect(util?.[3]).toBeUndefined()
+    expect(parseBody(util?.[2] || '')).toEqual({ scale: 'var(--press-scale,0.97)' })
+    expect(selectorsSetting(utils, 'scale')).toEqual([`.press:active${WHEN_ENABLED}`])
+  })
+})
+
+// Breakpoints are ordinary variant prefixes, so a `'md:'` key in a shortcut
+// object compiles to a min-width media block, nested keys included.
+describe('breakpoint keys in shortcut objects', () => {
+  it('compiles md: keys to the md media query', async () => {
+    const utils = await parse('my-panel', undefined, {
+      'my-panel': toUnoShortcut({
+        '': 'flex-col p-$s',
+        'md:': { '': 'flex-row p-$m', 'dark:': 'bg-black' },
+      }),
+    } as Record<string, string>)
+    const md = utils.filter(u => u[3] === '@media (min-width: 768px)')
+    // the nested dark: key lands in the same media block
+    expect(md.map(u => u[1])).toHaveLength(2)
+    expect(md.some(u => u[1]?.startsWith('.dark '))).toBe(true)
+    expect(declarations(md, '.my-panel')).toMatchObject({ 'flex-direction': 'row' })
+    const base = utils.filter(u => !u[3])
+    expect(declarations(base, '.my-panel')).toMatchObject({ 'flex-direction': 'column' })
   })
 })

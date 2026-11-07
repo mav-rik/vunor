@@ -1,5 +1,6 @@
 import { defineShortcuts } from '../../theme/utils/define-sc'
 import { whenEnabled } from '../../theme/utils/disabled'
+import { whenHover } from '../../theme/utils/hover'
 
 export const sliderShortcuts = defineShortcuts({
   'slider': {
@@ -17,7 +18,7 @@ export const sliderShortcuts = defineShortcuts({
     // Reka UI marks a disabled thumb with `data-disabled` only, never `disabled`
     [whenEnabled]: {
       '': 'cursor-grab',
-      'hover:': 'shadow-md',
+      [whenHover]: 'shadow-md',
       'active:': 'cursor-grabbing',
       'focus:': 'outline-[0.5em]',
     },

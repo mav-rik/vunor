@@ -6,7 +6,7 @@ description: >-
   VunorVueResolver, Nuxt module, Vu-prefixed components, semantic UnoCSS classes
   (scope-*, layer-*, surface-*, current-*, c8-*, i8-*, card, fingertip, spacing,
   typography), public composition primitives (btn, menu-item, popup-card, i8-bare,
-  disabled-soft), palette/theme tuning, and shortcut override patterns. Imports:
+  disabled-soft, press), hover gating (whenHover), breakpoint keys, palette/theme tuning, and shortcut override patterns. Imports:
   vunor, vunor/theme, vunor/utils, vunor/vite, vunor/nuxt.
 ---
 
@@ -189,6 +189,8 @@ import { VunorVueResolver } from 'vunor/vite'   // unplugin-vue-components resol
 </div>
 <button class="c8-flat btn" aria-disabled="true">…</button>         <!-- no hover/press wash; btn fades it (opacity-80, disabled-soft overrides) -->
 <a class="disabled-soft" aria-disabled="true">…</a>                  <!-- canonical visual disabled (opacity-40) -->
+<li class="c8-flat press">…</li>                                     <!-- press feedback: shrinks while pressed -->
+<!-- all vunor hover paint is gated on @media (hover: hover) (primary input); use whenHover / whenHoverIdle keys in your own shortcuts -->
 
 
 <!-- card -->
