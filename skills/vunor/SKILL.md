@@ -122,6 +122,9 @@ Load only the reference file you need. Each file is self-contained.
 // Preset & shortcuts
 import { presetVunor, vunorShortcuts, defineShortcuts,
          mergeVunorShortcuts, toUnoShortcut } from 'vunor/theme'
+// Variant-prefix keys: shared disabled definition, hover gated to hover-capable devices
+import { whenEnabled, whenDisabled, whenHover, whenHoverIdle,
+         whenCanHover } from 'vunor/theme'
 import type { TVunorPaletteOptions, TVunorPaletteColor,
               TVunorMainPaletteAdvanced, TVunorLayerPaletteAdvanced,
               TVunorSurfaceConfig, TVunorTheme,

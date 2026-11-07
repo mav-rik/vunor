@@ -32,7 +32,7 @@ The keys are **variant prefixes** that get prepended to every class in the value
 
 ```ts
 defineShortcuts({
-  'c8-filled': {
+  'my-btn': {
     '': 'current-bg-scope-color-500 text-white rounded-base',
     'dark:': {
       '': 'text-white/90',
@@ -127,7 +127,7 @@ There is no `{ base, md }` spelling: `''` is the base, `'md:'` the breakpoint. A
 
 | # | Rule |
 |---|------|
-| 1 | Every hover rule vunor ships sits in `@media (hover: hover)` (the *primary* input can hover; `any-hover` is deliberately not used, it brings sticky hover back on hybrid devices): on a touch screen a tap does not leave a hover wash stuck on. Press (`:active`, `[data-active]`), `:focus-visible` and `[data-highlighted]` are not gated. |
+| 1 | Every hover rule in vunor's shortcuts sits in `@media (hover: hover)` (the *primary* input can hover; `any-hover` is deliberately not used, it brings sticky hover back on hybrid devices): on a touch screen a tap does not leave a hover wash stuck on. Press (`:active`, `[data-active]`), `:focus-visible` and `[data-highlighted]` are not gated. |
 | 2 | In your own shortcuts use `[whenHover]` instead of `'hover:'` to get the same gating. In a literal class, write `[@media(hover:hover)]:hover:bg-x`. |
 | 3 | When the same shortcut also paints `active:`, use `[whenHoverIdle]`. The gated block is emitted after the plain rules, so a gated `hover:` would beat the `active:` paint while the mouse presses; `whenHoverIdle` stops matching while pressed. |
 | 4 | To override a c8 hover colour, write vunor's own key path: `'c8-filled': { [whenEnabled]: { [whenHoverIdle]: '…' } }`. It merges into vunor's rule and wins. Any other shape compiles to a separate, less specific rule and **loses**, including the vunor 0.4.1 shape `{ [whenEnabled]: { 'hover:': '…' } }` and a bare `[whenHoverIdle]` key. |
@@ -405,15 +405,17 @@ After merge, `c8-filled` still has its hover/active/dark variants — only the b
 
 ### Pattern 2 — replace a variant entirely
 
-`mergeVunorShortcuts` concatenates strings. To *replace* the hover, you'd use enough specificity to overwrite, or unset by re-defining all the keys you want with new values:
+`mergeVunorShortcuts` concatenates strings. To *replace* a variant's paint, write vunor's own key path so your classes land after the original in the same rule:
 
 ```ts
 defineShortcuts({
   'c8-filled': {
-    'hover:': 'opacity-80',  // appended after the original hover
+    [whenEnabled]: { [whenHoverIdle]: 'current-bg-scope-color-900' },  // appended after the original hover
   },
 })
 ```
+
+A plain `'hover:'` key does not merge into the c8 hover rule and loses (see [Hover keys](#hover-keys-touch-safe), rule 4).
 
 If you really need to wipe a variant, define your own version of the shortcut at a different name and use it instead — pure replacement isn't a first-class operation, by design.
 

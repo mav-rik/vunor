@@ -201,13 +201,15 @@ defineShortcuts({
 })
 ```
 
+`whenCanHover` is the bare `@media (hover: hover)` prefix, for a hover selector of your own: ``[`${whenCanHover}[&>.icon:hover]:`]: 'text-current-hl'``.
+
 ### Compound Variants
 
 Nesting can go deeper for compound variants:
 
 ```ts
 defineShortcuts({
-  'c8-filled': {
+  'my-btn': {
     '': 'current-bg-scope-color-500 text-white rounded-base',
     'hover:': 'current-bg-scope-color-400',
     'dark:': {
@@ -324,6 +326,8 @@ vunorShortcuts(
   })
 )
 ```
+
+`whenEnabled` and `whenDisabled` are the variant-prefix keys for the shared disabled definition above. Use them in your own shortcuts so a state matches the same elements vunor treats as disabled: `{ [whenEnabled]: { 'active:': 'bg-current/20' }, [whenDisabled]: 'cursor-not-allowed' }`.
 
 For press feedback on any clickable, add `press`: it shrinks an enabled element slightly while it is `:active` (`[--press-scale:0.9]` changes the amount; add `transition-[scale]` to ease it). It ignores `data-active`, which Reka UI and vunor use for "current" (selected tab, pressed toggle, open popover trigger).
 
