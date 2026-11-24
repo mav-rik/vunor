@@ -247,7 +247,7 @@ export default defineConfig({
 
 Your `'c8-filled'.'':` classes are added to the base classes of `c8-filled`, while all its `hover:`, `dark:`, `active:` variants remain intact from the defaults. Everything flows through a single merge pipeline, producing consistent CSS passed to UnoCSS.
 
-Appending is not always overriding. UnoCSS writes the utilities of a shortcut in the order of its own rules, not in the order of the class string. An appended class wins over an earlier class of the same utility (`rounded-full` over `rounded-base`, one `bg-*` over another). Between different utilities the UnoCSS rule order decides: `px-4` wins over `p-2` and `flex` over `block`, whichever is written last. When an appended class has no effect, append the utility that wins (`px-2` to change a `px-4`), or [replace the shortcut](#replacing-a-built-in-shortcut).
+Appending is not always overriding. UnoCSS writes the utilities of a shortcut in the order of its own rules, not in the order of the class string. An appended class wins over an earlier class of the same utility (`rounded-full` over `rounded-base`, one `bg-*` over another). Between different utilities the UnoCSS rule order decides: `px-4` wins over `p-2` and `flex` over `block`, whichever is written last. When an appended class has no effect, append the utility that wins (`px-2` to change a `px-4`), mark your class important (`!p-2`), or [replace the shortcut](#replacing-a-built-in-shortcut).
 
 `vunorShortcuts()` returns the merged default shortcuts for all built-in styles (c8, i8, card, dialog, etc.). Pass your overrides as the first argument -- they take priority.
 
