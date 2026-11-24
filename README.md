@@ -4,7 +4,7 @@ A Vue 3 UI component library built on UnoCSS. Ships a custom UnoCSS preset, a de
 
 Supports **Vue 3 + Vite** and **Nuxt 3**.
 
-See [`packages/vunor/`](packages/vunor/) for full documentation.
+See [`packages/vunor/`](packages/vunor/) for full documentation. Release notes are in [`packages/vunor/CHANGELOG.md`](packages/vunor/CHANGELOG.md), which ships in the npm package.
 
 ## AI Agent Skill
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.3
+
+### Changed
+
+- The npm package now ships this `CHANGELOG.md`, so the notes for a release are in `node_modules/vunor/` next to the code. No code changes.
+
 ## 0.4.2
 
 ### Added
