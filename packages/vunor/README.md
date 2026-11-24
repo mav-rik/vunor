@@ -2,7 +2,7 @@
 
 A **UnoCSS theme engine** that turns a handful of design decisions into a complete, perceptually consistent design system -- plus an optional set of 30+ Vue 3 components that use it.
 
-The core value is the theme: a golden-ratio-based type and spacing scale, an Oklab-graded color palette where every hue looks equally bright at the same step, and a deeply-mergeable shortcut object system that lets you customize any visual detail without rewriting CSS. The Vue components are a bonus -- you can use the theme engine on its own with any markup.
+The core value is the theme: a golden-ratio-based type and spacing scale, an Oklab-graded color palette where every hue looks equally bright at the same step, and a shortcut object system that merges your classes into any built-in style by name, so you customize a visual detail without rewriting the style. The Vue components are a bonus -- you can use the theme engine on its own with any markup.
 
 ## Design Philosophy
 
@@ -10,7 +10,7 @@ Most design systems hard-code dozens of magic numbers for font sizes, spacing, c
 
 - **Golden ratio (1.618)** drives the typography scale, spacing tokens, and default border radius
 - **Oklab color model** ensures perceptual uniformity -- `primary-500` and `error-500` look equally bright to the human eye, regardless of hue
-- **Object-driven shortcuts** make every visual style surgically overridable through deep merging, not string replacement
+- **Object-driven shortcuts** let you add classes to one variant of any built-in style: same-name shortcuts are merged, not replaced
 
 The result: change one seed color or one scale factor, and the entire system recalculates consistently.
 
@@ -149,7 +149,7 @@ Used as `p-$m`, `m-$l`, `gap-$s`, etc. Text-aware margin utilities (`text-mt-$m`
 
 ## Object-Driven Shortcuts
 
-This is Vunor's approach to component styling. Instead of flat UnoCSS shortcut strings, Vunor uses **structured nested objects** where keys are variant prefixes and values are the classes to apply. This makes styles readable, deeply mergeable, and surgically overridable.
+This is Vunor's approach to component styling. Instead of flat UnoCSS shortcut strings, Vunor uses **structured nested objects** where keys are variant prefixes and values are the classes to apply. This makes styles readable, and lets a later definition of the same shortcut add classes to one variant without restating the rest.
 
 ### How It Works
 
@@ -246,6 +246,8 @@ export default defineConfig({
 ```
 
 Your `'c8-filled'.'':` classes are added to the base classes of `c8-filled`, while all its `hover:`, `dark:`, `active:` variants remain intact from the defaults. Everything flows through a single merge pipeline, producing consistent CSS passed to UnoCSS.
+
+Appending is not always overriding. UnoCSS writes the utilities of a shortcut in the order of its own rules, not in the order of the class string. An appended class wins over an earlier class of the same utility (`rounded-full` over `rounded-base`, one `bg-*` over another). Between different utilities the UnoCSS rule order decides: `px-4` wins over `p-2` and `flex` over `block`, whichever is written last. When an appended class has no effect, append the utility that wins (`px-2` to change a `px-4`), or [replace the shortcut](#replacing-a-built-in-shortcut).
 
 `vunorShortcuts()` returns the merged default shortcuts for all built-in styles (c8, i8, card, dialog, etc.). Pass your overrides as the first argument -- they take priority.
 

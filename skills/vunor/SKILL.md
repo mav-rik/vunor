@@ -25,7 +25,7 @@ Three layers stack on top of each other. Read top-down to understand any class:
 
 ```
 SEMANTIC CLASSES        scope-primary, layer-0, surface-100, c8-filled, i8-filled, card
-   ↓ expand to (UnoCSS shortcuts, deep-merged from defineShortcuts() objects)
+   ↓ expand to (UnoCSS shortcuts, merged by name from defineShortcuts() objects)
 LOW-LEVEL UTILITIES     bg-current, current-bg-scope-color-500, h-fingertip, p-$m
    ↓ resolve to (UnoCSS rules from presetVunor)
 CSS CUSTOM PROPERTIES   --scope-color-500, --current-bg, --v-fingertip, --card-spacing

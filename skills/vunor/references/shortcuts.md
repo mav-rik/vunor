@@ -565,6 +565,7 @@ For the same reason `i8-flat` has no body at all (its only declaration *is* the 
 
 - Shortcut keys are **variant prefixes**, not pseudo-classes. The key `'hover:'` (with the colon!) prepends `hover:` to every class. Forgetting the colon makes UnoCSS read `hover` as a literal class.
 - The empty key `''` is the base. Every shortcut needs one or it generates nothing for the no-prefix state.
+- An appended class does not always win. UnoCSS orders a shortcut's utilities by its own rule order, not by class-string order: a later class of the same utility wins (`rounded-full` over `rounded-base`, `bg-*` over `bg-*`), but between different utilities the rule order decides (`px-4` beats `p-2`, `flex` beats `block`, whichever is last). If the appended class has no effect, append the utility that wins (`px-2` against `px-4`) or use `replaceShortcut`.
 - Merge concatenates. `'c8-filled': { '': 'rounded-full' }` *adds* `rounded-full` to the base, it doesn't replace what's there. To "remove" a class, change the underlying tokens (e.g. set `baseRadius`), replace the whole shortcut with `replaceShortcut`, or define a sibling shortcut you opt into.
 - An app shortcut whose name matches a built-in one is merged into it, also when a later vunor release adds that name. Mark the app's entry with `replaceShortcut` (or rename it) — see [`replaceShortcut`](#replaceshortcutvalue).
 - The c8/i8 systems consume `--scope-color-*` and `--current-*`. Without an active `scope-*`, they fall back to the preflight's neutral defaults — usable but generic.
