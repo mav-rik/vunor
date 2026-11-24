@@ -550,7 +550,7 @@ const unsetBooleans = {
  * (`Name.prop`, `Name[attr].key`), `'*'` for every pair. A listed key must have the value
  * `to` wherever it appears (so an intended change cannot silently revert); any other
  * difference from defaults-baseline.json (recorded from the 0.3.2 dist) fails, and each
- * `text` must appear in the repository CHANGELOG.md.
+ * `text` must appear in the package CHANGELOG.md.
  */
 export const defaultChanges = {
   '*': buttonAttrs,

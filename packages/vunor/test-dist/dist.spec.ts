@@ -301,7 +301,7 @@ const baseline = JSON.parse(fs.readFileSync(baselineFile, 'utf8')) as Record<
   string,
   Record<string, { props: Record<string, string> | string }> | undefined
 >
-const changelogFile = path.resolve(root, '../../CHANGELOG.md')
+const changelogFile = path.resolve(root, 'CHANGELOG.md')
 const changelog = fs.existsSync(changelogFile) ? fs.readFileSync(changelogFile, 'utf8') : ''
 
 interface TPin {
