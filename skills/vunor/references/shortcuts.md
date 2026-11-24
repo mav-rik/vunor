@@ -9,7 +9,7 @@ UnoCSS shortcuts are flat strings. That works for two-line cases but quickly bec
 Vunor wraps UnoCSS shortcuts in a structured nested object so:
 
 - Each variant has its own key.
-- Two shortcut objects with the same name can be **deep-merged** (later wins per key).
+- Two shortcut objects with the same name are **merged**: the later one's classes are appended.
 - You can **surgically override** a single variant — say the `:hover` of `c8-filled` — without having to copy and re-write the whole shortcut.
 
 ```ts
@@ -50,7 +50,8 @@ defineShortcuts({
 import {
   defineShortcuts,        // type-safe object builder (no-op at runtime)
   toUnoShortcut,          // flatten one shortcut object to a UnoCSS string
-  mergeVunorShortcuts,    // deep-merge an array of shortcut maps (later wins)
+  mergeVunorShortcuts,    // merge an array of shortcut maps (later classes appended)
+  replaceShortcut,        // mark a top-level entry: replaces its name instead of merging (0.4.4+)
   vunorShortcuts,         // produce the final Record<string,string> for unocss config
   rawVunorShortcuts,      // [i8, c8, ...componentShortcuts] — pre-merge
   mergedVunorShortcuts,   // result of mergeVunorShortcuts(rawVunorShortcuts)
@@ -80,16 +81,36 @@ export default defineConfig({
 })
 ```
 
-The merge is **deep**, per-key: the override `'c8-filled': { '': 'rounded-full' }` only changes `c8-filled`'s base classes; every other variant in the original (hover, dark, active, focus-visible, etc.) survives.
+The merge appends: the override `'c8-filled': { '': 'rounded-full' }` adds `rounded-full` to `c8-filled`'s base classes; every other variant in the original (hover, dark, active, focus-visible, etc.) survives.
 
 ### `mergeVunorShortcuts([a, b, c])`
 
-Deep-merges an array of shortcut objects. Later entries win on conflict (string concatenation: `target + " " + source`). Use this when composing multiple custom shortcut maps before passing to `vunorShortcuts`.
+Merges an array of shortcut objects: for a name defined more than once, the later entry's classes are appended (`target + " " + source`); a [`replaceShortcut`](#replaceshortcutvalue) entry drops the earlier ones instead. Use this when composing multiple custom shortcut maps before passing to `vunorShortcuts`.
 
 ```ts
 const all = mergeVunorShortcuts([baseTokens, themeOverrides, brandOverrides])
 shortcuts: [vunorShortcuts(all)]
 ```
+
+### `replaceShortcut(value)`
+
+Marks a top-level entry so it **replaces** the earlier definitions of its name instead of merging into them (0.4.4+). Takes any entry form: string, array or shortcut object.
+
+```ts
+import { defineShortcuts, replaceShortcut, vunorShortcuts } from 'vunor/theme'
+
+vunorShortcuts(defineShortcuts({
+  'press': replaceShortcut({ 'active:': 'scale-95' }),  // vunor's press dropped; only this remains
+  'c8-filled': { '': 'rounded-full' },                  // unmarked: still merges into vunor's
+}))
+```
+
+| # | Rule |
+|---|------|
+| 1 | Shortcut-name level only — on a variant key inside a shortcut it has no effect. |
+| 2 | In `mergeVunorShortcuts([a, b, c])` a marked entry drops its name from every earlier list; later lists append on top of it (unless marked themselves). |
+| 3 | The mark survives a merge: `vunorShortcuts(mergeVunorShortcuts([x, y]))` still replaces the built-in when `y` marks it. |
+| 4 | An unmarked app shortcut with a built-in name is **merged** into the built-in. When a vunor release adds a name the app already uses (`press` in 0.4.2), mark the app's entry or rename it. |
 
 ### `toUnoShortcut(obj)`
 
@@ -385,7 +406,7 @@ These are the named shortcuts every `vunorShortcuts()` call ships:
 | `menu-root`, `menu-item` | Reka-ui-shaped menu rows — composes `c8-flat` for hover/highlighted/selected states. |
 | `popup-card` | Surface chrome for hand-rolled popovers / listboxes — partner of `dialog-card`. |
 | `i8-bare` | Standalone `<input>` styling without the `i8` wrapper `<div>`. |
-| `press` | Press feedback for any clickable (list rows, tiles, cards, buttons): an enabled element shrinks to `scale: var(--press-scale, 0.97)` while `:active`, on touch and mouse. Ignores `data-active` on purpose: Reka UI and vunor use it for "current" (selected tab, pressed toggle, checked radio, open popover trigger), so a scale there would stick. Uses the `scale` property, so it stacks with translate/rotate utilities. Sets no transition (add `transition-[scale]`) and clears the iOS tap highlight. |
+| `press` | Press feedback for any clickable (list rows, tiles, cards, buttons): an enabled element shrinks to `scale: var(--press-scale, 0.97)` while `:active`, on touch and mouse. Ignores `data-active` on purpose: Reka UI and vunor use it for "current" (selected tab, pressed toggle, checked radio, open popover trigger), so a scale there would stick. Uses the `scale` property, so it stacks with translate/rotate utilities. Sets no transition (add `[transition-property:scale] duration-150`; `transition-[scale]` generates no CSS) and clears the iOS tap highlight. |
 | `disabled-soft` | Visually disabled treatment (opacity-40 + not-allowed) on the [shared disabled definition](#c8--clickable-styles). Works as a literal class and inside a shortcut body. It replaces `btn`'s opacity-80 whether both are literal classes on the element or composed in one alias shortcut (`'x': 'btn disabled-soft'`, either order): `btn`'s disabled opacity is a zero-specificity default, so `disabled-soft` or a `disabled:opacity-*` utility always wins (vunor ≤ 0.3.1: inside an alias `btn`'s 0.8 won in either order). Requires `vunorShortcuts()` in `shortcuts` (vunor ≤ 0.3.0: the literal class emitted no CSS; only composing it in a shortcut worked). |
 
 ## Override patterns
@@ -417,7 +438,7 @@ defineShortcuts({
 
 A plain `'hover:'` key does not merge into the c8 hover rule and loses (see [Hover keys](#hover-keys-touch-safe), rule 4).
 
-If you really need to wipe a variant, define your own version of the shortcut at a different name and use it instead — pure replacement isn't a first-class operation, by design.
+A single variant can't be wiped. To replace the whole shortcut, mark your entry with [`replaceShortcut`](#replaceshortcutvalue), or define your own version at a different name and use that.
 
 ### Pattern 3 — add a brand-new shortcut
 
@@ -538,13 +559,14 @@ For the same reason `i8-flat` has no body at all (its only declaration *is* the 
 `i8` is a wrapper, not a leaf. Move it to a parent `<div>` (with `group/i8`) and put `i8-input` on the actual `<input>`.
 
 **"I added an override and now the original variant is gone."**
-`mergeVunorShortcuts` *concatenates* into existing variant strings, it doesn't replace. If a class disappeared, you most likely defined a **sibling shortcut** with the same name *outside* `vunorShortcuts(overrides)` — that collides with the default. Always go through `vunorShortcuts(overrides)`.
+`mergeVunorShortcuts` *concatenates* into existing variant strings, it doesn't replace. If a class disappeared, you most likely defined a **sibling shortcut** with the same name in a later `shortcuts` map *outside* `vunorShortcuts(overrides)` — that replaces the default. Pass it through `vunorShortcuts(overrides)` to merge instead.
 
 ## Gotchas
 
 - Shortcut keys are **variant prefixes**, not pseudo-classes. The key `'hover:'` (with the colon!) prepends `hover:` to every class. Forgetting the colon makes UnoCSS read `hover` as a literal class.
 - The empty key `''` is the base. Every shortcut needs one or it generates nothing for the no-prefix state.
-- Merge concatenates. `'c8-filled': { '': 'rounded-full' }` *adds* `rounded-full` to the base, it doesn't replace what's there. To "remove" a class, change the underlying tokens (e.g. set `baseRadius`) or define a sibling shortcut you opt into.
+- Merge concatenates. `'c8-filled': { '': 'rounded-full' }` *adds* `rounded-full` to the base, it doesn't replace what's there. To "remove" a class, change the underlying tokens (e.g. set `baseRadius`), replace the whole shortcut with `replaceShortcut`, or define a sibling shortcut you opt into.
+- An app shortcut whose name matches a built-in one is merged into it, also when a later vunor release adds that name. Mark the app's entry with `replaceShortcut` (or rename it) — see [`replaceShortcut`](#replaceshortcutvalue).
 - The c8/i8 systems consume `--scope-color-*` and `--current-*`. Without an active `scope-*`, they fall back to the preflight's neutral defaults — usable but generic.
 - `c8-filled` goes one shade darker on hover and another on press, in both modes, so its white text stays above 4.5:1. The other c8 variants step a `current/*` opacity (flat, outlined, light) or a layer shade (chrome).
-- Adding a shortcut named `card` (or any built-in name) without going through `vunorShortcuts(overrides)` will collide with the default. Always pass overrides to `vunorShortcuts()`.
+- A same-name shortcut in a **later** UnoCSS `shortcuts` map (outside `vunorShortcuts`) replaces the built-in one, because UnoCSS lets later maps win — `shortcuts: [vunorShortcuts(mine), { press: '…' }]` is the plain-UnoCSS alternative to `replaceShortcut` (in an earlier map, vunor's wins).

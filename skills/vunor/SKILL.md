@@ -2,7 +2,7 @@
 name: vunor
 description: >-
   Use when working with Vunor, the Vue 3 + UnoCSS design system and component
-  library. Covers presetVunor, vunorShortcuts/defineShortcuts/mergeVunorShortcuts,
+  library. Covers presetVunor, vunorShortcuts/defineShortcuts/mergeVunorShortcuts/replaceShortcut,
   VunorVueResolver, Nuxt module, Vu-prefixed components, semantic UnoCSS classes
   (scope-*, layer-*, surface-*, current-*, c8-*, i8-*, card, fingertip, spacing,
   typography), public composition primitives (btn, menu-item, popup-card, i8-bare,
@@ -121,7 +121,7 @@ Load only the reference file you need. Each file is self-contained.
 ```ts
 // Preset & shortcuts
 import { presetVunor, vunorShortcuts, defineShortcuts,
-         mergeVunorShortcuts, toUnoShortcut } from 'vunor/theme'
+         mergeVunorShortcuts, replaceShortcut, toUnoShortcut } from 'vunor/theme'
 // Variant-prefix keys: shared disabled definition, hover gated to hover-capable devices
 import { whenEnabled, whenDisabled, whenHover, whenHoverIdle,
          whenCanHover } from 'vunor/theme'

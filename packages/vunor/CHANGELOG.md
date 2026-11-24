@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.4
+
+### Added
+
+- `replaceShortcut` from `vunor/theme`: replaces a built-in shortcut instead of merging into it. A shortcut of yours with the same name as a built-in one is merged with it (its classes are appended); mark your entry to drop vunor's definition and keep only your classes: `vunorShortcuts(defineShortcuts({ press: replaceShortcut({ 'active:': 'scale-95' }) }))`. It takes any form a normal entry takes (a string, an array or a shortcut object) and goes on the shortcut name, not on a variant key. In `mergeVunorShortcuts([a, b, c])` a marked entry drops the definitions of its name from the earlier lists, later lists merge on top of it as usual, and the mark survives the merge, so a map composed with `mergeVunorShortcuts` and passed to `vunorShortcuts()` still replaces the built-in shortcut.
+
+### Fixed
+
+- `vunorShortcuts()` no longer changes the exported `mergedVunorShortcuts` object (it turned its shortcut objects into strings in place), and an array entry (`'my-row': ['p-2', 'm-1']`) now becomes `p-2 m-1` (it became `0p-2 1m-1`).
+- In a shortcut object, an array item holding several classes gets the variant prefix on each class: `{ 'hover:': ['p-2 m-1'] }` becomes `hover:p-2 hover:m-1` (it became `hover:p-2 m-1`).
+- The `press` notes for 0.4.2 advised `transition-[scale]` to ease the press, but that class generates no CSS. Use `[transition-property:scale] duration-150`.
+
 ## 0.4.3
 
 ### Changed
@@ -10,7 +22,7 @@
 
 ### Added
 
-- `press` shortcut: press feedback for any clickable. An enabled element shrinks to `scale: var(--press-scale, 0.97)` while it is `:active`, on touch and mouse. It ignores `data-active`, which Reka UI and vunor use for "current" (selected tab, pressed toggle, open popover trigger). It uses the `scale` property, so it stacks with translate/rotate utilities, sets no transition (add `transition-[scale]` to ease it) and clears the iOS tap highlight.
+- `press` shortcut: press feedback for any clickable. An enabled element shrinks to `scale: var(--press-scale, 0.97)` while it is `:active`, on touch and mouse. It ignores `data-active`, which Reka UI and vunor use for "current" (selected tab, pressed toggle, open popover trigger). It uses the `scale` property, so it stacks with translate/rotate utilities, sets no transition (add `[transition-property:scale] duration-150` to ease it) and clears the iOS tap highlight. An app that passes its own `press` shortcut to `vunorShortcuts()` gets vunor's rule merged into it; mark the app's one with `replaceShortcut` (0.4.4) or rename it.
 - `whenHover`, `whenHoverIdle` and `whenCanHover` from `vunor/theme`: variant-prefix keys for your own shortcuts that apply hover only on devices whose primary input can hover. Use `whenHoverIdle` when the shortcut also paints `active:`.
 - `whenEnabled` and `whenDisabled` from `vunor/theme`: the variant-prefix keys for vunor's shared disabled definition, needed to override c8 states (see below).
 

@@ -19,7 +19,7 @@ function prepareScArray(input: string | string[] | TVunorShortcut): string[] {
     return input.split(' ')
   }
   if (Array.isArray(input)) {
-    return input
+    return input.flatMap(item => item.split(' '))
   }
   const a = []
   for (const [key, val] of Object.entries(input)) {
@@ -27,6 +27,33 @@ function prepareScArray(input: string | string[] | TVunorShortcut): string[] {
   }
   return a
 }
+
+// Registry symbol, so a value marked by one copy of vunor is recognised by another
+const REPLACE = Symbol.for('vunor.replaceShortcut')
+
+/** A shortcut value as one UnoCSS class string */
+export const toClassString = (value: string | string[] | TVunorShortcut | undefined = ''): string =>
+  typeof value === 'string' ? value : Array.isArray(value) ? value.join(' ') : toUnoShortcut(value)
+
+const markReplacement = (classes: string[]): string[] =>
+  Object.defineProperty(classes, REPLACE, { value: true })
+
+const isReplacement = (value: unknown): value is string[] =>
+  Array.isArray(value) && REPLACE in value
+
+/**
+ * Marks a top-level shortcut entry as a replacement: when shortcuts are merged
+ * (`mergeVunorShortcuts`, `vunorShortcuts`), it drops every earlier definition of
+ * the same name instead of merging into it. Later entries still merge on top of it.
+ *
+ * @example
+ * vunorShortcuts(defineShortcuts({ press: replaceShortcut({ 'active:': 'scale-95' }) }))
+ *
+ * @param value the shortcut, in any form a normal entry accepts
+ * @returns the shortcut's class string in a marked array
+ */
+export const replaceShortcut = (value: string | string[] | TVunorShortcut): string[] =>
+  markReplacement([toClassString(value)])
 
 /**
  * Merges source vunor shortcut with target vunor shortcut
@@ -42,9 +69,16 @@ const mergeTwoVunorShortcuts = (target: TVunorShortcut, source: TVunorShortcut):
   for (const key of Array.from(keys)) {
     const inSource = Object.prototype.hasOwnProperty.call(source, key)
     const inTarget = Object.prototype.hasOwnProperty.call(target, key)
-    if (inSource && inTarget) {
+    const targetEntry = target[key]
+    if (inSource && isReplacement(source[key])) {
+      // a replacement drops everything before it
+      result[key] = source[key]
+    } else if (inSource && inTarget && isReplacement(targetEntry)) {
+      // later entries append to a replacement, which stays one
+      result[key] = markReplacement([...targetEntry, toClassString(source[key])])
+    } else if (inSource && inTarget) {
       let sourceValue = source[key]
-      let targetValue = target[key]
+      let targetValue = targetEntry
 
       if (Array.isArray(sourceValue)) {
         sourceValue = sourceValue.join(' ')
@@ -73,7 +107,8 @@ const mergeTwoVunorShortcuts = (target: TVunorShortcut, source: TVunorShortcut):
 
 /**
  * Merges an array of vunor shortcuts
- * Items from the beginning have less priority
+ * Items from the beginning have less priority. An entry marked with
+ * `replaceShortcut` drops the earlier entries of its name.
  *
  * @param shortcuts TVunorShortcut[]
  * @returns TVunorShortcut

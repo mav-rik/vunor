@@ -1,5 +1,5 @@
 import { rawVunorShortcuts } from './theme/shortcuts/raw'
-import { mergeVunorShortcuts, toUnoShortcut } from './theme/utils/shortcut-obj'
+import { mergeVunorShortcuts, toClassString } from './theme/utils/shortcut-obj'
 
 import type { TVunorShortcut } from './theme/utils/define-sc'
 
@@ -17,7 +17,7 @@ export { defineShortcuts } from './theme/utils/define-sc'
 export { whenDisabled, whenEnabled } from './theme/utils/disabled'
 export { whenCanHover, whenHover, whenHoverIdle } from './theme/utils/hover'
 export { rawVunorShortcuts } from './theme/shortcuts/raw'
-export { mergeVunorShortcuts, toUnoShortcut } from './theme/utils/shortcut-obj'
+export { mergeVunorShortcuts, replaceShortcut, toUnoShortcut } from './theme/utils/shortcut-obj'
 
 /**
  * Vunor shortcuts (merged version of rawVunorShortcuts)
@@ -38,10 +38,11 @@ export function vunorShortcuts(
   const merged = customShortcuts
     ? mergeVunorShortcuts([baseShortcuts, customShortcuts])
     : baseShortcuts
+  const result: Record<string, string> = {}
   for (const [key, val] of Object.entries(merged)) {
-    merged[key] = typeof val === 'string' ? val : toUnoShortcut(val as TVunorShortcut)
+    result[key] = toClassString(val)
   }
-  return merged as Record<string, string>
+  return result
 }
 
 export { componentClasses, getComponentClasses } from './theme/generated/component-classes'

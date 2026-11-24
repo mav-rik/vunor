@@ -117,7 +117,7 @@ The Nuxt module auto-registers every `Vu*` component globally.
 | Path | Provides |
 |------|----------|
 | `vunor` | PI composables: `useInputPi`, `useInputProps`, `useInputBaseProps`, `useCardPI`, toast helpers |
-| `vunor/theme` | `presetVunor`, `vunorShortcuts`, `defineShortcuts`, `mergeVunorShortcuts`, `toUnoShortcut`, type exports (`TVunorPaletteOptions`, `TVunorPaletteColor`, `TVunorMainPaletteAdvanced`, `TVunorLayerPaletteAdvanced`, `TVunorSurfaceConfig`, `TVunorTheme`, `TVunorShortcut`), plus `componentClasses` / `getComponentClasses` |
+| `vunor/theme` | `presetVunor`, `vunorShortcuts`, `defineShortcuts`, `mergeVunorShortcuts`, `replaceShortcut`, `toUnoShortcut`, type exports (`TVunorPaletteOptions`, `TVunorPaletteColor`, `TVunorMainPaletteAdvanced`, `TVunorLayerPaletteAdvanced`, `TVunorSurfaceConfig`, `TVunorTheme`, `TVunorShortcut`), plus `componentClasses` / `getComponentClasses` |
 | `vunor/utils` | `useProvideInject` (build typed provide/inject pairs) |
 | `vunor/vite` | `VunorVueResolver` for `unplugin-vue-components` |
 | `vunor/nuxt` | Nuxt 3 module that registers all `Vu*` components |

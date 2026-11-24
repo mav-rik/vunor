@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { mergeVunorShortcuts, toUnoShortcut } from './shortcut-obj'
+import { mergeVunorShortcuts, replaceShortcut, toUnoShortcut } from './shortcut-obj'
 
 describe('shortcut objects', () => {
   it('must flatten sc object', () => {
@@ -80,5 +80,59 @@ describe('mergeShortcuts', () => {
   it('must merge objects with no common props', () => {
     const result = mergeVunorShortcuts([{ prop1: 'val1' }, { prop2: 'val2' }])
     expect(result).toEqual({ prop1: 'val1', prop2: 'val2' })
+  })
+})
+
+describe('replaceShortcut', () => {
+  it.each([
+    ['string', 'm-2 p-2', ['m-2 p-2']],
+    ['array', ['m-2', 'p-2 c-red'], ['m-2 p-2 c-red']],
+    ['object', { '': 'm-2', 'hover:': ['p-2', 'c-red'] }, ['m-2 hover:p-2 hover:c-red']],
+  ])('a marked %s entry drops the earlier definitions of its name', (_form, value, classes) => {
+    const result = mergeVunorShortcuts([
+      { a: { '': 'old-1', 'dark:': 'old-2' }, b: 'keep' },
+      { a: 'old-3' },
+      { a: replaceShortcut(value) },
+    ])
+    expect(result).toEqual({ a: classes, b: 'keep' })
+  })
+
+  it('later normal entries append to a marked one', () => {
+    const result = mergeVunorShortcuts([
+      { a: 'old' },
+      { a: replaceShortcut('m-2') },
+      { a: 'p-2' },
+      { a: { 'hover:': 'c-red' } },
+    ])
+    expect(result.a).toEqual(['m-2', 'p-2', 'hover:c-red'])
+  })
+
+  it('has no effect on a variant key', () => {
+    expect(toUnoShortcut({ 'hover:': replaceShortcut('m-2 p-2') })).toBe('hover:m-2 hover:p-2')
+  })
+
+  it('appending to a reused marked entry leaves it unchanged', () => {
+    const marked = replaceShortcut('m-2')
+    mergeVunorShortcuts([{ a: marked }, { a: 'p-2' }])
+    const result = mergeVunorShortcuts([{ a: marked }, { a: 'c-red' }])
+    expect(result.a).toEqual(['m-2', 'c-red'])
+    expect([...marked]).toEqual(['m-2'])
+  })
+
+  it('a later marked entry replaces an earlier marked one', () => {
+    const result = mergeVunorShortcuts([
+      { a: replaceShortcut('m-2') },
+      { a: replaceShortcut('p-2') },
+    ])
+    expect(result.a).toEqual(['p-2'])
+  })
+
+  it('the mark survives a merge: the result still replaces when merged again', () => {
+    // marked and appended to
+    const appended = mergeVunorShortcuts([{ a: replaceShortcut('m-2') }, { a: 'p-2' }])
+    // marked, in one list only
+    const alone = mergeVunorShortcuts([{ b: 'x' }, { a: replaceShortcut('m-2') }])
+    expect(mergeVunorShortcuts([{ a: 'old' }, appended]).a).toEqual(['m-2', 'p-2'])
+    expect(mergeVunorShortcuts([{ a: 'old' }, alone]).a).toEqual(['m-2'])
   })
 })

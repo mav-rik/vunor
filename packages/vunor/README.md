@@ -223,7 +223,7 @@ defineShortcuts({
 
 ### Why Objects Instead of Strings?
 
-**Because they merge.** When two shortcut objects define the same key, `mergeVunorShortcuts()` deep-merges them with later entries winning. This is the key to Vunor's customization model: you can surgically override a single variant of a built-in style without rewriting the whole shortcut.
+**Because they merge.** When two shortcut objects define the same key, `mergeVunorShortcuts()` merges them, appending the later entry's classes. This is the key to Vunor's customization model: you can surgically override a single variant of a built-in style without rewriting the whole shortcut.
 
 For example, to make all filled buttons pill-shaped while keeping every other variant (hover, active, dark mode, disabled) intact:
 
@@ -232,10 +232,10 @@ import { vunorShortcuts, defineShortcuts } from 'vunor/theme'
 
 const myOverrides = defineShortcuts({
   'c8-filled': {
-    '': 'rounded-full', // only overrides base classes
+    '': 'rounded-full', // added to the base classes
   },
   'i8-flat': {
-    '': 'border-b-2', // only overrides base classes
+    '': 'border-b-2', // added to the base classes
   },
 })
 
@@ -245,9 +245,35 @@ export default defineConfig({
 })
 ```
 
-Your `'c8-filled'.'':` replaces only the base classes of `c8-filled`, while all its `hover:`, `dark:`, `active:` variants remain intact from the defaults. Everything flows through a single merge pipeline, producing consistent CSS passed to UnoCSS.
+Your `'c8-filled'.'':` classes are added to the base classes of `c8-filled`, while all its `hover:`, `dark:`, `active:` variants remain intact from the defaults. Everything flows through a single merge pipeline, producing consistent CSS passed to UnoCSS.
 
 `vunorShortcuts()` returns the merged default shortcuts for all built-in styles (c8, i8, card, dialog, etc.). Pass your overrides as the first argument -- they take priority.
+
+### Replacing a Built-in Shortcut
+
+To drop a built-in shortcut and use only your own classes under its name, mark your entry with `replaceShortcut`:
+
+```ts
+import { defineShortcuts, replaceShortcut, vunorShortcuts } from 'vunor/theme'
+
+const mine = defineShortcuts({
+  // vunor's own `press` is dropped; only these classes remain
+  'press': replaceShortcut({ 'active:': 'scale-95' }),
+  // a normal entry still merges into vunor's c8-filled
+  'c8-filled': { '': 'rounded-full' },
+})
+
+export default defineConfig({
+  presets: [presetVunor()],
+  shortcuts: [vunorShortcuts(mine)],
+})
+```
+
+`replaceShortcut` takes any form a normal entry takes (a string, an array or a shortcut object). Put it on the shortcut name, not on a variant key inside a shortcut (there it has no effect). In `mergeVunorShortcuts([a, b, c])` a marked entry drops the definitions of its name from the earlier lists, and entries in later lists merge on top of it as usual. The mark survives the merge, so `vunorShortcuts(mergeVunorShortcuts([x, y]))` still replaces the built-in shortcut when `y` marks it.
+
+Without vunor's merge, plain UnoCSS does the same: a shortcut in a later map of the `shortcuts` array replaces an earlier one of the same name, so `shortcuts: [vunorShortcuts(), { press: 'active:scale-95' }]` also drops vunor's `press`.
+
+An app shortcut with the same name as a built-in one is merged with it unless it is marked: when a vunor release adds a shortcut whose name your app already uses, mark your app's one with `replaceShortcut` (or rename it).
 
 ---
 
@@ -329,7 +355,7 @@ vunorShortcuts(
 
 `whenEnabled` and `whenDisabled` are the variant-prefix keys for the shared disabled definition above. Use them in your own shortcuts so a state matches the same elements vunor treats as disabled: `{ [whenEnabled]: { 'active:': 'bg-current/20' }, [whenDisabled]: 'cursor-not-allowed' }`.
 
-For press feedback on any clickable, add `press`: it shrinks an enabled element slightly while it is `:active` (`[--press-scale:0.9]` changes the amount; add `transition-[scale]` to ease it). It ignores `data-active`, which Reka UI and vunor use for "current" (selected tab, pressed toggle, open popover trigger).
+For press feedback on any clickable, add `press`: it shrinks an enabled element slightly while it is `:active` (`[--press-scale:0.9]` changes the amount; add `[transition-property:scale] duration-150` to ease it). It ignores `data-active`, which Reka UI and vunor use for "current" (selected tab, pressed toggle, open popover trigger).
 
 The `btn` layout primitive fades a disabled element to opacity 0.8. That is a default: `disabled-soft` (0.4) or a `disabled:opacity-*` utility replaces it, whether written on the element or composed with `btn` in your own shortcut (`'my-btn': 'btn disabled-soft'`).
 
