@@ -72,6 +72,7 @@ const defaultOptions: Required<TVunorUnoPresetOpts> = {
     xl: `4em`,
   },
   baseRadius: `${round(1 / 1.618, 3)}em`,
+  borderOpacity: 0.25,
   baseStyles: true,
   animation: {
     durations: {
@@ -175,7 +176,7 @@ export const presetVunor: PresetFactory<
   if (!wind.preflights) {
     wind.preflights = []
   }
-  wind.preflights.push(vunorPreflights(opts.baseStyles))
+  wind.preflights.push(vunorPreflights(opts.baseStyles, opts.borderOpacity))
   if (!wind.rules) {
     wind.rules = []
   }

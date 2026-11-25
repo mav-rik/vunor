@@ -4,6 +4,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 
 import { vunorShortcuts } from '../theme'
 import { presetVunor } from './preset-vunor'
+import { defineShortcuts } from './utils/define-sc'
 import { whenEnabled } from './utils/disabled'
 import { whenHover, whenHoverIdle } from './utils/hover'
 import { toUnoShortcut } from './utils/shortcut-obj'
@@ -719,5 +720,128 @@ describe('breakpoint keys in shortcut objects', () => {
     expect(declarations(md, '.my-panel')).toMatchObject({ 'flex-direction': 'row' })
     const base = utils.filter(u => !u[3])
     expect(declarations(base, '.my-panel')).toMatchObject({ 'flex-direction': 'column' })
+  })
+})
+
+// `scope-<name>` is a scope only for a palette colour (one with a shade ladder).
+// Any other `scope-…` string the extractor picks up, in markup or a comment,
+// is not a class of ours: it compiles to nothing instead of failing the build.
+describe('scope-<name>', () => {
+  const PALETTE = ['primary', 'secondary', 'grey', 'neutral', 'good', 'warn', 'error']
+  const NOT_SCOPES = [
+    'scope-primary-500',
+    'scope-error-100',
+    'scope-primary-dark-0',
+    'scope-white',
+    'scope-black',
+    'scope-dark',
+    'scope-light',
+    'scope-red',
+    'scope-transparent',
+    'scope-current',
+    'scope-brand',
+  ]
+
+  async function generateWithBrand(source: string): Promise<string> {
+    // a custom palette name gets layer colours but no shade ladder
+    const colors: Record<string, string> = { brand: '#7c3aed' }
+    const uno = await createGenerator({ presets: [presetVunor({ palette: { colors } })] })
+    const result = await uno.generate(source, { preflights: false })
+    return result.css
+  }
+
+  it.each(PALETTE)('scope-%s sets the scope variables', async name => {
+    const utils = await parse(`scope-${name}`)
+    const vars = declarations(utils, `.scope-${name}`)
+    for (const v of [
+      '--scope-color',
+      '--scope-color-50',
+      '--scope-color-500',
+      '--scope-color-900',
+    ]) {
+      expect(vars[v], v).toMatch(/^\d+ \d+ \d+$/)
+    }
+    expect(vars['--scope-light-0']).toMatch(/^\d+ \d+ \d+$/)
+    expect(vars['--scope-dark-4']).toMatch(/^\d+ \d+ \d+$/)
+  })
+
+  it.each(NOT_SCOPES)('%s compiles to nothing', async token => {
+    const css = await generateWithBrand(token)
+    expect(css).not.toContain(`.${token}`)
+  })
+})
+
+describe('borderOpacity option', () => {
+  it('defaults the :root border opacity to 0.25', async () => {
+    const css = await generateCss([])
+    expect(declarationsOf(css, ':root')).toMatchObject({
+      '--un-border-opacity': '0.25',
+      '--un-default-border-color': 'rgb(150 150 150 / var(--un-border-opacity))',
+    })
+  })
+
+  it('sets the :root border opacity, with and without base styles', async () => {
+    for (const baseStyles of [true, false]) {
+      const css = await generateCss([], { borderOpacity: 0.4, baseStyles })
+      expect(declarationsOf(css, ':root')['--un-border-opacity'], `baseStyles: ${baseStyles}`).toBe(
+        '0.4'
+      )
+    }
+  })
+})
+
+// The documented way to bring back the c8-filled shades of vunor 0.4.1 and
+// earlier: three appended entries, no replaceShortcut. Guards the docs snippet.
+describe('restoring the pre-0.4.2 c8-filled shades', () => {
+  const OLD_LADDER = defineShortcuts({
+    'c8-filled': { '': 'current-bg-scope-color-500' },
+    'c8-filled-hover': { '': 'current-bg-scope-color-600', 'dark:': 'current-bg-scope-color-400' },
+    'c8-filled-active': {
+      '': 'current-bg-scope-color-700',
+      'dark:': 'current-bg-scope-color-300',
+    },
+  })
+  // selector classes: dark mode, the hover-like states, the press states
+  const DARK = /^\.dark /
+  const HOVER = /:hover|\[data-highlighted\]|:focus-visible/
+  const PRESS = /^(?!.*:hover).*(?::active|\[data-active\])/
+
+  /** The effective `--current-bg` of every selector `pick` accepts. */
+  function shades(utils: TParsedToken, pick: (selector: string) => boolean): Set<string> {
+    return new Set(
+      utils
+        .map(u => u[1])
+        .filter((s): s is string => !!s && pick(s))
+        .map(s => declarations(utils, s)['--current-bg'])
+        .filter(Boolean)
+    )
+  }
+
+  it('rests on 500, hovers on 600 / 400 and presses on 700 / 300', async () => {
+    const uno = await createGenerator({
+      presets: [presetVunor()],
+      shortcuts: [vunorShortcuts(OLD_LADDER)],
+    })
+    const utils = ((await uno.parseToken('c8-filled')) ?? []) as TParsedToken
+    expect(declarations(utils, '.c8-filled')['--current-bg']).toBe('var(--scope-color-500)')
+    expect(shades(utils, s => HOVER.test(s) && !DARK.test(s))).toEqual(
+      new Set(['var(--scope-color-600)'])
+    )
+    expect(shades(utils, s => HOVER.test(s) && DARK.test(s))).toEqual(
+      new Set(['var(--scope-color-400)'])
+    )
+    expect(shades(utils, s => PRESS.test(s) && !DARK.test(s))).toEqual(
+      new Set(['var(--scope-color-700)'])
+    )
+    expect(shades(utils, s => PRESS.test(s) && DARK.test(s))).toEqual(
+      new Set(['var(--scope-color-300)'])
+    )
+  })
+
+  it("drops the dark-mode rim with an appended 'dark:' ring-0", async () => {
+    const utils = await parse('c8-filled', undefined, {
+      'c8-filled': toUnoShortcut({ 'dark:': 'ring-0' }),
+    })
+    expect(declarations(utils, '.dark $$ .c8-filled')['--un-ring-width']).toBe('0px')
   })
 })

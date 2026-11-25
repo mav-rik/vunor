@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.5
+
+### Added
+
+- `presetVunor({ borderOpacity })`, default `0.25`: the opacity of the default border colour (`--un-border-opacity` on `:root`), which a `border` with no colour class is drawn with; `ring-current-border` and `shadow-current-border` without `/N` read the same value. Before, it was fixed at `0.25` and an app changed it by overriding the variable in its own CSS.
+- The README ("Clickable Styles (`c8`)") and the skill show how to bring back the `c8-filled` fills of 0.4.1 and earlier by appending three shortcut entries, no `replaceShortcut` needed. The 0.4.2 fills stay the default.
+
+### Fixed
+
+- A `scope-…` token that names no palette colour no longer fails the UnoCSS build with `Not supported color`. UnoCSS picks up such a string anywhere in a scanned file, comments included: a shade (`scope-primary-500`), `scope-white`, `scope-dark` or a Wind colour name (`scope-red`). It now compiles to nothing. `scope-<name>` is still a scope for the seven palette colours: `primary`, `secondary`, `grey`, `neutral`, `good`, `warn` and `error`.
+
 ## 0.4.4
 
 ### Added

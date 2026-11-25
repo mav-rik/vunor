@@ -31,7 +31,7 @@ A preflight installs `scope-neutral` variables on `:root` so the system has sane
 </div>
 ```
 
-Names: `primary` · `secondary` · `good` · `warn` · `error` · `grey` · `neutral`.
+Names: `primary` · `secondary` · `good` · `warn` · `error` · `grey` · `neutral`. Any other `scope-…` (a shade such as `scope-primary-500`, `scope-white`, a Wind colour such as `scope-red`) compiles to nothing; before 0.4.5 such a string anywhere in a scanned file, comments included, failed the UnoCSS build with `Not supported color`.
 
 You can nest scopes freely. Inner scope wins:
 

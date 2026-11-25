@@ -76,7 +76,9 @@ export function getScopeCssVars(
   theme: Theme & TVunorTheme
 ): Record<string, string> | undefined {
   const col = theme.colors[c] as string | undefined
-  if (!col) {
+  // Only a palette colour has the shade ladder read below; any other name
+  // (a shade like `primary-500`, `white`, a wind colour) is not a scope.
+  if (!col || !theme.colors[`${c}-500`]) {
     return undefined
   }
   const vars: Record<string, string> = { '--scope-color': colorToRgbWithOpacity(col) }

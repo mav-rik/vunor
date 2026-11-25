@@ -159,6 +159,9 @@ presetVunor({
   // Default border-radius for `rounded-base` and computed radii
   baseRadius: '0.618em',  // 1 / golden-ratio
 
+  // Opacity of the default border colour (`border` with no colour class)
+  borderOpacity: 0.25,
+
   // Animation durations + keyframes (used by Dialog, Toasts, ProgressBar, …)
   animation: { durations: { /*…*/ }, keyframes: { /*…*/ } },
 

@@ -9,16 +9,19 @@ import type { Theme } from 'unocss/preset-mini'
  * `:root` theme variables always; page-level element styles only with `baseStyles`.
  * Off, `body` keeps the body level's `--font-*` variables for `text-mt-*` / `font-$bold`.
  */
-export function vunorPreflights(baseStyles: boolean): Preflight<TVunorTheme & Theme> {
+export function vunorPreflights(
+  baseStyles: boolean,
+  borderOpacity: number
+): Preflight<TVunorTheme & Theme> {
   return {
     getCSS: ({ theme }) =>
       baseStyles
-        ? renderBaseStyles(theme)
-        : renderRootVars(theme) + renderFontVarsCss('body', theme.fontSize.body),
+        ? renderBaseStyles(theme, borderOpacity)
+        : renderRootVars(theme, borderOpacity) + renderFontVarsCss('body', theme.fontSize.body),
   }
 }
 
-function renderBaseStyles(theme: TVunorTheme & Theme): string {
+function renderBaseStyles(theme: TVunorTheme & Theme, borderOpacity: number): string {
   return `${
     renderFontCss('body', theme.fontSize.body) +
     renderFontCss('figcaption', theme.fontSize.caption) +
@@ -29,7 +32,7 @@ function renderBaseStyles(theme: TVunorTheme & Theme): string {
     renderFontCss('h5', theme.fontSize.h5) +
     renderFontCss('h6', theme.fontSize.h6)
   }
-${renderRootVars(theme)}
+${renderRootVars(theme, borderOpacity)}
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -67,9 +70,9 @@ ${renderRootVars(theme)}
 `
 }
 
-function renderRootVars(theme: TVunorTheme & Theme): string {
+function renderRootVars(theme: TVunorTheme & Theme, borderOpacity: number): string {
   return `:root {
-  --un-border-opacity: 0.25;
+  --un-border-opacity: ${borderOpacity};
   --un-default-border-color: rgb(150 150 150 / var(--un-border-opacity));
   --scope-black: 0 0 0;
   --scope-white: 255 255 255;

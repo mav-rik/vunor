@@ -199,6 +199,18 @@ Each variant additionally pre-wires:
 | 5 | Up to vunor 0.3.0 the gate compiled to a selector that matched everything, so even native `disabled` c8 elements tinted on hover. |
 | 6 | The dark-mode rim is a `ring-inset` box-shadow, so it composes with `shadow-*`. With a palette you tuned yourself, check white against your colours' 600–800 (e.g. `preserveInputColor: true` + `good: '#22c55e'` → `good-600` 4.18:1). Up to vunor 0.4.1 `c8-filled` rested on 500 and lightened on dark-mode hover/press. |
 
+**Pre-0.4.2 `c8-filled` fills.** The 600 / 700 / 800 ladder is the default since 0.4.2. To bring back the 0.4.1 fills (500 at rest; 600 hover and 700 press, 400 and 300 in dark mode), append three entries. Each appended class is a `current-bg-*` like vunor's own, and a later class of the same utility wins, so no `replaceShortcut`:
+
+```ts
+vunorShortcuts(defineShortcuts({
+  'c8-filled': { '': 'current-bg-scope-color-500' },
+  'c8-filled-hover': { '': 'current-bg-scope-color-600', 'dark:': 'current-bg-scope-color-400' },
+  'c8-filled-active': { '': 'current-bg-scope-color-700', 'dark:': 'current-bg-scope-color-300' },
+}))
+```
+
+Add `'dark:': 'ring-0'` to the `c8-filled` entry to drop the dark-mode rim too. With the default palette white text on these fills is below WCAG AA (3.4–4.1:1 at rest, 2.1–3.0:1 on the dark-mode hover/press fills).
+
 `[data-highlighted]` and `[data-active]` are populated by **reka-ui primitives** (menu items, listbox/select items, combobox items) so c8 transitions react to keyboard navigation as well as mouse hover. On a plain `<button>`, only the `:hover` / `:focus-visible` / `:active` portions trigger; the `[data-…]` rules sit dormant. `c8-flat-selected` similarly needs a primitive that toggles `data-selected` (e.g. `<MenuItem>`); plain buttons can opt in manually with `aria-pressed="true"`.
 
 > **Note on tabs:** reka-ui's `<TabsTrigger>` uses `data-state="active"`, **not** `data-selected`. `c8-flat-selected` does **not** style tab triggers — the dedicated `tab` / `tabs-indicator` shortcuts (used by `<VuTabs>`) handle that. Use `c8-flat-selected` for menu items, segmented buttons, and toggle buttons.

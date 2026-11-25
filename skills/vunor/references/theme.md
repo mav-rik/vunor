@@ -1,6 +1,6 @@
 # Theme configuration — Vunor
 
-Every knob `presetVunor()` accepts: palette tuning (vividness, saturation, flatness, layersDepth, lightest/darkest, mainPalette, layerPalette, surfaces), `baseRadius`, `fingertip`, `cardSpacingFactor`, `spacingFactor`, `actualFontHeightFactor`, `typography`, `layers`, `animation`, `baseStyles`.
+Every knob `presetVunor()` accepts: palette tuning (vividness, saturation, flatness, layersDepth, lightest/darkest, mainPalette, layerPalette, surfaces), `baseRadius`, `borderOpacity`, `fingertip`, `cardSpacingFactor`, `spacingFactor`, `actualFontHeightFactor`, `typography`, `layers`, `animation`, `baseStyles`.
 
 For applying these knobs to your code (which classes consume which variables), see [colors.md](colors.md), [typography.md](typography.md), and [cards.md](cards.md).
 
@@ -22,6 +22,7 @@ presetVunor({
   // ----- spacing & sizing -----
   spacingFactor,
   baseRadius,
+  borderOpacity,
   fingertip: { xs, s, m, l, xl },
   cardSpacingFactor: { regular, dense },
 
@@ -278,6 +279,16 @@ Notes:
 ```
 
 When building a custom design system on top of vunor, prefer the r-ladder over introducing parallel CSS variables — downstream consumers of your components get `baseRadius: '0' ⇒ flat UI` behaviour for free.
+
+### `borderOpacity`
+
+Opacity of the default border colour, from `0` to `1`. Default `0.25`. It is the `--un-border-opacity` set on `:root`, so a `border` with no colour class draws a translucent grey line at this opacity (see [cards.md](cards.md)). `ring-current-border` and `shadow-current-border` without `/N` read the same value.
+
+```ts
+presetVunor({ borderOpacity: 0.4 })   // stronger default borders
+```
+
+> Added in 0.4.5. Before, `0.25` was fixed; an app changed it by overriding `--un-border-opacity` on `:root` in its own CSS.
 
 ### `fingertip`
 

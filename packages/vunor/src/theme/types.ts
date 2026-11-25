@@ -22,6 +22,13 @@ export interface TVunorUnoPresetOpts {
   }
   baseRadius?: string
   /**
+   * Opacity of the default border colour, from `0` to `1`: the
+   * `--un-border-opacity` set on `:root`, which a `border` with no colour class
+   * is drawn with. `ring-current-border` and `shadow-current-border` without
+   * `/N` read the same value. Default `0.25`.
+   */
+  borderOpacity?: number
+  /**
    * Page-level element styles: the body, figcaption and h1–h6 typography rules
    * (size, weight, line-height, letter-spacing, plus a level's `font` and `css`
    * from `typography`) and scrollbar styling. Default `true`. Set `false` when

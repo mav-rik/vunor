@@ -142,6 +142,7 @@ Used as `p-$m`, `m-$l`, `gap-$s`, etc. Text-aware margin utilities (`text-mt-$m`
 ### Other Derived Values
 
 - **Border radius**: defaults to `0.618em` (1/golden-ratio), configurable via `baseRadius`
+- **Default border**: a `border` with no colour class is a translucent grey at opacity `0.25`, configurable via `borderOpacity`
 - **Touch targets** (`fingertip-xs` through `fingertip-xl`): sized using `sqrt(k)` progressions
 - **Card spacing**: `card-{typography}` sets `--card-spacing` proportional to the heading's corrected size; `card-dense` switches to 0.6x
 
@@ -343,6 +344,22 @@ Each includes hover, active, and focus states. Hover paints only on devices whos
 
 `c8-filled` rests on shade 600 and goes to 700 on hover and 800 on press, in light and dark mode. With the default palette white text reaches WCAG AA (4.5:1) on all three fills for every palette colour. In dark mode a 1px inset rim in shade 500 keeps the button's edge at 3:1 or more against every dark layer. If you tune the palette, check your colours' 600 shades: with `mainPalette.preserveInputColor: true` and `good: '#22c55e'`, for example, `good-600` gives white text only 4.18:1.
 
+These fills are the default since 0.4.2. To bring back the fills of 0.4.1 and earlier (500 at rest; 600 on hover and 700 on press, 400 and 300 in dark mode), append three entries. Each class you append is a `current-bg-*` like vunor's own, and an appended class wins over an earlier class of the same utility, so no `replaceShortcut` is needed:
+
+```ts
+import { defineShortcuts, vunorShortcuts } from 'vunor/theme'
+
+vunorShortcuts(
+  defineShortcuts({
+    'c8-filled': { '': 'current-bg-scope-color-500' },
+    'c8-filled-hover': { '': 'current-bg-scope-color-600', 'dark:': 'current-bg-scope-color-400' },
+    'c8-filled-active': { '': 'current-bg-scope-color-700', 'dark:': 'current-bg-scope-color-300' },
+  })
+)
+```
+
+Add `'dark:': 'ring-0'` to the `c8-filled` entry to drop the dark-mode rim too. With the default palette, white text on these fills measures 3.4–4.1:1 at rest and 2.1–3.0:1 on the dark-mode hover and press fills, below WCAG AA.
+
 To change a c8 hover colour, override the same key vunor uses, so your class merges into vunor's rule and wins:
 
 ```ts
@@ -406,6 +423,9 @@ export default defineConfig({
 
       // -- Global border radius --
       baseRadius: '0.5em', // default: 0.618em (1/golden-ratio)
+
+      // -- Opacity of the default border colour (`border` with no colour class) --
+      borderOpacity: 0.25,
 
       // -- Typography overrides --
       typography: {

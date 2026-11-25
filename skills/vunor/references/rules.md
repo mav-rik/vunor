@@ -328,7 +328,7 @@ Default surfaces: `0`, `1`, `2`, `3`, `4`, `50`, `100`, `200`, …, `900`. Add o
 | `--un-icon-opacity` | `icon-opacity-*`, `icon-current` | `icon-color` |
 | `--icon-size` | `icon-size-*` | `icon-size` |
 | `--un-default-border-color` | preflight | `border` (uno default) |
-| `--un-border-opacity` | preflight (`0.25`) | uno default border, `i8-apply-border` (when sourced from border) |
+| `--un-border-opacity` | preflight (`borderOpacity`, default `0.25`) | uno default border, `i8-apply-border` (when sourced from border) |
 
 ## Best practices
 

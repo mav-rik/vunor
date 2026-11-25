@@ -151,7 +151,7 @@ UnoCSS's default border-color uses `--un-default-border-color`, set by the Vunor
 }
 ```
 
-So `class="border"` always renders a visible-but-subtle 1px line in both light and dark mode without further work.
+So `class="border"` always renders a visible-but-subtle 1px line in both light and dark mode without further work. `presetVunor({ borderOpacity })` sets this opacity (default `0.25`; since 0.4.5, see [theme.md](theme.md#borderopacity)).
 
 For brand-colored borders, use the current-system or `border-scope-*`:
 
